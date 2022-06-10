@@ -5,17 +5,20 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 module.exports = {
   title: 'Casbin',
   tagline: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir',
-  url: 'https://casbin.org',
+  url: 'https://casbin.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'casbin', // Usually your GitHub org/user name.
-  projectName: 'casbin.github.io', // Usually your repo name.
+  projectName: 'casbin.io', // Usually your repo name.
   themeConfig: {
     algolia: {
-      apiKey: '2b87bf88e794912bdbe1b08420681efa',
-      indexName: 'casdoor',
+      "appId": "6NBEV8TOFK",
+      "apiKey": "111e290764eefd6fef64a7113c783afe",
+      "indexName": "casbin",
+      "contextualSearch": true,
+      "searchParameters": {}
     },
     navbar: {
       title: 'Casbin',
