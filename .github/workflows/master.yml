@@ -1,11 +1,11 @@
 name: Build and Deploy
-on: 
+on:
   push:
-      branches:
-        - master
+    branches:
+      - master
 jobs:
   build-and-deploy:
-    env: 
+    env:
       CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +20,9 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY}}
-          git-config-name: ${{ secrets.GIT_NAME }}
-          git-config-email: ${{ secrets.GIT_EMAIL }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          git-config-name: casbin-bot
+          git-config-email: bot@casbin.com
           repository-name: casbin/casbin.io
           branch: master # The deploy branch.
           folder: build # The deploy folder.
