@@ -6,7 +6,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from '../components/HomepageFeatures';
 
-import users from '../../static/data/users.json';
+import users from '/data/users.json';
 
 class Button extends React.Component {
   render() {
@@ -74,7 +74,7 @@ function PolicyPersistence() {
             In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: <Link to="https://casbin.org/docs/en/adapters">https://casbin.org/docs/en/adapters</Link>
           </div>
           <div>
-            <img src="../../static/img/store.png" width="600" height= "660" frameborder="0" scrolling="no" />
+            <img src="/img/store.png" width="600" height= "660" frameborder="0" scrolling="no" />
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
         <div>
-            <img src="../../static/img/scale.png" width="600" height= "660"></img>
+            <img src="/img/scale.png" width="600" height= "660"></img>
           </div>
           <div className="col">
             <h3>Policy enforcement at scale</h3>
@@ -114,7 +114,7 @@ function RoleManager() {
           The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: <Link to="/docs/get-started">https://casbin.org/docs/en/role-managers</Link>
           </div>
           <div>
-            <img src="../../static/img/role.png" width="600" height= "660"></img>
+            <img src="/img/role.png" width="600" height= "660"></img>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ function RoleManager() {
 function Showcase () {
   const showcases = users.map((user) => (
     <a href={user.infolink} key={user.infolink} target="_blank">
-      <img className="user-logo" src={"../../static/img/" + user.image} alt={user.caption} />
+      <img className="user-logo" src={"/img/" + user.image} alt={user.caption} />
     </a>
   ));
 
