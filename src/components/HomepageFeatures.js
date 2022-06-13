@@ -5,7 +5,7 @@ import styles from './HomepageFeatures.module.css';
 const FeatureList = [
   {
     title: 'Hybrid access control models',
-    Svg: require('../../static/img/model.svg').default,
+    Svg: require('/img/model.svg').default,
     description: (
       <>
         In Casbin, an access control model is abstracted into a CONF file based on the PERM metamodel (Policy, Effect, Request, Matchers). So switching or upgrading the authorization mechanism for a project is just as simple as modifying a configuration.
@@ -14,7 +14,7 @@ const FeatureList = [
   },
   {
     title: 'Flexible policy storage',
-    Svg: require('../../static/img/storage.svg').default,
+    Svg: require('/img/storage.svg').default,
     description: (
       <>
         Besides memory and file, Casbin policy can be stored into lots of places. Currently, dozens of databases are supported, from MySQL, Postgres, Oracle to MongoDB, Redis, Cassandra, AWS S3. Check the full supported list at: <a href="https://casbin.org/docs/en/adapters">adapters</a>
@@ -23,7 +23,7 @@ const FeatureList = [
   },
   {
     title: 'Cross-languages & cross-platforms',
-    Svg: require('../../static/img/language.svg').default,
+    Svg: require('/img/language.svg').default,
     description: (
       <>
         Extend or customize your website layout by reusing React. Docusaurus can
