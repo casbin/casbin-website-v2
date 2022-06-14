@@ -22,12 +22,14 @@ MatchingFunc will work when operating role matching.
 	_, _ = e.GetRoleManager().HasLink("bob", "admin", "domain1") // -> true, nil
 ```
 
+
 For example:
 
 <Tabs
   defaultValue="go"
   values={[
     { label: 'Go', value: 'go'},
+    { label: 'Python', value: 'python'},
   ]
 }>
 
@@ -40,6 +42,14 @@ For example:
 
 </TabItem>
 
+<TabItem value="python">
+
+```python
+    e = casbin.Enforcer("path/to/model", "path/to/policy")
+    e.add_named_matching_func("g", casbin.util.glob_match)
+```
+
+</TabItem>
 </Tabs>
 
 ### `AddNamedDomainMatchingFunc()`
