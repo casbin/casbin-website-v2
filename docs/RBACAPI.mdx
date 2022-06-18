@@ -6,24 +6,15 @@ title: RBAC API
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code. 
+A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
 
 ## Reference
 
 global variable `e` is Enforcer instance.
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
@@ -31,7 +22,7 @@ e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
@@ -39,7 +30,7 @@ const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.cs
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
@@ -47,7 +38,15 @@ $e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
@@ -55,10 +54,18 @@ var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let mut e = Enforcer::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
 ```
 
 </TabItem>
@@ -71,18 +78,9 @@ GetRolesForUser gets the roles that a user has.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 res := e.GetRolesForUser("alice")
@@ -90,7 +88,7 @@ res := e.GetRolesForUser("alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const res = await e.getRolesForUser('alice')
@@ -98,7 +96,7 @@ const res = await e.getRolesForUser('alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $res = $e->getRolesForUser("alice");
@@ -106,7 +104,15 @@ $res = $e->getRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+roles = e.get_roles_for_user("alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var res = e.GetRolesForUser("alice");
@@ -114,10 +120,18 @@ var res = e.GetRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let roles = e.get_roles_for_user("alice", None); // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> res = e.getRolesForUser("alice");
 ```
 
 </TabItem>
@@ -130,18 +144,9 @@ GetUsersForRole gets the users that has a role.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 res := e.GetUsersForRole("data1_admin")
@@ -149,7 +154,7 @@ res := e.GetUsersForRole("data1_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const res = await e.getUsersForRole('data1_admin')
@@ -157,7 +162,7 @@ const res = await e.getUsersForRole('data1_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $res = $e->getUsersForRole("data1_admin");
@@ -165,7 +170,15 @@ $res = $e->getUsersForRole("data1_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+users = e.get_users_for_role("data1_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var res = e.GetUsersForRole("data1_admin");
@@ -173,10 +186,18 @@ var res = e.GetUsersForRole("data1_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let users = e.get_users_for_role("data1_admin", None); // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> res = e.getUsersForRole("data1_admin");
 ```
 
 </TabItem>
@@ -189,18 +210,9 @@ HasRoleForUser determines whether a user has a role.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 res := e.HasRoleForUser("alice", "data1_admin")
@@ -208,7 +220,7 @@ res := e.HasRoleForUser("alice", "data1_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const res = await e.hasRoleForUser('alice', 'data1_admin')
@@ -216,7 +228,7 @@ const res = await e.hasRoleForUser('alice', 'data1_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $res = $e->hasRoleForUser("alice", "data1_admin");
@@ -224,7 +236,15 @@ $res = $e->hasRoleForUser("alice", "data1_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has = e.has_role_for_user("alice", "data1_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var res = e.HasRoleForUser("alice", "data1_admin");
@@ -232,10 +252,18 @@ var res = e.HasRoleForUser("alice", "data1_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has = e.has_role_for_user("alice", "data1_admin", None); // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean res = e.hasRoleForUser("alice", "data1_admin");
 ```
 
 </TabItem>
@@ -249,18 +277,9 @@ Returns false if the user already has the role (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.AddRoleForUser("alice", "data2_admin")
@@ -268,7 +287,7 @@ e.AddRoleForUser("alice", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.addRoleForUser('alice', 'data2_admin')
@@ -276,7 +295,7 @@ await e.addRoleForUser('alice', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```PHP
 $e->addRoleForUser("alice", "data2_admin");
@@ -284,7 +303,15 @@ $e->addRoleForUser("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.add_role_for_user("alice", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddRoleForUser("alice", "data2_admin");
@@ -294,7 +321,7 @@ var added = await e.AddRoleForUserAsync("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_role_for_user("alice", "data2_admin", None).await?; // No domain
@@ -302,23 +329,45 @@ let added = e.add_role_for_user("alice", "data2_admin", None).await?; // No doma
 
 </TabItem>
 
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addRoleForUser("alice", "data2_admin");
+```
+
+</TabItem>
+
 </Tabs>
+
 
 ### `AddRolesForUser()`
 
 AddRolesForUser adds multiple roles for a user.
 Returns false if the user already has one of these roles (aka not affected).
 
-For example: 
+For example:
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="rust">
+<TabItem value="Go" label="Go" default>
+
+```go
+var roles = []string{"data2_admin", "data1_admin"}
+e.AddRolesForUser("alice", roles)
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const roles = ["data1_admin", "data2_admin"];
+roles.map((role) => e.addRoleForUser("alice", role));
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let roles = vec!["data1_admin".to_owned(), "data2_admin".to_owned()];
@@ -337,18 +386,9 @@ Returns false if the user does not have the role (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeleteRoleForUser("alice", "data1_admin")
@@ -356,7 +396,7 @@ e.DeleteRoleForUser("alice", "data1_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deleteRoleForUser('alice', 'data1_admin')
@@ -364,7 +404,7 @@ await e.deleteRoleForUser('alice', 'data1_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deleteRoleForUser("alice", "data1_admin");
@@ -372,7 +412,15 @@ $e->deleteRoleForUser("alice", "data1_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_role_for_user("alice", "data1_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deleted = e.DeleteRoleForUser("alice", "data1_admin");
@@ -382,10 +430,18 @@ var deleted = await e.DeleteRoleForUser("alice", "data1_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted = e.delete_role_for_user("alice", "data1_admin", None).await?; // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deleted = e.deleteRoleForUser("alice", "data1_admin");
 ```
 
 </TabItem>
@@ -399,18 +455,9 @@ Returns false if the user does not have any roles (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeleteRolesForUser("alice")
@@ -418,7 +465,7 @@ e.DeleteRolesForUser("alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deleteRolesForUser('alice')
@@ -426,7 +473,7 @@ await e.deleteRolesForUser('alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deleteRolesForUser("alice");
@@ -434,7 +481,15 @@ $e->deleteRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_roles_for_user("alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deletedAtLeastOne = e.DeleteRolesForUser("alice");
@@ -444,10 +499,18 @@ var deletedAtLeastOne = await e.DeleteRolesForUserAsync("alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted_at_least_one = e.delete_roles_for_user("alice", None).await?; // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deletedAtLeastOne = e.deleteRolesForUser("alice");
 ```
 
 </TabItem>
@@ -461,18 +524,9 @@ Returns false if the user does not exist (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```
 e.DeleteUser("alice")
@@ -480,7 +534,7 @@ e.DeleteUser("alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deleteUser('alice')
@@ -488,7 +542,7 @@ await e.deleteUser('alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deleteUser("alice");
@@ -496,7 +550,15 @@ $e->deleteUser("alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_user("alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deleted = e.DeleteUser("alice");
@@ -506,10 +568,18 @@ var deleted = await e.DeleteUserAsync("alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted = e.delete_user("alice").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deleted = e.deleteUser("alice");
 ```
 
 </TabItem>
@@ -522,18 +592,9 @@ DeleteRole deletes a role.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeleteRole("data2_admin")
@@ -541,7 +602,7 @@ e.DeleteRole("data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deleteRole("data2_admin")
@@ -549,7 +610,7 @@ await e.deleteRole("data2_admin")
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deleteRole("data2_admin");
@@ -557,7 +618,15 @@ $e->deleteRole("data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_role("data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deleted = e.DeleteRole("data2_admin");
@@ -567,10 +636,18 @@ var deleted = await e.DeleteRoleAsync("data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted = e.delete_role("data2_admin").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+e.deleteRole("data2_admin");
 ```
 
 </TabItem>
@@ -584,18 +661,9 @@ Returns false if the permission does not exist (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeletePermission("read")
@@ -603,7 +671,7 @@ e.DeletePermission("read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deletePermission('read')
@@ -611,7 +679,7 @@ await e.deletePermission('read')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deletePermission("read");
@@ -619,7 +687,15 @@ $e->deletePermission("read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_permission("read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deleted = e.DeletePermission("read");
@@ -629,10 +705,18 @@ var deleted = await e.DeletePermissionAsync("read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted = e.delete_permission(vec!["read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deleted = e.deletePermission("read");
 ```
 
 </TabItem>
@@ -647,18 +731,9 @@ Returns false if the user or role already has the permission (aka not affected).
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.AddPermissionForUser("bob", "read")
@@ -666,7 +741,7 @@ e.AddPermissionForUser("bob", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.addPermissionForUser('bob', 'read')
@@ -674,7 +749,7 @@ await e.addPermissionForUser('bob', 'read')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->addPermissionForUser("bob", "read");
@@ -682,7 +757,15 @@ $e->addPermissionForUser("bob", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.add_permission_for_user("bob", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddPermissionForUser("bob", "read");
@@ -692,10 +775,18 @@ var added = await e.AddPermissionForUserAsync("bob", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addPermissionForUser("bob", "read");
 ```
 
 </TabItem>
@@ -709,14 +800,33 @@ Returns false if the user or role already has one of the permissions (aka not af
 
 For example:
 
-<Tabs
-  defaultValue="rust"
-  values={[
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="rust">
+<TabItem value="Go" label="Go" default>
+
+```go
+var permissions = [][]string{{"data1", "read"},{"data2","write"}}
+for i := 0; i < len(permissions); i++ {
+    e.AddPermissionsForUser("alice", permissions[i])
+}
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const permissions = [
+    ["data1", "read"],
+    ["data2", "write"],
+];
+
+permissions.map((permission) => e.addPermissionForUser("bob", ...permission));
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let permissions = vec![
@@ -739,18 +849,9 @@ Returns false if the user or role does not have the permission (aka not affected
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeletePermissionForUser("bob", "read")
@@ -758,7 +859,7 @@ e.DeletePermissionForUser("bob", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deletePermissionForUser("bob", "read")
@@ -766,7 +867,7 @@ await e.deletePermissionForUser("bob", "read")
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deletePermissionForUser("bob", "read");
@@ -774,7 +875,15 @@ $e->deletePermissionForUser("bob", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_permission_for_user("bob", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deleted = e.DeletePermissionForUser("bob", "read");
@@ -784,10 +893,18 @@ var deleted = await e.DeletePermissionForUserAsync("bob", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted = e.delete_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deleted = e.deletePermissionForUser("bob", "read");
 ```
 
 </TabItem>
@@ -802,18 +919,9 @@ Returns false if the user or role does not have any permissions (aka not affecte
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.DeletePermissionsForUser("bob")
@@ -821,7 +929,7 @@ e.DeletePermissionsForUser("bob")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.deletePermissionsForUser('bob')
@@ -829,7 +937,7 @@ await e.deletePermissionsForUser('bob')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->deletePermissionsForUser("bob");
@@ -837,7 +945,15 @@ $e->deletePermissionsForUser("bob");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.delete_permissions_for_user("bob")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var deletedAtLeastOne = e.DeletePermissionsForUser("bob");
@@ -847,10 +963,18 @@ var deletedAtLeastOne = await e.DeletePermissionsForUserAsync("bob");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let deleted_at_least_one = e.delete_permissions_for_user("bob").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean deletedAtLeastOne = e.deletePermissionForUser("bob");
 ```
 
 </TabItem>
@@ -863,17 +987,9 @@ GetPermissionsForUser gets permissions for a user or role.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.GetPermissionsForUser("bob")
@@ -881,7 +997,7 @@ e.GetPermissionsForUser("bob")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.getPermissionsForUser('bob')
@@ -889,7 +1005,7 @@ await e.getPermissionsForUser('bob')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->getPermissionsForUser("bob");
@@ -897,10 +1013,26 @@ $e->getPermissionsForUser("bob");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.get_permissions_for_user("bob")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var permissions = e.GetPermissionsForUser("bob");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> permissions = e.getPermissionsForUser("bob");
 ```
 
 </TabItem>
@@ -913,18 +1045,9 @@ HasPermissionForUser determines whether a user has a permission.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.HasPermissionForUser("alice", []string{"read"})
@@ -932,7 +1055,7 @@ e.HasPermissionForUser("alice", []string{"read"})
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.hasPermissionForUser('alice', 'read')
@@ -940,7 +1063,7 @@ await e.hasPermissionForUser('alice', 'read')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->hasPermissionForUser("alice", []string{"read"});
@@ -948,7 +1071,15 @@ $e->hasPermissionForUser("alice", []string{"read"});
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has = e.has_permission_for_user("alice", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var has = e.HasPermissionForUser("bob", "read");
@@ -956,10 +1087,18 @@ var has = e.HasPermissionForUser("bob", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has = e.has_permission_for_user("alice", vec!["data1".to_owned(), "read".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean has = e.hasPermissionForUser("alice", "read");
 ```
 
 </TabItem>
@@ -981,18 +1120,9 @@ But GetImplicitRolesForUser("alice") will get: ["role:admin", "role:user"].
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.GetImplicitRolesForUser("alice")
@@ -1000,7 +1130,7 @@ e.GetImplicitRolesForUser("alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 await e.getImplicitRolesForUser("alice")
@@ -1008,7 +1138,7 @@ await e.getImplicitRolesForUser("alice")
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->getImplicitRolesForUser("alice");
@@ -1016,7 +1146,15 @@ $e->getImplicitRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.get_implicit_roles_for_user("alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var implicitRoles = e.GetImplicitRolesForUser("alice");
@@ -1024,10 +1162,18 @@ var implicitRoles = e.GetImplicitRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 e.get_implicit_roles_for_user("alice", None); // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> implicitRoles = e.getImplicitRolesForUser("alice");
 ```
 
 </TabItem>
@@ -1049,14 +1195,33 @@ But GetImplicitUesrsForRole("role:user") will get: ["role:admin", "alice"].
 
 For example:
 
-<!--DOCUSAURUS_CODE_TABS-->
+<Tabs>
 
-<!--Go-->
+<TabItem value="Go" label="Go" default>
+
 ```go
 users := e.GetImplicitUsersForRole("role:user")
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const users = e.getImplicitUsersForRole("role:user");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> users = e.getImplicitUsersForRole("role:user");
+```
+
+</TabItem>
+
+</Tabs>
 
 ### `GetImplicitPermissionsForUser()`
 
@@ -1073,18 +1238,9 @@ But GetImplicitPermissionsForUser("alice") will get: [["admin", "data1", "read"]
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e.GetImplicitPermissionsForUser("alice")
@@ -1092,15 +1248,15 @@ e.GetImplicitPermissionsForUser("alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
-```typescript
+```text
 await e.getImplicitPermissionsForUser("alice")
 ```
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e->getImplicitPermissionsForUser("alice");
@@ -1108,7 +1264,15 @@ $e->getImplicitPermissionsForUser("alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+e.get_implicit_permissions_for_user("alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var implicitPermissions = e.GetImplicitPermissionsForUser("alice");
@@ -1116,10 +1280,54 @@ var implicitPermissions = e.GetImplicitPermissionsForUser("alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 e.get_implicit_permissions_for_user("alice", None); // No domain
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> implicitPermissions = e.getImplicitPermissionsForUser("alice");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetNamedImplicitPermissionsForUser()`
+
+GetNamedImplicitPermissionsForUser gets implicit permissions for a user or role by named policy
+Compared to GetImplicitPermissionsForUser(), this function allow you to specify the policy name.
+
+For example:
+p, admin, data1, read
+p2, admin, create
+g, alice, admin
+
+GetImplicitPermissionsForUser("alice") only get: [["admin", "data1", "read"]], whose policy is default "p"
+
+But you can specify the policy as "p2" to get: [["admin", "create"]] by GetNamedImplicitPermissionsForUser("p2","alice")
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+e.GetNamedImplicitPermissionsForUser("p2","alice")
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+e.get_named_implicit_permissions_for_user("p2", "alice")
 ```
 
 </TabItem>
@@ -1140,18 +1348,45 @@ GetDomainsForUser("alice") could get ["domain1", "domain2"]
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 result, err := e.GetDomainsForUser("alice")
 ```
 
 </TabItem>
+
+</Tabs>
+
+### `GetImplicitResourcesForUser()`
+
+GetImplicitResourcesForUser returns all policies that should be true for user.
+
+For example:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+
+g, alice, data2_admin
+```
+
+GetImplicitResourcesForUser("alice") will return
+`[[alice data1 read] [alice data2 read] [alice data2 write]]`
+
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+resources, err := e.GetImplicitResourcesForUser("alice")
+```
+
+</TabItem>
+
 </Tabs>

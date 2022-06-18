@@ -36,19 +36,9 @@ e.GetFilteredPolicy(0, "alice") // will return: [[alice book read] [alice pen ge
 
 global variable `e` is Enforcer instance.
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
@@ -56,7 +46,7 @@ e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
@@ -64,7 +54,7 @@ const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.cs
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
@@ -72,7 +62,7 @@ $e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
 e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
@@ -80,7 +70,7 @@ e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
@@ -88,10 +78,18 @@ var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let mut e = Enforce::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
 ```
 
 </TabItem>
@@ -104,16 +102,9 @@ Enforce decides whether a "subject" can access a "object" with the operation "ac
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Python', value: 'python'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 ok, err := e.Enforce(request)
@@ -121,7 +112,15 @@ ok, err := e.Enforce(request)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const ok = await e.enforce(request);
+```
+
+</TabItem>
+
+<TabItem value="PHP" label="PHP">
 
 ```php
 $ok = $e->enforcer($request);
@@ -129,10 +128,18 @@ $ok = $e->enforcer($request);
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
-ok = e.enforcer($request);
+ok = e.enforcer(request)
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean ok = e.enforce(request);
 ```
 
 </TabItem>
@@ -145,16 +152,9 @@ EnforceWithMatcher use a custom matcher to decides whether a "subject" can acces
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Python', value: 'python'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 ok, err := e.EnforceWithMatcher(matcher, request)
@@ -162,7 +162,7 @@ ok, err := e.EnforceWithMatcher(matcher, request)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $ok = $e->enforceWithMatcher($matcher, $request);
@@ -170,10 +170,18 @@ $ok = $e->enforceWithMatcher($matcher, $request);
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
-ok = e.enforce_with_matcher(matcher, request);
+ok = e.enforce_with_matcher(matcher, request)
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean ok = e.enforceWithMatcher(matcher, request);
 ```
 
 </TabItem>
@@ -186,16 +194,9 @@ EnforceEx explain enforcement by informing matched rules.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Python', value: 'python'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 ok, reason, err := e.EnforceEx(request)
@@ -203,7 +204,15 @@ ok, reason, err := e.EnforceEx(request)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const ok = await e.enforceEx(request);
+```
+
+</TabItem>
+
+<TabItem value="PHP" label="PHP">
 
 ```php
 list($ok, $reason) = $e->enforceEx($request);
@@ -211,10 +220,10 @@ list($ok, $reason) = $e->enforceEx($request);
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
-ok, reason = e.enforce_ex(request);
+ok, reason = e.enforce_ex(request)
 ```
 
 </TabItem>
@@ -227,14 +236,9 @@ EnforceExWithMatcher use a custom matcher and explain enforcement by informing m
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 ok, reason, err := e.EnforceExWithMatcher(matcher, request)
@@ -250,17 +254,28 @@ BatchEnforce enforces each request and returns result in a bool array
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 boolArray, err := e.BatchEnforce(requests)
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
 ```
 
 </TabItem>
@@ -273,18 +288,9 @@ GetAllSubjects gets the list of subjects that show up in the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allSubjects := e.GetAllSubjects()
@@ -292,7 +298,7 @@ allSubjects := e.GetAllSubjects()
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allSubjects = await e.getAllSubjects()
@@ -300,7 +306,7 @@ const allSubjects = await e.getAllSubjects()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allSubjects = $e->getAllSubjects();
@@ -308,7 +314,15 @@ $allSubjects = $e->getAllSubjects();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_subjects = e.get_all_subjects()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allSubjects = e.GetAllSubjects();
@@ -316,10 +330,18 @@ var allSubjects = e.GetAllSubjects();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_subjects = e.get_all_subjects();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allSubjects = e.getAllSubjects();
 ```
 
 </TabItem>
@@ -332,18 +354,9 @@ GetAllNamedSubjects gets the list of subjects that show up in the current named 
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allNamedSubjects := e.GetAllNamedSubjects("p")
@@ -351,7 +364,7 @@ allNamedSubjects := e.GetAllNamedSubjects("p")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allNamedSubjects = await e.getAllNamedSubjects('p')
@@ -359,7 +372,7 @@ const allNamedSubjects = await e.getAllNamedSubjects('p')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allNamedSubjects = $e->getAllNamedSubjects("p");
@@ -367,7 +380,15 @@ $allNamedSubjects = $e->getAllNamedSubjects("p");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_named_subjects = e.get_all_named_subjects("p")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allNamedSubjects = e.GetAllNamedSubjects("p");
@@ -375,10 +396,18 @@ var allNamedSubjects = e.GetAllNamedSubjects("p");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_named_subjects = e.get_all_named_subjects("p");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allNamedSubjects = e.getAllNamedSubjects("p");
 ```
 
 </TabItem>
@@ -391,18 +420,9 @@ GetAllObjects gets the list of objects that show up in the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allObjects := e.GetAllObjects()
@@ -410,7 +430,7 @@ allObjects := e.GetAllObjects()
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allObjects = await e.getAllObjects()
@@ -418,7 +438,7 @@ const allObjects = await e.getAllObjects()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allObjects = $e->getAllObjects();
@@ -426,7 +446,15 @@ $allObjects = $e->getAllObjects();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_objects = e.get_all_objects()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allObjects = e.GetAllObjects();
@@ -434,10 +462,18 @@ var allObjects = e.GetAllObjects();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_objects = e.get_all_objects();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allObjects = e.getAllObjects();
 ```
 
 </TabItem>
@@ -450,18 +486,9 @@ GetAllNamedObjects gets the list of objects that show up in the current named po
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allNamedObjects := e.GetAllNamedObjects("p")
@@ -469,7 +496,7 @@ allNamedObjects := e.GetAllNamedObjects("p")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allNamedObjects = await e.getAllNamedObjects('p')
@@ -477,7 +504,7 @@ const allNamedObjects = await e.getAllNamedObjects('p')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allNamedObjects = $e->getAllNamedObjects("p");
@@ -485,7 +512,15 @@ $allNamedObjects = $e->getAllNamedObjects("p");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_named_objects = e.get_all_named_objects("p")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allNamedObjects = e.GetAllNamedObjects("p");
@@ -493,10 +528,18 @@ var allNamedObjects = e.GetAllNamedObjects("p");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_named_objects = e.get_all_named_objects("p");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allNamedObjects = e.getAllNamedObjects("p");
 ```
 
 </TabItem>
@@ -509,18 +552,9 @@ GetAllActions gets the list of actions that show up in the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allActions := e.GetAllActions()
@@ -528,7 +562,7 @@ allActions := e.GetAllActions()
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allActions = await e.getAllActions()
@@ -536,7 +570,7 @@ const allActions = await e.getAllActions()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allActions = $e->getAllActions();
@@ -544,7 +578,15 @@ $allActions = $e->getAllActions();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_actions = e.get_all_actions()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allActions = e.GetAllActions();
@@ -552,10 +594,18 @@ var allActions = e.GetAllActions();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_actions = e.get_all_actions();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allActions = e.getAllActions();
 ```
 
 </TabItem>
@@ -568,18 +618,9 @@ GetAllNamedActions gets the list of actions that show up in the current named po
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allNamedActions := e.GetAllNamedActions("p")
@@ -587,7 +628,7 @@ allNamedActions := e.GetAllNamedActions("p")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allNamedActions = await e.getAllNamedActions('p')
@@ -595,7 +636,7 @@ const allNamedActions = await e.getAllNamedActions('p')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allNamedActions = $e->getAllNamedActions("p");
@@ -603,7 +644,15 @@ $allNamedActions = $e->getAllNamedActions("p");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_named_actions = e.get_all_named_actions("p")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allNamedActions = e.GetAllNamedActions("p");
@@ -611,10 +660,18 @@ var allNamedActions = e.GetAllNamedActions("p");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_named_actions = e.get_all_named_actions("p");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allNamedActions = e.getAllNamedActions("p");
 ```
 
 </TabItem>
@@ -627,26 +684,17 @@ GetAllRoles gets the list of roles that show up in the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
-```go
+```
 allRoles = e.GetAllRoles()
 ```
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allRoles = await e.getAllRoles()
@@ -654,7 +702,7 @@ const allRoles = await e.getAllRoles()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allRoles = $e->getAllRoles();
@@ -662,7 +710,15 @@ $allRoles = $e->getAllRoles();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_roles = e.get_all_roles()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allRoles = e.GetAllRoles();
@@ -670,10 +726,18 @@ var allRoles = e.GetAllRoles();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_roles = e.get_all_roles();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allRoles = e.getAllRoles();
 ```
 
 </TabItem>
@@ -686,18 +750,9 @@ GetAllNamedRoles gets the list of roles that show up in the current named policy
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 allNamedRoles := e.GetAllNamedRoles("g")
@@ -705,7 +760,7 @@ allNamedRoles := e.GetAllNamedRoles("g")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const allNamedRoles = await e.getAllNamedRoles('g')
@@ -713,7 +768,7 @@ const allNamedRoles = await e.getAllNamedRoles('g')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $allNamedRoles = $e->getAllNamedRoles('g');
@@ -721,7 +776,15 @@ $allNamedRoles = $e->getAllNamedRoles('g');
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+all_named_roles = e.get_all_named_roles("g")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var allNamedRoles = e.GetAllNamedRoles("g");
@@ -729,10 +792,18 @@ var allNamedRoles = e.GetAllNamedRoles("g");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let all_named_roles = e.get_all_named_roles("g");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> allNamedRoles = e.getAllNamedRoles("g");
 ```
 
 </TabItem>
@@ -745,18 +816,9 @@ GetPolicy gets all the authorization rules in the policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 policy = e.GetPolicy()
@@ -764,7 +826,7 @@ policy = e.GetPolicy()
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const policy = await e.getPolicy()
@@ -772,7 +834,7 @@ const policy = await e.getPolicy()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $policy = $e->getPolicy();
@@ -780,7 +842,15 @@ $policy = $e->getPolicy();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+policy = e.get_policy()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var policy = e.GetPolicy();
@@ -788,10 +858,18 @@ var policy = e.GetPolicy();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let policy = e.get_policy();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> policy = e.getPolicy();
 ```
 
 </TabItem>
@@ -805,18 +883,9 @@ GetFilteredPolicy gets all the authorization rules in the policy, field filters 
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 filteredPolicy := e.GetFilteredPolicy(0, "alice")
@@ -824,7 +893,7 @@ filteredPolicy := e.GetFilteredPolicy(0, "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const filteredPolicy = await e.getFilteredPolicy(0, 'alice')
@@ -832,7 +901,7 @@ const filteredPolicy = await e.getFilteredPolicy(0, 'alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $filteredPolicy = $e->getFilteredPolicy(0, "alice");
@@ -840,7 +909,15 @@ $filteredPolicy = $e->getFilteredPolicy(0, "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+filtered_policy = e.get_filtered_policy(0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var filteredPolicy = e.GetFilteredPolicy(0, "alice");
@@ -848,10 +925,18 @@ var filteredPolicy = e.GetFilteredPolicy(0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let filtered_policy = e.get_filtered_policy(0, vec!["alice".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> filteredPolicy = e.getFilteredPolicy(0, "alice");
 ```
 
 </TabItem>
@@ -864,18 +949,9 @@ GetNamedPolicy gets all the authorization rules in the named policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'}
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 namedPolicy := e.GetNamedPolicy("p")
@@ -883,7 +959,7 @@ namedPolicy := e.GetNamedPolicy("p")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const namedPolicy = await e.getNamedPolicy('p')
@@ -891,7 +967,7 @@ const namedPolicy = await e.getNamedPolicy('p')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $namedPolicy = $e->getNamedPolicy("p");
@@ -899,7 +975,15 @@ $namedPolicy = $e->getNamedPolicy("p");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+named_policy = e.get_named_policy("p")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var namedPolicy = e.GetNamedPolicy("p");
@@ -907,10 +991,18 @@ var namedPolicy = e.GetNamedPolicy("p");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let named_policy = e.get_named_policy("p");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> namedPolicy = e.getNamedPolicy("p");
 ```
 
 </TabItem>
@@ -924,18 +1016,9 @@ GetFilteredNamedPolicy gets all the authorization rules in the named policy, fie
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
@@ -943,7 +1026,7 @@ filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const filteredNamedPolicy = await e.getFilteredNamedPolicy('p', 0, 'bob')
@@ -951,7 +1034,7 @@ const filteredNamedPolicy = await e.getFilteredNamedPolicy('p', 0, 'bob')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $filteredNamedPolicy = $e->getFilteredNamedPolicy("p", 0, "bob");
@@ -959,7 +1042,15 @@ $filteredNamedPolicy = $e->getFilteredNamedPolicy("p", 0, "bob");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+filtered_named_policy = e.get_filtered_named_policy("p", 0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "alice");
@@ -967,10 +1058,18 @@ var filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let filtered_named_policy = e.get_filtered_named_policy("p", 0, vec!["bob".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> filteredNamedPolicy = e.getFilteredNamedPolicy("p", 0, "bob");
 ```
 
 </TabItem>
@@ -983,18 +1082,9 @@ GetGroupingPolicy gets all the role inheritance rules in the policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 groupingPolicy := e.GetGroupingPolicy()
@@ -1002,7 +1092,7 @@ groupingPolicy := e.GetGroupingPolicy()
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const groupingPolicy = await e.getGroupingPolicy()
@@ -1010,7 +1100,7 @@ const groupingPolicy = await e.getGroupingPolicy()
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $groupingPolicy = $e->getGroupingPolicy();
@@ -1018,7 +1108,15 @@ $groupingPolicy = $e->getGroupingPolicy();
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+grouping_policy = e.get_grouping_policy()
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var groupingPolicy = e.GetGroupingPolicy();
@@ -1026,10 +1124,18 @@ var groupingPolicy = e.GetGroupingPolicy();
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let grouping_policy = e.get_grouping_policy();
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> groupingPolicy = e.getGroupingPolicy();
 ```
 
 </TabItem>
@@ -1042,18 +1148,9 @@ GetFilteredGroupingPolicy gets all the role inheritance rules in the policy, fie
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
@@ -1061,7 +1158,7 @@ filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, 'alice')
@@ -1069,7 +1166,7 @@ const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, 'alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $filteredGroupingPolicy = $e->getFilteredGroupingPolicy(0, "alice");
@@ -1077,7 +1174,15 @@ $filteredGroupingPolicy = $e->getFilteredGroupingPolicy(0, "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+filtered_grouping_policy = e.get_filtered_grouping_policy(0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var filteredGroupingPolicy = e.GetFilteredGroupingPolicy(0, "alice");
@@ -1085,10 +1190,18 @@ var filteredGroupingPolicy = e.GetFilteredGroupingPolicy(0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let filtered_grouping_policy = e.get_filtered_grouping_policy(0, vec!["alice".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> filteredGroupingPolicy = e.getFilteredGroupingPolicy(0, "alice");
 ```
 
 </TabItem>
@@ -1101,18 +1214,9 @@ GetNamedGroupingPolicy gets all the role inheritance rules in the policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
@@ -1120,7 +1224,7 @@ namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const namedGroupingPolicy = await e.getNamedGroupingPolicy('g')
@@ -1128,7 +1232,7 @@ const namedGroupingPolicy = await e.getNamedGroupingPolicy('g')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $namedGroupingPolicy = $e->getNamedGroupingPolicy("g");
@@ -1136,7 +1240,15 @@ $namedGroupingPolicy = $e->getNamedGroupingPolicy("g");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+named_grouping_policy = e.get_named_grouping_policy("g")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var namedGroupingPolicy = e.GetNamedGroupingPolicy("g");
@@ -1144,10 +1256,18 @@ var namedGroupingPolicy = e.GetNamedGroupingPolicy("g");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let named_grouping_policy = e.get_named_grouping_policy("g");
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> namedGroupingPolicy = e.getNamedGroupingPolicy("g");
 ```
 
 </TabItem>
@@ -1160,18 +1280,9 @@ GetFilteredNamedGroupingPolicy gets all the role inheritance rules in the policy
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
@@ -1179,7 +1290,7 @@ namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy('g', 0, 'alice')
@@ -1187,7 +1298,7 @@ const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy('g', 0, 'alic
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $namedGroupingPolicy = $e->getFilteredNamedGroupingPolicy("g", 0, "alice");
@@ -1195,7 +1306,15 @@ $namedGroupingPolicy = $e->getFilteredNamedGroupingPolicy("g", 0, "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+named_grouping_policy = e.get_filtered_named_grouping_policy("g", 0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var namedGroupingPolicy = e.GetFilteredNamedGroupingPolicy("g", 0, "alice");
@@ -1203,10 +1322,18 @@ var namedGroupingPolicy = e.GetFilteredNamedGroupingPolicy("g", 0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let named_grouping_policy = e.get_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> filteredNamedGroupingPolicy = e.getFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
 </TabItem>
@@ -1219,18 +1346,9 @@ HasPolicy determines whether an authorization rule exists.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
@@ -1238,7 +1356,7 @@ hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const hasPolicy = await e.hasPolicy('data2_admin', 'data2', 'read')
@@ -1246,7 +1364,7 @@ const hasPolicy = await e.hasPolicy('data2_admin', 'data2', 'read')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $hasPolicy = $e->hasPolicy('data2_admin', 'data2', 'read');
@@ -1254,7 +1372,15 @@ $hasPolicy = $e->hasPolicy('data2_admin', 'data2', 'read');
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has_policy = e.has_policy("data2_admin", "data2", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var hasPolicy = e.HasPolicy("data2_admin", "data2", "read");
@@ -1262,10 +1388,18 @@ var hasPolicy = e.HasPolicy("data2_admin", "data2", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has_policy = e.has_policy(vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean hasPolicy = e.hasPolicy("data2_admin", "data2", "read");
 ```
 
 </TabItem>
@@ -1278,18 +1412,9 @@ HasNamedPolicy determines whether a named authorization rule exists.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
@@ -1297,7 +1422,7 @@ hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const hasNamedPolicy = await e.hasNamedPolicy('p', 'data2_admin', 'data2', 'read')
@@ -1305,7 +1430,7 @@ const hasNamedPolicy = await e.hasNamedPolicy('p', 'data2_admin', 'data2', 'read
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $hasNamedPolicy = $e->hasNamedPolicy("p", "data2_admin", "data2", "read");
@@ -1313,7 +1438,15 @@ $hasNamedPolicy = $e->hasNamedPolicy("p", "data2_admin", "data2", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has_named_policy = e.has_named_policy("p", "data2_admin", "data2", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var hasNamedPolicy = e.HasNamedPolicy("p", "data2_admin", "data2", "read");
@@ -1321,10 +1454,18 @@ var hasNamedPolicy = e.HasNamedPolicy("p", "data2_admin", "data2", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has_named_policy = e.has_named_policy("p", vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean hasNamedPolicy = e.hasNamedPolicy("p", "data2_admin", "data2", "read");
 ```
 
 </TabItem>
@@ -1339,26 +1480,17 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
-added := e.AddPolicy("eve", "data3", "read")
+added := e.AddPolicy('eve', 'data3', 'read')
 ```
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['eve', 'data3', 'read']
@@ -1367,7 +1499,7 @@ const added = await e.addPolicy(...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $added = $e->addPolicy('eve', 'data3', 'read');
@@ -1375,7 +1507,15 @@ $added = $e->addPolicy('eve', 'data3', 'read');
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+added = e.add_policy("eve", "data3", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddPolicy("eve", "data3", "read");
@@ -1385,10 +1525,18 @@ var added = await e.AddPolicyAsync("eve", "data3", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_policy(vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addPolicy("eve", "data3", "read");
 ```
 
 </TabItem>
@@ -1404,16 +1552,9 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
@@ -1425,24 +1566,10 @@ rules := [][] string {
 
 areRulesAdded := e.AddPolicies(rules)
 ```
-</TabItem>
-
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
-];
-
-let are_rules_added = e.add_policies(rules).await?
-```
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const rules = [
@@ -1457,6 +1584,50 @@ const areRulesAdded = await e.addPolicies(rules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_added = e.add_policies(rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_added = e.add_policies(rules).await?
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] rules = {
+	{"jack", "data4", "read"},
+	{"katy", "data4", "write"},
+	{"leyo", "data4", "read"},
+	{"ham", "data4", "write"},
+};
+
+boolean areRulesAdded = e.addPolicies(rules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `AddNamedPolicy()`
@@ -1467,18 +1638,9 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 added := e.AddNamedPolicy("p", "eve", "data3", "read")
@@ -1486,7 +1648,7 @@ added := e.AddNamedPolicy("p", "eve", "data3", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['eve', 'data3', 'read']
@@ -1495,7 +1657,7 @@ const added = await e.addNamedPolicy('p', ...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $added = $e->addNamedPolicy("p", "eve", "data3", "read");
@@ -1503,7 +1665,15 @@ $added = $e->addNamedPolicy("p", "eve", "data3", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+added = e.add_named_policy("p", "eve", "data3", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddNamedPolicy("p", "eve", "data3", "read");
@@ -1513,10 +1683,18 @@ var added = await e.AddNamedPolicyAsync("p", "eve", "data3", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_named_policy("p", vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addNamedPolicy("p", "eve", "data3", "read");
 ```
 
 </TabItem>
@@ -1532,46 +1710,24 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"jack", "data4", "read"},
+	[]string {"katy", "data4", "write"},
+	[]string {"leyo", "data4", "read"},
+	[]string {"ham", "data4", "write"},
+}
 
 areRulesAdded := e.AddNamedPolicies("p", rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
-];
-
-let are_rules_added := e.add_named_policies("p", rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const rules = [
@@ -1586,6 +1742,49 @@ const areRulesAdded = await e.addNamedPolicies('p', rules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_added = e.add_named_policies("p", rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_added := e.add_named_policies("p", rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> rules = Arrays.asList(
+	Arrays.asList("jack", "data4", "read"),
+	Arrays.asList("katy", "data4", "write"),
+	Arrays.asList("leyo", "data4", "read"),
+	Arrays.asList("ham", "data4", "write")
+);
+boolean areRulesAdded = e.addNamedPolicies("p", rules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemovePolicy()`
@@ -1594,18 +1793,9 @@ RemovePolicy removes an authorization rule from the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemovePolicy("alice", "data1", "read")
@@ -1613,7 +1803,7 @@ removed := e.RemovePolicy("alice", "data1", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['alice', 'data1', 'read']
@@ -1622,7 +1812,7 @@ const removed = await e.removePolicy(...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removePolicy("alice", "data1", "read");
@@ -1630,7 +1820,15 @@ $removed = $e->removePolicy("alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_policy("alice", "data1", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemovePolicy("alice", "data1", "read");
@@ -1640,10 +1838,18 @@ var removed = await e.RemovePolicyAsync("alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_policy(vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removePolicy("alice", "data1", "read");
 ```
 
 </TabItem>
@@ -1659,46 +1865,24 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"jack", "data4", "read"},
+	[]string {"katy", "data4", "write"},
+	[]string {"leyo", "data4", "read"},
+	[]string {"ham", "data4", "write"},
+}
 
 areRulesRemoved := e.RemovePolicies(rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
-];
-
-let are_rules_removed = e.remove_policies(rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const rules = [
@@ -1713,6 +1897,49 @@ const areRulesRemoved = await e.removePolicies(rules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_removed = e.remove_policies(rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_removed = e.remove_policies(rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] rules = {
+	{"jack", "data4", "read"},
+	{"katy", "data4", "write"},
+	{"leyo", "data4", "read"},
+	{"ham", "data4", "write"},
+};
+boolean areRulesRemoved = e.removePolicies(rules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemoveFilteredPolicy()`
@@ -1722,18 +1949,9 @@ RemovePolicy removes an authorization rule from the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
@@ -1741,7 +1959,7 @@ removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['alice', 'data1', 'read']
@@ -1750,7 +1968,7 @@ const removed = await e.removeFilteredPolicy(0, ...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeFilteredPolicy(0, "alice", "data1", "read");
@@ -1758,7 +1976,15 @@ $removed = $e->removeFilteredPolicy(0, "alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_filtered_policy(0, "alice", "data1", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveFilteredPolicy("alice", "data1", "read");
@@ -1768,10 +1994,18 @@ var removed = await e.RemoveFilteredPolicyAsync("alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_filtered_policy(0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeFilteredPolicy(0, "alice", "data1", "read");
 ```
 
 </TabItem>
@@ -1784,18 +2018,9 @@ RemoveNamedPolicy removes an authorization rule from the current named policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
@@ -1803,7 +2028,7 @@ removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['alice', 'data1', 'read']
@@ -1812,7 +2037,7 @@ const removed = await e.removeNamedPolicy('p', ...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeNamedPolicy("p", "alice", "data1", "read");
@@ -1820,7 +2045,15 @@ $removed = $e->removeNamedPolicy("p", "alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_named_policy("p", "alice", "data1", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveNamedPolicy("p", "alice", "data1", "read");
@@ -1830,10 +2063,18 @@ var removed = await e.RemoveNamedPolicyAsync("p", "alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_named_policy("p", vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeNamedPolicy("p", "alice", "data1", "read");
 ```
 
 </TabItem>
@@ -1849,46 +2090,24 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"jack", "data4", "read"},
+	[]string {"katy", "data4", "write"},
+	[]string {"leyo", "data4", "read"},
+	[]string {"ham", "data4", "write"},
+}
 
 areRulesRemoved := e.RemoveNamedPolicies("p", rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
-];
-
-let areRulesRemoved = e.remove_named_policies("p", rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const rules = [
@@ -1903,6 +2122,49 @@ const areRulesRemoved = await e.removeNamedPolicies('p', rules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_removed = e.remove_named_policies("p", rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let areRulesRemoved = e.remove_named_policies("p", rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> rules = Arrays.asList(
+	Arrays.asList("jack", "data4", "read"),
+	Arrays.asList("katy", "data4", "write"),
+	Arrays.asList("leyo", "data4", "read"),
+	Arrays.asList("ham", "data4", "write")
+);
+boolean areRulesRemoved = e.removeNamedPolicies("p", rules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemoveFilteredNamedPolicy()`
@@ -1911,18 +2173,9 @@ RemoveFilteredNamedPolicy removes an authorization rule from the current named p
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
@@ -1930,7 +2183,7 @@ removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const p = ['alice', 'data1', 'read']
@@ -1939,7 +2192,7 @@ const removed = await e.removeFilteredNamedPolicy('p', 0, ...p)
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
@@ -1947,7 +2200,15 @@ $removed = $e->removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_filtered_named_policy("p", 0, "alice", "data1", "read")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read");
@@ -1957,10 +2218,18 @@ var removed = e.RemoveFilteredNamedPolicyAync("p", 0, "alice", "data1", "read");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_filtered_named_policy("p", 0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
 ```
 
 </TabItem>
@@ -1973,18 +2242,9 @@ HasGroupingPolicy determines whether a role inheritance rule exists.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 has := e.HasGroupingPolicy("alice", "data2_admin")
@@ -1992,7 +2252,7 @@ has := e.HasGroupingPolicy("alice", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const has = await e.hasGroupingPolicy('alice', 'data2_admin')
@@ -2000,7 +2260,7 @@ const has = await e.hasGroupingPolicy('alice', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $has = $e->hasGroupingPolicy("alice", "data2_admin");
@@ -2008,7 +2268,15 @@ $has = $e->hasGroupingPolicy("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has = e.has_grouping_policy("alice", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var has = e.HasGroupingPolicy("alice", "data2_admin");
@@ -2016,10 +2284,18 @@ var has = e.HasGroupingPolicy("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has = e.has_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean has = e.hasGroupingPolicy("alice", "data2_admin");
 ```
 
 </TabItem>
@@ -2032,18 +2308,9 @@ HasNamedGroupingPolicy determines whether a named role inheritance rule exists.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
@@ -2051,7 +2318,7 @@ has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const has = await e.hasNamedGroupingPolicy('g', 'alice', 'data2_admin')
@@ -2059,7 +2326,7 @@ const has = await e.hasNamedGroupingPolicy('g', 'alice', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $has = $e->hasNamedGroupingPolicy("g", "alice", "data2_admin");
@@ -2067,7 +2334,15 @@ $has = $e->hasNamedGroupingPolicy("g", "alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+has = e.has_named_grouping_policy("g", "alice", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var has = e.HasNamedGroupingPolicy("g", "alice", "data2_admin");
@@ -2075,10 +2350,18 @@ var has = e.HasNamedGroupingPolicy("g", "alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let has = e.has_named_grouping_policy("g", vec!["alice".to_owned(), "data2_admin".to_owned()]);
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean has = e.hasNamedGroupingPolicy("g", "alice", "data2_admin");
 ```
 
 </TabItem>
@@ -2093,18 +2376,9 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 added := e.AddGroupingPolicy("group1", "data2_admin")
@@ -2112,7 +2386,7 @@ added := e.AddGroupingPolicy("group1", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const added = await e.addGroupingPolicy('group1', 'data2_admin')
@@ -2120,7 +2394,7 @@ const added = await e.addGroupingPolicy('group1', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $added = $e->addGroupingPolicy("group1", "data2_admin");
@@ -2128,7 +2402,15 @@ $added = $e->addGroupingPolicy("group1", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+added = e.add_grouping_policy("group1", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddGroupingPolicy("group1", "data2_admin");
@@ -2138,10 +2420,18 @@ var added = await e.AddGroupingPolicyAsync("group1", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_grouping_policy(vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addGroupingPolicy("group1", "data2_admin");
 ```
 
 </TabItem>
@@ -2157,46 +2447,22 @@ If all authorization the rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"ham", "data4_admin"},
+	[]string {"jack", "data5_admin"},
+}
 
 areRulesAdded := e.AddGroupingPolicies(rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["katy".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["leyo".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["ham".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-];
-
-let areRulesAdded = e.add_grouping_policies(rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const groupingRules = [
@@ -2205,6 +2471,44 @@ const groupingRules = [
   ];
 
 const areRulesAdded = await e.addGroupingPolicies(groupingRules);
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_added = e.add_grouping_policies(rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["ham".to_owned(), "data4_admin".to_owned()],
+	vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let areRulesAdded = e.add_grouping_policies(rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] groupingRules = {
+	{"ham", "data4_admin"},
+	{"jack", "data5_admin"}
+};
+boolean areRulesAdded = e.addGroupingPolicies(groupingRules);
 ```
 
 </TabItem>
@@ -2219,18 +2523,9 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
@@ -2238,7 +2533,7 @@ added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const added = await e.addNamedGroupingPolicy('g', 'group1', 'data2_admin')
@@ -2246,7 +2541,7 @@ const added = await e.addNamedGroupingPolicy('g', 'group1', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $added = $e->addNamedGroupingPolicy("g", "group1", "data2_admin");
@@ -2254,7 +2549,15 @@ $added = $e->addNamedGroupingPolicy("g", "group1", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+added = e.add_named_grouping_policy("g", "group1", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var added = e.AddNamedGroupingPolicy("g", "group1", "data2_admin");
@@ -2264,10 +2567,18 @@ var added = await e.AddNamedGroupingPolicyAsync("g", "group1", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let added = e.add_named_grouping_policy("g", vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean added = e.addNamedGroupingPolicy("g", "group1", "data2_admin");
 ```
 
 </TabItem>
@@ -2283,46 +2594,22 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"ham", "data4_admin"},
+	[]string {"jack", "data5_admin"},
+}
 
 areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["katy".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["leyo".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["ham".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-];
-
-let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const groupingRules = [
@@ -2335,6 +2622,44 @@ const areRulesAdded = await e.addNamedGroupingPolicies('g', groupingRules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_added = e.add_named_grouping_policies("g", rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["ham".to_owned(), "data4_admin".to_owned()],
+	vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] groupingRules = {
+	{"ham", "data4_admin"},
+	{"jack", "data5_admin"}
+};
+boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemoveGroupingPolicy()`
@@ -2343,18 +2668,9 @@ RemoveGroupingPolicy removes a role inheritance rule from the current policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveGroupingPolicy("alice", "data2_admin")
@@ -2362,7 +2678,7 @@ removed := e.RemoveGroupingPolicy("alice", "data2_admin")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const removed = await e.removeGroupingPolicy('alice', 'data2_admin')
@@ -2370,7 +2686,7 @@ const removed = await e.removeGroupingPolicy('alice', 'data2_admin')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeGroupingPolicy("alice", "data2_admin");
@@ -2378,7 +2694,15 @@ $removed = $e->removeGroupingPolicy("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_grouping_policy("alice", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveGroupingPolicy("alice", "data2_admin");
@@ -2388,10 +2712,18 @@ var removed = await e.RemoveGroupingPolicyAsync("alice", "data2_admin");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeGroupingPolicy("alice", "data2_admin");
 ```
 
 </TabItem>
@@ -2407,23 +2739,14 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
+				[]string {"ham", "data4_admin"},
+				[]string {"jack", "data5_admin"},
 		}
 
 areRulesRemoved := e.RemoveGroupingPolicies(rules)
@@ -2431,22 +2754,7 @@ areRulesRemoved := e.RemoveGroupingPolicies(rules)
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["katy".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["leyo".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["ham".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-];
-
-let are_rules_removed = e.remove_grouping_policies(rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const groupingRules = [
@@ -2459,6 +2767,44 @@ const areRulesRemoved = await e.removeGroupingPolicies(groupingRules);
 
 </TabItem>
 
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["ham".to_owned(), "data4_admin".to_owned()],
+	vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_removed = e.remove_grouping_policies(rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_removed = e.remove_grouping_policies(rules)
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] groupingRules = {
+	{"ham", "data4_admin"},
+	{"jack", "data5_admin"}
+};
+boolean areRulesRemoved = e.removeGroupingPolicies(groupingRules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemoveFilteredGroupingPolicy()`
@@ -2467,18 +2813,9 @@ RemoveFilteredGroupingPolicy removes a role inheritance rule from the current po
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveFilteredGroupingPolicy(0, "alice")
@@ -2486,7 +2823,7 @@ removed := e.RemoveFilteredGroupingPolicy(0, "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const removed = await e.removeFilteredGroupingPolicy(0, 'alice')
@@ -2494,7 +2831,7 @@ const removed = await e.removeFilteredGroupingPolicy(0, 'alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeFilteredGroupingPolicy(0, "alice");
@@ -2502,7 +2839,15 @@ $removed = $e->removeFilteredGroupingPolicy(0, "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_filtered_grouping_policy(0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveFilteredGroupingPolicy(0, "alice");
@@ -2512,10 +2857,18 @@ var removed = await e.RemoveFilteredGroupingPolicyAsync(0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_filtered_grouping_policy(0, vec!["alice".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeFilteredGroupingPolicy(0, "alice");
 ```
 
 </TabItem>
@@ -2528,18 +2881,9 @@ RemoveNamedGroupingPolicy removes a role inheritance rule from the current named
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveNamedGroupingPolicy("g", "alice")
@@ -2547,7 +2891,7 @@ removed := e.RemoveNamedGroupingPolicy("g", "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const removed = await e.removeNamedGroupingPolicy('g', 'alice')
@@ -2555,7 +2899,7 @@ const removed = await e.removeNamedGroupingPolicy('g', 'alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeNamedGroupingPolicy("g", "alice");
@@ -2563,7 +2907,15 @@ $removed = $e->removeNamedGroupingPolicy("g", "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_named_grouping_policy("g", "alice", "data2_admin")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveNamedGroupingPolicy("g", "alice");
@@ -2573,10 +2925,18 @@ var removed = await e.RemoveNamedGroupingPolicyAsync("g", "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_named_grouping_policy("g", vec!["alice".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeNamedGroupingPolicy("g", "alice");
 ```
 
 </TabItem>
@@ -2592,46 +2952,22 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 rules := [][] string {
-				[]string {"jack", "data4", "read"},
-				[]string {"katy", "data4", "write"},
-				[]string {"leyo", "data4", "read"},
-				[]string {"ham", "data4", "write"},
-		}
+	[]string {"ham", "data4_admin"},
+	[]string {"jack", "data5_admin"},
+}
 
 areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
 ```
 
 </TabItem>
 
-<TabItem value="rust">
-
-```rust
-let rules = vec![
-	vec!["jack".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["katy".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["leyo".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-	vec!["ham".to_owned(), "group1".to_owned(), "domain1".to_owned()],
-];
-
-let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
-```
-
-</TabItem>
-
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const groupingRules = [
@@ -2644,6 +2980,43 @@ const areRulesRemoved = await e.removeNamedGroupingPolicies('g', groupingRules);
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+are_rules_removed = e.remove_named_grouping_policies("g", rules)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let rules = vec![
+	vec!["ham".to_owned(), "data4_admin".to_owned()],
+	vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+String[][] groupingRules = {
+	{"ham", "data4_admin"},
+	{"jack", "data5_admin"}
+};
+boolean areRulesRemoved = e.removeNamedGroupingPolicies("g", groupingRules);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `RemoveFilteredNamedGroupingPolicy()`
@@ -2652,18 +3025,9 @@ RemoveFilteredNamedGroupingPolicy removes a role inheritance rule from the curre
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
@@ -2671,7 +3035,7 @@ removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```typescript
 const removed = await e.removeFilteredNamedGroupingPolicy('g', 0, 'alice')
@@ -2679,7 +3043,7 @@ const removed = await e.removeFilteredNamedGroupingPolicy('g', 0, 'alice')
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $removed = $e->removeFilteredNamedGroupingPolicy("g", 0, "alice");
@@ -2687,7 +3051,15 @@ $removed = $e->removeFilteredNamedGroupingPolicy("g", 0, "alice");
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value="Python" label="Python">
+
+```python
+removed = e.remove_filtered_named_grouping_policy("g", 0, "alice")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var removed = e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice");
@@ -2697,10 +3069,18 @@ var removed = await e.RemoveFilteredNamedGroupingPolicyAsync("g", 0, "alice");
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let removed = e.remove_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]).await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean removed = e.removeFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
 </TabItem>
@@ -2713,17 +3093,36 @@ UpdatePolicy update a old policy to new policy.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const update = await e.updatePolicy(["eve", "data3", "read"], ["eve", "data3", "write"]);
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+updated = e.update_policy(["eve", "data3", "read"], ["eve", "data3", "write"])
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean updated = e.updatePolicy(Arrays.asList("eve", "data3", "read"), Arrays.asList("eve", "data3", "write"));
 ```
 
 </TabItem>
@@ -2736,17 +3135,23 @@ UpdatePolicies updates all old policies to new policies.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 updated, err := e.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+old_rules = [["eve", "data3", "read"], ["jack", "data3", "read"]]
+new_rules = [["eve", "data3", "write"], ["jack", "data3", "write"]]
+
+updated = e.update_policies(old_rules, new_rules)
 ```
 
 </TabItem>
@@ -2759,17 +3164,9 @@ AddFunction adds a customized function.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 func CustomFunction(key1 string, key2 string) bool {
@@ -2793,15 +3190,26 @@ e.AddFunction("keyMatchCustom", CustomFunctionWrapper)
 ```
 
 </TabItem>
-<TabItem value="nodejs">
 
-```text
-Method is not implemented
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+function customFunction(key1, key2){
+    if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource") {
+        return true
+    } else if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId") {
+        return true
+    } else {
+        return false
+    }
+}
+
+e.addFunction("keyMatchCustom", customFunction);
 ```
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 func customFunction($key1, $key2) {
@@ -2826,7 +3234,19 @@ $e->addFunction("keyMatchCustom", customFunctionWrapper);
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Python" label="Python">
+
+```python
+def custom_function(key1, key2):
+    return ((key1 == "/alice_data2/myid/using/res_id" and key2 == "/alice_data/:resource") or (key1 == "/alice_data2/myid/using/res_id" and key2 == "/alice_data2/:id/using/:resId"))
+
+
+e.add_function("keyMatchCustom", custom_function)
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
 
 ```rust
 fn custom_function(key1: STring, key2: String) {
@@ -2839,6 +3259,35 @@ e.add_function("keyMatchCustom", custom_function);
 
 </TabItem>
 
+<TabItem value="Java" label="Java">
+
+```java
+public static class CustomFunc extends CustomFunction {
+	@Override
+	public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
+		String key1 = FunctionUtils.getStringValue(arg1, env);
+		String key2 = FunctionUtils.getStringValue(arg2, env);
+		if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data/:resource")) {
+			return AviatorBoolean.valueOf(true);
+		} else if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data2/:id/using/:resId")) {
+			return AviatorBoolean.valueOf(true);
+		} else {
+			return AviatorBoolean.valueOf(false);
+		}
+	}
+
+	@Override
+	public String getName() {
+		return "keyMatchCustom";
+	}
+}
+
+FunctionTest.CustomFunc customFunc = new FunctionTest.CustomFunc();
+e.addFunction(customFunc.getName(), customFunc);
+```
+
+</TabItem>
+
 </Tabs>
 
 ### `LoadFilteredPolicy()`
@@ -2847,17 +3296,45 @@ LoadFilteredPolicy loads filtered policies from file/database.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 err := e.LoadFilteredPolicy()
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const ok = await e.loadFilteredPolicy();
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+class Filter:
+    P = []
+    G = []
+
+adapter = casbin.persist.adapters.FilteredAdapter("rbac_with_domains_policy.csv")
+e = casbin.Enforcer("rbac_with_domains_model.conf", adapter)
+filter = Filter()
+filter.P = ["", "domain1"]
+filter.G = ["", "", "domain1"]
+e.load_filtered_policy(filter)
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+e.loadFilteredPolicy(new String[] { "", "domain1" });
 ```
 
 </TabItem>
@@ -2870,17 +3347,33 @@ LoadIncrementalFilteredPolicy append a filtered policy from file/database.
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 err := e.LoadIncrementalFilteredPolicy()
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const ok = await e.loadIncrementalFilteredPolicy();
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+adapter = casbin.persist.adapters.FilteredAdapter("rbac_with_domains_policy.csv")
+e = casbin.Enforcer("rbac_with_domains_model.conf", adapter)
+filter = Filter()
+filter.P = ["", "domain1"]
+filter.G = ["", "", "domain1"]
+e.load_increment_filtered_policy(filter)
 ```
 
 </TabItem>
@@ -2893,17 +3386,20 @@ UpdateGroupingPolicy updates oldRule to newRulein `g` section
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 succeed, err : = e.UpdateGroupingPolicy([]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```Java
+boolean succeed = e.updateGroupingPolicy(Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
 ```
 
 </TabItem>
@@ -2916,18 +3412,22 @@ UpdateNamedGroupingPolicy updates oldRule named `ptype` to newRulein `g` section
 
 For example:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 succeed, err : = e.UpdateGroupingPolicy("g1",[]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
 ```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```Java
+boolean succeed = e.updateNamedGroupingPolicy("g1", Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
+```
+
 </TabItem>
 
 </Tabs>

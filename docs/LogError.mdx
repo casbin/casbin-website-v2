@@ -16,7 +16,7 @@ Casbin uses the built-in ``log`` to print logs to console by default like:
 
 The logging is not enabled by default. You can toggle it via ``Enforcer.EnableLog()`` or the last parameter of ``NewEnforcer()``.
 
-:::note
+:::note  
 We already support logging the model, enforce request, role, policy in Golang. You can define your own log for logging Casbin.
 If you are using Python, pycasbin leverages the default Python logging mechanism. The pycasbin package makes a call to logging.getLogger() to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is intitilized within the parent application you will not see any log messages from pycasbin. 
 :::
@@ -43,15 +43,9 @@ e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
 
 We provide some loggers to help you log information.
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 Logger | Author | Description
 ----|----|----
@@ -60,7 +54,7 @@ Logger | Author | Description
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 Logger | Author | Description
 ----|----|----

@@ -8,20 +8,9 @@ import TabItem from '@theme/TabItem';
 
 ### Web frameworks
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 Name | Description
 ----|----
@@ -45,7 +34,7 @@ Name | Description
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
 Name | Description
 ----|----
@@ -58,7 +47,7 @@ Name | Description
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 Name | Description
 ----|----
@@ -74,7 +63,7 @@ Name | Description
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 Name | Description
 ----|----
@@ -89,10 +78,12 @@ Name | Description
 [EasySwoole](https://www.easyswoole.com/) | A distributed, persistent memory PHP framework based on the Swoole extension, via plugin: [easyswoole-permission](https://github.com/php-casbin/easyswoole-permission) or [easyswoole-hyperfOrm-permission](https://github.com/ice-leng/easyswoole-hyperfOrm-permission)
 [Slim](https://www.slimframework.com/) | A PHP micro framework that helps you quickly write simple yet powerful web applications and APIs, via plugin: [casbin-with-slim](https://github.com/php-casbin/casbin-with-slim)
 [Phalcon](https://phalcon.io/) | A full-stack PHP framework delivered as a C-extension, via plugin: [phalcon-permission](https://github.com/php-casbin/phalcon-permission)
+[webman](https://github.com/walkor/webman) | High performance HTTP Service Framework for PHP based on Workerman, via plugin: [webman-permission](https://github.com/Tinywan/webman-permission)
+[webman plugin](https://github.com/walkor/webman) | Webman for casbin plugin, Publish and subscribe Watcher based on Redis，via plugin: [casbin](https://github.com/Tinywan/casbin)
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 Name | Description
 ----|----
@@ -103,7 +94,7 @@ Name | Description
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
 Name | Description
 ----|----
@@ -112,7 +103,7 @@ Name | Description
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 Name | Description
 ----|----
@@ -120,26 +111,35 @@ Name | Description
 [Actix web](https://github.com/actix/actix-web) | A small, pragmatic, and extremely fast rust web framework, via plugin: [actix-casbin-auth](https://github.com/casbin-rs/actix-casbin-auth)
 [Rocket](https://github.com/SergioBenitez/Rocket) | a web framework for Rust that makes it simple to write fast, secure web applications without sacrificing flexibility, usability, or type safety, via plugin: [rocket-authz](https://github.com/casbin-rs/rocket-authz) or [rocket-casbin-auth](https://github.com/oiatz/rocket-casbin-auth) or [rocket-casbin-demo](https://github.com/simoin/Rocket_Casbin_Demo)
 
-<!--Lua-->
+</TabItem>
+
+<TabItem value="Lua" label="Lua">
+
 Name | Description
 ----|----
 [OpenResty](https://openresty.org/) | A dynamic web platform based on NGINX and LuaJIT, via plugin: [lua-resty-casbin](https://github.com/casbin-lua/lua-resty-casbin) and [casbin-openresty-example](https://github.com/rushitote/casbin-openresty-example)
 [Kong](https://github.com/Kong/kong) | A cloud-native, platform-agnostic, scalable API Gateway distinguished for its high performance and extensibility via plugins, via plugin: [kong-authz](https://github.com/casbin-lua/kong-authz)
 [APISIX](https://github.com/apache/apisix) | A dynamic, real-time, high-performance API gateway, via plugin: [authz-casbin](https://github.com/apache/apisix/blob/master/docs/en/latest/plugins/authz-casbin.md)
 
-<!--Swift-->
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
 Name | Description
 ----|----
 [Vapor](https://github.com/vapor/vapor) | A server-side Swift web framework, via plugin: [vapor-authz](https://github.com/SwiftCasbin/vapor-authz)
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+
+</Tabs>
 
 
 ### Cloud providers
 
-<!--DOCUSAURUS_CODE_TABS-->
+<Tabs>
 
-<!--Node.js-->
+<TabItem value="Node.js" label="Node.js">
+
 Name | Description
 ----|----
 [Okta](https://okta.com/) | One trusted platform to secure every identity, via plugin: [casbin-spring-boot-demo](https://github.com/myriad-personal/casbin-spring-boot-demo)
