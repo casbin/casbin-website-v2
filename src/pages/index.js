@@ -37,10 +37,10 @@ function HomepageHeader() {
           style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
             to="/docs/get-started"
             >
-            Get Start
+            Get Started
           </Link>
           <div className={styles.buttons}>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem"}} to="https://github.com/casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/go-logo-1.svg" />Get Start</Link>
+            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem"}} to="https://github.com/casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/go-logo-1.svg" />Golang</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem"}} to="https://github.com/casbin/jcasbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/jee-3.svg" />Java</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem"}} to="https://github.com/casbin/casbin-cpp"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/c.svg" />C/C++</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem"}}  to="https://github.com/casbin/node-casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/nodejs-1.svg" />Node.js</Link>
