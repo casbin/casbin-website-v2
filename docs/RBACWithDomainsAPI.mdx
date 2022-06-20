@@ -1,0 +1,335 @@
+---
+id: rbac-with-domains-api
+title: RBAC with Domains API
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code. 
+
+## Reference
+
+global variable `e` is Enforcer instance.
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+e, err := NewEnforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const e = await newEnforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv')
+```
+
+</TabItem>
+
+<TabItem value="PHP" label="PHP">
+
+```php
+$e = new Enforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv');
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+e = casbin.Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+</TabItem>
+
+<TabItem value=".NET" label=".NET">
+
+```csharp
+var e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+</TabItem>
+
+<TabItem value="Rust" label="Rust">
+
+```rust
+let mut e = Enforcer::new("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv").await?;
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetUsersForRoleInDomain()`
+
+GetUsersForRoleInDomain gets the users that has a role inside a domain.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+res := e.GetUsersForRoleInDomain("admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const res = e.getUsersForRoleInDomain("admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+res = e.get_users_for_role_in_domain("admin", "domain1")
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetRolesForUserInDomain()`
+
+GetRolesForUserInDomain gets the roles that a user has inside a domain.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+res := e.GetRolesForUserInDomain("admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Node.js" label="Node.js">
+
+```typescript
+const res = e.getRolesForUserInDomain("alice", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+res = e.get_roles_for_user_in_domain("alice", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<String> res = e.getRolesForUserInDomain("admin", "domain1");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetPermissionsForUserInDomain()`
+
+GetPermissionsForUserInDomain gets permissions for a user or role inside a domain.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+res := e.GetPermissionsForUserInDomain("alice", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `AddRoleForUserInDomain()`
+
+AddRoleForUserInDomain adds a role for a user inside a domain.
+Returns false if the user already has the role (aka not affected).
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+ok, err := e.AddRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Python" label="Python">
+
+```python
+ok = e.add_role_for_user_in_domain("alice", "admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `DeleteRoleForUserInDomain()`
+
+DeleteRoleForUserInDomain deletes a role for a user inside a domain.
+Returns false if the user does not have the role (aka not affected).
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+ok, err := e.DeleteRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+</TabItem>
+
+<TabItem value="Java" label="Java">
+
+```java
+boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+</TabItem>
+
+</Tabs>
+
+### `DeleteRolesForUserInDomain()`
+
+DeleteRolesForUserInDomain deletes all roles for a user inside a domain.
+Returns false if the user does not have any roles (aka not affected).
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetAllUsersByDomain()`
+
+GetAllUsersByDomain would get all users associated with the domain.
+Returns empty string array if has no domain defined in model.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+res := e.GetAllUsersByDomain("domain1")
+```
+
+</TabItem>
+
+</Tabs>
+
+### `DeleteAllUsersByDomain()`
+
+DeleteAllUsersByDomain would delete all users associated with the domain.
+Returns false if has no domain defined in model.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+ok, err := e.DeleteAllUsersByDomain("domain1")
+```
+
+</TabItem>
+
+</Tabs>
+
+### `DeleteDomains()`
+
+DeleteDomains would delete all associated users and roles.
+It would delete all domains if parameter is not provided.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+ok, err := e.DeleteDomains("domain1", "domain2")
+```
+
+</TabItem>
+
+</Tabs>
+
+### `GetAllDomains()`
+
+GetAllDomains would get all domains.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
+
+```go
+res, _ := e.GetAllDomains()
+```
+
+</TabItem>
+
+</Tabs>
+
+:::note
+If you are handling a domain like ```name::domain```, it may lead to unexpected behavior. In Casbin, ```::``` is a reversed keyword, just like ```for```, ```if``` in a programming language, we should never put ```::``` in a domain.
+:::

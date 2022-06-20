@@ -6,46 +6,34 @@ title: Get Started
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 ## Installation
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'Delphi', value: 'delphi'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-    { label: 'Lua', value: 'lua'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
-```go
+```
 go get github.com/casbin/casbin/v2
 ```
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
-```bash
 For Maven:
+
+```
+<!-- https://mvnrepository.com/artifact/org.casbin/jcasbin -->
 <dependency>
-  <groupId>org.casbin</groupId>
-  <artifactId>jcasbin</artifactId>
-  <version>1.6.0</version>
+    <groupId>org.casbin</groupId>
+    <artifactId>jcasbin</artifactId>
+    <version>1.x.y</version>
 </dependency>
 ```
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```bash
 # NPM
@@ -57,35 +45,35 @@ yarn add casbin
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 Require this package in the `composer.json` of your project. This will download the package:
 
-```bash
+```
 composer require casbin/casbin
 ```
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
-```bash
+```
 pip install casbin
 ```
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
-```bash
+```
 dotnet add package Casbin.NET
 ```
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
-```bash
+```
 cargo install cargo-edit
 cargo add casbin
 
@@ -93,28 +81,33 @@ cargo add casbin
 cargo add async-std
 
 // If you use tokio as async executor
-cargo add tokio //Make sure you activate its `macros` feature
+cargo add tokio // make sure you activate its `macros` feature
 ```
 
 </TabItem>
 
-<TabItem value="delphi">
+<TabItem value="Delphi" label="Delphi">
 
 Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components which means that you can use the units independently of packages. Just import the units in your project (assuming you do not mind the number of them).
 
 </TabItem>
 
-<TabItem value="lua">
+<TabItem value="Lua" label="Lua">
 
-```bash
-luarocks install casbin
 ```
-If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks -- you may want to run as a privileged user or use your local tree with --local. you can add --local behind your command like this to fix:
+luarocks install casbin  
+```
 
-```bash
-luarocks install casbin --local
+If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks 
+-- you may want to run as a privileged user or use your local tree with --local.
+you can add --local behind your command like this to fix:
+
 ```
+luarocks install casbin  --local
+```
+
 </TabItem>
+
 </Tabs>
 
 ## New a Casbin enforcer
@@ -129,20 +122,9 @@ Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapte
 
 - Use the Model file and default [FileAdapter](adapters#file-adapter-built-in): 
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'Delphi', value: 'pascal'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 import "github.com/casbin/casbin/v2"
@@ -152,7 +134,7 @@ e, err := casbin.NewEnforcer("path/to/model.conf", "path/to/policy.csv")
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
 ```java
 import org.casbin.jcasbin.main.Enforcer;
@@ -162,9 +144,9 @@ Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
-```typescript
+```js
 import { newEnforcer } from 'casbin';
 
 const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
@@ -172,7 +154,7 @@ const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 require_once './vendor/autoload.php';
@@ -184,7 +166,7 @@ $e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
 import casbin
@@ -194,18 +176,19 @@ e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 using NetCasbin; 
 
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
+
 </TabItem>
 
-<TabItem value="pascal">
+<TabItem value="Delphi" label="Delphi">
 
-```pascal
+```delphi
 var
   casbin: ICasbin;
 begin
@@ -216,20 +199,46 @@ end
 
 </TabItem>
 
-</Tabs>
+<TabItem value="Rust" label="Rust">
 
+```rust
+use casbin::prelude::*;
+
+// If you use async_td as async executor
+#[cfg(feature = "runtime-async-std")]
+#[async_std::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model.conf", "path/to/policy.csv").await?;
+    Ok(())
+}
+
+// If you use tokio as async executor
+#[cfg(feature = "runtime-tokio")]
+#[tokio::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model.conf", "path/to/policy.csv").await?;
+    Ok(())
+}
+```
+
+</TabItem>
+
+<TabItem value="Lua" label="Lua">
+
+```lua
+local Enforcer = require("casbin")
+local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin Enforcer
+```
+
+</TabItem>
+
+</Tabs>
 
 - Use the Model text with other Adapter: 
 
+<Tabs>
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-  ]
-}>
-
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 import (
@@ -272,27 +281,47 @@ if err != nil {
 
 </TabItem>
 
+<TabItem value="Python" label="Python">
+
+```python
+import casbin
+import casbin_sqlalchemy_adapter
+
+
+# Use SQLAlchemy Casbin adapter with SQLLite DB
+adapter = casbin_sqlalchemy_adapter.Adapter('sqlite:///test.db')
+
+# Create a config model policy
+with open("rbac_example_model.conf", "w") as f:
+    f.write("""
+    [request_definition]
+    r = sub, obj, act
+
+    [policy_definition]
+    p = sub, obj, act
+
+    [policy_effect]
+    e = some(where (p.eft == allow))
+
+    [matchers]
+    m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+    """)
+
+# Create enforcer from adapter and config policy
+e = casbin.Enforcer('rbac_example_model.conf', adapter)
+```
+
+</TabItem>
+
 </Tabs>
 
 ### Check permissions
 
 Add an enforcement hook into your code right before the access happens:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'Delphi', value: 'pascal'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
 sub := "alice" // the user that wants to access a resource.
@@ -319,7 +348,7 @@ results, err := e.BatchEnforce([][]interface{}{{"alice", "data1", "read"}, {"bob
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
 ```java
 String sub = "alice"; // the user that wants to access a resource.
@@ -335,7 +364,7 @@ if (e.enforce(sub, obj, act) == true) {
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```js
 const sub = 'alice'; // the user that wants to access a resource.
@@ -351,12 +380,13 @@ if ((await e.enforce(sub, obj, act)) === true) {
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $sub = "alice"; // the user that wants to access a resource.
 $obj = "data1"; // the resource that is going to be accessed.
 $act = "read"; // the operation that the user performs on the resource.
+
 if ($e->enforce($sub, $obj, $act) === true) {
     // permit alice to read data1
 } else {
@@ -366,7 +396,7 @@ if ($e->enforce($sub, $obj, $act) === true) {
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
 sub = "alice"  # the user that wants to access a resource.
@@ -383,7 +413,7 @@ else:
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var sub = "alice";  # the user that wants to access a resource.
@@ -402,9 +432,9 @@ else
 
 </TabItem>
 
-<TabItem value="pascal">
+<TabItem value="Delphi" label="Delphi">
 
-```pascal
+```delphi
 if casbin.enforce(['alice,data1,read']) then
   // Alice is super happy as she can read data1
 else
@@ -413,7 +443,7 @@ else
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
   let sub = "alice"; // the user that wants to access a resource.
@@ -425,16 +455,17 @@ else
   } else {
       // error occurs
   }
-
 ```
-<!--Lua-->
+
+</TabItem>
+
+<TabItem value="Lua" label="Lua">
 
 ```lua
-if e:enforce("alice", "data1", "read")
-then
-   --permit alice to read data1
+if e:enforce("alice", "data1", "read") then
+   -- permit alice to read data1
 else
-   --error occurs
+   -- deny the request, show an error
 end
 
 ```
@@ -445,36 +476,25 @@ end
 
 Casbin also provides API for permission management at run-time. For example, You can get all the roles assigned to a user as below:
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: '.NET', value: 'c#'},
-    { label: 'Delphi', value: 'pascal'},
-    { label: 'PHP', value: 'php'},
-    { label: 'Rust', value: 'rust'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 ```go
-roles := e.GetRolesForUser("alice")
+roles, err := e.GetRolesForUser("alice")
 ```
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
 ```java
 Roles roles = e.getRolesForUser("alice");
 ```
+
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 ```js
 const roles = await e.getRolesForUser('alice');
@@ -482,7 +502,7 @@ const roles = await e.getRolesForUser('alice');
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 ```php
 $roles = $e->getRolesForUser("alice");
@@ -490,7 +510,7 @@ $roles = $e->getRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 ```python
 roles = e.get_roles_for_user("alice")
@@ -498,7 +518,7 @@ roles = e.get_roles_for_user("alice")
 
 </TabItem>
 
-<TabItem value="c#">
+<TabItem value=".NET" label=".NET">
 
 ```csharp
 var roles = e.GetRolesForUser("alice");
@@ -506,18 +526,26 @@ var roles = e.GetRolesForUser("alice");
 
 </TabItem>
 
-<TabItem value="pascal">
+<TabItem value="Delphi" label="Delphi">
 
-```pascal
+```delphi
 roles = e.rolesForEntity("alice")
 ```
 
 </TabItem>
 
-<TabItem value="rust">
+<TabItem value="Rust" label="Rust">
 
 ```rust
 let roles = e.get_roles_for_user("alice");
+```
+
+</TabItem>
+
+<TabItem value="Lua" label="Lua">
+
+```lua
+local roles = e:GetRolesForUser("alice")
 ```
 
 </TabItem>

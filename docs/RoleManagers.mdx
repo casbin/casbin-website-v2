@@ -3,23 +3,14 @@ id: role-managers
 title: Role Managers
 ---
 
-The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as below. Any 3rd-party contribution on a new role manager is welcomed, please inform us and I will put it in this list:)
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'Java', value: 'java'},
-    { label: 'Node.js', value: 'nodejs'},
-    { label: 'Python', value: 'python'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as below. Any 3rd-party contribution on a new role manager is welcomed, please inform us and I will put it in this list:)
 
-<TabItem value="go">
+<Tabs>
+
+<TabItem value="Go" label="Go" default>
 
 Role manager | Author | Description
 ----|----|----
@@ -32,7 +23,7 @@ For developers: all role managers must implement the [RoleManager](https://githu
 
 </TabItem>
 
-<TabItem value="java">
+<TabItem value="Java" label="Java">
 
 Role manager | Author | Description
 ----|----|----
@@ -42,7 +33,7 @@ For developers: all role managers must implement the [RoleManager](https://githu
 
 </TabItem>
 
-<TabItem value="nodejs">
+<TabItem value="Node.js" label="Node.js">
 
 Role manager | Author | Description
 ----|----|----
@@ -53,7 +44,7 @@ For developers: all role managers must implement the [RoleManager](https://githu
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 Role manager | Author | Description
 ----|----|----
@@ -63,7 +54,7 @@ For developers: all role managers must implement the [RoleManager](https://githu
 
 </TabItem>
 
-<TabItem value="python">
+<TabItem value="Python" label="Python">
 
 Role manager | Author | Description
 ----|----|----

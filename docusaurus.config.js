@@ -46,7 +46,7 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://casbin.org/casbin-editor',
+          href: '/editor',
           label: 'Editor',
           position: 'left',
         },
@@ -58,7 +58,7 @@ module.exports = {
         },
         {
           label: 'Casdoor',
-          href: 'https://door.casbin.com/login',
+          href: 'https://casdoor.org/',
           position: 'left'
         },
         {
@@ -141,7 +141,7 @@ module.exports = {
       logo: {
         alt: 'Casbin Logo',
         src: 'img/casbin_min.svg',
-        href: 'https://casbin.org/',
+        href: '/',
       },
       copyright: `Copyright © ${new Date().getFullYear()} Casbin contributors.`,
     },
@@ -170,13 +170,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/casbin/casbin-website/edit/master/docs/',
+            'https://github.com/casbin/casbin-website-v2/edit/master/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/casbin/casbin-website-v2/edit/master/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

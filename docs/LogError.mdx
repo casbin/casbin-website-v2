@@ -43,15 +43,9 @@ e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
 
 We provide some loggers to help you log information.
 
-<Tabs
-  defaultValue="go"
-  values={[
-    { label: 'Go', value: 'go'},
-    { label: 'PHP', value: 'php'},
-  ]
-}>
+<Tabs>
 
-<TabItem value="go">
+<TabItem value="Go" label="Go" default>
 
 Logger | Author | Description
 ----|----|----
@@ -60,7 +54,7 @@ Logger | Author | Description
 
 </TabItem>
 
-<TabItem value="php">
+<TabItem value="PHP" label="PHP">
 
 Logger | Author | Description
 ----|----|----
