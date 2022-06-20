@@ -71,7 +71,7 @@ function PolicyPersistence() {
         <div className="row">
           <div className="col">
             <h3> Policy Persistence</h3>
-            In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: <Link to="https://casbin.io/docs/adapters">https://casbin.io/docs/adapters</Link>
+            In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: <Link to="/docs/adapters">adapters</Link>
           </div>
           <div>
             <img src="/img/store.png" width="600" height= "660" frameborder="0" scrolling="no" />
@@ -93,10 +93,6 @@ function PolicyEnforcement() {
           <div className="col">
             <h3>Policy enforcement at scale</h3>
           Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.
-
-  To use filtered policies with a supported adapter, simply call the <code>LoadFilteredPolicy</code> method. The valid format for the filter parameter depends on the adapter used. To prevent accidental data loss, the <code>SavePolicy</code> method is disabled when a filtered policy is loaded.
-
-  For example, the following code snippet uses the built-in filtered file adapter and the RBAC model with domains. In this case, the filter limits the policy to a single domain. Any policy lines for domains other than <code>"domain1"</code> are omitted from the loaded policy:
           </div>
         </div>
       </div>
@@ -111,7 +107,7 @@ function RoleManager() {
         <div className="row">
           <div className="col">
             <h3>Role manager</h3>
-          The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: <Link to="/docs/get-started">https://casbin.io/docs/role-managers</Link>
+          The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: <Link to="/docs/role-managers">role-managers</Link>
           </div>
           <div>
             <img src="/img/role.png" width="600" height= "660"></img>
