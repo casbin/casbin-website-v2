@@ -1,6 +1,7 @@
 {
   "name": "casbin-website-v2",
-  "version": "0.0.1",
+  "license": "Apache",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
