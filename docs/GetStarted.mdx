@@ -71,6 +71,21 @@ dotnet add package Casbin.NET
 
 </TabItem>
 
+<TabItem value="C++" label="C++">
+
+```bash
+# download source
+git clone https://github.com/casbin/casbin-cpp.git
+
+# generate project files
+cd casbin-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
+
+# build and install casbin
+cmake --build . --config Release --target casbin install -j 10
+```
+
+</TabItem>
+
 <TabItem value="Rust" label="Rust">
 
 ```
@@ -161,7 +176,7 @@ require_once './vendor/autoload.php';
 
 use Casbin\Enforcer;
 
-$e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
 </TabItem>
@@ -182,6 +197,22 @@ e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
 using NetCasbin; 
 
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+</TabItem>
+
+<TabItem value="C++" label="C++">
+
+```cpp
+#include <iostream>
+#include <casbin/casbin.h>
+
+int main() {
+    // Create an Enforcer
+    casbin::Enforcer e("path/to/model.conf", "path/to/policy.csv");
+
+    // your code ..
+}
 ```
 
 </TabItem>
@@ -428,6 +459,26 @@ else
 {
     // deny the request, show an error
 }
+```
+
+</TabItem>
+
+<TabItem value="C++" label="C++">
+
+```cpp
+    casbin::Enforcer e("../assets/model.conf", "../assets/policy.csv");
+
+    if (e.Enforce({"alice", "/alice_data/hello", "GET"})) {
+        std::cout << "Enforce OK" << std::endl;
+    } else {
+        std::cout << "Enforce NOT Good" << std::endl;
+    }
+
+    if (e.Enforce({"alice", "/alice_data/hello", "POST"})) {
+        std::cout << "Enforce OK" << std::endl;
+    } else {
+        std::cout << "Enforce NOT Good" << std::endl;
+    }
 ```
 
 </TabItem>
