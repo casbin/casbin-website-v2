@@ -5,14 +5,14 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from '../components/HomepageFeatures';
-
-import users from '/data/users.json';
+import { UserList } from "@site/src/components/UserList"
+import Translate, { translate } from '@docusaurus/Translate';
 
 class Button extends React.Component {
   render() {
     return (
       <div>
-        <a style={{marginRight: '8px', marginBottom: '8px',}} className='button' href={this.props.href} target={this.props.target} icon={this.props.icon} target="_blank">
+        <a style={{marginRight: '8px', marginBottom: '8px',}} className='button' href={this.props.href} target={this.props.target} icon={this.props.icon}>
           <embed className="icon" src = {this.props.icon} height ={"20px"} width={"20px"} align={"left"}/>
           {this.props.children}
         </a>
@@ -31,13 +31,13 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
         <div>
           <Link className="button button--secondary button--lg"
           style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
             to="/docs/get-started"
-            >
-            Get Started
+          >
+            <Translate>Get Started</Translate>
           </Link>
           <div className={styles.buttons}>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/go-logo-1.svg" />Golang</Link>
@@ -70,8 +70,18 @@ function PolicyPersistence() {
       <div className="container text--center">
         <div className="row">
           <div className="col">
-            <h3> Policy Persistence</h3>
-            In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: <Link to="/docs/adapters">adapters</Link>
+            <h3> <Translate>Policy Persistence</Translate></h3>
+            <Translate
+              values={{
+                adaptersLink: (
+                  <Link to="/docs/adapters">
+                    <Translate>adapters</Translate>
+                  </Link>
+                ),
+              }}
+            >
+              {'In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don\'t put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}.'}
+            </Translate>
           </div>
           <div>
             <img src="/img/store.png" width="600" height= "660" />
@@ -91,8 +101,8 @@ function PolicyEnforcement() {
             <img src="/img/scale.png" width="600" height= "660"></img>
           </div>
           <div className="col">
-            <h3>Policy enforcement at scale</h3>
-          Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.
+            <h3><Translate>Policy enforcement at scale</Translate></h3>
+            <Translate>Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.</Translate>
           </div>
         </div>
       </div>
@@ -106,8 +116,18 @@ function RoleManager() {
       <div className="container text--center">
         <div className="row">
           <div className="col">
-            <h3>Role manager</h3>
-          The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: <Link to="/docs/role-managers">role-managers</Link>
+            <h3><Translate>Role manager</Translate></h3>
+            <Translate
+              values={{
+                rolemanagersLink: (
+                  <Link to="/docs/role-managers">
+                    <Translate>role-managers</Translate>
+                  </Link>
+                ),
+              }}
+            >
+              {'The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don\'t put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: {rolemanagersLink} .'}
+            </Translate>
           </div>
           <div>
             <img src="/img/role.png" width="600" height= "660"></img>
@@ -119,38 +139,27 @@ function RoleManager() {
 }
 
 function Showcase () {
-  const showcases = users.map((user) => (
-    <a href={user.infolink} key={user.infolink} target="_blank">
-      <img className="user-logo" src={"/img/" + user.image} alt={user.caption} />
-    </a>
-  ));
-
-
   return (
     <div className="hero text--center showcase">
       <div className="container">
         <div className="product-showcase-section">
-          <h1>Who is using Casbin?</h1>
+          <h1><Translate>Who's using Casbin?</Translate></h1>
         </div>
-        <p>
-        Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups.
-        <br />
-        If you're curious to see what can be accomplished Casbin, check out these apps!
-        </p>
-        
-        <div className="user-logos">
-          <div className="logo-row">
-            <span className="user-logos-container">
-              <section>
-                <span>{showcases}</span>
-                <span>{showcases}</span>
-              </section>
-            </span>
-          </div>
-        </div>
-        <br />
-        <br />
-        <Link className="button button--primary button--lg" href="https://github.com/casbin/casbin-website/edit/master/website/data/users.js">Add yours here!</Link>
+        <p style={{
+          width: "50vw",
+          margin: "auto",
+        }}>
+          <Translate values={{
+            UsersPage:(
+              <Link to="/users">
+                <Translate>check out these apps</Translate>
+              </Link>
+            ),
+          }}>
+          {'Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups\.If you\'re curious to see what can be accomplished Casbin, {UsersPage}!'}
+          </Translate>
+          </p>
+        <UserList />
       </div>
     </div>
   );
@@ -160,8 +169,8 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir`}
-      description="Description will go into a meta tag in <head />">
+      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
+      description="An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

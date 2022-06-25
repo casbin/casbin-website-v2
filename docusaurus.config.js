@@ -67,12 +67,21 @@ module.exports = {
           position: 'left'
         },
         {
-          label: 'OA',
-          href: 'https://oa.casbin.com/',
-          position: 'left'
+          type: 'localeDropdown',
+          position: 'right',
+          dropdownItemsAfter: [
+            {
+              type: 'html',
+              value: '<hr style="margin: 0.3rem 0;">',
+            },
+            {
+              href: 'https://crowdin.com/project/casbin-website',
+              label: 'Help Us Translate',
+            },
+          ],
         },
         {
-          href: 'https://github.com/casbin/casdoor',
+          href: 'https://github.com/casbin/casbin',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -143,7 +152,7 @@ module.exports = {
         src: 'img/casbin_min.svg',
         href: '/',
       },
-      copyright: `Copyright © ${new Date().getFullYear()} Casbin contributors.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Casbin Organization`,
     },
     prism: {
       theme: lightCodeTheme,
@@ -152,11 +161,16 @@ module.exports = {
     announcementBar: {
       id: 'announcement', // ID of the announcement bar
       content:
-        '<a href="https://github.com/casbin/casdoor">💖 Also need authentication/SSO? Find more at: Casdoor🚪</a>',
+        '<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>',
       backgroundColor: '#fafbfc',
       textColor: '#091E42', // 默认为 `#000`。
       isCloseable: false, // 默认为 `true`。
     },
+    docs:{
+      sidebar: {
+        hideable: true,
+      },
+    }
   },
   scripts: [
     '/js/gitter.js',
@@ -171,6 +185,7 @@ module.exports = {
           // Please change this to your repo.
           editUrl:
             'https://github.com/casbin/casbin-website-v2/edit/master/',
+          sidebarCollapsed: false,
         },
         blog: {
           showReadingTime: true,
@@ -184,4 +199,8 @@ module.exports = {
       },
     ],
   ],
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh', 'ko', 'ru', 'fr', 'de', 'ja'],
+  },
 };

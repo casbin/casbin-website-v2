@@ -43,26 +43,29 @@ e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
 
 We provide some loggers to help you log information.
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 Logger | Author | Description
 ----|----|----
 [Defatule logger (built-in)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | The default logger using golang log.
 [Zap logger](https://github.com/casbin/zap-logger) | Casbin | Using [zap](https://github.com/uber-go/zap), provide json encoded log and you could customize more with your own zap-logger.
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 Logger | Author | Description
 ----|----|----
 [psr3-bridge logger](https://github.com/php-casbin/psr3-bridge) | Casbin | Provides a [PSR-3](https://www.php-fig.org/psr/psr-3/) compliant bridge.
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 #### How to write a logger
 

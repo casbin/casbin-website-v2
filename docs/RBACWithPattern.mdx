@@ -55,47 +55,53 @@ g, /book/:id, book_group
 
 Casbin will automatically match ``/book/1`` and ``/book/2`` into pattern ``/book/:id`` for you. You only need to register the function with the enforcer like:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 When Using a pattern matching function in domains/tenants, You need to register the function to enforcer and model. 
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 If you don't understand what `g(r.sub, p.sub, r.dom)` means, please read [rbac-with-domains](/docs/rbac-with-domains). In short, `g(r.sub, p.sub, r.dom)` will check whether the user `r.sub` has a role `p.sub` in the domain `r.dom`. So this is how the matcher work. You can see the full example [here](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307). 
 

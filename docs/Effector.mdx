@@ -14,17 +14,19 @@ MergeEffects merges all matching results collected by the enforcer into a single
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 In this example:  
 
@@ -41,18 +43,20 @@ The code above illustrates how can we pass the parameters to the `MergeEffects` 
 
 To deploy an Effector, we can do this:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 var e Effector
 Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 The basic idea of the ```MergeEffects``` indicates that if the ```expr``` can match the results which means that the ```p_eft``` is ```allow```, then we can merge all effects at last. And if there are no deny rules are matched, then we allow.
 

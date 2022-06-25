@@ -1,34 +1,41 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './HomepageFeatures.module.css';
+import Translate, { translate } from '@docusaurus/Translate';
 
 const FeatureList = [
   {
-    title: 'Hybrid access control models',
+    title: <Translate>Hybrid access control models</Translate>,
     Svg: require('/img/model.svg').default,
     description: (
-      <>
+      <Translate>
         In Casbin, an access control model is abstracted into a CONF file based on the PERM metamodel (Policy, Effect, Request, Matchers). So switching or upgrading the authorization mechanism for a project is just as simple as modifying a configuration.
-      </>
+      </Translate>
     ),
   },
   {
-    title: 'Flexible policy storage',
+    title: <Translate>Flexible policy storage</Translate>,
     Svg: require('/img/storage.svg').default,
     description: (
-      <>
-        Besides memory and file, Casbin policy can be stored into lots of places. Currently, dozens of databases are supported, from MySQL, Postgres, Oracle to MongoDB, Redis, Cassandra, AWS S3. Check the full supported list at: <a href="/docs/adapters">adapters</a>
-      </>
+      <Translate values={{
+        adaptersLink:(
+          <a href="/docs/adapters">
+            <Translate>adapters</Translate>
+          </a>
+        )
+      }}>
+        {'Besides memory and file, Casbin policy can be stored into lots of places. Currently, dozens of databases are supported, from MySQL, Postgres, Oracle to MongoDB, Redis, Cassandra, AWS S3. Check the full supported list at: {adaptersLink}.'}
+      </Translate>
     ),
   },
   {
-    title: 'Cross-languages & cross-platforms',
+    title: <Translate>Cross-languages & cross-platforms</Translate>,
     Svg: require('/img/language.svg').default,
     description: (
-      <>
+      <Translate>
         Extend or customize your website layout by reusing React. Docusaurus can
         be extended while reusing the same header and footer.Casbin is implemented in Golang, Java, PHP and Node.js. All implementations share the same API and behaviors. You can learn Casbin once and use it everywhere.
-      </>
+      </Translate>
     ),
   },
 ];
