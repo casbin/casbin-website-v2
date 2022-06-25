@@ -19,30 +19,34 @@ BatchEnforce enforces each request and returns result in a bool array
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 boolArray, err := e.BatchEnforce(requests)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const boolArray = await e.batchEnforce(requests);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<Boolean> boolArray = e.batchEnforce(requests);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```

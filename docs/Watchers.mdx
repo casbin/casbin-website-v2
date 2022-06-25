@@ -10,9 +10,10 @@ We support to use distributed messaging systems like [etcd](https://github.com/c
 
 Similar to policy storage adapters, we don't put watcher code in the main library. Any support for a new messaging system should be implemented as a watcher. A complete list of Casbin watchers is provided as below. Any 3rd-party contribution on a new watcher is welcomed, please inform us and I will put it in this list:)
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
@@ -26,9 +27,10 @@ Watcher | Type | Author | Description
 [NATS, RabbitMQ, GCP Pub/Sub, AWS SNS & SQS, Kafka, InMemory](https://github.com/rusenask/casbin-go-cloud-watcher) | Messaging System | [@rusenask](https://github.com/rusenask/) | Watcher based on [Go Cloud Dev Kit](https://gocloud.dev/) that works with leading cloud providers and self-hosted infrastructure |
 [RocketMQ Watcher](https://github.com/fmyxyz/casbin-rocketmq-watcher) | Messaging system | [@fmyxyz](https://github.com/fmyxyz) | Watcher for [Apache RocketMQ](https://rocketmq.apache.org/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
@@ -36,9 +38,10 @@ Watcher | Type | Author | Description
 [Redis Watcher](https://github.com/jcasbin/redis-watcher) | KV store | Casbin | Watcher for [Redis](http://redis.io/)
 [Kafka Watcher](https://github.com/jcasbin/kafka-watcher) | Messaging system | Casbin | Watcher for [Apache Kafka](https://kafka.apache.org/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
@@ -47,43 +50,48 @@ Watcher | Type | Author | Description
 [Pub/Sub Watcher](https://github.com/node-casbin/pubsub-watcher) | Messaging system | Casbin | Watcher for [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)
 [Postgres Watcher](https://github.com/mcollina/casbin-pg-watcher) | Database | [Matteo Collina](https://github.com/mcollina/) | Watcher for [PostgreSQL](https://www.postgresql.org/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
 [Redis Watcher](https://github.com/ScienceLogic/flask-casbin-redis-watcher) | KV store | [ScienceLogic](https://github.com/ScienceLogic) | Watcher for [Redis](http://redis.io/)
 [PostgreSQL Watcher](https://github.com/pycasbin/postgresql-watcher) | Database | Casbin| Watcher for [PostgreSQL](https://www.postgresql.org/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
 [Redis Watcher](https://github.com/Sbou/Casbin.NET-Redis-Watcher) | KV store | [@Sbou](https://github.com/Sbou) | Watcher for [Redis](http://redis.io/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Ruby" label="Ruby">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
 [Redis Watcher](https://github.com/CasbinRuby/casbin-ruby-redis-watcher) | KV store | [CasbinRuby](https://github.com/CasbinRuby) | Watcher for [Redis](http://redis.io/)
 [RabbitMQ Watcher](https://github.com/CasbinRuby/casbin-ruby-rabbitmq-watcher) | Messaging system | [CasbinRuby](https://github.com/CasbinRuby) | Watcher for [RabbitMQ](https://www.rabbitmq.com/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 Watcher | Type | Author | Description
 ----|------|----|----
 [Redis Watcher](https://github.com/Tinywan/casbin) | KV store | [Tinywan](https://github.com/Tinywan) | Watcher for [Redis](http://redis.io/)
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ## WatcherEx
 

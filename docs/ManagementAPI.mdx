@@ -36,65 +36,73 @@ e.GetFilteredPolicy(0, "alice") // will return: [[alice book read] [alice pen ge
 
 global variable `e` is Enforcer instance.
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let mut e = Enforce::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `Enforce()`
 
@@ -102,49 +110,55 @@ Enforce decides whether a "subject" can access a "object" with the operation "ac
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 ok, err := e.Enforce(request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const ok = await e.enforce(request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $ok = $e->enforcer($request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 ok = e.enforcer(request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean ok = e.enforce(request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `EnforceWithMatcher()`
 
@@ -152,41 +166,46 @@ EnforceWithMatcher use a custom matcher to decides whether a "subject" can acces
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 ok, err := e.EnforceWithMatcher(matcher, request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $ok = $e->enforceWithMatcher($matcher, $request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 ok = e.enforce_with_matcher(matcher, request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean ok = e.enforceWithMatcher(matcher, request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `EnforceEx()`
 
@@ -194,41 +213,46 @@ EnforceEx explain enforcement by informing matched rules.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 ok, reason, err := e.EnforceEx(request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const ok = await e.enforceEx(request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 list($ok, $reason) = $e->enforceEx($request);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 ok, reason = e.enforce_ex(request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `EnforceExWithMatcher()`
 
@@ -236,17 +260,19 @@ EnforceExWithMatcher use a custom matcher and explain enforcement by informing m
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 ok, reason, err := e.EnforceExWithMatcher(matcher, request)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `BatchEnforce()`
 
@@ -254,33 +280,37 @@ BatchEnforce enforces each request and returns result in a bool array
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 boolArray, err := e.BatchEnforce(requests)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const boolArray = await e.batchEnforce(requests);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<Boolean> boolArray = e.batchEnforce(requests);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllSubjects()`
 
@@ -288,65 +318,73 @@ GetAllSubjects gets the list of subjects that show up in the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allSubjects := e.GetAllSubjects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allSubjects = await e.getAllSubjects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allSubjects = $e->getAllSubjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_subjects = e.get_all_subjects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allSubjects = e.GetAllSubjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_subjects = e.get_all_subjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allSubjects = e.getAllSubjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllNamedSubjects()`
 
@@ -354,65 +392,73 @@ GetAllNamedSubjects gets the list of subjects that show up in the current named 
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allNamedSubjects := e.GetAllNamedSubjects("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allNamedSubjects = await e.getAllNamedSubjects('p')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allNamedSubjects = $e->getAllNamedSubjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_named_subjects = e.get_all_named_subjects("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allNamedSubjects = e.GetAllNamedSubjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_named_subjects = e.get_all_named_subjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allNamedSubjects = e.getAllNamedSubjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllObjects()`
 
@@ -420,65 +466,73 @@ GetAllObjects gets the list of objects that show up in the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allObjects := e.GetAllObjects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allObjects = await e.getAllObjects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allObjects = $e->getAllObjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_objects = e.get_all_objects()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allObjects = e.GetAllObjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_objects = e.get_all_objects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allObjects = e.getAllObjects();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllNamedObjects()`
 
@@ -486,65 +540,73 @@ GetAllNamedObjects gets the list of objects that show up in the current named po
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allNamedObjects := e.GetAllNamedObjects("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allNamedObjects = await e.getAllNamedObjects('p')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allNamedObjects = $e->getAllNamedObjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_named_objects = e.get_all_named_objects("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allNamedObjects = e.GetAllNamedObjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_named_objects = e.get_all_named_objects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allNamedObjects = e.getAllNamedObjects("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllActions()`
 
@@ -552,65 +614,73 @@ GetAllActions gets the list of actions that show up in the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allActions := e.GetAllActions()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allActions = await e.getAllActions()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allActions = $e->getAllActions();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_actions = e.get_all_actions()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allActions = e.GetAllActions();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_actions = e.get_all_actions();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allActions = e.getAllActions();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllNamedActions()`
 
@@ -618,65 +688,73 @@ GetAllNamedActions gets the list of actions that show up in the current named po
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allNamedActions := e.GetAllNamedActions("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allNamedActions = await e.getAllNamedActions('p')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allNamedActions = $e->getAllNamedActions("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_named_actions = e.get_all_named_actions("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allNamedActions = e.GetAllNamedActions("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_named_actions = e.get_all_named_actions("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allNamedActions = e.getAllNamedActions("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllRoles()`
 
@@ -684,65 +762,73 @@ GetAllRoles gets the list of roles that show up in the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```
 allRoles = e.GetAllRoles()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allRoles = await e.getAllRoles()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allRoles = $e->getAllRoles();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_roles = e.get_all_roles()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allRoles = e.GetAllRoles();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_roles = e.get_all_roles();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allRoles = e.getAllRoles();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetAllNamedRoles()`
 
@@ -750,65 +836,73 @@ GetAllNamedRoles gets the list of roles that show up in the current named policy
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 allNamedRoles := e.GetAllNamedRoles("g")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const allNamedRoles = await e.getAllNamedRoles('g')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $allNamedRoles = $e->getAllNamedRoles('g');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 all_named_roles = e.get_all_named_roles("g")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var allNamedRoles = e.GetAllNamedRoles("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let all_named_roles = e.get_all_named_roles("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<String> allNamedRoles = e.getAllNamedRoles("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetPolicy()`
 
@@ -816,65 +910,73 @@ GetPolicy gets all the authorization rules in the policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 policy = e.GetPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const policy = await e.getPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $policy = $e->getPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 policy = e.get_policy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var policy = e.GetPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let policy = e.get_policy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> policy = e.getPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 
 ### `GetFilteredPolicy()`
@@ -883,65 +985,73 @@ GetFilteredPolicy gets all the authorization rules in the policy, field filters 
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 filteredPolicy := e.GetFilteredPolicy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const filteredPolicy = await e.getFilteredPolicy(0, 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $filteredPolicy = $e->getFilteredPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 filtered_policy = e.get_filtered_policy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var filteredPolicy = e.GetFilteredPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let filtered_policy = e.get_filtered_policy(0, vec!["alice".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> filteredPolicy = e.getFilteredPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetNamedPolicy()`
 
@@ -949,65 +1059,73 @@ GetNamedPolicy gets all the authorization rules in the named policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 namedPolicy := e.GetNamedPolicy("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const namedPolicy = await e.getNamedPolicy('p')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $namedPolicy = $e->getNamedPolicy("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 named_policy = e.get_named_policy("p")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var namedPolicy = e.GetNamedPolicy("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let named_policy = e.get_named_policy("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> namedPolicy = e.getNamedPolicy("p");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 
 ### `GetFilteredNamedPolicy()`
@@ -1016,65 +1134,73 @@ GetFilteredNamedPolicy gets all the authorization rules in the named policy, fie
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const filteredNamedPolicy = await e.getFilteredNamedPolicy('p', 0, 'bob')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $filteredNamedPolicy = $e->getFilteredNamedPolicy("p", 0, "bob");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 filtered_named_policy = e.get_filtered_named_policy("p", 0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let filtered_named_policy = e.get_filtered_named_policy("p", 0, vec!["bob".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> filteredNamedPolicy = e.getFilteredNamedPolicy("p", 0, "bob");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetGroupingPolicy()`
 
@@ -1082,65 +1208,73 @@ GetGroupingPolicy gets all the role inheritance rules in the policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 groupingPolicy := e.GetGroupingPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const groupingPolicy = await e.getGroupingPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $groupingPolicy = $e->getGroupingPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 grouping_policy = e.get_grouping_policy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var groupingPolicy = e.GetGroupingPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let grouping_policy = e.get_grouping_policy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> groupingPolicy = e.getGroupingPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetFilteredGroupingPolicy()`
 
@@ -1148,65 +1282,73 @@ GetFilteredGroupingPolicy gets all the role inheritance rules in the policy, fie
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $filteredGroupingPolicy = $e->getFilteredGroupingPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 filtered_grouping_policy = e.get_filtered_grouping_policy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var filteredGroupingPolicy = e.GetFilteredGroupingPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let filtered_grouping_policy = e.get_filtered_grouping_policy(0, vec!["alice".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> filteredGroupingPolicy = e.getFilteredGroupingPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetNamedGroupingPolicy()`
 
@@ -1214,65 +1356,73 @@ GetNamedGroupingPolicy gets all the role inheritance rules in the policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const namedGroupingPolicy = await e.getNamedGroupingPolicy('g')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $namedGroupingPolicy = $e->getNamedGroupingPolicy("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 named_grouping_policy = e.get_named_grouping_policy("g")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var namedGroupingPolicy = e.GetNamedGroupingPolicy("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let named_grouping_policy = e.get_named_grouping_policy("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> namedGroupingPolicy = e.getNamedGroupingPolicy("g");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `GetFilteredNamedGroupingPolicy()`
 
@@ -1280,65 +1430,73 @@ GetFilteredNamedGroupingPolicy gets all the role inheritance rules in the policy
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy('g', 0, 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $namedGroupingPolicy = $e->getFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 named_grouping_policy = e.get_filtered_named_grouping_policy("g", 0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var namedGroupingPolicy = e.GetFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let named_grouping_policy = e.get_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> filteredNamedGroupingPolicy = e.getFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `HasPolicy()`
 
@@ -1346,65 +1504,73 @@ HasPolicy determines whether an authorization rule exists.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const hasPolicy = await e.hasPolicy('data2_admin', 'data2', 'read')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $hasPolicy = $e->hasPolicy('data2_admin', 'data2', 'read');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 has_policy = e.has_policy("data2_admin", "data2", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var hasPolicy = e.HasPolicy("data2_admin", "data2", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let has_policy = e.has_policy(vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean hasPolicy = e.hasPolicy("data2_admin", "data2", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `HasNamedPolicy()`
 
@@ -1412,65 +1578,73 @@ HasNamedPolicy determines whether a named authorization rule exists.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const hasNamedPolicy = await e.hasNamedPolicy('p', 'data2_admin', 'data2', 'read')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $hasNamedPolicy = $e->hasNamedPolicy("p", "data2_admin", "data2", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 has_named_policy = e.has_named_policy("p", "data2_admin", "data2", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var hasNamedPolicy = e.HasNamedPolicy("p", "data2_admin", "data2", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let has_named_policy = e.has_named_policy("p", vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean hasNamedPolicy = e.hasNamedPolicy("p", "data2_admin", "data2", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddPolicy()`
 
@@ -1480,42 +1654,47 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 added := e.AddPolicy('eve', 'data3', 'read')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['eve', 'data3', 'read']
 const added = await e.addPolicy(...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $added = $e->addPolicy('eve', 'data3', 'read');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 added = e.add_policy("eve", "data3", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var added = e.AddPolicy("eve", "data3", "read");
@@ -1523,25 +1702,28 @@ or
 var added = await e.AddPolicyAsync("eve", "data3", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let added = e.add_policy(vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean added = e.addPolicy("eve", "data3", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddPolicies()`
 
@@ -1552,9 +1734,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -1567,9 +1750,10 @@ rules := [][] string {
 areRulesAdded := e.AddPolicies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const rules = [
@@ -1582,9 +1766,10 @@ const rules = [
 const areRulesAdded = await e.addPolicies(rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -1596,9 +1781,10 @@ rules = [
 are_rules_added = e.add_policies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -1611,9 +1797,10 @@ let rules = vec![
 let are_rules_added = e.add_policies(rules).await?
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] rules = {
@@ -1626,9 +1813,10 @@ String[][] rules = {
 boolean areRulesAdded = e.addPolicies(rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddNamedPolicy()`
 
@@ -1638,42 +1826,47 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 added := e.AddNamedPolicy("p", "eve", "data3", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['eve', 'data3', 'read']
 const added = await e.addNamedPolicy('p', ...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $added = $e->addNamedPolicy("p", "eve", "data3", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 added = e.add_named_policy("p", "eve", "data3", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var added = e.AddNamedPolicy("p", "eve", "data3", "read");
@@ -1681,25 +1874,28 @@ or
 var added = await e.AddNamedPolicyAsync("p", "eve", "data3", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let added = e.add_named_policy("p", vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean added = e.addNamedPolicy("p", "eve", "data3", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddNamedPolicies()`
 
@@ -1710,9 +1906,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -1725,9 +1922,10 @@ rules := [][] string {
 areRulesAdded := e.AddNamedPolicies("p", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const rules = [
@@ -1740,9 +1938,10 @@ const rules = [
 const areRulesAdded = await e.addNamedPolicies('p', rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -1754,9 +1953,10 @@ rules = [
 are_rules_added = e.add_named_policies("p", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -1769,9 +1969,10 @@ let rules = vec![
 let are_rules_added := e.add_named_policies("p", rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> rules = Arrays.asList(
@@ -1783,9 +1984,10 @@ List<List<String>> rules = Arrays.asList(
 boolean areRulesAdded = e.addNamedPolicies("p", rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemovePolicy()`
 
@@ -1793,42 +1995,47 @@ RemovePolicy removes an authorization rule from the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemovePolicy("alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['alice', 'data1', 'read']
 const removed = await e.removePolicy(...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removePolicy("alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_policy("alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemovePolicy("alice", "data1", "read");
@@ -1836,25 +2043,28 @@ or
 var removed = await e.RemovePolicyAsync("alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_policy(vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removePolicy("alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemovePolicies()`
 
@@ -1865,9 +2075,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -1880,9 +2091,10 @@ rules := [][] string {
 areRulesRemoved := e.RemovePolicies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const rules = [
@@ -1895,9 +2107,10 @@ const rules = [
 const areRulesRemoved = await e.removePolicies(rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -1909,9 +2122,10 @@ rules = [
 are_rules_removed = e.remove_policies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -1924,9 +2138,10 @@ let rules = vec![
 let are_rules_removed = e.remove_policies(rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] rules = {
@@ -1938,9 +2153,10 @@ String[][] rules = {
 boolean areRulesRemoved = e.removePolicies(rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveFilteredPolicy()`
 
@@ -1949,42 +2165,47 @@ RemovePolicy removes an authorization rule from the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['alice', 'data1', 'read']
 const removed = await e.removeFilteredPolicy(0, ...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeFilteredPolicy(0, "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_filtered_policy(0, "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveFilteredPolicy("alice", "data1", "read");
@@ -1992,25 +2213,28 @@ or
 var removed = await e.RemoveFilteredPolicyAsync("alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_filtered_policy(0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeFilteredPolicy(0, "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveNamedPolicy()`
 
@@ -2018,42 +2242,47 @@ RemoveNamedPolicy removes an authorization rule from the current named policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['alice', 'data1', 'read']
 const removed = await e.removeNamedPolicy('p', ...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeNamedPolicy("p", "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_named_policy("p", "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveNamedPolicy("p", "alice", "data1", "read");
@@ -2061,25 +2290,28 @@ or
 var removed = await e.RemoveNamedPolicyAsync("p", "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_named_policy("p", vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeNamedPolicy("p", "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveNamedPolicies()`
 
@@ -2090,9 +2322,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -2105,9 +2338,10 @@ rules := [][] string {
 areRulesRemoved := e.RemoveNamedPolicies("p", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const rules = [
@@ -2120,9 +2354,10 @@ const rules = [
 const areRulesRemoved = await e.removeNamedPolicies('p', rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -2134,9 +2369,10 @@ rules = [
 are_rules_removed = e.remove_named_policies("p", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -2149,9 +2385,10 @@ let rules = vec![
 let areRulesRemoved = e.remove_named_policies("p", rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 List<List<String>> rules = Arrays.asList(
@@ -2163,9 +2400,10 @@ List<List<String>> rules = Arrays.asList(
 boolean areRulesRemoved = e.removeNamedPolicies("p", rules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveFilteredNamedPolicy()`
 
@@ -2173,42 +2411,47 @@ RemoveFilteredNamedPolicy removes an authorization rule from the current named p
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const p = ['alice', 'data1', 'read']
 const removed = await e.removeFilteredNamedPolicy('p', 0, ...p)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_filtered_named_policy("p", 0, "alice", "data1", "read")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read");
@@ -2216,25 +2459,28 @@ or
 var removed = e.RemoveFilteredNamedPolicyAync("p", 0, "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_filtered_named_policy("p", 0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `HasGroupingPolicy()`
 
@@ -2242,65 +2488,73 @@ HasGroupingPolicy determines whether a role inheritance rule exists.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 has := e.HasGroupingPolicy("alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const has = await e.hasGroupingPolicy('alice', 'data2_admin')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $has = $e->hasGroupingPolicy("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 has = e.has_grouping_policy("alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var has = e.HasGroupingPolicy("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let has = e.has_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean has = e.hasGroupingPolicy("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `HasNamedGroupingPolicy()`
 
@@ -2308,65 +2562,73 @@ HasNamedGroupingPolicy determines whether a named role inheritance rule exists.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const has = await e.hasNamedGroupingPolicy('g', 'alice', 'data2_admin')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $has = $e->hasNamedGroupingPolicy("g", "alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 has = e.has_named_grouping_policy("g", "alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var has = e.HasNamedGroupingPolicy("g", "alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let has = e.has_named_grouping_policy("g", vec!["alice".to_owned(), "data2_admin".to_owned()]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean has = e.hasNamedGroupingPolicy("g", "alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddGroupingPolicy()`
 
@@ -2376,41 +2638,46 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 added := e.AddGroupingPolicy("group1", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const added = await e.addGroupingPolicy('group1', 'data2_admin')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $added = $e->addGroupingPolicy("group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 added = e.add_grouping_policy("group1", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var added = e.AddGroupingPolicy("group1", "data2_admin");
@@ -2418,25 +2685,28 @@ or
 var added = await e.AddGroupingPolicyAsync("group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let added = e.add_grouping_policy(vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean added = e.addGroupingPolicy("group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddGroupingPolicies()`
 
@@ -2447,9 +2717,10 @@ If all authorization the rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -2460,9 +2731,10 @@ rules := [][] string {
 areRulesAdded := e.AddGroupingPolicies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const groupingRules = [
@@ -2473,9 +2745,10 @@ const groupingRules = [
 const areRulesAdded = await e.addGroupingPolicies(groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -2486,9 +2759,10 @@ rules = [
 are_rules_added = e.add_grouping_policies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -2499,9 +2773,10 @@ let rules = vec![
 let areRulesAdded = e.add_grouping_policies(rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] groupingRules = {
@@ -2511,9 +2786,10 @@ String[][] groupingRules = {
 boolean areRulesAdded = e.addGroupingPolicies(groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddNamedGroupingPolicy()`
 
@@ -2523,41 +2799,46 @@ Otherwise the function returns true by adding the new rule.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const added = await e.addNamedGroupingPolicy('g', 'group1', 'data2_admin')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $added = $e->addNamedGroupingPolicy("g", "group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 added = e.add_named_grouping_policy("g", "group1", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var added = e.AddNamedGroupingPolicy("g", "group1", "data2_admin");
@@ -2565,25 +2846,28 @@ or
 var added = await e.AddNamedGroupingPolicyAsync("g", "group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let added = e.add_named_grouping_policy("g", vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean added = e.addNamedGroupingPolicy("g", "group1", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddNamedGroupingPolicies()`
 
@@ -2594,9 +2878,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -2607,9 +2892,10 @@ rules := [][] string {
 areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const groupingRules = [
@@ -2620,9 +2906,10 @@ const groupingRules = [
 const areRulesAdded = await e.addNamedGroupingPolicies('g', groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -2633,9 +2920,10 @@ rules = [
 are_rules_added = e.add_named_grouping_policies("g", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -2646,9 +2934,10 @@ let rules = vec![
 let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] groupingRules = {
@@ -2658,9 +2947,10 @@ String[][] groupingRules = {
 boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveGroupingPolicy()`
 
@@ -2668,41 +2958,46 @@ RemoveGroupingPolicy removes a role inheritance rule from the current policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveGroupingPolicy("alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const removed = await e.removeGroupingPolicy('alice', 'data2_admin')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeGroupingPolicy("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_grouping_policy("alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveGroupingPolicy("alice", "data2_admin");
@@ -2710,25 +3005,28 @@ or
 var removed = await e.RemoveGroupingPolicyAsync("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeGroupingPolicy("alice", "data2_admin");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveGroupingPolicies()`
 
@@ -2739,9 +3037,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -2752,9 +3051,10 @@ rules := [][] string {
 areRulesRemoved := e.RemoveGroupingPolicies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const groupingRules = [
@@ -2765,9 +3065,10 @@ const groupingRules = [
 const areRulesRemoved = await e.removeGroupingPolicies(groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -2778,9 +3079,10 @@ let rules = vec![
 let are_rules_removed = e.remove_grouping_policies(rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -2791,9 +3093,10 @@ rules = [
 are_rules_removed = e.remove_grouping_policies(rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] groupingRules = {
@@ -2803,9 +3106,10 @@ String[][] groupingRules = {
 boolean areRulesRemoved = e.removeGroupingPolicies(groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveFilteredGroupingPolicy()`
 
@@ -2813,41 +3117,46 @@ RemoveFilteredGroupingPolicy removes a role inheritance rule from the current po
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveFilteredGroupingPolicy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const removed = await e.removeFilteredGroupingPolicy(0, 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeFilteredGroupingPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_filtered_grouping_policy(0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveFilteredGroupingPolicy(0, "alice");
@@ -2855,25 +3164,28 @@ or
 var removed = await e.RemoveFilteredGroupingPolicyAsync(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_filtered_grouping_policy(0, vec!["alice".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeFilteredGroupingPolicy(0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveNamedGroupingPolicy()`
 
@@ -2881,41 +3193,46 @@ RemoveNamedGroupingPolicy removes a role inheritance rule from the current named
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveNamedGroupingPolicy("g", "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const removed = await e.removeNamedGroupingPolicy('g', 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeNamedGroupingPolicy("g", "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_named_grouping_policy("g", "alice", "data2_admin")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveNamedGroupingPolicy("g", "alice");
@@ -2923,25 +3240,28 @@ or
 var removed = await e.RemoveNamedGroupingPolicyAsync("g", "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_named_grouping_policy("g", vec!["alice".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeNamedGroupingPolicy("g", "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveNamedGroupingPolicies()`
 
@@ -2952,9 +3272,10 @@ If all the authorization rules are consistent with the policy rules, the functio
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 rules := [][] string {
@@ -2965,9 +3286,10 @@ rules := [][] string {
 areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const groupingRules = [
@@ -2978,9 +3300,10 @@ const groupingRules = [
 const areRulesRemoved = await e.removeNamedGroupingPolicies('g', groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 rules = [
@@ -2990,9 +3313,10 @@ rules = [
 are_rules_removed = e.remove_named_grouping_policies("g", rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let rules = vec![
@@ -3003,9 +3327,10 @@ let rules = vec![
 let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String[][] groupingRules = {
@@ -3015,9 +3340,10 @@ String[][] groupingRules = {
 boolean areRulesRemoved = e.removeNamedGroupingPolicies("g", groupingRules);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `RemoveFilteredNamedGroupingPolicy()`
 
@@ -3025,41 +3351,46 @@ RemoveFilteredNamedGroupingPolicy removes a role inheritance rule from the curre
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const removed = await e.removeFilteredNamedGroupingPolicy('g', 0, 'alice')
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $removed = $e->removeFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 removed = e.remove_filtered_named_grouping_policy("g", 0, "alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var removed = e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice");
@@ -3067,25 +3398,28 @@ or
 var removed = await e.RemoveFilteredNamedGroupingPolicyAsync("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let removed = e.remove_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean removed = e.removeFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `UpdatePolicy()`
 
@@ -3093,41 +3427,46 @@ UpdatePolicy update a old policy to new policy.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const update = await e.updatePolicy(["eve", "data3", "read"], ["eve", "data3", "write"]);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 updated = e.update_policy(["eve", "data3", "read"], ["eve", "data3", "write"])
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 boolean updated = e.updatePolicy(Arrays.asList("eve", "data3", "read"), Arrays.asList("eve", "data3", "write"));
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `UpdatePolicies()`
 
@@ -3135,17 +3474,19 @@ UpdatePolicies updates all old policies to new policies.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 updated, err := e.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 old_rules = [["eve", "data3", "read"], ["jack", "data3", "read"]]
@@ -3154,9 +3495,10 @@ new_rules = [["eve", "data3", "write"], ["jack", "data3", "write"]]
 updated = e.update_policies(old_rules, new_rules)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `AddFunction()`
 
@@ -3164,9 +3506,10 @@ AddFunction adds a customized function.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 func CustomFunction(key1 string, key2 string) bool {
@@ -3189,9 +3532,10 @@ func CustomFunctionWrapper(args ...interface{}) (interface{}, error) {
 e.AddFunction("keyMatchCustom", CustomFunctionWrapper)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 function customFunction(key1, key2){
@@ -3207,9 +3551,10 @@ function customFunction(key1, key2){
 e.addFunction("keyMatchCustom", customFunction);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 func customFunction($key1, $key2) {
@@ -3232,9 +3577,10 @@ func customFunctionWrapper(...$args){
 $e->addFunction("keyMatchCustom", customFunctionWrapper);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 def custom_function(key1, key2):
@@ -3244,9 +3590,10 @@ def custom_function(key1, key2):
 e.add_function("keyMatchCustom", custom_function)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 fn custom_function(key1: STring, key2: String) {
@@ -3257,9 +3604,10 @@ fn custom_function(key1: STring, key2: String) {
 e.add_function("keyMatchCustom", custom_function);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 public static class CustomFunc extends CustomFunction {
@@ -3286,9 +3634,10 @@ FunctionTest.CustomFunc customFunc = new FunctionTest.CustomFunc();
 e.addFunction(customFunc.getName(), customFunc);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `LoadFilteredPolicy()`
 
@@ -3296,25 +3645,28 @@ LoadFilteredPolicy loads filtered policies from file/database.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 err := e.LoadFilteredPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const ok = await e.loadFilteredPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 class Filter:
@@ -3329,17 +3681,19 @@ filter.G = ["", "", "domain1"]
 e.load_filtered_policy(filter)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 e.loadFilteredPolicy(new String[] { "", "domain1" });
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `LoadIncrementalFilteredPolicy()`
 
@@ -3347,25 +3701,28 @@ LoadIncrementalFilteredPolicy append a filtered policy from file/database.
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 err := e.LoadIncrementalFilteredPolicy()
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```typescript
 const ok = await e.loadIncrementalFilteredPolicy();
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 adapter = casbin.persist.adapters.FilteredAdapter("rbac_with_domains_policy.csv")
@@ -3376,9 +3733,10 @@ filter.G = ["", "", "domain1"]
 e.load_increment_filtered_policy(filter)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `UpdateGroupingPolicy()`
 
@@ -3386,25 +3744,28 @@ UpdateGroupingPolicy updates oldRule to newRulein `g` section
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 succeed, err : = e.UpdateGroupingPolicy([]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```Java
 boolean succeed = e.updateGroupingPolicy(Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### `UpdateNamedGroupingPolicy()`
 
@@ -3412,22 +3773,25 @@ UpdateNamedGroupingPolicy updates oldRule named `ptype` to newRulein `g` section
 
 For example:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 succeed, err : = e.UpdateGroupingPolicy("g1",[]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```Java
 boolean succeed = e.updateNamedGroupingPolicy("g1", Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```

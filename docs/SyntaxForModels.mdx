@@ -111,9 +111,10 @@ If you need multiple policy definitions or multiple matcher, you can use like ``
 
 You can pass in ``EnforceContext`` as the first parameter of ``enforce`` method to specify the types, the ``EnforceContext`` is like this
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 EnforceContext{"r2","p2","e2","m2"}
@@ -125,9 +126,10 @@ type EnforceContext struct {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```javascript
 const enforceContext = new EnforceContext('r2', 'p2', 'e2', 'm2');
@@ -141,9 +143,10 @@ class EnforceContext {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 EnforceContext enforceContext = new EnforceContext("2");
@@ -161,15 +164,17 @@ public class EnforceContext {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 Example usage, see [model](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) and [policy](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv), the request is as follows
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 // Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2,p2,etc..
@@ -183,10 +188,10 @@ e.Enforce(enforceContext, struct{ Age int }{Age: 70}, "/data1", "read")		//false
 e.Enforce(enforceContext, struct{ Age int }{Age: 30}, "/data1", "read")		//true
 ```
 
+```mdx-code-block
 </TabItem>
-
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```javascript
 // Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2,p2,etc..
@@ -198,11 +203,12 @@ e.Enforce("alice", "data2", "read")		// true
 // pass in EnforceContext
 e.Enforce(enforceContext, {Age: 70}, "/data1", "read")		//false
 e.Enforce(enforceContext, {Age: 30}, "/data1", "read")		//true
-``````
+```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 // Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2, p2, etc..
@@ -217,9 +223,10 @@ e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 70), "/data1
 e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1", "read"); // true
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### Special Grammer
 

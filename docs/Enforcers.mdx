@@ -11,9 +11,10 @@ import TabItem from '@theme/TabItem';
 ## Supported enforcers
 A complete list of Casbin enforcers is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:)
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 Enforcer | Author | Description
 ----|------|------
@@ -22,6 +23,7 @@ Enforcer | Author | Description
 [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go) | Casbin | `DistributedEnforcer` supports multiple instances in distributed clusters. It wraps `SyncedEnforcer` for dispatcher. You can find more details about dispather at [here](/docs/dispatchers#distributedenforcer).
 [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go) | Casbin | `SyncedEnforer` is based on `Enforcer` and provides synchronized access. It is thread-safe.
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```

@@ -8,21 +8,23 @@ import TabItem from '@theme/TabItem';
 
 ## Installation
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```
 go get github.com/casbin/casbin/v2
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 For Maven:
 
-```
+```xml
 <!-- https://mvnrepository.com/artifact/org.casbin/jcasbin -->
 <dependency>
     <groupId>org.casbin</groupId>
@@ -31,9 +33,10 @@ For Maven:
 </dependency>
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```bash
 # NPM
@@ -43,9 +46,10 @@ npm install casbin --save
 yarn add casbin
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 Require this package in the `composer.json` of your project. This will download the package:
 
@@ -53,25 +57,29 @@ Require this package in the `composer.json` of your project. This will download 
 composer require casbin/casbin
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```
 pip install casbin
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
+
 
 ```
 dotnet add package Casbin.NET
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="C++" label="C++">
+```
 
 ```bash
 # download source
@@ -84,9 +92,10 @@ cd casbin-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build . --config Release --target casbin install -j 10
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```
 cargo install cargo-edit
@@ -99,15 +108,17 @@ cargo add async-std
 cargo add tokio // make sure you activate its `macros` feature
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Delphi" label="Delphi">
+```
 
 Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components which means that you can use the units independently of packages. Just import the units in your project (assuming you do not mind the number of them).
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Lua" label="Lua">
+```
 
 ```
 luarocks install casbin  
@@ -121,9 +132,10 @@ you can add --local behind your command like this to fix:
 luarocks install casbin  --local
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ## New a Casbin enforcer
 
@@ -137,9 +149,10 @@ Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapte
 
 - Use the Model file and default [FileAdapter](adapters#file-adapter-built-in): 
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 import "github.com/casbin/casbin/v2"
@@ -147,9 +160,10 @@ import "github.com/casbin/casbin/v2"
 e, err := casbin.NewEnforcer("path/to/model.conf", "path/to/policy.csv")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 import org.casbin.jcasbin.main.Enforcer;
@@ -157,9 +171,10 @@ import org.casbin.jcasbin.main.Enforcer;
 Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```js
 import { newEnforcer } from 'casbin';
@@ -167,9 +182,10 @@ import { newEnforcer } from 'casbin';
 const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 require_once './vendor/autoload.php';
@@ -179,9 +195,10 @@ use Casbin\Enforcer;
 $e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 import casbin
@@ -189,9 +206,10 @@ import casbin
 e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 using NetCasbin; 
@@ -199,9 +217,10 @@ using NetCasbin;
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="C++" label="C++">
+```
 
 ```cpp
 #include <iostream>
@@ -215,9 +234,10 @@ int main() {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Delphi" label="Delphi">
+```
 
 ```delphi
 var
@@ -228,9 +248,10 @@ begin
 end
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 use casbin::prelude::*;
@@ -252,24 +273,27 @@ async fn main() -> Result<()> {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Lua" label="Lua">
+```
 
 ```lua
 local Enforcer = require("casbin")
 local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin Enforcer
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 - Use the Model text with other Adapter: 
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 import (
@@ -310,9 +334,10 @@ if err != nil {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 import casbin
@@ -342,17 +367,19 @@ with open("rbac_example_model.conf", "w") as f:
 e = casbin.Enforcer('rbac_example_model.conf', adapter)
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### Check permissions
 
 Add an enforcement hook into your code right before the access happens:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 sub := "alice" // the user that wants to access a resource.
@@ -377,9 +404,10 @@ if ok == true {
 results, err := e.BatchEnforce([][]interface{}{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"jack", "data3", "read"}})
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 String sub = "alice"; // the user that wants to access a resource.
@@ -393,9 +421,10 @@ if (e.enforce(sub, obj, act) == true) {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```js
 const sub = 'alice'; // the user that wants to access a resource.
@@ -409,9 +438,10 @@ if ((await e.enforce(sub, obj, act)) === true) {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $sub = "alice"; // the user that wants to access a resource.
@@ -425,9 +455,10 @@ if ($e->enforce($sub, $obj, $act) === true) {
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 sub = "alice"  # the user that wants to access a resource.
@@ -442,9 +473,10 @@ else:
     pass
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var sub = "alice";  # the user that wants to access a resource.
@@ -461,9 +493,10 @@ else
 }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="C++" label="C++">
+```
 
 ```cpp
     casbin::Enforcer e("../assets/model.conf", "../assets/policy.csv");
@@ -481,9 +514,10 @@ else
     }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Delphi" label="Delphi">
+```
 
 ```delphi
 if casbin.enforce(['alice,data1,read']) then
@@ -492,9 +526,10 @@ else
   // Alice is sad
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
   let sub = "alice"; // the user that wants to access a resource.
@@ -508,9 +543,10 @@ else
   }
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Lua" label="Lua">
+```
 
 ```lua
 if e:enforce("alice", "data1", "read") then
@@ -521,87 +557,98 @@ end
 
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 Casbin also provides API for permission management at run-time. For example, You can get all the roles assigned to a user as below:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 roles, err := e.GetRolesForUser("alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 ```java
 Roles roles = e.getRolesForUser("alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 ```js
 const roles = await e.getRolesForUser('alice');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 $roles = $e->getRolesForUser("alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 ```python
 roles = e.get_roles_for_user("alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 ```csharp
 var roles = e.GetRolesForUser("alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Delphi" label="Delphi">
+```
 
 ```delphi
 roles = e.rolesForEntity("alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 let roles = e.get_roles_for_user("alice");
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Lua" label="Lua">
+```
 
 ```lua
 local roles = e:GetRolesForUser("alice")
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 See [Management API](/docs/management-api) and [RBAC API](/docs/rbac-api) for more usage.
 

@@ -12,9 +12,10 @@ In Casbin, the policy storage is implemented as an adapter (aka middleware for C
 
 A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:)
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -57,9 +58,10 @@ Adapter | Type | Author | AutoSave | Description
 [HTTP File Adapter](https://github.com/h4ckedneko/casbin-httpfs) | HTTP | [@h4ckedneko](https://github.com/h4ckedneko) | ❌ | For [http.FileSystem](https://golang.org/src/net/http/fs.go)
 [FileSystem Adapter](https://github.com/naucon/casbin-fs-adapter) | File | [@naucon](https://github.com/naucon) | ❌ | For [fs.FS](https://pkg.go.dev/io/fs) and [embed.FS](https://pkg.go.dev/embed)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Java" label="Java">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -72,9 +74,10 @@ Adapter | Type | Author | AutoSave | Description
 [DynamoDB Adapter](https://github.com/jcasbin/dynamodb-adapter) | NoSQL | Casbin | ❌ | For [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)
 [Redis Adapter](https://github.com/jcasbin/redis-adapter) | KV store | Casbin | ✅ | For [Redis](https://redis.io/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Node.js" label="Node.js">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -96,9 +99,10 @@ Adapter | Type | Author | AutoSave | Description
 [Redis Adapter](https://github.com/node-casbin/redis-adapter) | KV store | Casbin | ❌ | For [Redis](https://redis.io/)
 [Redis Adapter](https://github.com/NandaKishorJeripothula/node-casbin-redis-adapter) | KV store | [@NandaKishorJeripothula](https://github.com/NandaKishorJeripothula) | ❌ | For [Redis](https://redis.io/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -111,9 +115,10 @@ Adapter | Type | Author | AutoSave | Description
 [Zend-db Adapter](https://github.com/php-casbin/zend-db-adapter) | ORM | Casbin | ✅ | MySQL, PostgreSQL, Oracle, IBM DB2, Microsoft Sql Server, PDO, etc. are supported by [zend-db](https://github.com/zendframework/zend-db)
 [Redis Adapter](https://github.com/nsnake/CasbinAdapter-Redis-Adapter) | KV store | [@nsnake](https://github.com/nsnake) | ❌ | For [Redis](https://redis.io/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Python" label="Python">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -130,9 +135,10 @@ Adapter | Type | Author | AutoSave | Description
 [GCP Firebase Adapter](https://github.com/devrushi41/pycasbin-firebase-adapter) | Cloud | [@devrushi41](https://github.com/devrushi41) | ✅ | For [Google Cloud Platform Firebase](https://firebase.google.com/)
 [Async ormar Adapter](https://github.com/shepilov-vladislav/ormar-casbin-adapte) | ORM | [sampingantech](https://github.com/shepilov-vladislav) | ✅ | PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase are supported by [ormar](https://github.com/collerek/ormar/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value=".NET" label=".NET">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -141,9 +147,10 @@ Adapter | Type | Author | AutoSave | Description
 [EFCore Adapter](https://github.com/casbin-net/EFCore-Adapter) | ORM | Casbin | ✅ | MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, DB2, etc. are supported by [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 [EFCore Adapter (.NET Core 5)](https://github.com/g4dvali/CasbinRBACAdapter) | ORM | [@g4dvali](https://github.com/g4dvali) | ✅ | MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, DB2, etc. are supported by [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -154,18 +161,20 @@ Adapter | Type | Author | AutoSave | Description
 [JSON Adapter](http://github.com/casbin-rs/json-adapter) | String | Casbin | ✅ | For [JSON](https://json.org/)
 [YAML Adapter](https://github.com/casbin-rs/yaml-adapter) | String | Casbin | ✅ | For [YAML](https://yaml.org/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Ruby" label="Ruby">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
 [File Adapter (built-in)](/docs/adapters#file-adapter-built-in) | File | Casbin | ❌ | For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files
 [Sequel Adapter](https://github.com/CasbinRuby/casbin-ruby-sql-adapter) | ORM | [CasbinRuby](https://github.com/CasbinRuby) | ✅ | [ADO, Amalgalite, IBM_DB, JDBC, MySQL, Mysql2, ODBC, Oracle, PostgreSQL, SQLAnywhere, SQLite3, and TinyTDS](http://sequel.jeremyevans.net/) are supported by [Sequel](http://sequel.jeremyevans.net/)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Swift" label="Swift">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -173,9 +182,10 @@ Adapter | Type | Author | AutoSave | Description
 [Memory Adapter (built-in)](https://github.com/casbin/SwiftCasbin/blob/master/Sources/Casbin/Adapter/MemoryAdapter.swift) | Memory | Casbin | ❌ | For memory
 [Fluent Adapter](https://github.com/SwiftCasbin/fluent-adapter) | ORM | Casbin | ✅ | [PostgreSQL, SQLite, MySQL, MongoDB](https://docs.vapor.codes/4.0/fluent/overview/#drivers) are supported by [Fluent](https://github.com/vapor/fluent)
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Lua" label="Lua">
+```
 
 Adapter | Type | Author | AutoSave | Description
 ----|------|----|----|----
@@ -184,9 +194,10 @@ Adapter | Type | Author | AutoSave | Description
 [LuaSQL Adapter](https://github.com/casbin-lua/luasql-adapter) | ORM | Casbin | ✅ | MySQL, PostgreSQL, SQLite3 are supported by [LuaSQL](https://keplerproject.github.io/luasql/)
 [4DaysORM Adapter](https://github.com/casbin-lua/4daysorm-adapter) | ORM | Casbin | ✅ | MySQL, SQLite3 are supported by [4DaysORM](https://github.com/itdxer/4DaysORM)
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 :::note
 1. If ``casbin.NewEnforcer()`` is called with an explicit or implicit adapter, the policy will be loaded automatically.
@@ -202,9 +213,10 @@ Here we provide several examples:
 
 Below shows how to initialize an enforcer from the built-in file adapter:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 import "github.com/casbin/casbin"
@@ -212,9 +224,10 @@ import "github.com/casbin/casbin"
 e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 use Casbin\Enforcer;
@@ -222,9 +235,10 @@ use Casbin\Enforcer;
 $e = new Enforcer('examples/basic_model.conf', 'examples/basic_policy.csv');
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 use casbin::prelude::*;
@@ -232,15 +246,17 @@ use casbin::prelude::*;
 let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.csv").await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 This is the same with:
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 import (
@@ -252,9 +268,10 @@ a := fileadapter.NewAdapter("examples/basic_policy.csv")
 e := casbin.NewEnforcer("examples/basic_model.conf", a)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 use Casbin\Enforcer;
@@ -264,9 +281,10 @@ $a = new FileAdapter('examples/basic_policy.csv');
 $e = new Enforcer('examples/basic_model.conf', $a);
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 use casbin::prelude::*;
@@ -275,18 +293,20 @@ let a = FileAdapter::new("examples/basic_policy.csv");
 let e = Enforcer::new("examples/basic_model.conf", a).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ### [MySQL adapter](https://github.com/casbin/mysql-adapter)
 
 Below shows how to initialize an enforcer from MySQL database. it connects to a MySQL DB on 127.0.0.1:3306 with root and blank password.
 
 
+```mdx-code-block
 <Tabs>
-
 <TabItem value="Go" label="Go" default>
+```
 
 ```go
 import (
@@ -298,9 +318,10 @@ a := mysqladapter.NewAdapter("mysql", "root:@tcp(127.0.0.1:3306)/")
 e := casbin.NewEnforcer("examples/basic_model.conf", a)
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="Rust" label="Rust">
+```
 
 ```rust
 // https://github.com/casbin-rs/diesel-adapter
@@ -321,9 +342,10 @@ let a = DieselAdapter::new(conn_opts)?;
 let mut e = Enforcer::new("examples/basic_model.conf", a).await?;
 ```
 
+```mdx-code-block
 </TabItem>
-
 <TabItem value="PHP" label="PHP">
+```
 
 ```php
 // https://github.com/php-casbin/dbal-adapter
@@ -347,9 +369,10 @@ $a = DatabaseAdapter::newAdapter($config);
 $e = new Enforcer('examples/basic_model.conf', $a);
 ```
 
+```mdx-code-block
 </TabItem>
-
 </Tabs>
+```
 
 ## Use your own storage adapter
 
