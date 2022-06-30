@@ -33,8 +33,7 @@ const FeatureList = [
     Svg: require('/img/language.svg').default,
     description: (
       <Translate>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.Casbin is implemented in Golang, Java, PHP and Node.js. All implementations share the same API and behaviors. You can learn Casbin once and use it everywhere.
+        Casbin is implemented in Golang, Java, PHP and Node.js. All implementations share the same API and behaviors. You can learn Casbin once and use it everywhere.
       </Translate>
     ),
   },
