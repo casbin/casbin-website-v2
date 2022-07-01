@@ -178,7 +178,7 @@ export default function Home() {
         <PolicyEnforcement />
         <RoleManager />
         <Showcase />
-        <script src="https://opencollective.com/casbin/banner.js" />
+        <iframe title="Sponsors" src='https://opencollective.com/casbin/banner.html' style={{ width: '100%', height: '650px', display: 'block' }} scrolling="no"></iframe>
       </main>
     </Layout>
   );
