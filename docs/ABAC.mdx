@@ -42,15 +42,21 @@ Simply speaking, to use ABAC, you need to do two things:
 2. Pass in the struct or class instance for the element as the argument in Casbin's ``Enforce()`` function.
 
 :::warning
+
 Currently, only request elements like ``r.sub``, ``r.obj``, ``r.act`` and so on support ABAC. You cannot use it on policy elements like ``p.sub``, because there is no way to define a struct or class in Casbin's policy.
+
 :::
 
 :::tip
+
 You can use multiple ABAC attributes in a matcher, for example: ``m = r.sub.Domain == r.obj.Domain``.
+
 :::
 
 :::tip
+
 If you need to use comma in policy which conflicts with csv's separator and we need to escape it. Casbin parses policy file through [csv library](https://pkg.go.dev/encoding/csv), you could surround statement with quotation marks. For example, `"keyMatch("bob", r.sub.Role)"` will not be split.
+
 :::
 
 ## Scaling the model for complex and large number of ABAC rules.

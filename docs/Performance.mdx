@@ -14,7 +14,9 @@ The number of coming requests per second is too large, e.g., 10,000 request/s fo
 2. Deploy Casbin instances to a cluster (multiple machines). Use Watcher to guarantee all Casbin instances are consistent. See details at: [Watchers](/docs/watchers).
 
 :::note
+
 You can use the above methods both at the same time, e.g., deploy Casbin to a 10-machine cluster. Each machine has 5 threads simultaneously to serve Casbin enforcement requests.
+
 :::
 
 #### High Number of Policy Rules
@@ -28,5 +30,7 @@ Millions of policy rules may be required in a cloud or multi-tenant environment.
 3. Grant permissions to RBAC roles instead of users directly. Casbin's RBAC is implemented by a role inheritance tree (as a cache). So given a user like Alice, Casbin only uses O(1) time to query the RBAC tree for role-user relationship and do enforcement. If your g rules don't change often, then the RBAC tree won't need to update. See details at this dicussion: https://github.com/casbin/casbin/issues/681#issuecomment-763801583
 
 :::note
+
 You can try the above methods all at the same time.
+
 :::

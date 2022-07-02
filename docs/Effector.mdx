@@ -61,5 +61,7 @@ Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, 
 The basic idea of the ```MergeEffects``` indicates that if the ```expr``` can match the results which means that the ```p_eft``` is ```allow```, then we can merge all effects at last. And if there are no deny rules are matched, then we allow.
 
 :::note
+
 If the ```expr``` can not match ```"priority(p_eft) || deny"``` and also the ```policyIndex``` is shorter than ```policyLength-1```, it will **short-circuit** some effects in the middle.
+
 :::

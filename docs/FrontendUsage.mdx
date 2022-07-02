@@ -119,6 +119,7 @@ result.then((success, failed) => {
 Correspondingly, you need to expose an interface (e.g. a RestAPI) to generate the permission object and pass it to the frontend. In your API controller, call `CasbinJsGetUserPermission` to construct the permission object. Here is an example in Beego:
 
 :::note
+
 Your endpoint server should return something like
 ```json
 {
@@ -126,6 +127,7 @@ Your endpoint server should return something like
     "data": "What you get from `CasbinJsGetPermissionForUser`"
 }
 ```
+
 :::
 
 ```Go
@@ -144,7 +146,9 @@ func (c *APIController) GetFrontendPermission() {
 ```
 
 :::note
+
 Currently, `CasbinJsGetPermissionForUser` api is only supported in Go Casbin and Node-Casbin. If you want this api to be supported in other languages, please [raise an issue](https://github.com/casbin/casbin.js/issues) or leave a comment below.
+
 :::
 
 
