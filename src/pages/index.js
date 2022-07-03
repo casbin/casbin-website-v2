@@ -69,7 +69,7 @@ function PolicyPersistence() {
     <div className={styles.policypersistence}>
       <div className="container text--center">
         <div className="row">
-          <div className="col">
+          <div className="col" style={{marginBlock: "auto"}}>
             <h3> <Translate>Policy Persistence</Translate></h3>
             <Translate
               values={{
@@ -84,7 +84,7 @@ function PolicyPersistence() {
             </Translate>
           </div>
           <div>
-            <img src="/img/store.png" width="600" height= "660" />
+            <img src="/img/store.png" width="500" height= "500" />
           </div>
         </div>
       </div>
@@ -98,9 +98,9 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
         <div>
-            <img src="/img/scale.png" width="600" height= "660"></img>
+            <img src="/img/scale.png" width="500" height= "500"></img>
           </div>
-          <div className="col">
+          <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy enforcement at scale</Translate></h3>
             <Translate>Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.</Translate>
           </div>
@@ -115,7 +115,7 @@ function RoleManager() {
     <div className={styles.rolemanager}>
       <div className="container text--center">
         <div className="row">
-          <div className="col">
+          <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Role manager</Translate></h3>
             <Translate
               values={{
@@ -130,7 +130,7 @@ function RoleManager() {
             </Translate>
           </div>
           <div>
-            <img src="/img/role.png" width="600" height= "660"></img>
+            <img src="/img/role.png" width="500" height= "500"></img>
           </div>
         </div>
       </div>
