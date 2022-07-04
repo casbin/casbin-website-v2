@@ -14,11 +14,10 @@ module.exports = {
   projectName: 'casbin.io', // Usually your repo name.
   themeConfig: {
     algolia: {
-      "appId": "6NBEV8TOFK",
-      "apiKey": "111e290764eefd6fef64a7113c783afe",
-      "indexName": "casbin",
-      "contextualSearch": true,
-      "searchParameters": {}
+      appId: 'EPG63X9KNS',
+      apiKey: '23e4abcea442fdfc85d1c3c01e0395f8',
+      indexName: 'casbin',
+      contextualSearch: true,
     },
     navbar: {
       title: 'Casbin',
