@@ -94,10 +94,6 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Docs',
-              to: '/docs/overview',
-            },
-            {
               label: 'Getting Started',
               to: '/docs/get-started',
             },
@@ -127,8 +123,12 @@ module.exports = {
               href: 'https://stackoverflow.com/search?q=casbin',
             },
             {
-              label: 'Project Chat',
-              href: 'https://gitter.im/casbin/Lobby'
+              label: 'Gitter',
+              href: 'https://gitter.im/casbin/Lobby',
+            },
+            {
+              label: 'QQ Group',
+              href: 'https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885',
             },
           ],
         },
@@ -136,14 +136,55 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              html: `
+                <a href="https://github.com/casbin/casbin" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin?label=Casbin&style=social">
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://github.com/casbin/jcasbin" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/jcasbin?label=jCasbin&style=social">
+                </a>
+              `,
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              html: `
+                <a href="https://github.com/casbin/node-casbin" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/node-casbin?label=Node-Casbin&style=social">
+                </a>
+                &nbsp;&nbsp;
+                <a href="https://github.com/php-casbin/php-casbin" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/php-casbin/php-casbin?label=PHP-Casbin&style=social">
+                </a>
+              `,
             },
-          ],
+            {
+              html: `
+                <a href="https://github.com/casbin/pycasbin" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/pycasbin?label=PyCasbin&style=social">
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://github.com/casbin/Casbin.NET" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/Casbin.NET?label=Casbin.NET&style=social">
+                </a>
+              `,
+            },
+            {
+              html: `
+                <a href="https://github.com/casbin/casbin-cpp" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin-cpp?label=Casbin-CPP&style=social">
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://github.com/casbin/casbin-rs" target="_blank">
+                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin-rs?label=Casbin-RS&style=social">
+                </a>
+              `,
+            },
+            {
+              html: `
+                <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/casbinHQ?style=social">
+              `,
+            },
+          ]
         },
       ],
       logo: {
