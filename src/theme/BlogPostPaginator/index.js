@@ -1,11 +1,11 @@
 import React from 'react';
-import BlogPostItem from '@theme-original/BlogPostItem';
+import BlogPostPaginator from '@theme-original/BlogPostPaginator';
 import { DiscussionEmbed } from 'disqus-react';
 
-export default function BlogPostItemWrapper(props) {
+export default function BlogPostPaginatorWrapper(props) {
   return (
     <>
-      <BlogPostItem {...props} />
+      <BlogPostPaginator {...props} />
       <DiscussionEmbed
         shortname="casbin"
         config={
