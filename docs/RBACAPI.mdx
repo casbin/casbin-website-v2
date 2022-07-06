@@ -3,8 +3,7 @@ id: rbac-api
 title: RBAC API
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
 
@@ -13,7 +12,7 @@ A more friendly API for RBAC. This API is a subset of Management API. The RBAC u
 global variable `e` is Enforcer instance.
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -87,7 +86,7 @@ GetRolesForUser gets the roles that a user has.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -161,7 +160,7 @@ GetUsersForRole gets the users that has a role.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -235,7 +234,7 @@ HasRoleForUser determines whether a user has a role.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -310,7 +309,7 @@ Returns false if the user already has the role (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -388,7 +387,7 @@ Returns false if the user already has one of these roles (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -431,7 +430,7 @@ Returns false if the user does not have the role (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -508,7 +507,7 @@ Returns false if the user does not have any roles (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -585,7 +584,7 @@ Returns false if the user does not exist (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -661,7 +660,7 @@ DeleteRole deletes a role.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -738,7 +737,7 @@ Returns false if the permission does not exist (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -816,7 +815,7 @@ Returns false if the user or role already has the permission (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -893,7 +892,7 @@ Returns false if the user or role already has one of the permissions (aka not af
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -946,7 +945,7 @@ Returns false if the user or role does not have the permission (aka not affected
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1024,7 +1023,7 @@ Returns false if the user or role does not have any permissions (aka not affecte
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1100,7 +1099,7 @@ GetPermissionsForUser gets permissions for a user or role.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1165,7 +1164,7 @@ HasPermissionForUser determines whether a user has a permission.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1248,7 +1247,7 @@ But GetImplicitRolesForUser("alice") will get: ["role:admin", "role:user"].
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1331,7 +1330,7 @@ But GetImplicitUesrsForRole("role:user") will get: ["role:admin", "alice"].
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1378,7 +1377,7 @@ But GetImplicitPermissionsForUser("alice") will get: [["admin", "data1", "read"]
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1462,7 +1461,7 @@ But you can specify the policy as "p2" to get: [["admin", "create"]] by GetNamed
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1499,7 +1498,7 @@ GetDomainsForUser("alice") could get ["domain1", "domain2"]
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1532,7 +1531,7 @@ GetImplicitResourcesForUser("alice") will return
 
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 

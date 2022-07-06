@@ -3,8 +3,7 @@ id: adapters
 title: Adapters
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 In Casbin, the policy storage is implemented as an adapter (aka middleware for Casbin). A Casbin user can use an adapter to load policy rules from a storage (aka ``LoadPolicy()``), or save policy rules to it (aka ``SavePolicy()``). To keep light-weight, we don't put adapter code in the main library.
 
@@ -13,7 +12,7 @@ In Casbin, the policy storage is implemented as an adapter (aka middleware for C
 A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:)
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -218,7 +217,7 @@ Here we provide several examples:
 Below shows how to initialize an enforcer from the built-in file adapter:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -258,7 +257,7 @@ let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.cs
 This is the same with:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -308,7 +307,7 @@ Below shows how to initialize an enforcer from MySQL database. it connects to a 
 
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 

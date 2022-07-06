@@ -3,8 +3,7 @@ id: rbac-with-domains-api
 title: RBAC with Domains API
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code. 
 
@@ -13,7 +12,7 @@ A more friendly API for RBAC with domains. This API is a subset of Management AP
 global variable `e` is Enforcer instance.
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -87,7 +86,7 @@ GetUsersForRoleInDomain gets the users that has a role inside a domain.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -125,7 +124,7 @@ GetRolesForUserInDomain gets the roles that a user has inside a domain.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -172,7 +171,7 @@ GetPermissionsForUserInDomain gets permissions for a user or role inside a domai
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -202,7 +201,7 @@ Returns false if the user already has the role (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -241,7 +240,7 @@ Returns false if the user does not have the role (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -271,7 +270,7 @@ Returns false if the user does not have any roles (aka not affected).
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -292,7 +291,7 @@ Returns empty string array if has no domain defined in model.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -313,7 +312,7 @@ Returns false if has no domain defined in model.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -334,7 +333,7 @@ It would delete all domains if parameter is not provided.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -354,7 +353,7 @@ GetAllDomains would get all domains.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 

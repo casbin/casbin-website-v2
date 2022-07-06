@@ -3,8 +3,7 @@ id: syntax-for-models
 title: Syntax for Models
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 - A model CONF should have at least four sections: ``[request_definition], [policy_definition], [policy_effect], [matchers]``.
 
@@ -116,7 +115,7 @@ If you need multiple policy definitions or multiple matcher, you can use like ``
 You can pass in ``EnforceContext`` as the first parameter of ``enforce`` method to specify the types, the ``EnforceContext`` is like this
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -176,7 +175,7 @@ public class EnforceContext {
 Example usage, see [model](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) and [policy](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv), the request is as follows
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 

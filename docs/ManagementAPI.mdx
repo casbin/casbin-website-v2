@@ -3,8 +3,7 @@ id: management-api
 title: Management API
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 The primitive API that provides full support for Casbin policy management.
 
@@ -37,7 +36,7 @@ e.GetFilteredPolicy(0, "alice") // will return: [[alice book read] [alice pen ge
 global variable `e` is Enforcer instance.
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -111,7 +110,7 @@ Enforce decides whether a "subject" can access a "object" with the operation "ac
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -167,7 +166,7 @@ EnforceWithMatcher use a custom matcher to decides whether a "subject" can acces
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -214,7 +213,7 @@ EnforceEx explain enforcement by informing matched rules.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -261,7 +260,7 @@ EnforceExWithMatcher use a custom matcher and explain enforcement by informing m
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -281,7 +280,7 @@ BatchEnforce enforces each request and returns result in a bool array
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -319,7 +318,7 @@ GetAllSubjects gets the list of subjects that show up in the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -393,7 +392,7 @@ GetAllNamedSubjects gets the list of subjects that show up in the current named 
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -467,7 +466,7 @@ GetAllObjects gets the list of objects that show up in the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -541,7 +540,7 @@ GetAllNamedObjects gets the list of objects that show up in the current named po
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -615,7 +614,7 @@ GetAllActions gets the list of actions that show up in the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -689,7 +688,7 @@ GetAllNamedActions gets the list of actions that show up in the current named po
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -763,7 +762,7 @@ GetAllRoles gets the list of roles that show up in the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -837,7 +836,7 @@ GetAllNamedRoles gets the list of roles that show up in the current named policy
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -911,7 +910,7 @@ GetPolicy gets all the authorization rules in the policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -986,7 +985,7 @@ GetFilteredPolicy gets all the authorization rules in the policy, field filters 
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1060,7 +1059,7 @@ GetNamedPolicy gets all the authorization rules in the named policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1135,7 +1134,7 @@ GetFilteredNamedPolicy gets all the authorization rules in the named policy, fie
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1209,7 +1208,7 @@ GetGroupingPolicy gets all the role inheritance rules in the policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1283,7 +1282,7 @@ GetFilteredGroupingPolicy gets all the role inheritance rules in the policy, fie
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1357,7 +1356,7 @@ GetNamedGroupingPolicy gets all the role inheritance rules in the policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1431,7 +1430,7 @@ GetFilteredNamedGroupingPolicy gets all the role inheritance rules in the policy
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1505,7 +1504,7 @@ HasPolicy determines whether an authorization rule exists.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1579,7 +1578,7 @@ HasNamedPolicy determines whether a named authorization rule exists.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1655,7 +1654,7 @@ Otherwise the function returns true by adding the new rule.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1735,7 +1734,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1827,7 +1826,7 @@ Otherwise the function returns true by adding the new rule.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1907,7 +1906,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -1996,7 +1995,7 @@ RemovePolicy removes an authorization rule from the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2076,7 +2075,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2166,7 +2165,7 @@ RemovePolicy removes an authorization rule from the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2243,7 +2242,7 @@ RemoveNamedPolicy removes an authorization rule from the current named policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2323,7 +2322,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2412,7 +2411,7 @@ RemoveFilteredNamedPolicy removes an authorization rule from the current named p
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2489,7 +2488,7 @@ HasGroupingPolicy determines whether a role inheritance rule exists.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2563,7 +2562,7 @@ HasNamedGroupingPolicy determines whether a named role inheritance rule exists.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2639,7 +2638,7 @@ Otherwise the function returns true by adding the new rule.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2718,7 +2717,7 @@ If all authorization the rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2800,7 +2799,7 @@ Otherwise the function returns true by adding the new rule.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2879,7 +2878,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -2959,7 +2958,7 @@ RemoveGroupingPolicy removes a role inheritance rule from the current policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3038,7 +3037,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3118,7 +3117,7 @@ RemoveFilteredGroupingPolicy removes a role inheritance rule from the current po
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3194,7 +3193,7 @@ RemoveNamedGroupingPolicy removes a role inheritance rule from the current named
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3273,7 +3272,7 @@ If all the authorization rules are consistent with the policy rules, the functio
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3352,7 +3351,7 @@ RemoveFilteredNamedGroupingPolicy removes a role inheritance rule from the curre
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3428,7 +3427,7 @@ UpdatePolicy update a old policy to new policy.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3475,7 +3474,7 @@ UpdatePolicies updates all old policies to new policies.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3507,7 +3506,7 @@ AddFunction adds a customized function.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3646,7 +3645,7 @@ LoadFilteredPolicy loads filtered policies from file/database.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3702,7 +3701,7 @@ LoadIncrementalFilteredPolicy append a filtered policy from file/database.
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3745,7 +3744,7 @@ UpdateGroupingPolicy updates oldRule to newRulein `g` section
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -3774,7 +3773,7 @@ UpdateNamedGroupingPolicy updates oldRule named `ptype` to newRulein `g` section
 For example:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
