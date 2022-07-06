@@ -3,8 +3,7 @@ id: rbac-with-pattern
 title: RBAC with Pattern
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 
 ## Quick Start
 
@@ -58,7 +57,7 @@ g, /book/:id, book_group
 Casbin will automatically match ``/book/1`` and ``/book/2`` into pattern ``/book/:id`` for you. You only need to register the function with the enforcer like:
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
@@ -83,7 +82,7 @@ await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
 When Using a pattern matching function in domains/tenants, You need to register the function to enforcer and model. 
 
 ```mdx-code-block
-<Tabs>
+<Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
