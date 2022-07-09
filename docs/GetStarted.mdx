@@ -146,7 +146,7 @@ Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 
 <TabItem value="Node.js" label="Node.js">
 
-```js
+```javascript
 import { newEnforcer } from 'casbin';
 
 const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
@@ -366,7 +366,7 @@ if (e.enforce(sub, obj, act) == true) {
 
 <TabItem value="Node.js" label="Node.js">
 
-```js
+```javascript
 const sub = 'alice'; // the user that wants to access a resource.
 const obj = 'data1'; // the resource that is going to be accessed.
 const act = 'read'; // the operation that the user performs on the resource.
@@ -496,7 +496,7 @@ Roles roles = e.getRolesForUser("alice");
 
 <TabItem value="Node.js" label="Node.js">
 
-```js
+```javascript
 const roles = await e.getRolesForUser('alice');
 ```
 
