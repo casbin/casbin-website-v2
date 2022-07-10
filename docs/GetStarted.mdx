@@ -49,7 +49,7 @@ yarn add casbin
 
 Require this package in the `composer.json` of your project. This will download the package:
 
-```
+```bash
 composer require casbin/casbin
 ```
 
@@ -57,7 +57,7 @@ composer require casbin/casbin
 
 <TabItem value="Python" label="Python">
 
-```
+```bash
 pip install casbin
 ```
 
@@ -65,7 +65,7 @@ pip install casbin
 
 <TabItem value=".NET" label=".NET">
 
-```
+```bash
 dotnet add package Casbin.NET
 ```
 
@@ -73,7 +73,7 @@ dotnet add package Casbin.NET
 
 <TabItem value="Rust" label="Rust">
 
-```
+```bash
 cargo install cargo-edit
 cargo add casbin
 
@@ -94,7 +94,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 
 <TabItem value="Lua" label="Lua">
 
-```
+```bash
 luarocks install casbin  
 ```
 
@@ -102,7 +102,7 @@ If report Error: Your user does not have write permissions in /usr/local/lib/lua
 -- you may want to run as a privileged user or use your local tree with --local.
 you can add --local behind your command like this to fix:
 
-```
+```bash
 luarocks install casbin  --local
 ```
 
@@ -366,7 +366,7 @@ if (e.enforce(sub, obj, act) == true) {
 
 <TabItem value="Node.js" label="Node.js">
 
-```javascript
+```js
 const sub = 'alice'; // the user that wants to access a resource.
 const obj = 'data1'; // the resource that is going to be accessed.
 const act = 'read'; // the operation that the user performs on the resource.
