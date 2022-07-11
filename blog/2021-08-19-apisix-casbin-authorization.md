@@ -26,7 +26,7 @@ Let's say we want to create a model with three resources at the paths - `/`, `/r
 
 This would mean that all users (`*`) like for example `jack` can access the homepage (`/`). And users with `admin` permissions like `alice` and `bob` can access all the pages and resources (like `res1` and `res2`). Also, let's restrict users without any admin permissions to using only `GET` request method. For this scenario, we could define the model as:
 
-```conf
+```ini
 [request_definition]
 r = sub, obj, act
 
@@ -47,7 +47,7 @@ m = (g(r.sub, p.sub) || keyMatch(r.sub, p.sub)) && keyMatch(r.obj, p.obj) && key
 
 From the above scenario, the policy would be:
 
-```conf
+```csv
 p, *, /, GET
 p, admin, *, *
 g, alice, admin

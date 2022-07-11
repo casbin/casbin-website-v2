@@ -197,6 +197,7 @@ module.exports = {
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
+      additionalLanguages: ['ini', 'csv', 'lua', 'csharp', 'java', 'php', 'rust'],
     },
     announcementBar: {
       id: 'announcement', // ID of the announcement bar

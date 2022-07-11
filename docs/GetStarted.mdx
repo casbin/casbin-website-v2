@@ -52,7 +52,7 @@ yarn add casbin
 
 Require this package in the `composer.json` of your project. This will download the package:
 
-```
+```bash
 composer require casbin/casbin
 ```
 
@@ -61,7 +61,7 @@ composer require casbin/casbin
 <TabItem value="Python" label="Python">
 ```
 
-```
+```bash
 pip install casbin
 ```
 
@@ -71,7 +71,7 @@ pip install casbin
 ```
 
 
-```
+```bash
 dotnet add package Casbin.NET
 ```
 
@@ -96,7 +96,7 @@ cmake --build . --config Release --target casbin install -j 10
 <TabItem value="Rust" label="Rust">
 ```
 
-```
+```bash
 cargo install cargo-edit
 cargo add casbin
 
@@ -119,7 +119,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 <TabItem value="Lua" label="Lua">
 ```
 
-```
+```bash
 luarocks install casbin  
 ```
 
@@ -127,7 +127,7 @@ If report Error: Your user does not have write permissions in /usr/local/lib/lua
 -- you may want to run as a privileged user or use your local tree with --local.
 you can add --local behind your command like this to fix:
 
-```
+```bash
 luarocks install casbin  --local
 ```
 
@@ -175,7 +175,7 @@ Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 <TabItem value="Node.js" label="Node.js">
 ```
 
-```js
+```javascript
 import { newEnforcer } from 'casbin';
 
 const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
@@ -586,7 +586,7 @@ Roles roles = e.getRolesForUser("alice");
 <TabItem value="Node.js" label="Node.js">
 ```
 
-```js
+```javascript
 const roles = await e.getRolesForUser('alice');
 ```
 
