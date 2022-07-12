@@ -1,6 +1,8 @@
 ---
 id: k8s
 title: Authorization of Kubernetes
+description: Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin
+keywords: [K8s-authz, Kubernetes, k8s]
 ---
 
 [K8s-authz](https://github.com/casbin/k8s-authz) is a Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin. This middleware uses K8s validation admission webhook to check the policies defined by casbin, for every request of the k8s resources. These custom admission controllers perform some kind of validation on the request object that was forwarded by api server and based on a logic, sends back a response to api server that contains information on whether to allow or reject the request. These controllers are registered with Kubernetes using the `ValidatingAdmissionWebhook`.
