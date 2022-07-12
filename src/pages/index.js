@@ -84,7 +84,7 @@ function PolicyPersistence() {
             </Translate>
           </div>
           <div>
-            <img src="/img/store.png" width="500" height= "500" />
+            <img src="/img/store.png" alt="Policy Persistence" width="500" height= "500"/>
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
         <div>
-            <img src="/img/scale.png" width="500" height= "500"></img>
+            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height= "500"/>
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy enforcement at scale</Translate></h3>
@@ -130,7 +130,7 @@ function RoleManager() {
             </Translate>
           </div>
           <div>
-            <img src="/img/role.png" width="500" height= "500"></img>
+            <img src="/img/role.png" alt="Role manager" width="500" height= "500"/>
           </div>
         </div>
       </div>

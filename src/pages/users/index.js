@@ -5,7 +5,7 @@ import {UserList} from '@site/src/components/UserList'
 
 export default function Users() {
   return (
-    <Layout>
+    <Layout title="Showcase" description="Casbin Showcase">
       <header className="hero hero--primary">
         <div className="container">
           <h1 className="hero__title">

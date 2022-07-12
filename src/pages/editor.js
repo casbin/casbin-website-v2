@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import { DiscussionEmbed } from 'disqus-react';
 function Editor() {
   return (
-    <Layout>
+    <Layout title="Editor" description="Casbin Online Editor">
       <div>
         <iframe
           src="https://casbin.github.io/casbin-editor/"

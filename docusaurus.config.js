@@ -12,7 +12,9 @@ module.exports = {
   favicon: 'img/favicon.png',
   organizationName: 'casbin', // Usually your GitHub org/user name.
   projectName: 'casbin.io', // Usually your repo name.
+  trailingSlash: false,
   themeConfig: {
+    metadata: [{name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir'}],
     algolia: {
       appId: 'EPG63X9KNS',
       apiKey: '23e4abcea442fdfc85d1c3c01e0395f8',
