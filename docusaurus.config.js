@@ -186,6 +186,19 @@ module.exports = {
                 <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/casbinHQ?style=social">
               `,
             },
+            {
+              html: `
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?2c0ffc6f8d49e98d964d59d7aa4cbf34";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+`
+            },
           ]
         },
       ],
