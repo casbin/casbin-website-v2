@@ -46,6 +46,23 @@ It means ``sub`` in the request should have the role ``sub`` in the policy.
 
 :::
 
+:::info Token name convention
+
+Conventionally subject token name in policy definition is `sub` and placed in the beginning. Now Golang Casbin supports customized token name & place.
+If the subject token name is `sub`, the subject token can be placed at an arbitrary place and no extra action needs.  If the subject token name is not `sub` , `e.SetFieldIndex()` for `constant.SubjectIndex` should be called after the enforcer is initialized regardless of its position.
+```ini
+# `subject` here for sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+e.SetFieldIndex("p", constant.SubjectIndex, 2) // index start from 0
+ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an error
+```
+
+:::
+
 ## Role hierarchy
 
 Casbin's RBAC supports RBAC1's role hierarchy feature, meaning if ``alice`` has ``role1``, ``role1`` has ``role2``, then ``alice`` will also have ``role2`` and inherit its permissions.

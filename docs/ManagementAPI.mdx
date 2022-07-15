@@ -3796,3 +3796,29 @@ boolean succeed = e.updateNamedGroupingPolicy("g1", Arrays.asList("data3_admin",
 </TabItem>
 </Tabs>
 ```
+
+### `SetFieldIndex()`
+
+SetFieldIndex suport customization of conventional name and position of `sub`, `obj`, `domain` and `priority`.
+
+```ini
+[policy_definition]
+p = customized_priority, obj, act, eft, subject
+```
+
+For example:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.SetFieldIndex("p", constant.PriorityIndex, 0)
+e.SetFieldIndex("p", constant.SubjectIndex, 4)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

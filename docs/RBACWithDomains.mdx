@@ -36,3 +36,21 @@ m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 ```
 
 Please see the [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf) for examples.
+
+:::info Token name convention
+
+Note: Conventionally domain token name in policy definition is `dom` and placed as the second token(`sub, dom, obj, act`).
+Now Golang Casbin supports customized token name & place. If the domain token name is `dom`, the domain token can be placed at an arbitrary place and no extra action needs.  If the domain token name is not `dom` , `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized regardless of its position.
+
+```ini
+# `domain` here for `dom`
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // index start from 0
+users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, it will raise an error
+```
+
+:::
