@@ -83,7 +83,7 @@ function PolicyPersistence() {
               {'In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don\'t put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}.'}
             </Translate>
           </div>
-          <div>
+          <div style={{marginInline: "auto"}}>
             <img src="/img/store.png" alt="Policy Persistence" width="500" height= "500"/>
           </div>
         </div>
@@ -97,7 +97,7 @@ function PolicyEnforcement() {
     <div className={styles.policyenforcement}>
       <div className="container text--center">
         <div className="row">
-        <div>
+        <div style={{marginInline: "auto"}}>
             <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height= "500"/>
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
@@ -129,7 +129,7 @@ function RoleManager() {
               {'The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don\'t put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: {rolemanagersLink} .'}
             </Translate>
           </div>
-          <div>
+          <div style={{marginInline: "auto"}}>
             <img src="/img/role.png" alt="Role manager" width="500" height= "500"/>
           </div>
         </div>
