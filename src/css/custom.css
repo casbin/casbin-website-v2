@@ -7,6 +7,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
+  --site-primary-hue-saturation: 210 68%;
   --ifm-color-primary: #443E7E;
   --ifm-color-primary-dark: rgba(105, 12, 211, 0.623);
   --ifm-color-primary-darker: rgb(31, 165, 136);
@@ -68,4 +69,21 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
   align-items: center;
   margin: 10px;
   justify-content: center;
+}
+
+div[class^='announcementBar_'] {
+  --site-announcement-bar-stripe-color1: hsl(
+    var(--site-primary-hue-saturation) 85%
+  );
+  --site-announcement-bar-stripe-color2: hsl(
+    var(--site-primary-hue-saturation) 95%
+  );
+  background: repeating-linear-gradient(
+    35deg,
+    var(--site-announcement-bar-stripe-color1),
+    var(--site-announcement-bar-stripe-color1) 20px,
+    var(--site-announcement-bar-stripe-color2) 10px,
+    var(--site-announcement-bar-stripe-color2) 40px
+  );
+  font-weight: bold;
 }
