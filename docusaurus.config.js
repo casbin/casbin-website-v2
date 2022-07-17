@@ -218,9 +218,7 @@ var _hmt = _hmt || [];
       id: 'announcement', // ID of the announcement bar
       content:
         '<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>',
-      backgroundColor: '#fafbfc',
-      textColor: '#091E42', // 默认为 `#000`。
-      isCloseable: false, // 默认为 `true`。
+      isCloseable: true,
     },
     docs:{
       sidebar: {
