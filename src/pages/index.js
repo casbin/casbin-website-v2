@@ -159,6 +159,7 @@ function Showcase () {
           {'Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups\.If you\'re curious to see what can be accomplished Casbin, {UsersPage}!'}
           </Translate>
           </p>
+        <br/><br/>
         <UserList />
       </div>
     </div>
