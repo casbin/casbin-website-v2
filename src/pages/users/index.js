@@ -18,12 +18,13 @@ export default function Users() {
           </p>
         </div>
       </header>
-      <UserList />
       <div className="container" style={{
         paddingTop: '10vh',
         paddingBottom: "10vh",
         textAlign: 'center',
       }}>
+        <UserList />
+        <br/><br/><br/>
         <h2>
           <Translate>Is your project also using Casbin?</Translate>
         </h2>

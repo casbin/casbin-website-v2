@@ -55,9 +55,9 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  padding-left: 10vw;
-  padding-right: 10vw;
-  padding-top: 10vh;
+  /* padding-left: 10vw;
+  padding-right: 10vw; 
+  padding-top: 10vh; */
 }
 
 .showcaseLogo {
