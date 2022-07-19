@@ -12,7 +12,7 @@ keywords: [function, customize]
 You can even specify functions in a matcher to make it more powerful. You can use the built-in functions or specify your own function.
 The built-in key-matching functions take such a format:
 
-```C
+```c
 bool function_name(string url, string pattern)
 ```
 
@@ -33,7 +33,7 @@ globMatch | a path-like path like ``/alice_data/resource1`` | a glob pattern lik
 
 For key-getting functions, they usually take three parameters(except `keyGet`):
 
-```C
+```c
 bool function_name(string url, string pattern, string key_name)
 ```
 
