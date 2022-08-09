@@ -41,9 +41,8 @@ module.exports = {
           position: 'left',
         },
         {
-          type: 'doc',
+          href: '/docs/management-api',
           label: 'API',
-          docId: 'management-api',
           position: 'left',
         },
         {
@@ -52,9 +51,8 @@ module.exports = {
           position: 'left',
         },
         {
-          type: 'doc',
+          href: '/docs/ide-plugins',
           label: 'IDE plugins',
-          docId: 'ide-plugins',
           position: 'left'
         },
         {
