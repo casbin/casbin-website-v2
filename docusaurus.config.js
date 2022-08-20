@@ -14,12 +14,15 @@ module.exports = {
   projectName: 'casbin.io', // Usually your repo name.
   trailingSlash: false,
   themeConfig: {
-    metadata: [{name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir'}],
+    metadata: [{ name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir' }],
     algolia: {
       appId: 'EPG63X9KNS',
       apiKey: '23e4abcea442fdfc85d1c3c01e0395f8',
       indexName: 'casbin',
       contextualSearch: true,
+    },
+    hotjar: {
+      applicationId: '1689878',
     },
     navbar: {
       title: 'Casbin',
@@ -34,7 +37,7 @@ module.exports = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        { to: '/blog', label: 'Blog', position: 'left' },
         {
           to: '/help',
           label: 'Help',
@@ -218,15 +221,17 @@ var _hmt = _hmt || [];
         '<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>',
       isCloseable: true,
     },
-    docs:{
+    docs: {
       sidebar: {
         hideable: true,
       },
     }
   },
   scripts: [
-    '/js/gitter.js',
-    '/js/hotjar.js',
+    {
+      src: '/js/gitter.js',
+      async: true,
+    },
   ],
   presets: [
     [
@@ -251,6 +256,7 @@ var _hmt = _hmt || [];
       },
     ],
   ],
+  plugins: ['docusaurus-plugin-hotjar'],
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh', 'ko', 'ru', 'fr', 'de', 'ja'],
