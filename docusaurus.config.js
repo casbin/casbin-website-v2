@@ -14,7 +14,7 @@ module.exports = {
   projectName: 'casbin.io', // Usually your repo name.
   trailingSlash: false,
   themeConfig: {
-    metadata: [{name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir'}],
+    metadata: [{ name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir' }],
     algolia: {
       appId: 'EPG63X9KNS',
       apiKey: '23e4abcea442fdfc85d1c3c01e0395f8',
@@ -34,7 +34,7 @@ module.exports = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        { to: '/blog', label: 'Blog', position: 'left' },
         {
           to: '/help',
           label: 'Help',
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
         '<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>',
       isCloseable: true,
     },
-    docs:{
+    docs: {
       sidebar: {
         hideable: true,
       },
@@ -234,16 +234,28 @@ var _hmt = _hmt || [];
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/casbin/casbin-website-v2/edit/master/',
           sidebarCollapsed: false,
+          editUrl: ({ locale, docPath }) => {
+            if (locale === 'en') {
+              return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
+            }
+            if (locale == 'zh') {
+              return `https://crowdin.com/project/casbin-website/zh-CN`;
+            }
+            return `https://crowdin.com/project/casbin-website/${locale}`;
+          },
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/casbin/casbin-website-v2/edit/master/',
+          editUrl: ({ locale, blogDirPath, blogPath }) => {
+            if (locale === 'en') {
+              return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
+            }
+            if (locale == 'zh') {
+              return `https://crowdin.com/project/casbin-website/zh-CN`;
+            }
+            return `https://crowdin.com/project/casbin-website/${locale}`;
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
