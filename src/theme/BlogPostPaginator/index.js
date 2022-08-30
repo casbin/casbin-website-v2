@@ -9,9 +9,9 @@ export default function BlogPostPaginatorWrapper(props) {
       <Head
         style={[{
           "cssText": `
-        iframe[sandbox]:not([sandbox=""]) {
-          display: none !important;
-      }
+          #disqus_thread>iframe[sandbox]:not([sandbox=""]) {
+            display: none !important;
+        }
       `
         }]} />
       <BlogPostPaginator {...props} />
