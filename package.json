@@ -12,7 +12,7 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "lint": "eslint --fix . --ext .js",
-    "lint:css":"stylelint src/**/*.{css,scss} --fix",
+    "lint:css": "stylelint \"src/**/*.{css,scss}\" --fix",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "crowdin:sync": "docusaurus write-translations && crowdin upload && crowdin download",
@@ -22,25 +22,13 @@
     "@crowdin/cli": "^3.7.10",
     "@docusaurus/core": "2.0.1",
     "@docusaurus/preset-classic": "2.0.1",
+    "@giscus/react": "^2.2.0",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
     "docusaurus-plugin-hotjar": "^0.0.2",
     "prism-react-renderer": "^1.2.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "@giscus/react": "^2.2.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",
@@ -57,7 +45,18 @@
   },
   "lint-staged": {
     "*.js": "eslint --fix",
-    "*.css": "stylelint --fix",
-    "*.scss": "stylelint --syntax=scss --fix"
+    "*.{css, scss}": "stylelint --fix"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
