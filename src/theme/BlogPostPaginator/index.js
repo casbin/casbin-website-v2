@@ -1,7 +1,7 @@
-import React from 'react';
-import BlogPostPaginator from '@theme-original/BlogPostPaginator';
-import Giscus from '@giscus/react';
-import { useColorMode } from '@docusaurus/theme-common';
+import React from "react";
+import BlogPostPaginator from "@theme-original/BlogPostPaginator";
+import Giscus from "@giscus/react";
+import {useColorMode} from "@docusaurus/theme-common";
 
 export default function BlogPostPaginatorWrapper(props) {
   return (

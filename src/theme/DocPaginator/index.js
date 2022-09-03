@@ -1,7 +1,7 @@
-import React from 'react';
-import DocPaginator from '@theme-original/DocPaginator';
-import Giscus from '@giscus/react';
-import { useColorMode } from '@docusaurus/theme-common';
+import React from "react";
+import DocPaginator from "@theme-original/DocPaginator";
+import Giscus from "@giscus/react";
+import {useColorMode} from "@docusaurus/theme-common";
 
 export default function DocPaginatorWrapper(props) {
   return (
