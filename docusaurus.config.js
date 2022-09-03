@@ -1,142 +1,142 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Casbin',
-  tagline: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir',
-  url: 'https://casbin.io',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.png',
-  organizationName: 'casbin', // Usually your GitHub org/user name.
-  projectName: 'casbin.io', // Usually your repo name.
+  title: "Casbin",
+  tagline: "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
+  url: "https://casbin.io",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.png",
+  organizationName: "casbin", // Usually your GitHub org/user name.
+  projectName: "casbin.io", // Usually your repo name.
   trailingSlash: false,
   themeConfig: {
-    metadata: [{ name: 'Casbin', content: 'An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir' }],
+    metadata: [{name: "Casbin", content: "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"}],
     algolia: {
-      appId: 'EPG63X9KNS',
-      apiKey: '23e4abcea442fdfc85d1c3c01e0395f8',
-      indexName: 'casbin',
+      appId: "EPG63X9KNS",
+      apiKey: "23e4abcea442fdfc85d1c3c01e0395f8",
+      indexName: "casbin",
       contextualSearch: true,
     },
     hotjar: {
-      applicationId: '1689878',
+      applicationId: "1689878",
     },
     navbar: {
-      title: 'Casbin',
+      title: "Casbin",
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/casbin.svg',
+        alt: "My Site Logo",
+        src: "img/casbin.svg",
       },
       items: [
         {
-          type: 'doc',
-          docId: 'overview',
-          position: 'left',
-          label: 'Docs',
+          type: "doc",
+          docId: "overview",
+          position: "left",
+          label: "Docs",
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        {to: "/blog", label: "Blog", position: "left"},
         {
-          to: '/help',
-          label: 'Help',
-          position: 'left',
-        },
-        {
-          href: '/docs/management-api',
-          label: 'API',
-          position: 'left',
+          to: "/help",
+          label: "Help",
+          position: "left",
         },
         {
-          href: '/editor',
-          label: 'Editor',
-          position: 'left',
+          href: "/docs/management-api",
+          label: "API",
+          position: "left",
         },
         {
-          href: '/docs/ide-plugins',
-          label: 'IDE plugins',
-          position: 'left'
+          href: "/editor",
+          label: "Editor",
+          position: "left",
         },
         {
-          label: 'Casdoor',
-          href: 'https://casdoor.org/',
-          position: 'left'
+          href: "/docs/ide-plugins",
+          label: "IDE plugins",
+          position: "left",
         },
         {
-          label: 'Forum',
-          href: 'https://forum.casbin.com/',
-          position: 'left'
+          label: "Casdoor",
+          href: "https://casdoor.org/",
+          position: "left",
         },
         {
-          type: 'localeDropdown',
-          position: 'right',
+          label: "Forum",
+          href: "https://forum.casbin.com/",
+          position: "left",
+        },
+        {
+          type: "localeDropdown",
+          position: "right",
           dropdownItemsAfter: [
             {
-              type: 'html',
-              value: '<hr style="margin: 0.3rem 0;">',
+              type: "html",
+              value: "<hr style=\"margin: 0.3rem 0;\">",
             },
             {
-              href: 'https://crowdin.com/project/casbin-website',
-              label: 'Help Us Translate',
+              href: "https://crowdin.com/project/casbin-website",
+              label: "Help Us Translate",
             },
           ],
         },
         {
-          href: 'https://github.com/casbin/casbin',
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
+          href: "https://github.com/casbin/casbin",
+          position: "right",
+          className: "header-github-link",
+          "aria-label": "GitHub repository",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Docs',
+          title: "Docs",
           items: [
             {
-              label: 'Getting Started',
-              to: '/docs/get-started',
+              label: "Getting Started",
+              to: "/docs/get-started",
             },
             {
-              label: 'Management API',
-              to: '/docs/management-api',
+              label: "Management API",
+              to: "/docs/management-api",
             },
             {
-              label: 'RBAC API',
-              to: '/docs/rbac-api',
+              label: "RBAC API",
+              to: "/docs/rbac-api",
             },
             {
-              label: 'Middlewares',
-              to: '/docs/middlewares',
+              label: "Middlewares",
+              to: "/docs/middlewares",
             },
           ],
         },
         {
-          title: 'Community',
+          title: "Community",
           items: [
             {
-              label: 'Forum',
-              href: 'https://forum.casbin.com/',
+              label: "Forum",
+              href: "https://forum.casbin.com/",
             },
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/search?q=casbin',
+              label: "Stack Overflow",
+              href: "https://stackoverflow.com/search?q=casbin",
             },
             {
-              label: 'Gitter',
-              href: 'https://gitter.im/casbin/Lobby',
+              label: "Gitter",
+              href: "https://gitter.im/casbin/Lobby",
             },
             {
-              label: 'QQ Group',
-              href: 'https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885',
+              label: "QQ Group",
+              href: "https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885",
             },
           ],
         },
         {
-          title: 'More',
+          title: "More",
           items: [
             {
               html: `
@@ -198,79 +198,79 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-`
+`,
             },
-          ]
+          ],
         },
       ],
       logo: {
-        alt: 'Casbin Logo',
-        src: 'img/casbin_min.svg',
-        href: '/',
+        alt: "Casbin Logo",
+        src: "img/casbin_min.svg",
+        href: "/",
       },
       copyright: `Copyright © ${new Date().getFullYear()} Casbin Organization`,
     },
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
-      additionalLanguages: ['ini', 'csv', 'lua', 'csharp', 'java', 'php', 'rust'],
+      additionalLanguages: ["ini", "csv", "lua", "csharp", "java", "php", "rust"],
     },
     announcementBar: {
-      id: 'announcement', // ID of the announcement bar
+      id: "announcement", // ID of the announcement bar
       content:
-        '<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>',
+        "<a href=\"https://casdoor.org/\">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>",
       isCloseable: true,
     },
     docs: {
       sidebar: {
         hideable: true,
       },
-    }
+    },
   },
   scripts: [
     {
-      src: '/js/gitter.js',
+      src: "/js/gitter.js",
       async: true,
     },
   ],
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
-          editUrl: ({ locale, docPath }) => {
-            if (locale === 'en') {
+          editUrl: ({locale, docPath}) => {
+            if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
             }
-            if (locale == 'zh') {
-              return `https://crowdin.com/project/casbin-website/zh-CN`;
+            if (locale === "zh") {
+              return "https://crowdin.com/project/casbin-website/zh-CN";
             }
             return `https://crowdin.com/project/casbin-website/${locale}`;
           },
         },
         blog: {
           showReadingTime: true,
-          editUrl: ({ locale, blogDirPath, blogPath }) => {
-            if (locale === 'en') {
+          editUrl: ({locale, blogDirPath, blogPath}) => {
+            if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
             }
-            if (locale == 'zh') {
-              return `https://crowdin.com/project/casbin-website/zh-CN`;
+            if (locale === "zh") {
+              return "https://crowdin.com/project/casbin-website/zh-CN";
             }
             return `https://crowdin.com/project/casbin-website/${locale}`;
           },
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],
   ],
-  plugins: ['docusaurus-plugin-hotjar'],
+  plugins: ["docusaurus-plugin-hotjar"],
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh', 'ko', 'ru', 'fr', 'de', 'ja'],
+    defaultLocale: "en",
+    locales: ["en", "zh", "ko", "ru", "fr", "de", "ja"],
   },
 };

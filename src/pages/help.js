@@ -1,10 +1,10 @@
-import React from 'react';
-import Layout from '@theme/Layout';
-import Translate, { translate } from '@docusaurus/Translate';
+import React from "react";
+import Layout from "@theme/Layout";
+import Translate from "@docusaurus/Translate";
 
 function Hello() {
   return (
-    <Layout title="Help" description="Help Page" styles={{ padding: '19px', }}>
+    <Layout title="Help" description="Help Page" styles={{padding: "19px"}}>
 
       <div className="container text--center">
         <br />
@@ -23,9 +23,9 @@ function Hello() {
                 <a href="https://forum.casbin.com">
                   <Translate>Casbin Forum</Translate>
                 </a>
-              )
+              ),
             }}>
-              {'Discuss with maintainers or share your experience about Casbin on {forumLink}.'}
+              {"Discuss with maintainers or share your experience about Casbin on {forumLink}."}
             </Translate>
           </div>
           <div className="col">
@@ -35,10 +35,10 @@ function Hello() {
                 <a href="https://gitter.im/casbin/Lobby">
                   <Translate>Gitter</Translate>
                 </a>
-              )
+              ),
             }}
             >
-              {'You can join the conversation on {gitterLink} for contributing help.'}
+              {"You can join the conversation on {gitterLink} for contributing help."}
             </Translate>
           </div>
           <div className="col">
@@ -46,9 +46,9 @@ function Hello() {
             <Translate values={{
               qqLink: (
                 <a href="https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885">546057381</a>
-              )
+              ),
             }}>
-              {'You can contact us by joining the QQ group: {qqLink}.'}
+              {"You can contact us by joining the QQ group: {qqLink}."}
             </Translate>
           </div>
           <div className="col">
@@ -72,7 +72,7 @@ function Hello() {
                 ),
               }}
             >
-              {'At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented.'}
+              {"At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented."}
             </Translate>
           </div>
         </div>

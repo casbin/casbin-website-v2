@@ -1,6 +1,6 @@
-import React from 'react';
-import Layout from '@theme/Layout';
-import Giscus from '@giscus/react';
+import React from "react";
+import Layout from "@theme/Layout";
+import Giscus from "@giscus/react";
 
 function Editor() {
   return (
@@ -8,13 +8,14 @@ function Editor() {
       <div>
         <iframe
           src="https://casbin.org/casbin-editor/"
-          style={{ width: '100%', height: '800px', display: 'block' }}
+          style={{width: "100%", height: "800px", display: "block"}}
           title="Casbin-editor"
+          // eslint-disable-next-line react/no-unknown-property
           scrolling="no"
         />
       </div>
       <br />
-      <div style={{ width: "60vw", margin: "0 auto" }}>
+      <div style={{width: "60vw", margin: "0 auto"}}>
         <Giscus
           id="comments"
           repo="casbin/casbin"
