@@ -10,7 +10,6 @@ function Editor() {
           src="https://casbin.org/casbin-editor/"
           style={{width: "100%", height: "800px", display: "block"}}
           title="Casbin-editor"
-          // eslint-disable-next-line react/no-unknown-property
           scrolling="no"
         />
       </div>
