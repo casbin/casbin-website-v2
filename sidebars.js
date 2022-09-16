@@ -19,6 +19,7 @@ module.exports = {
     {
       type: "category",
       label: "The basics",
+      link: {type: "generated-index"},
       items: [
         "overview",
         "get-started",
@@ -29,6 +30,7 @@ module.exports = {
     {
       type: "category",
       label: "Model",
+      link: {type: "generated-index"},
       items: [
         "supported-models",
         "syntax-for-models",
@@ -46,6 +48,7 @@ module.exports = {
     {
       type: "category",
       label: "Storage",
+      link: {type: "generated-index"},
       items: [
         "model-storage",
         "policy-storage",
@@ -55,6 +58,7 @@ module.exports = {
     {
       type: "category",
       label: "Extensions",
+      link: {type: "generated-index"},
       items: [
         "enforcers",
         "adapters",
@@ -69,6 +73,7 @@ module.exports = {
     {
       type: "category",
       label: "API",
+      link: {type: "generated-index"},
       items: [
         "api-overview",
         "management-api",
@@ -81,6 +86,7 @@ module.exports = {
     {
       type: "category",
       label: "Advanced usage",
+      link: {type: "generated-index"},
       items: [
         "multi-threading",
         "benchmark",
@@ -93,6 +99,7 @@ module.exports = {
     {
       type: "category",
       label: "Management",
+      link: {type: "generated-index"},
       items: [
         "admin-portal",
         "service",
@@ -103,6 +110,7 @@ module.exports = {
     {
       type: "category",
       label: "Editor",
+      link: {type: "generated-index"},
       items: [
         "online-editor",
         "ide-plugins",
@@ -111,6 +119,7 @@ module.exports = {
     {
       type: "category",
       label: "More",
+      link: {type: "generated-index"},
       items: [
         "adopters",
         "contributing",
