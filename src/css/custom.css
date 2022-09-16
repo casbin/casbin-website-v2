@@ -65,7 +65,6 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   width: 150px;
   height: 150px;
   display: flex;
-  text-align: center;
   align-items: center;
   margin: 10px;
   justify-content: center;

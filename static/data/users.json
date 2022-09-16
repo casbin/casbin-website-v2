@@ -96,21 +96,9 @@
         "pinned" : true
     },
     {
-        "caption": "OVO",
-        "image": "users/ovo.png",
-        "infolink": "https://ovo.id/",
-        "pinned" : true
-    },
-    {
         "caption": "Musma",
         "image": "users/musma.svg",
         "infolink": "https://www.musma.net/",
-        "pinned" : true
-    },
-    {
-        "caption": "kubemq",
-        "image": "users/kubemq.png",
-        "infolink": "https://docs.kubemq.io/license/open-source-software-notices",
         "pinned" : true
     },
     {
@@ -123,6 +111,18 @@
         "caption": "Jfif",
         "image": "users/360.jfif",
         "infolink": "https://www.linkedin.com/in/andrew-weng/",
+        "pinned" : true
+    },
+    {
+        "caption": "Bytebase",
+        "image": "users/bytebase.svg",
+        "infolink": "https://github.com/bytebase/bytebase/blob/740afc6286cd855fecc3cc54875583c6b650a41a/server/server.go",
+        "pinned" : true
+    },
+    {
+        "caption": "zilliz",
+        "image": "users/zilliz.png",
+        "infolink": "https://github.com/milvus-io/milvus/blob/d7f38a803d5d23d3e061702e73770cb68aee1dc2/internal/proxy/privilege_interceptor.go",
         "pinned" : true
     }
 ]
