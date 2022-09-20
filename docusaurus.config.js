@@ -240,6 +240,8 @@ var _hmt = _hmt || [];
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
           editUrl: ({locale, docPath}) => {
             if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
