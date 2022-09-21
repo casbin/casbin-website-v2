@@ -16,9 +16,9 @@ module.exports = {
   themeConfig: {
     metadata: [{name: "Casbin", content: "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"}],
     algolia: {
-      appId: "EPG63X9KNS",
-      apiKey: "23e4abcea442fdfc85d1c3c01e0395f8",
-      indexName: "casbin",
+      appId: "6NBEV8TOFK",
+      apiKey: "f00fe67a071e60e18a5c85ae314bba55",
+      indexName: "casbin-v2",
       contextualSearch: true,
     },
     hotjar: {
