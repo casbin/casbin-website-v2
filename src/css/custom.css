@@ -1,3 +1,5 @@
+/* stylelint-disable max-line-length */
+/* stylelint-disable value-keyword-case */
 /* stylelint-disable docusaurus/copyright-header */
 
 /**
@@ -31,6 +33,7 @@
   --ifm-font-family-monospace: "Fira Code VF", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --ifm-code-font-size: 95%; /* code block font size */
   --site-primary-hue-saturation: 210 68%; /* announcementBar */
+
   /* https://docusaurus.io/docs/styling-layout#styling-your-site-with-infima */
   --ifm-color-primary: #4c00ff;
   --ifm-color-primary-dark: #4400e6;
@@ -136,6 +139,66 @@ div[class^="announcementBar_"] {
       var(--site-announcement-bar-stripe-color2) 40px
     );
   font-weight: bold;
+}
+
+/* background: https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=33 */
+.header-community-link::before {
+  content: "";
+  width: 32px;
+  height: 32px;
+  display: flex;
+  background:
+    url("data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M704 732.8c51.2 0 96-41.6 96-96V224c0-51.2-41.6-96-96-96H156.8c-51.2 0-96 41.6-96 96v412.8c0 51.2 41.6 96 96 96H192v160c0 12.8 9.6 25.6 22.4 32h9.6c9.6 0 19.2-3.2 25.6-12.8l131.2-179.2H704z' fill='%232c2c2c'/%3E%3Cpath d='M864 252.8c-19.2 0-32 12.8-32 32s16 32 32 32 32 12.8 32 32v348.8c0 19.2-16 25.6-32 25.6h-32c-19.2 0-32 12.8-32 32v3.2c0 3.2-3.2 6.4-3.2 9.6v60.8l-73.6-57.6c-3.2-3.2-9.6-3.2-16-3.2H544c-19.2 0-32 12.8-32 32s12.8 32 32 32h153.6l115.2 89.6c6.4 3.2 12.8 6.4 19.2 6.4 3.2 0 9.6 0 12.8-3.2 9.6-6.4 19.2-16 19.2-28.8V787.2c54.4 0 96-38.4 96-89.6V348.8c0-51.2-44.8-96-96-96z' fill='%232c2c2c'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+html[data-theme="dark"] .header-community-link::before {
+  background:
+    url("data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M704 732.8c51.2 0 96-41.6 96-96V224c0-51.2-41.6-96-96-96H156.8c-51.2 0-96 41.6-96 96v412.8c0 51.2 41.6 96 96 96H192v160c0 12.8 9.6 25.6 22.4 32h9.6c9.6 0 19.2-3.2 25.6-12.8l131.2-179.2H704z' fill='%23dbdbdb'/%3E%3Cpath d='M864 252.8c-19.2 0-32 12.8-32 32s16 32 32 32 32 12.8 32 32v348.8c0 19.2-16 25.6-32 25.6h-32c-19.2 0-32 12.8-32 32v3.2c0 3.2-3.2 6.4-3.2 9.6v60.8l-73.6-57.6c-3.2-3.2-9.6-3.2-16-3.2H544c-19.2 0-32 12.8-32 32s12.8 32 32 32h153.6l115.2 89.6c6.4 3.2 12.8 6.4 19.2 6.4 3.2 0 9.6 0 12.8-3.2 9.6-6.4 19.2-16 19.2-28.8V787.2c54.4 0 96-38.4 96-89.6V348.8c0-51.2-44.8-96-96-96z' fill='%23dbdbdb'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+.header-community-link {
+  opacity: 0.6;
+}
+
+.header-community-link:hover {
+  opacity: 1;
+}
+
+.casdoor-link {
+  background-color: rgb(89 81 173);
+  border-radius: 4px;
+  margin-right: 12px;
+  transition-property: all;
+}
+
+.casdoor-link svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.2rem;
+}
+
+.casdoor-signup {
+  color: #fff;
+
+  --ifm-link-hover-color: #fff;
+  --ifm-navbar-link-hover-color: #fff;
+}
+
+.casdoor-signup:hover {
+  background-color: rgb(108 99 211);
+}
+
+.casdoor-login {
+  --ifm-navbar-link-hover-color: rgb(108 99 211);
+
+  background-color: transparent;
+}
+
+.navbar-sidebar .casdoor-link {
+  padding: 0.75rem;
+  margin-top: 1rem;
 }
 
 /* navbar items */

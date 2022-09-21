@@ -45,7 +45,7 @@ function Feature({title, path, description}) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-      <img src={colorMode === "light" ? path + ".png" : path + "-dark.png"} className={styles.featureSvg} alt={title} />
+        <img src={colorMode === "light" ? path + ".png" : path + "-dark.png"} className={styles.featureSvg} alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
