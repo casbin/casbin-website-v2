@@ -1,12 +1,13 @@
 import React from "react";
 import clsx from "clsx";
-import styles from "./HomepageFeatures.module.css";
+import styles from "./styles.module.css";
 import Translate from "@docusaurus/Translate";
+import {useColorMode} from "@docusaurus/theme-common";
 
 const FeatureList = [
   {
     title: <Translate>Hybrid access control models</Translate>,
-    Svg: require("/img/model.svg").default,
+    path: "/img/model",
     description: (
       <Translate>
         In Casbin, an access control model is abstracted into a CONF file based on the PERM metamodel (Policy, Effect, Request, Matchers). So switching or upgrading the authorization mechanism for a project is just as simple as modifying a configuration.
@@ -15,7 +16,7 @@ const FeatureList = [
   },
   {
     title: <Translate>Flexible policy storage</Translate>,
-    Svg: require("/img/storage.svg").default,
+    path: "/img/storage",
     description: (
       <Translate values={{
         adaptersLink: (
@@ -30,7 +31,7 @@ const FeatureList = [
   },
   {
     title: <Translate>Cross-languages & cross-platforms</Translate>,
-    Svg: require("/img/language.svg").default,
+    path: "/img/language",
     description: (
       <Translate>
         Casbin is implemented in Golang, Java, PHP and Node.js. All implementations share the same API and behaviors. You can learn Casbin once and use it everywhere.
@@ -39,11 +40,12 @@ const FeatureList = [
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({title, path, description}) {
+  const {colorMode} = useColorMode();
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} alt={title} />
+        <img src={colorMode === "light" ? path + ".png" : path + "-dark.png"} className={styles.featureSvg} alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>

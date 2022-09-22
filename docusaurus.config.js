@@ -88,6 +88,33 @@ module.exports = {
           className: "header-github-link",
           "aria-label": "GitHub repository",
         },
+        {
+          type: "custom-item",
+          int: "https://gitter.im/casbin/Lobby",
+          cn: "https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885",
+          position: "right",
+          className: "navbar__item navbar__link header-community-link",
+        },
+        {
+          type: "search",
+          position: "right",
+        },
+        {
+          type: "custom-item",
+          int: "https://door.casdoor.org/signup",
+          cn: "https://door.casdoor.com/signup",
+          label: "Sign Up",
+          position: "right",
+          className: "navbar__item navbar__link casdoor-signup casdoor-link",
+        },
+        {
+          type: "custom-item",
+          int: "https://door.casdoor.org/login",
+          cn: "https://door.casdoor.com/login",
+          label: "Login",
+          position: "right",
+          className: "navbar__item navbar__link casdoor-login casdoor-link",
+        },
       ],
     },
     footer: {
@@ -229,6 +256,10 @@ var _hmt = _hmt || [];
   },
   scripts: [
     {
+      src: "/js/isMainland.js",
+      async: false,
+    },
+    {
       src: "/js/gitter.js",
       async: true,
     },
@@ -240,6 +271,8 @@ var _hmt = _hmt || [];
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
           editUrl: ({locale, docPath}) => {
             if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
