@@ -7,6 +7,7 @@ import styles from "./index.module.css";
 import HomepageFeatures from "../components/HomepageFeatures";
 import {UserList} from "@site/src/components/UserList";
 import Translate from "@docusaurus/Translate";
+import {useWindowSize} from "@docusaurus/theme-common";
 
 class Button extends React.Component {
   render() {
@@ -166,6 +167,18 @@ function Showcase() {
   );
 }
 
+function OpenCollective() {
+  if (useWindowSize() === "mobile") {
+    return (
+      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "1100px", display: "block"}}></iframe>
+    );
+  } else {
+    return (
+      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "650px", display: "block"}}></iframe>
+    );
+  }
+}
+
 export default function Home() {
   return (
     <Layout
@@ -178,7 +191,7 @@ export default function Home() {
         <PolicyEnforcement />
         <RoleManager />
         <Showcase />
-        <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "650px", display: "block"}}></iframe>
+        <OpenCollective />
       </main>
     </Layout>
   );
