@@ -7,13 +7,14 @@ import styles from "./index.module.css";
 import HomepageFeatures from "../components/HomepageFeatures";
 import {UserList} from "@site/src/components/UserList";
 import Translate from "@docusaurus/Translate";
+import {useWindowSize} from "@docusaurus/theme-common";
 
 class Button extends React.Component {
   render() {
     return (
       <div>
         <a style={{marginRight: "8px", marginBottom: "8px"}} className="button" href={this.props.href} target={this.props.target} icon={this.props.icon}>
-          <embed className="icon" src = {this.props.icon} height ={"20px"} width={"20px"} />
+          <embed className="icon" src={this.props.icon} height={"20px"} width={"20px"} />
           {this.props.children}
         </a>
       </div>
@@ -84,7 +85,7 @@ function PolicyPersistence() {
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/store.png" alt="Policy Persistence" width="500" height= "500" />
+            <img src="/img/store.png" alt="Policy Persistence" width="500" height="500" />
           </div>
         </div>
       </div>
@@ -98,7 +99,7 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
           <div style={{marginInline: "auto"}}>
-            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height= "500" />
+            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" />
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy enforcement at scale</Translate></h3>
@@ -130,7 +131,7 @@ function RoleManager() {
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/role.png" alt="Role manager" width="500" height= "500" />
+            <img src="/img/role.png" alt="Role manager" width="500" height="500" />
           </div>
         </div>
       </div>
@@ -166,6 +167,18 @@ function Showcase() {
   );
 }
 
+function OpenCollective() {
+  if (useWindowSize() === "mobile") {
+    return (
+      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "1100px", display: "block"}}></iframe>
+    );
+  } else {
+    return (
+      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "650px", display: "block"}}></iframe>
+    );
+  }
+}
+
 export default function Home() {
   return (
     <Layout
@@ -178,7 +191,7 @@ export default function Home() {
         <PolicyEnforcement />
         <RoleManager />
         <Showcase />
-        <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "650px", display: "block"}}></iframe>
+        <OpenCollective />
       </main>
     </Layout>
   );
