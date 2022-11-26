@@ -1,8 +1,10 @@
 import ComponentTypes from "@theme-original/NavbarItem/ComponentTypes";
-import CustomNavbarItem from "../../components/NavbarItems";
+import Casdoor from "../../components/NavbarItems/Casdoor";
+import Community from "../../components/NavbarItems/Community";
 
 // see https://github.com/facebook/docusaurus/issues/7227
 export default {
   ...ComponentTypes,
-  "custom-item": CustomNavbarItem,
+  "custom-casdoor": Casdoor,
+  "custom-community": Community,
 };
