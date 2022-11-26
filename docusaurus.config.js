@@ -69,6 +69,16 @@ module.exports = {
           position: "left",
         },
         {
+          label: "Pricing",
+          to: "https://casdoor.com/#pricing",
+          position: "left",
+        },
+        {
+          label: "Contact Sales",
+          to: "https://tawk.to/chat/62333c3ca34c2456412b88a7/1fuc26j6b",
+          position: "left",
+        },
+        {
           type: "localeDropdown",
           position: "right",
           dropdownItemsAfter: [
@@ -258,6 +268,10 @@ var _hmt = _hmt || [];
     },
     {
       src: "/js/gitter.js",
+      async: true,
+    },
+    {
+      src: "/js/tawk.js",
       async: true,
     },
   ],
