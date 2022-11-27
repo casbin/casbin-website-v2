@@ -13,7 +13,7 @@ class Button extends React.Component {
     return (
       <div>
         <a style={{marginRight: "8px", marginBottom: "8px"}} className="button" href={this.props.href} target={this.props.target} icon={this.props.icon}>
-          <embed className="icon" src = {this.props.icon} height ={"20px"} width={"20px"} />
+          <embed className="icon" src={this.props.icon} height={"20px"} width={"20px"} />
           {this.props.children}
         </a>
       </div>
@@ -80,11 +80,11 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}."}
+              {"In Casbin, the policy storage is implemented as an adapter(also known as middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/store.png" alt="Policy Persistence" width="500" height= "500" />
+            <img src="/img/store.png" alt="Policy Persistence" width="500" height="500" />
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
           <div style={{marginInline: "auto"}}>
-            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height= "500" />
+            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" />
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy enforcement at scale</Translate></h3>
@@ -130,7 +130,7 @@ function RoleManager() {
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/role.png" alt="Role manager" width="500" height= "500" />
+            <img src="/img/role.png" alt="Role manager" width="500" height="500" />
           </div>
         </div>
       </div>
