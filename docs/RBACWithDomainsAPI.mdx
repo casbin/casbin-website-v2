@@ -5,9 +5,7 @@ description: A more friendly API for RBAC with domains. This API is a subset of 
 keywords: [RBAC with domains, API]
 ---
 
-
-
-A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code. 
+A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
 
 ## Reference
 
@@ -28,7 +26,10 @@ e, err := NewEnforcer("examples/rbac_with_domains_model.conf", "examples/rbac_wi
 ```
 
 ```typescript
-const e = await newEnforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv')
+const e = await newEnforcer(
+  "examples/rbac_with_domains_model.conf",
+  "examples/rbac_with_domains_policy.csv"
+);
 ```
 
 ```mdx-code-block
@@ -102,7 +103,7 @@ res := e.GetUsersForRoleInDomain("admin", "domain1")
 ```
 
 ```typescript
-const res = e.getUsersForRoleInDomain("admin", "domain1")
+const res = e.getUsersForRoleInDomain("admin", "domain1");
 ```
 
 ```mdx-code-block
@@ -140,7 +141,7 @@ res := e.GetRolesForUserInDomain("admin", "domain1")
 ```
 
 ```typescript
-const res = e.getRolesForUserInDomain("alice", "domain1")
+const res = e.getRolesForUserInDomain("alice", "domain1");
 ```
 
 ```mdx-code-block
@@ -198,7 +199,7 @@ List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
 ### `AddRoleForUserInDomain()`
 
 AddRoleForUserInDomain adds a role for a user inside a domain.
-Returns false if the user already has the role (aka not affected).
+Returns false if the user already has the role (also known as not affected).
 
 For example:
 
@@ -237,7 +238,7 @@ boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
 ### `DeleteRoleForUserInDomain()`
 
 DeleteRoleForUserInDomain deletes a role for a user inside a domain.
-Returns false if the user does not have the role (aka not affected).
+Returns false if the user does not have the role (also known as not affected).
 
 For example:
 
@@ -267,7 +268,7 @@ boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
 ### `DeleteRolesForUserInDomain()`
 
 DeleteRolesForUserInDomain deletes all roles for a user inside a domain.
-Returns false if the user does not have any roles (aka not affected).
+Returns false if the user does not have any roles (also known as not affected).
 
 For example:
 
@@ -370,6 +371,6 @@ res, _ := e.GetAllDomains()
 
 :::note
 
-If you are handling a domain like ```name::domain```, it may lead to unexpected behavior. In Casbin, ```::``` is a reversed keyword, just like ```for```, ```if``` in a programming language, we should never put ```::``` in a domain.
+If you are handling a domain like `name::domain`, it may lead to unexpected behavior. In Casbin, `::` is a reversed keyword, just like `for`, `if` in a programming language, we should never put `::` in a domain.
 
 :::

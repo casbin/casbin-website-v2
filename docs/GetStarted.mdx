@@ -5,8 +5,6 @@ description: Getting started with Casbin
 keywords: [Casbin, get started, installation, usage]
 ---
 
-
-
 ## Installation
 
 ```mdx-code-block
@@ -72,7 +70,6 @@ pip install casbin
 <TabItem value=".NET" label=".NET">
 ```
 
-
 ```bash
 dotnet add package Casbin.NET
 ```
@@ -122,10 +119,10 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 ```
 
 ```bash
-luarocks install casbin  
+luarocks install casbin
 ```
 
-If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks 
+If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks
 -- you may want to run as a privileged user or use your local tree with --local.
 you can add --local behind your command like this to fix:
 
@@ -146,9 +143,9 @@ It has two configuration files, `model.conf` and `policy.csv`. Among them, `mode
 
 In another word, to new a Casbin enforcer, you must provide a [Model](supported-models) and an [Adapter](adapters).
 
-Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) from more Adapter. 
+Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) from more Adapter.
 
-- Use the Model file and default [FileAdapter](adapters#file-adapter-built-in): 
+- Use the Model file and default [FileAdapter](adapters#file-adapter-built-in):
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -178,9 +175,9 @@ Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
 ```javascript
-import { newEnforcer } from 'casbin';
+import { newEnforcer } from "casbin";
 
-const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
+const e = await newEnforcer("path/to/model.conf", "path/to/policy.csv");
 ```
 
 ```mdx-code-block
@@ -213,7 +210,7 @@ e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
 ```
 
 ```csharp
-using NetCasbin; 
+using NetCasbin;
 
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
@@ -289,7 +286,7 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 </Tabs>
 ```
 
-- Use the Model text with other Adapter: 
+- Use the Model text with other Adapter:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -401,7 +398,7 @@ if ok == true {
 
 // You could use BatchEnforce() to enforce some requests in batches.
 // This method returns a bool slice, and this slice's index corresponds to the row index of the two-dimensional array.
-// e.g. results[0] is the result of {"alice", "data1", "read"}
+// for example results[0] is the result of {"alice", "data1", "read"}
 results, err := e.BatchEnforce([][]interface{}{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"jack", "data3", "read"}})
 ```
 
@@ -428,14 +425,14 @@ if (e.enforce(sub, obj, act) == true) {
 ```
 
 ```js
-const sub = 'alice'; // the user that wants to access a resource.
-const obj = 'data1'; // the resource that is going to be accessed.
-const act = 'read'; // the operation that the user performs on the resource.
+const sub = "alice"; // the user that wants to access a resource.
+const obj = "data1"; // the resource that is going to be accessed.
+const act = "read"; // the operation that the user performs on the resource.
 
 if ((await e.enforce(sub, obj, act)) === true) {
-    // permit alice to read data1
+  // permit alice to read data1
 } else {
-    // deny the request, show an error
+  // deny the request, show an error
 }
 ```
 
@@ -484,7 +481,7 @@ var sub = "alice";  # the user that wants to access a resource.
 var obj = "data1";  # the resource that is going to be accessed.
 var act = "read";  # the operation that the user performs on the resource.
 
-if (await e.EnforceAsync(sub, obj, act)) 
+if (await e.EnforceAsync(sub, obj, act))
 {
     // permit alice to read data1
 }
@@ -589,7 +586,7 @@ Roles roles = e.getRolesForUser("alice");
 ```
 
 ```javascript
-const roles = await e.getRolesForUser('alice');
+const roles = await e.getRolesForUser("alice");
 ```
 
 ```mdx-code-block
