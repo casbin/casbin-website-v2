@@ -63,7 +63,7 @@ The elements in a policy rule are always regarded as``string``. If you have any 
 e = some(where (p.eft == allow))
 ```
 
-The above policy effect means if there's any matched policy rule of ``allow``, the final effect is ``allow`` (aka allow-override). ``p.eft`` is the effect for a policy, it can be ``allow`` or ``deny``. It's optional and the default value is ``allow``. So as we didn't specify it above, it uses the default value.
+The above policy effect means if there's any matched policy rule of ``allow``, the final effect is ``allow`` (also known as allow-override). ``p.eft`` is the effect for a policy, it can be ``allow`` or ``deny``. It's optional and the default value is ``allow``. So as we didn't specify it above, it uses the default value.
 
 Another example for policy effect is:
 
@@ -72,7 +72,7 @@ Another example for policy effect is:
 e = !some(where (p.eft == deny))
 ```
 
-It means if there's no matched policy rules of``deny``, the final effect is ``allow`` (aka deny-override). ``some`` means: if there exists one matched policy rule. ``any`` means: all matched policy rules (not used here). The policy effect can even be connected with logic expressions:
+It means if there's no matched policy rules of``deny``, the final effect is ``allow`` (also known as deny-override). ``some`` means: if there exists one matched policy rule. ``any`` means: all matched policy rules (not used here). The policy effect can even be connected with logic expressions:
 
 ```ini
 [policy_effect]
