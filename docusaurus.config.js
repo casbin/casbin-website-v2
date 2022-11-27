@@ -69,6 +69,16 @@ module.exports = {
           position: "left",
         },
         {
+          label: "Pricing",
+          to: "https://casdoor.com/#pricing",
+          position: "left",
+        },
+        {
+          label: "Contact Sales",
+          to: "https://tawk.to/chat/62333c3ca34c2456412b88a7/1fuc26j6b",
+          position: "left",
+        },
+        {
           type: "localeDropdown",
           position: "right",
           dropdownItemsAfter: [
@@ -89,31 +99,28 @@ module.exports = {
           "aria-label": "GitHub repository",
         },
         {
-          type: "custom-item",
-          int: "https://gitter.im/casbin/Lobby",
-          cn: "https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885",
+          type: "custom-community",
           position: "right",
-          className: "navbar__item navbar__link header-community-link",
         },
         {
           type: "search",
           position: "right",
         },
         {
-          type: "custom-item",
+          type: "custom-casdoor",
+          label: "Sign Up",
           int: "https://door.casdoor.org/signup",
           cn: "https://door.casdoor.com/signup",
-          label: "Sign Up",
           position: "right",
-          className: "navbar__item navbar__link casdoor-signup casdoor-link",
+          className: "casdoor-signup casdoor-link",
         },
         {
-          type: "custom-item",
+          type: "custom-casdoor",
+          label: "Login",
           int: "https://door.casdoor.org/login",
           cn: "https://door.casdoor.com/login",
-          label: "Login",
           position: "right",
-          className: "navbar__item navbar__link casdoor-login casdoor-link",
+          className: "casdoor-login casdoor-link",
         },
       ],
     },
@@ -261,6 +268,10 @@ var _hmt = _hmt || [];
     },
     {
       src: "/js/gitter.js",
+      async: true,
+    },
+    {
+      src: "/js/tawk.js",
       async: true,
     },
   ],

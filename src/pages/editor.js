@@ -7,7 +7,7 @@ function Editor() {
     <Layout title="Editor" description="Casbin Online Editor">
       <div>
         <iframe
-          src="https://casbin.org/casbin-editor/"
+          src="https://editor.casbin.org/"
           style={{width: "100%", height: "800px", display: "block"}}
           title="Casbin-editor"
           scrolling="no"

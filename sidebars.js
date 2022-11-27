@@ -25,6 +25,11 @@ module.exports = {
         "get-started",
         "how-it-works",
         "tutorials",
+        {
+          type: "link",
+          label: "PDF Download",
+          href: "/pdf",
+        },
       ],
     },
     {
