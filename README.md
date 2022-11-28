@@ -1,6 +1,6 @@
-# [casbin.io](https://casbin.io) [![Build and Deploy](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml/badge.svg)](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml)
+# [casbin.org](https://casbin.org) [![Build and Deploy](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml/badge.svg)](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml)
 
-The configuration and documentation of Casbin website: <https://casbin.io/>.
+The configuration and documentation of Casbin website: <https://casbin.org/>.
 
 Casbin website is built using [Docusaurus](https://docusaurus.io/), you can get the PDF at [Release](https://github.com/casbin/casbin-website-v2/releases/tag/pdf).
 
