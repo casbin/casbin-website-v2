@@ -36,11 +36,12 @@ A standard document should look like this:
 title: Title
 description: description
 keywords: [keyword1, keyword2]
+authors: [GitHub username]
 ---
 
 ## Headers
 
-Only h2 and h3 will be in the TOC by default.
+Only h2 and h3 will be in the TOC by default, so h1 is not recommended to use.
 
 ### h3
 
@@ -110,6 +111,8 @@ At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find o
 ```
 
 Please do not translate `{repoLink}` or `{issueLink}` or any similar words, they are [interpolation placeholders](https://docusaurus.io/docs/docusaurus-core#translate-props).
+
+Please don't translate sentences like `authors: [casdoor]`.
 
 ### Website Development
 
