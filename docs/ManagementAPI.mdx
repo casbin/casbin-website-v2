@@ -118,7 +118,7 @@ For example:
 ```
 
 ```go
-request = []interface{}{"Alice","book","read"}
+request := []interface{}{"Alice","book","read"}
 ok, err := e.Enforce(request...) // true,nil
 ```
 
@@ -175,9 +175,9 @@ For example:
 ```
 
 ```go
-matcher:= "r.sub == p.sub && r.obj == p.obj && r.act == p.act"
+matcher := "r.sub == p.sub && r.obj == p.obj && r.act == p.act"
 request := []interface{}{"Alice","book","read"}
-ok, err := e.EnforceWithMatcher(matcher, request) // true,nil
+ok, err := e.EnforceWithMatcher(matcher, request...) // true,nil
 ```
 
 ```mdx-code-block
