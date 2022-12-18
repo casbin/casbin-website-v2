@@ -21,6 +21,11 @@ module.exports = {
       indexName: "casbin-v2",
       contextualSearch: true,
     },
+    colorMode: {
+      defaultMode: "light",
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
     hotjar: {
       applicationId: "1689878",
     },
