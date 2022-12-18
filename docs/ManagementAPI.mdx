@@ -6,13 +6,11 @@ keywords: [management, Filtered API]
 authors: [nodece]
 ---
 
-
-
 The primitive API that provides full support for Casbin policy management.
 
 ## Filtered API
 
-Almost all filtered api has the same parameters ``(fieldIndex int, fieldValues ...string)``. `fieldIndex` is the index where matching start, `fieldValues` denotes the values result should have. Note that empty string in fieldValues could be any word.
+Almost all filtered api has the same parameters `(fieldIndex int, fieldValues ...string)`. `fieldIndex` is the index where matching start, `fieldValues` denotes the values result should have. Note that empty string in fieldValues could be any word.
 
 Example:
 
@@ -21,7 +19,7 @@ p, alice, book, read
 p, bob, book, read
 p, bob, book, write
 p, alice, pen, get
-p, bob, pen ,get
+p, bob, pen, get
 ```
 
 ```go
@@ -53,7 +51,10 @@ e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 ```
 
 ```typescript
-const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
+const e = await newEnforcer(
+  "examples/rbac_model.conf",
+  "examples/rbac_policy.csv"
+);
 ```
 
 ```mdx-code-block
@@ -118,7 +119,7 @@ For example:
 ```
 
 ```go
-request := []interface{}{"Alice","book","read"}
+request := []interface{}{"alice","book","read"}
 ok, err := e.Enforce(request...) // true,nil
 ```
 
@@ -176,7 +177,7 @@ For example:
 
 ```go
 matcher := "r.sub == p.sub && r.obj == p.obj && r.act == p.act"
-request := []interface{}{"Alice","book","read"}
+request := []interface{}{"alice","book","read"}
 ok, err := e.EnforceWithMatcher(matcher, request...) // true,nil
 ```
 
@@ -224,7 +225,8 @@ For example:
 ```
 
 ```go
-ok, reason, err := e.EnforceEx(request)
+request := []interface{}{"alice","book","read"}
+ok, reason, err := e.EnforceEx(request...) // true, [alice book read] , nil
 ```
 
 ```mdx-code-block
@@ -271,7 +273,9 @@ For example:
 ```
 
 ```go
-ok, reason, err := e.EnforceExWithMatcher(matcher, request)
+matcher := "r.sub == p.sub && r.obj == p.obj && r.act == p.act"
+request := []interface{}{"alice","book","read"}
+ok, reason, err := e.EnforceExWithMatcher(matcher, request...) //true, [alice book read], nil
 ```
 
 ```mdx-code-block
@@ -291,7 +295,8 @@ For example:
 ```
 
 ```go
-boolArray, err := e.BatchEnforce(requests)
+requests := [][]interface{}{{"alice","book","read"},{"bob","book","write"}}
+boolArray, err := e.BatchEnforce(requests) // [true true] ,nil
 ```
 
 ```mdx-code-block
@@ -329,7 +334,7 @@ For example:
 ```
 
 ```go
-allSubjects := e.GetAllSubjects()
+allSubjects := e.GetAllSubjects() // [alice bob]
 ```
 
 ```mdx-code-block
@@ -338,7 +343,7 @@ allSubjects := e.GetAllSubjects()
 ```
 
 ```typescript
-const allSubjects = await e.getAllSubjects()
+const allSubjects = await e.getAllSubjects();
 ```
 
 ```mdx-code-block
@@ -403,7 +408,7 @@ For example:
 ```
 
 ```go
-allNamedSubjects := e.GetAllNamedSubjects("p")
+allNamedSubjects := e.GetAllNamedSubjects("p") // [alice bob]
 ```
 
 ```mdx-code-block
@@ -412,7 +417,7 @@ allNamedSubjects := e.GetAllNamedSubjects("p")
 ```
 
 ```typescript
-const allNamedSubjects = await e.getAllNamedSubjects('p')
+const allNamedSubjects = await e.getAllNamedSubjects("p");
 ```
 
 ```mdx-code-block
@@ -477,7 +482,7 @@ For example:
 ```
 
 ```go
-allObjects := e.GetAllObjects()
+allObjects := e.GetAllObjects() // [book pen]
 ```
 
 ```mdx-code-block
@@ -486,7 +491,7 @@ allObjects := e.GetAllObjects()
 ```
 
 ```typescript
-const allObjects = await e.getAllObjects()
+const allObjects = await e.getAllObjects();
 ```
 
 ```mdx-code-block
@@ -551,7 +556,7 @@ For example:
 ```
 
 ```go
-allNamedObjects := e.GetAllNamedObjects("p")
+allNamedObjects := e.GetAllNamedObjects("p") // [bob pen]
 ```
 
 ```mdx-code-block
@@ -560,7 +565,7 @@ allNamedObjects := e.GetAllNamedObjects("p")
 ```
 
 ```typescript
-const allNamedObjects = await e.getAllNamedObjects('p')
+const allNamedObjects = await e.getAllNamedObjects("p");
 ```
 
 ```mdx-code-block
@@ -634,7 +639,7 @@ allActions := e.GetAllActions()
 ```
 
 ```typescript
-const allActions = await e.getAllActions()
+const allActions = await e.getAllActions();
 ```
 
 ```mdx-code-block
@@ -708,7 +713,7 @@ allNamedActions := e.GetAllNamedActions("p")
 ```
 
 ```typescript
-const allNamedActions = await e.getAllNamedActions('p')
+const allNamedActions = await e.getAllNamedActions("p");
 ```
 
 ```mdx-code-block
@@ -782,7 +787,7 @@ allRoles = e.GetAllRoles()
 ```
 
 ```typescript
-const allRoles = await e.getAllRoles()
+const allRoles = await e.getAllRoles();
 ```
 
 ```mdx-code-block
@@ -856,7 +861,7 @@ allNamedRoles := e.GetAllNamedRoles("g")
 ```
 
 ```typescript
-const allNamedRoles = await e.getAllNamedRoles('g')
+const allNamedRoles = await e.getAllNamedRoles("g");
 ```
 
 ```mdx-code-block
@@ -930,7 +935,7 @@ policy = e.GetPolicy()
 ```
 
 ```typescript
-const policy = await e.getPolicy()
+const policy = await e.getPolicy();
 ```
 
 ```mdx-code-block
@@ -983,7 +988,6 @@ List<List<String>> policy = e.getPolicy();
 </Tabs>
 ```
 
-
 ### `GetFilteredPolicy()`
 
 GetFilteredPolicy gets all the authorization rules in the policy, field filters can be specified.
@@ -1005,7 +1009,7 @@ filteredPolicy := e.GetFilteredPolicy(0, "alice")
 ```
 
 ```typescript
-const filteredPolicy = await e.getFilteredPolicy(0, 'alice')
+const filteredPolicy = await e.getFilteredPolicy(0, "alice");
 ```
 
 ```mdx-code-block
@@ -1079,7 +1083,7 @@ namedPolicy := e.GetNamedPolicy("p")
 ```
 
 ```typescript
-const namedPolicy = await e.getNamedPolicy('p')
+const namedPolicy = await e.getNamedPolicy("p");
 ```
 
 ```mdx-code-block
@@ -1132,7 +1136,6 @@ List<List<String>> namedPolicy = e.getNamedPolicy("p");
 </Tabs>
 ```
 
-
 ### `GetFilteredNamedPolicy()`
 
 GetFilteredNamedPolicy gets all the authorization rules in the named policy, field filters can be specified.
@@ -1154,7 +1157,7 @@ filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
 ```
 
 ```typescript
-const filteredNamedPolicy = await e.getFilteredNamedPolicy('p', 0, 'bob')
+const filteredNamedPolicy = await e.getFilteredNamedPolicy("p", 0, "bob");
 ```
 
 ```mdx-code-block
@@ -1228,7 +1231,7 @@ groupingPolicy := e.GetGroupingPolicy()
 ```
 
 ```typescript
-const groupingPolicy = await e.getGroupingPolicy()
+const groupingPolicy = await e.getGroupingPolicy();
 ```
 
 ```mdx-code-block
@@ -1302,7 +1305,7 @@ filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
 ```
 
 ```typescript
-const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, 'alice')
+const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, "alice");
 ```
 
 ```mdx-code-block
@@ -1376,7 +1379,7 @@ namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
 ```
 
 ```typescript
-const namedGroupingPolicy = await e.getNamedGroupingPolicy('g')
+const namedGroupingPolicy = await e.getNamedGroupingPolicy("g");
 ```
 
 ```mdx-code-block
@@ -1450,7 +1453,11 @@ namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
 ```
 
 ```typescript
-const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy('g', 0, 'alice')
+const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy(
+  "g",
+  0,
+  "alice"
+);
 ```
 
 ```mdx-code-block
@@ -1524,7 +1531,7 @@ hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
 ```
 
 ```typescript
-const hasPolicy = await e.hasPolicy('data2_admin', 'data2', 'read')
+const hasPolicy = await e.hasPolicy("data2_admin", "data2", "read");
 ```
 
 ```mdx-code-block
@@ -1598,7 +1605,12 @@ hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
 ```
 
 ```typescript
-const hasNamedPolicy = await e.hasNamedPolicy('p', 'data2_admin', 'data2', 'read')
+const hasNamedPolicy = await e.hasNamedPolicy(
+  "p",
+  "data2_admin",
+  "data2",
+  "read"
+);
 ```
 
 ```mdx-code-block
@@ -1674,8 +1686,8 @@ added := e.AddPolicy('eve', 'data3', 'read')
 ```
 
 ```typescript
-const p = ['eve', 'data3', 'read']
-const added = await e.addPolicy(...p)
+const p = ["eve", "data3", "read"];
+const added = await e.addPolicy(...p);
 ```
 
 ```mdx-code-block
@@ -1762,10 +1774,10 @@ areRulesAdded := e.AddPolicies(rules)
 
 ```typescript
 const rules = [
-    ['jack', 'data4', 'read'],
-    ['katy', 'data4', 'write'],
-    ['leyo', 'data4', 'read'],
-    ['ham', 'data4', 'write']
+  ["jack", "data4", "read"],
+  ["katy", "data4", "write"],
+  ["leyo", "data4", "read"],
+  ["ham", "data4", "write"],
 ];
 
 const areRulesAdded = await e.addPolicies(rules);
@@ -1846,8 +1858,8 @@ added := e.AddNamedPolicy("p", "eve", "data3", "read")
 ```
 
 ```typescript
-const p = ['eve', 'data3', 'read']
-const added = await e.addNamedPolicy('p', ...p)
+const p = ["eve", "data3", "read"];
+const added = await e.addNamedPolicy("p", ...p);
 ```
 
 ```mdx-code-block
@@ -1934,13 +1946,13 @@ areRulesAdded := e.AddNamedPolicies("p", rules)
 
 ```typescript
 const rules = [
-    ['jack', 'data4', 'read'],
-    ['katy', 'data4', 'write'],
-    ['leyo', 'data4', 'read'],
-    ['ham', 'data4', 'write']
+  ["jack", "data4", "read"],
+  ["katy", "data4", "write"],
+  ["leyo", "data4", "read"],
+  ["ham", "data4", "write"],
 ];
 
-const areRulesAdded = await e.addNamedPolicies('p', rules);
+const areRulesAdded = await e.addNamedPolicies("p", rules);
 ```
 
 ```mdx-code-block
@@ -2015,8 +2027,8 @@ removed := e.RemovePolicy("alice", "data1", "read")
 ```
 
 ```typescript
-const p = ['alice', 'data1', 'read']
-const removed = await e.removePolicy(...p)
+const p = ["alice", "data1", "read"];
+const removed = await e.removePolicy(...p);
 ```
 
 ```mdx-code-block
@@ -2103,10 +2115,10 @@ areRulesRemoved := e.RemovePolicies(rules)
 
 ```typescript
 const rules = [
-    ['jack', 'data4', 'read'],
-    ['katy', 'data4', 'write'],
-    ['leyo', 'data4', 'read'],
-    ['ham', 'data4', 'write']
+  ["jack", "data4", "read"],
+  ["katy", "data4", "write"],
+  ["leyo", "data4", "read"],
+  ["ham", "data4", "write"],
 ];
 
 const areRulesRemoved = await e.removePolicies(rules);
@@ -2185,8 +2197,8 @@ removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
 ```
 
 ```typescript
-const p = ['alice', 'data1', 'read']
-const removed = await e.removeFilteredPolicy(0, ...p)
+const p = ["alice", "data1", "read"];
+const removed = await e.removeFilteredPolicy(0, ...p);
 ```
 
 ```mdx-code-block
@@ -2262,8 +2274,8 @@ removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
 ```
 
 ```typescript
-const p = ['alice', 'data1', 'read']
-const removed = await e.removeNamedPolicy('p', ...p)
+const p = ["alice", "data1", "read"];
+const removed = await e.removeNamedPolicy("p", ...p);
 ```
 
 ```mdx-code-block
@@ -2350,13 +2362,13 @@ areRulesRemoved := e.RemoveNamedPolicies("p", rules)
 
 ```typescript
 const rules = [
-    ['jack', 'data4', 'read'],
-    ['katy', 'data4', 'write'],
-    ['leyo', 'data4', 'read'],
-    ['ham', 'data4', 'write']
+  ["jack", "data4", "read"],
+  ["katy", "data4", "write"],
+  ["leyo", "data4", "read"],
+  ["ham", "data4", "write"],
 ];
 
-const areRulesRemoved = await e.removeNamedPolicies('p', rules);
+const areRulesRemoved = await e.removeNamedPolicies("p", rules);
 ```
 
 ```mdx-code-block
@@ -2431,8 +2443,8 @@ removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
 ```
 
 ```typescript
-const p = ['alice', 'data1', 'read']
-const removed = await e.removeFilteredNamedPolicy('p', 0, ...p)
+const p = ["alice", "data1", "read"];
+const removed = await e.removeFilteredNamedPolicy("p", 0, ...p);
 ```
 
 ```mdx-code-block
@@ -2508,7 +2520,7 @@ has := e.HasGroupingPolicy("alice", "data2_admin")
 ```
 
 ```typescript
-const has = await e.hasGroupingPolicy('alice', 'data2_admin')
+const has = await e.hasGroupingPolicy("alice", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -2582,7 +2594,7 @@ has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
 ```
 
 ```typescript
-const has = await e.hasNamedGroupingPolicy('g', 'alice', 'data2_admin')
+const has = await e.hasNamedGroupingPolicy("g", "alice", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -2658,7 +2670,7 @@ added := e.AddGroupingPolicy("group1", "data2_admin")
 ```
 
 ```typescript
-const added = await e.addGroupingPolicy('group1', 'data2_admin')
+const added = await e.addGroupingPolicy("group1", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -2743,9 +2755,9 @@ areRulesAdded := e.AddGroupingPolicies(rules)
 
 ```typescript
 const groupingRules = [
-    ['ham', 'data4_admin'],
-    ['jack', 'data5_admin']
-  ];
+  ["ham", "data4_admin"],
+  ["jack", "data5_admin"],
+];
 
 const areRulesAdded = await e.addGroupingPolicies(groupingRules);
 ```
@@ -2819,7 +2831,7 @@ added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
 ```
 
 ```typescript
-const added = await e.addNamedGroupingPolicy('g', 'group1', 'data2_admin')
+const added = await e.addNamedGroupingPolicy("g", "group1", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -2877,7 +2889,7 @@ boolean added = e.addNamedGroupingPolicy("g", "group1", "data2_admin");
 ### `AddNamedGroupingPolicies()`
 
 AddNamedGroupingPolicies adds named role inheritance rules to the current policy.
-The operation is atomic in nature. 
+The operation is atomic in nature.
 Hence, if authorization rules consists of rules which are not consistent with the current policy, the function returns false and no policy rule is added to the current policy.
 If all the authorization rules are consistent with the policy rules, the function returns true and each policy rule is added to the current policy.
 
@@ -2904,11 +2916,11 @@ areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
 
 ```typescript
 const groupingRules = [
-    ['ham', 'data4_admin'],
-    ['jack', 'data5_admin']
-  ];
+  ["ham", "data4_admin"],
+  ["jack", "data5_admin"],
+];
 
-const areRulesAdded = await e.addNamedGroupingPolicies('g', groupingRules);
+const areRulesAdded = await e.addNamedGroupingPolicies("g", groupingRules);
 ```
 
 ```mdx-code-block
@@ -2978,7 +2990,7 @@ removed := e.RemoveGroupingPolicy("alice", "data2_admin")
 ```
 
 ```typescript
-const removed = await e.removeGroupingPolicy('alice', 'data2_admin')
+const removed = await e.removeGroupingPolicy("alice", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -3063,9 +3075,9 @@ areRulesRemoved := e.RemoveGroupingPolicies(rules)
 
 ```typescript
 const groupingRules = [
-    ['ham', 'data4_admin'],
-    ['jack', 'data5_admin']
-  ];
+  ["ham", "data4_admin"],
+  ["jack", "data5_admin"],
+];
 
 const areRulesRemoved = await e.removeGroupingPolicies(groupingRules);
 ```
@@ -3137,7 +3149,7 @@ removed := e.RemoveFilteredGroupingPolicy(0, "alice")
 ```
 
 ```typescript
-const removed = await e.removeFilteredGroupingPolicy(0, 'alice')
+const removed = await e.removeFilteredGroupingPolicy(0, "alice");
 ```
 
 ```mdx-code-block
@@ -3213,7 +3225,7 @@ removed := e.RemoveNamedGroupingPolicy("g", "alice")
 ```
 
 ```typescript
-const removed = await e.removeNamedGroupingPolicy('g', 'alice')
+const removed = await e.removeNamedGroupingPolicy("g", "alice");
 ```
 
 ```mdx-code-block
@@ -3241,7 +3253,7 @@ removed = e.remove_named_grouping_policy("g", "alice", "data2_admin")
 
 ```csharp
 var removed = e.RemoveNamedGroupingPolicy("g", "alice");
-or 
+or
 var removed = await e.RemoveNamedGroupingPolicyAsync("g", "alice");
 ```
 
@@ -3298,11 +3310,11 @@ areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
 
 ```typescript
 const groupingRules = [
-    ['ham', 'data4_admin'],
-    ['jack', 'data5_admin']
-  ];
+  ["ham", "data4_admin"],
+  ["jack", "data5_admin"],
+];
 
-const areRulesRemoved = await e.removeNamedGroupingPolicies('g', groupingRules);
+const areRulesRemoved = await e.removeNamedGroupingPolicies("g", groupingRules);
 ```
 
 ```mdx-code-block
@@ -3371,7 +3383,7 @@ removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
 ```
 
 ```typescript
-const removed = await e.removeFilteredNamedGroupingPolicy('g', 0, 'alice')
+const removed = await e.removeFilteredNamedGroupingPolicy("g", 0, "alice");
 ```
 
 ```mdx-code-block
@@ -3447,7 +3459,10 @@ updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve",
 ```
 
 ```typescript
-const update = await e.updatePolicy(["eve", "data3", "read"], ["eve", "data3", "write"]);
+const update = await e.updatePolicy(
+  ["eve", "data3", "read"],
+  ["eve", "data3", "write"]
+);
 ```
 
 ```mdx-code-block
@@ -3543,14 +3558,20 @@ e.AddFunction("keyMatchCustom", CustomFunctionWrapper)
 ```
 
 ```typescript
-function customFunction(key1, key2){
-    if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource") {
-        return true
-    } else if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId") {
-        return true
-    } else {
-        return false
-    }
+function customFunction(key1, key2) {
+  if (
+    key1 == "/alice_data2/myid/using/res_id" &&
+    key2 == "/alice_data/:resource"
+  ) {
+    return true;
+  } else if (
+    key1 == "/alice_data2/myid/using/res_id" &&
+    key2 == "/alice_data2/:id/using/:resId"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 e.addFunction("keyMatchCustom", customFunction);
