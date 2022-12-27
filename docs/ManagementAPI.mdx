@@ -20,6 +20,8 @@ p, bob, book, read
 p, bob, book, write
 p, alice, pen, get
 p, bob, pen, get
+g, alice, admin
+g, bob, user
 ```
 
 ```go
@@ -630,7 +632,7 @@ For example:
 ```
 
 ```go
-allActions := e.GetAllActions()
+allActions := e.GetAllActions() // [read write get]
 ```
 
 ```mdx-code-block
@@ -704,7 +706,7 @@ For example:
 ```
 
 ```go
-allNamedActions := e.GetAllNamedActions("p")
+allNamedActions := e.GetAllNamedActions("p") // [read write get]
 ```
 
 ```mdx-code-block
@@ -777,8 +779,8 @@ For example:
 <TabItem value="Go" label="Go" default>
 ```
 
-```
-allRoles = e.GetAllRoles()
+```go
+allRoles = e.GetAllRoles() // [] Incase of RBAC type configs, roles are populated as an array of strings with the defined roles
 ```
 
 ```mdx-code-block
@@ -852,7 +854,7 @@ For example:
 ```
 
 ```go
-allNamedRoles := e.GetAllNamedRoles("g")
+allNamedRoles := e.GetAllNamedRoles("g")  // [] Returns all roles with the type of role specified
 ```
 
 ```mdx-code-block
@@ -926,7 +928,7 @@ For example:
 ```
 
 ```go
-policy = e.GetPolicy()
+policy = e.GetPolicy() // [[alice book read] [bob book read] [bob book write] [alice pen get] [bob pen get]]
 ```
 
 ```mdx-code-block
@@ -1000,7 +1002,7 @@ For example:
 ```
 
 ```go
-filteredPolicy := e.GetFilteredPolicy(0, "alice")
+filteredPolicy := e.GetFilteredPolicy(0, "alice") // [[alice book read] [alice pen get]]
 ```
 
 ```mdx-code-block
@@ -1074,7 +1076,7 @@ For example:
 ```
 
 ```go
-namedPolicy := e.GetNamedPolicy("p")
+namedPolicy := e.GetNamedPolicy("p") // [[alice book read] [bob book read] [bob book write] [alice pen get] [bob pen get]]
 ```
 
 ```mdx-code-block
@@ -1148,7 +1150,7 @@ For example:
 ```
 
 ```go
-filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
+filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob") // [[bob book read] [bob book write] [bob pen get]]
 ```
 
 ```mdx-code-block
@@ -1222,7 +1224,7 @@ For example:
 ```
 
 ```go
-groupingPolicy := e.GetGroupingPolicy()
+groupingPolicy := e.GetGroupingPolicy() // [[alice admin] [bob user]]
 ```
 
 ```mdx-code-block
@@ -1296,7 +1298,7 @@ For example:
 ```
 
 ```go
-filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
+filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice") // [[alice admin]]
 ```
 
 ```mdx-code-block
@@ -1370,7 +1372,7 @@ For example:
 ```
 
 ```go
-namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
+namedGroupingPolicy := e.GetNamedGroupingPolicy("g") // [[alice admin] [bob user]]
 ```
 
 ```mdx-code-block
@@ -1444,7 +1446,7 @@ For example:
 ```
 
 ```go
-namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
+namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice") // [[alice admin]]
 ```
 
 ```mdx-code-block
@@ -1522,7 +1524,7 @@ For example:
 ```
 
 ```go
-hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
+hasPolicy := e.HasPolicy("data2_admin", "data2", "read") // true/false
 ```
 
 ```mdx-code-block
@@ -1596,7 +1598,7 @@ For example:
 ```
 
 ```go
-hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
+hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read") // true/false
 ```
 
 ```mdx-code-block
@@ -1677,7 +1679,7 @@ For example:
 ```
 
 ```go
-added := e.AddPolicy('eve', 'data3', 'read')
+added := e.AddPolicy('eve', 'data3', 'read') // true if entry added and false if already exists
 ```
 
 ```mdx-code-block
@@ -1764,7 +1766,7 @@ rules := [][] string {
 	[]string {"ham", "data4", "write"},
 }
 
-areRulesAdded := e.AddPolicies(rules)
+areRulesAdded := e.AddPolicies(rules) // true if all rules are added, false if any entry is inconsistent
 ```
 
 ```mdx-code-block
@@ -1849,7 +1851,7 @@ For example:
 ```
 
 ```go
-added := e.AddNamedPolicy("p", "eve", "data3", "read")
+added := e.AddNamedPolicy("p", "eve", "data3", "read") // Same as AddPolicy
 ```
 
 ```mdx-code-block
@@ -1936,7 +1938,7 @@ rules := [][] string {
 	[]string {"ham", "data4", "write"},
 }
 
-areRulesAdded := e.AddNamedPolicies("p", rules)
+areRulesAdded := e.AddNamedPolicies("p", rules) // same as addPolicies
 ```
 
 ```mdx-code-block
@@ -2018,7 +2020,7 @@ For example:
 ```
 
 ```go
-removed := e.RemovePolicy("alice", "data1", "read")
+removed, err := e.RemovePolicy("alice", "data1", "read") // true/false,nil else error
 ```
 
 ```mdx-code-block
@@ -2105,7 +2107,7 @@ rules := [][] string {
 	[]string {"ham", "data4", "write"},
 }
 
-areRulesRemoved := e.RemovePolicies(rules)
+areRulesRemoved, err := e.RemovePolicies(rules) // true/false, nil
 ```
 
 ```mdx-code-block
@@ -2188,7 +2190,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
+removed, err := e.RemoveFilteredPolicy(0, "alice", "data1", "read") // true/false , nil
 ```
 
 ```mdx-code-block
@@ -2265,7 +2267,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
+removed, err := e.RemoveNamedPolicy("p", "alice", "data1", "read") // true/false, nil
 ```
 
 ```mdx-code-block
@@ -2352,7 +2354,7 @@ rules := [][] string {
 	[]string {"ham", "data4", "write"},
 }
 
-areRulesRemoved := e.RemoveNamedPolicies("p", rules)
+areRulesRemoved, err := e.RemoveNamedPolicies("p", rules) // true/false, nil
 ```
 
 ```mdx-code-block
@@ -2434,7 +2436,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
+removed, err := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read") // true/false, nil
 ```
 
 ```mdx-code-block
@@ -2511,7 +2513,7 @@ For example:
 ```
 
 ```go
-has := e.HasGroupingPolicy("alice", "data2_admin")
+has := e.HasGroupingPolicy("alice", "data2_admin") // true/false
 ```
 
 ```mdx-code-block
@@ -2585,7 +2587,7 @@ For example:
 ```
 
 ```go
-has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
+has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin") //true/false
 ```
 
 ```mdx-code-block
@@ -2661,7 +2663,7 @@ For example:
 ```
 
 ```go
-added := e.AddGroupingPolicy("group1", "data2_admin")
+added, err := e.AddGroupingPolicy("group1", "data2_admin") // true/false, nil
 ```
 
 ```mdx-code-block
@@ -2745,7 +2747,7 @@ rules := [][] string {
 	[]string {"jack", "data5_admin"},
 }
 
-areRulesAdded := e.AddGroupingPolicies(rules)
+areRulesAdded, err := e.AddGroupingPolicies(rules) // true/false, err
 ```
 
 ```mdx-code-block
@@ -2822,7 +2824,7 @@ For example:
 ```
 
 ```go
-added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
+added, err := e.AddNamedGroupingPolicy("g", "group1", "data2_admin") //true/false, nil
 ```
 
 ```mdx-code-block
@@ -2906,7 +2908,7 @@ rules := [][] string {
 	[]string {"jack", "data5_admin"},
 }
 
-areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
+areRulesAdded,err := e.AddNamedGroupingPolicies("g", rules) // true/false,nil
 ```
 
 ```mdx-code-block
@@ -2981,7 +2983,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveGroupingPolicy("alice", "data2_admin")
+removed,err := e.RemoveGroupingPolicy("alice", "data2_admin") //true/false, nil
 ```
 
 ```mdx-code-block
@@ -3065,7 +3067,7 @@ rules := [][] string {
 				[]string {"jack", "data5_admin"},
 		}
 
-areRulesRemoved := e.RemoveGroupingPolicies(rules)
+areRulesRemoved, err := e.RemoveGroupingPolicies(rules) // true/false, nil
 ```
 
 ```mdx-code-block
@@ -3140,7 +3142,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveFilteredGroupingPolicy(0, "alice")
+removed,err := e.RemoveFilteredGroupingPolicy(0, "alice") // true/false, err
 ```
 
 ```mdx-code-block
@@ -3216,7 +3218,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveNamedGroupingPolicy("g", "alice")
+removed,err := e.RemoveNamedGroupingPolicy("g", "alice") // true/false,nil
 ```
 
 ```mdx-code-block
@@ -3300,7 +3302,7 @@ rules := [][] string {
 	[]string {"jack", "data5_admin"},
 }
 
-areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
+areRulesRemoved, err := e.RemoveNamedGroupingPolicies("g", rules) // true/false,err
 ```
 
 ```mdx-code-block
@@ -3374,7 +3376,7 @@ For example:
 ```
 
 ```go
-removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
+removed, err := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice") //true/false,err
 ```
 
 ```mdx-code-block
@@ -3450,7 +3452,7 @@ For example:
 ```
 
 ```go
-updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
+updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"}) // true/false, nil
 ```
 
 ```mdx-code-block
@@ -3500,7 +3502,7 @@ For example:
 ```
 
 ```go
-updated, err := e.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
+updated, err := e.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}}) // true/false, err
 ```
 
 ```mdx-code-block
@@ -3677,7 +3679,7 @@ For example:
 ```
 
 ```go
-err := e.LoadFilteredPolicy()
+err := e.LoadFilteredPolicy() // error
 ```
 
 ```mdx-code-block
@@ -3733,7 +3735,7 @@ For example:
 ```
 
 ```go
-err := e.LoadIncrementalFilteredPolicy()
+err := e.LoadIncrementalFilteredPolicy() // error
 ```
 
 ```mdx-code-block
@@ -3776,7 +3778,7 @@ For example:
 ```
 
 ```go
-succeed, err : = e.UpdateGroupingPolicy([]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
+succeed, err : = e.UpdateGroupingPolicy([]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"}) // true/false, error
 ```
 
 ```mdx-code-block
@@ -3805,7 +3807,7 @@ For example:
 ```
 
 ```go
-succeed, err : = e.UpdateGroupingPolicy("g1",[]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
+succeed, err : = e.UpdateNamedGroupingPolicy("g1",[]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"}) // true/false, error
 ```
 
 ```mdx-code-block
