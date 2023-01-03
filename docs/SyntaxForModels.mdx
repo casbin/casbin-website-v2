@@ -111,6 +111,112 @@ The above matcher is the simplest, it means that the subject, object and action 
 
 You can use arithmetic like ``+, -, *, /`` and logical operators like ``&&, ||, !`` in matchers.
 
+### Orders of expressions in matchers
+The order of expressions can greatly affect performance.  
+Look at the following example for details:  
+
+```go
+const rbac_models = `
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+
+func TestManyRoles(t *testing.T) {
+
+	m, _ := model.NewModelFromString(rbac_models)
+	e, _ := NewEnforcer(m, false)
+
+	roles := []string{"admin", "manager", "developer", "tester"}
+
+	// 2500 projects
+	for nbPrj := 1; nbPrj < 2500; nbPrj++ {
+		// 4 objects and 1 role per object (so 4 roles)
+		for _, role := range roles {
+			roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
+			objectDB := fmt.Sprintf("/projects/%d", nbPrj)
+			e.AddPolicy(roleDB, objectDB, "GET")
+		}
+		jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
+		e.AddGroupingPolicy("jasmine", jasmineRole)
+	}
+
+	e.AddGroupingPolicy("abu", "manager_project:1")
+	e.AddGroupingPolicy("abu", "manager_project:2499")
+
+	// With same number of policies
+	// 	User 'abu' has only two roles
+	// 	User 'jasmine' has many roles (1 role per policy, here 2500 roles)
+
+	request := func(subject, object, action string) {
+		t0 := time.Now()
+		resp, _ := e.Enforce(subject, object, action)
+		tElapse := time.Since(t0)
+		t.Logf("RESPONSE %-10s %s\t %s : %5v IN: %+v", subject, object, action, resp, tElapse)
+		if tElapse > time.Millisecond*100 {
+			t.Errorf("More than 100 milliseconds for %s %s %s : %+v", subject, object, action, tElapse)
+		}
+	}
+
+	request("abu", "/projects/1", "GET")        // really fast because only 2 roles in all policies and at the beginning of the casbin_rule table
+	request("abu", "/projects/2499", "GET")     // fast because only 2 roles in all policies
+	request("jasmine", "/projects/1", "GET")    // really fast at the beginning of the casbin_rule table
+
+	request("jasmine", "/projects/2499", "GET") // slow and fail the only 1st time   <<<< pb here
+	request("jasmine", "/projects/2499", "GET") // fast maybe due to internal cache mechanism
+	
+	// same issue with non-existing roles
+ 	// request("jasmine", "/projects/999999", "GET") // slow fail the only 1st time   <<<< pb here
+	// request("jasmine", "/projects/999999", "GET") // fast maybe due to internal cache mechanism
+}
+```
+The enforce time may be very very long, up to 6 seconds
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+
+=== RUN   TestManyRoles
+    rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
+    rbac_api_test.go:598: RESPONSE abu        /projects/2499     GET :  true IN: 39.005173ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/1        GET :  true IN: 1.774319ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.164071648s
+    rbac_api_test.go:600: More than 100 milliseconds for jasmine /projects/2499 GET : 6.164071648s
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
+--- FAIL: TestManyRoles (6.24s)
+FAIL
+FAIL    github.com/casbin/casbin/v2     6.244s
+FAIL
+```
+
+However, if we can adjust the order of the expressions in matchers, and put more time-consuming expressions like functions behind,
+the execution time will be very short.  
+Changing the order of expressions in matchers in the above example to 
+```ini
+[matchers]
+m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
+```
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+=== RUN   TestManyRoles
+    rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
+    rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/1        GET :  true IN: 2.908534ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 7.292963ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
+--- PASS: TestManyRoles (0.05s)
+PASS
+ok      github.com/casbin/casbin/v2     0.053s
+```
 ## Multiple sections type
 
 If you need multiple policy definitions or multiple matcher, you can use like ``p2``, ``m2``. In fact, all of the above four sections can use multiple types and the syntax is ``r``+number, such as ``r2``, ``e2``. By default these four sections should correspond one to one. Such as your ``r2`` will only use matcher ``m2`` to match policies ``p2``.  
