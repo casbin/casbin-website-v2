@@ -64,23 +64,13 @@ module.exports = {
           position: "left",
         },
         {
-          label: "Casdoor",
-          href: "https://casdoor.org/",
+          href: "https://casbin.com",
+          label: "For Enterprise",
           position: "left",
         },
         {
-          label: "Forum",
-          href: "https://forum.casbin.com/",
-          position: "left",
-        },
-        {
-          label: "Pricing",
-          to: "https://casdoor.com/#pricing",
-          position: "left",
-        },
-        {
-          label: "Contact Sales",
-          to: "https://tawk.to/chat/62333c3ca34c2456412b88a7/1fuc26j6b",
+          href: "https://casdoor.com",
+          label: "Hosting Plan (SaaS)",
           position: "left",
         },
         {
@@ -114,14 +104,14 @@ module.exports = {
         {
           type: "custom-casdoor",
           label: "Sign Up",
-          src: "https://door.casdoor.com/signup",
+          src: "https://casdoor.com",
           position: "right",
           className: "casdoor-signup casdoor-link",
         },
         {
           type: "custom-casdoor",
           label: "Login",
-          src: "https://door.casdoor.com/login",
+          src: "https://casdoor.com",
           position: "right",
           className: "casdoor-login casdoor-link",
         },
