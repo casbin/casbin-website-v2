@@ -10,8 +10,9 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+
   /* color: var(--ifm-font-color-base); */
-  color: #E3E3E3;
+  color: #e3e3e3;
 }
 
 @media screen and (max-width: 966px) {
@@ -58,4 +59,8 @@
   stroke-width: 0;
   width: 22px;
   height: 22px;
+}
+
+.text {
+  white-space: normal;
 }
