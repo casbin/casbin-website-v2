@@ -21,7 +21,7 @@ The logging is not enabled by default. You can toggle it via ``Enforcer.EnableLo
 :::note
 
 We already support logging the model, enforce request, role, policy in Golang. You can define your own log for logging Casbin.
-If you are using Python, pycasbin leverages the default Python logging mechanism. The pycasbin package makes a call to logging.getLogger() to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is intitilized within the parent application you will not see any log messages from pycasbin. 
+If you are using Python, pycasbin leverages the default Python logging mechanism. The pycasbin package makes a call to logging.getLogger() to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is intitilized within the parent application you will not see any log messages from pycasbin.
 
 :::
 
@@ -52,19 +52,19 @@ We provide some loggers to help you log information.
 <TabItem value="Go" label="Go" default>
 ```
 
-Logger | Author | Description
-----|----|----
-[Defatule logger (built-in)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | The default logger using golang log.
-[Zap logger](https://github.com/casbin/zap-logger) | Casbin | Using [zap](https://github.com/uber-go/zap), provide json encoded log and you could customize more with your own zap-logger.
+| Logger                                                                                           | Author | Description                                                                                                                  |
+|--------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------|
+| [Defatule logger (built-in)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | The default logger using golang log.                                                                                         |
+| [Zap logger](https://github.com/casbin/zap-logger)                                               | Casbin | Using [zap](https://github.com/uber-go/zap), provide json encoded log and you could customize more with your own zap-logger. |
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="PHP" label="PHP">
 ```
 
-Logger | Author | Description
-----|----|----
-[psr3-bridge logger](https://github.com/php-casbin/psr3-bridge) | Casbin | Provides a [PSR-3](https://www.php-fig.org/psr/psr-3/) compliant bridge.
+| Logger                                                          | Author | Description                                                              |
+|-----------------------------------------------------------------|--------|--------------------------------------------------------------------------|
+| [psr3-bridge logger](https://github.com/php-casbin/psr3-bridge) | Casbin | Provides a [PSR-3](https://www.php-fig.org/psr/psr-3/) compliant bridge. |
 
 ```mdx-code-block
 </TabItem>
@@ -75,14 +75,14 @@ Logger | Author | Description
 
 Your logger should implement the [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20) interface.
 
-Method | Type | Description
-----|------|----
-EnableLog() | mandatory | Control whether print the message.
-IsEnabled() | mandatory | Show the current logger's enabled status.
-LogModel() | mandatory | Log info related to model.
-LogEnforce() | mandatory | Log info related to enforce.
-LogRole() | mandatory | Log info related to role.
-LogPolicy() | mandatory | Log info related to policy.
+| Method       | Type      | Description                               |
+|--------------|-----------|-------------------------------------------|
+| EnableLog()  | mandatory | Control whether print the message.        |
+| IsEnabled()  | mandatory | Show the current logger's enabled status. |
+| LogModel()   | mandatory | Log info related to model.                |
+| LogEnforce() | mandatory | Log info related to enforce.              |
+| LogRole()    | mandatory | Log info related to role.                 |
+| LogPolicy()  | mandatory | Log info related to policy.               |
 
 
 You can pass your custom `logger` to `Enforcer.SetLogger()`.
@@ -185,13 +185,13 @@ Error or panic may happen when you use Casbin for reasons like:
 
 There are five main functions you may need to care about for error or panic:
 
-Function | Behavior on error 
-----|-----
-[NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer) | Return error
-[LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel) | Return error
-[LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | Return error
-[SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | Return error
-[Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce) | Return error
+| Function                                                                       | Behavior on error |
+|--------------------------------------------------------------------------------|-------------------|
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer)        | Return error      |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel)   | Return error      |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | Return error      |
+| [SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | Return error      |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce)       | Return error      |
 
 :::note
 

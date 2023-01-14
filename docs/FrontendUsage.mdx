@@ -24,12 +24,12 @@ yarn add casbin.js
 
 ## Frontend Middlewares
 
-Middleware | Type | Author | Description
-----|-----|----|----
-[react-authz](https://github.com/casbin-js/react-authz) | React | Casbin | React wrapper for Casbin.js
-[rbac-react](https://github.com/daobeng/rbac-react) | React | [@daobeng](https://github.com/daobeng) | Role Based Access Control in React using HOCs, CASL and Casbin.js
-[vue-authz](https://github.com/casbin-js/vue-authz) | Vue | Casbin | Vue wrapper for Casbin.js
-[angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin | Angular wrapper for Casbin.js
+| Middleware                                                  | Type    | Author                                 | Description                                                       |
+|-------------------------------------------------------------|---------|----------------------------------------|-------------------------------------------------------------------|
+| [react-authz](https://github.com/casbin-js/react-authz)     | React   | Casbin                                 | React wrapper for Casbin.js                                       |
+| [rbac-react](https://github.com/daobeng/rbac-react)         | React   | [@daobeng](https://github.com/daobeng) | Role Based Access Control in React using HOCs, CASL and Casbin.js |
+| [vue-authz](https://github.com/casbin-js/vue-authz)         | Vue     | Casbin                                 | Vue wrapper for Casbin.js                                         |
+| [angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin                                 | Angular wrapper for Casbin.js                                     |
 
 ## Quick Start
 You can use `manual` mode in your frontend application, and set the permission whenever you wish.
@@ -105,7 +105,7 @@ const authorizer = new casbinjs.Authorizer(
     {endpoint: 'http://your_endpoint/api/casbin'}
 );
 
-// Set your visitor. 
+// Set your visitor.
 // Casbin.js will automatically sync the permission with your backend Casbin service.
 authorizer.setUser("Tom");
 
@@ -141,7 +141,7 @@ func (c *APIController) GetFrontendPermission() {
     // Get the visitor from the GET parameters. (The key is "casbin_subject")
     visitor := c.Input().Get("casbin_subject")
     // `e` is an initialized instance of Casbin Enforcer
-    c.Data["perm"] = casbin.CasbinJsGetPermissionForUser(e, visitor) 
+    c.Data["perm"] = casbin.CasbinJsGetPermissionForUser(e, visitor)
     // Pass the data to the fronend.
     c.ServeJSON()
 }

@@ -13,7 +13,7 @@ Casbin follows the officially suggested way to provide authorization for GraphQL
 ```javascript
 // Casbin authorization logic lives inside postRepository
 var postRepository = require('postRepository');
- 
+
 var postType = new GraphQLObjectType({
   name: 'Post',
   fields: {
@@ -35,29 +35,29 @@ A complete list of Casbin GraphQL middlewares is provided as below. Any 3rd-part
 <TabItem value="Go" label="Go" default>
 ```
 
-Middleware | GraphQL Implementation | Author | Description
-----|----|----|----
-[graphql-authz](https://github.com/casbin/graphql-authz) | [graphql](https://github.com/graphql-go/graphql) | Casbin | An authorization middleware for graphql-go
-[graphql-casbin](https://github.com/esmaeilpour/graphql-casbin) | [graphql](https://github.com/graphql-go/graphql) | [@esmaeilpour](https://github.com/esmaeilpour) | An Implementation of using Graphql and Casbin together
-[gqlgen_casbin_RBAC_example](https://github.com/WenyXu/gqlgen_casbin_RBAC_example) | [gqlgen](https://github.com/99designs/gqlgen) | [@WenyXu](https://github.com/WenyXu) | (empty)
+| Middleware                                                                         | GraphQL Implementation                           | Author                                         | Description                                            |
+|------------------------------------------------------------------------------------|--------------------------------------------------|------------------------------------------------|--------------------------------------------------------|
+| [graphql-authz](https://github.com/casbin/graphql-authz)                           | [graphql](https://github.com/graphql-go/graphql) | Casbin                                         | An authorization middleware for graphql-go             |
+| [graphql-casbin](https://github.com/esmaeilpour/graphql-casbin)                    | [graphql](https://github.com/graphql-go/graphql) | [@esmaeilpour](https://github.com/esmaeilpour) | An Implementation of using Graphql and Casbin together |
+| [gqlgen_casbin_RBAC_example](https://github.com/WenyXu/gqlgen_casbin_RBAC_example) | [gqlgen](https://github.com/99designs/gqlgen)    | [@WenyXu](https://github.com/WenyXu)           | (empty)                                                |
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
 ```
 
-Middleware | GraphQL Implementation | Author | Description
-----|----|----|----
-[graphql-authz](https://github.com/node-casbin/graphql-authz) | [GraphQL.js](https://github.com/graphql/graphql-js) | Casbin | A Casbin authorization middleware for [GraphQL.js](https://github.com/graphql/graphql-js)
+| Middleware                                                    | GraphQL Implementation                              | Author | Description                                                                               |
+|---------------------------------------------------------------|-----------------------------------------------------|--------|-------------------------------------------------------------------------------------------|
+| [graphql-authz](https://github.com/node-casbin/graphql-authz) | [GraphQL.js](https://github.com/graphql/graphql-js) | Casbin | A Casbin authorization middleware for [GraphQL.js](https://github.com/graphql/graphql-js) |
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Python" label="Python">
 ```
 
-Middleware | GraphQL Implementation | Author | Description
-----|----|----|----
-[graphql-authz](https://github.com/Checho3388/graphql-authz) | [GraphQL-core 3](https://github.com/graphql-python/graphql-core) | [@Checho3388](https://github.com/Checho3388) | A Casbin authorization middleware for [GraphQL-core 3](https://github.com/graphql-python/graphql-core)
+| Middleware                                                   | GraphQL Implementation                                           | Author                                       | Description                                                                                            |
+|--------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| [graphql-authz](https://github.com/Checho3388/graphql-authz) | [GraphQL-core 3](https://github.com/graphql-python/graphql-core) | [@Checho3388](https://github.com/Checho3388) | A Casbin authorization middleware for [GraphQL-core 3](https://github.com/graphql-python/graphql-core) |
 
 ```mdx-code-block
 </TabItem>

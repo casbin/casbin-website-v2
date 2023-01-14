@@ -6,7 +6,7 @@ keywords: [policy storage]
 authors: [hsluoyz]
 ---
 
-In Casbin, the policy storage is implemented as an [adapter](/docs/adapters). 
+In Casbin, the policy storage is implemented as an [adapter](/docs/adapters).
 
 ## Load policy from .CSV file
 
@@ -44,13 +44,13 @@ Related issue: [casbin#886](https://github.com/casbin/casbin/issues/886)
 
 ## Adapter API
 
-Method | Type | Description
-----|------|----
-LoadPolicy() | basic | Load all policy rules from the storage
-SavePolicy() | basic | Save all policy rules to the storage
-AddPolicy() | optional | Add a policy rule to the storage
-RemovePolicy() | optional | Remove a policy rule from the storage
-RemoveFilteredPolicy() | optional | Remove policy rules that match the filter from the storage
+| Method                 | Type     | Description                                                |
+|------------------------|----------|------------------------------------------------------------|
+| LoadPolicy()           | basic    | Load all policy rules from the storage                     |
+| SavePolicy()           | basic    | Save all policy rules to the storage                       |
+| AddPolicy()            | optional | Add a policy rule to the storage                           |
+| RemovePolicy()         | optional | Remove a policy rule from the storage                      |
+| RemoveFilteredPolicy() | optional | Remove policy rules that match the filter from the storage |
 
 ## Database Storage Format
 
@@ -75,7 +75,7 @@ g, alice, admin
 - ``id``: Only exists in the database as the primary key. Not as part of the ``casbin policy``. The way it is generated depends on the specific adapter
 
 - ``ptype``: It corresponds to ``p``, ``g``, ``g2``, etc.
-- ``v0-v5``: The column names have no specific meaning, and correspond to the values in the ``policy csv`` from left to right. The number of columns depends on how many you define yourself. In theory, there can be an infinite number of columns. But generally only **6** columns are implemented in adapter. If it is not enough for you, please submit an issue to the corresponding adapter repository. 
+- ``v0-v5``: The column names have no specific meaning, and correspond to the values in the ``policy csv`` from left to right. The number of columns depends on how many you define yourself. In theory, there can be an infinite number of columns. But generally only **6** columns are implemented in adapter. If it is not enough for you, please submit an issue to the corresponding adapter repository.
 
 ## Adapter Details
 
