@@ -29,16 +29,16 @@ function Hello() {
             </Translate>
           </div>
           <div className="col">
-            <h2>Gitter</h2>
+            <h2>Discord</h2>
             <Translate values={{
-              gitterLink: (
-                <a href="https://gitter.im/casbin/Lobby">
-                  <Translate>Gitter</Translate>
+              discordLink: (
+                <a href="https://discord.gg/4eZa7dMurk">
+                  <Translate>Discord</Translate>
                 </a>
               ),
             }}
             >
-              {"You can join the conversation on {gitterLink} for contributing help."}
+              {"You can join the conversation on {discordLink} for contributing help."}
             </Translate>
           </div>
           <div className="col">
