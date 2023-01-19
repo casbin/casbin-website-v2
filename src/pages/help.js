@@ -32,7 +32,7 @@ function Hello() {
             <h2>Discord</h2>
             <Translate values={{
               discordLink: (
-                <a href="https://discord.gg/4eZa7dMurk">
+                <a href="https://discord.gg/qteNGWt8UY">
                   <Translate>Discord</Translate>
                 </a>
               ),
