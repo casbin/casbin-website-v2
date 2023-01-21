@@ -26,9 +26,6 @@ module.exports = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    hotjar: {
-      applicationId: "1689878",
-    },
     navbar: {
       title: "Casbin",
       logo: {
@@ -263,6 +260,10 @@ var _hmt = _hmt || [];
       src: "/js/tawk.js",
       async: true,
     },
+    {
+      src: "/js/hotjar.js",
+      async: true,
+    },
   ],
   presets: [
     [
@@ -299,7 +300,7 @@ var _hmt = _hmt || [];
       },
     ],
   ],
-  plugins: ["docusaurus-plugin-hotjar"],
+  plugins: [],
   i18n: {
     defaultLocale: "en",
     locales: ["en", "zh", "ko", "ru", "fr", "de", "ja"],
