@@ -34,6 +34,7 @@
   --ifm-font-family-monospace: "Fira Code VF", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --ifm-code-font-size: 95%; /* code block font size */
   --site-primary-hue-saturation: 210 68%; /* announcementBar */
+  --ifm-navbar-height: 5.5rem; /* overiridng Navbar Height to accomodate links */
 
   /* https://docusaurus.io/docs/styling-layout#styling-your-site-with-infima */
   --ifm-color-primary: #4c00ff;

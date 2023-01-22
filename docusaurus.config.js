@@ -67,7 +67,7 @@ module.exports = {
         },
         {
           href: "https://casdoor.com",
-          label: "Hosting Plan (SaaS)",
+          label: "Hosting Plan(SaaS)",
           position: "left",
         },
         {
