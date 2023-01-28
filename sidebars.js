@@ -130,6 +130,7 @@ module.exports = {
         "contributing",
         "privacy-policy",
         "terms-of-service",
+        "refund-policy",
       ],
     },
   ],
