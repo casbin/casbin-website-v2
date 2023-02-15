@@ -208,7 +208,9 @@ module.exports = {
             },
             {
               html: `
-                <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/casbinHQ?style=social">
+                <a href="https://twitter.com/casbinHQ" target="_blank">
+                  <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/casbinHQ?style=social">
+                </a>
               `,
             },
             {
