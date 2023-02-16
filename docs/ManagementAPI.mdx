@@ -1,4 +1,4 @@
----
+ ---
 id: management-api
 title: Management API
 description: The primitive API that provides full support for Casbin policy management
@@ -1820,6 +1820,23 @@ boolean areRulesAdded = e.addPolicies(rules);
 </Tabs>
 ```
 
+### `AddPoliciesEx()`
+
+AddPoliciesEx adds authorization rules to the current policy.
+If the rule already exists, the rule will not be added.
+But unlike AddPolicies, other non-existent rules are added instead of returning false directly
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+
 ### `AddNamedPolicy()`
 
 AddNamedPolicy adds an authorization rule to the current named policy.
@@ -1989,6 +2006,40 @@ boolean areRulesAdded = e.addNamedPolicies("p", rules);
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+### `AddNamedPoliciesEx()`
+
+AddNamedPoliciesEx adds authorization rules to the current named policy.
+If the rule already exists, the rule will not be added.
+But unlike AddNamedPolicies, other non-existent rules are added instead of returning false directly
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddNamedPoliciesEx("p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+
+### `SelfAddPoliciesEx()`
+
+SelfAddPoliciesEx adds authorization rules to the current named policy with autoNotifyWatcher disabled.
+If the rule already exists, the rule will not be added.
+But unlike SelfAddPolicies, other non-existent rules are added instead of returning false directly
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.SelfAddPoliciesEx("p", "p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
 ```
 
 ### `RemovePolicy()`
@@ -2793,6 +2844,23 @@ boolean areRulesAdded = e.addGroupingPolicies(groupingRules);
 </Tabs>
 ```
 
+### `AddGroupingPoliciesEx()`
+
+AddGroupingPoliciesEx adds role inheritance rules to the current policy.
+If the rule already exists, the rule will not be added.
+But unlike AddGroupingPolicies, other non-existent rules are added instead of returning false directly
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddGroupingPoliciesEx([][]string{{"user1", "member"}, {"user2", "member"}})
+```
+
 ### `AddNamedGroupingPolicy()`
 
 AddNamedGroupingPolicy adds a named role inheritance rule to the current policy.
@@ -2952,6 +3020,22 @@ boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+### `AddNamedGroupingPoliciesEx()`
+
+AddNamedGroupingPoliciesEx adds named role inheritance rules to the current policy.
+If the rule already exists, the rule will not be added.
+But unlike AddNamedGroupingPolicies, other non-existent rules are added instead of returning false directly
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddNamedGroupingPoliciesEx("g", [][]string{{"user1", "member"}, {"user2", "member"}})
 ```
 
 ### `RemoveGroupingPolicy()`

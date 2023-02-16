@@ -179,6 +179,55 @@ then we can batch edit these policies.
 
 Same operations also useful to `GroupingPolicy, NamedGroupingPolicy`.
 
+### AddEx API
+
+Casbin provides AddEx series APIs to help users add rules in batches.
+
+```go
+AddPoliciesEx(rules [][]string) (bool, error)
+AddNamedPoliciesEx(ptype string, rules [][]string) (bool, error)
+AddGroupingPoliciesEx(rules [][]string) (bool, error)
+AddNamedGroupingPoliciesEx(ptype string, rules [][]string) (bool, error)
+SelfAddPoliciesEx(sec string, ptype string, rules [][]string) (bool, error) 
+```
+The difference between these methods and the methods without the Ex suffix is that if one of the rules already exists, they will continue to check the next rule instead of returning false directly.
+
+For example: Compare `AddPolicies` and `AddPoliciesEx`
+
+You can copy the code below into the test under casbin to run and observe.
+```go
+func TestDemo(t *testing.T) {
+	e, err := NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+	if err != nil {
+		fmt.Printf("Error, details: %s\n", err)
+	}
+	e.ClearPolicy()
+	e.AddPolicy("user1", "data1", "read")
+	fmt.Println(e.GetPolicy())
+	testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+	// policy {"user1", "data1", "read"} now exists
+
+	// Use AddPolicies to add rules in batches
+	ok, _ := e.AddPolicies([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+	fmt.Println(e.GetPolicy())
+	// {"user2", "data2", "read"} failed to add because {"user1", "data1", "read"} already exists
+	// AddPolicies returns false and no other policies are checked, even though they may not exist in the existing ruleset
+	// ok == false
+	fmt.Println(ok)
+	testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+	// Use AddPoliciesEx to add rules in batches
+	ok, _ = e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+	fmt.Println(e.GetPolicy())
+	// {"user2", "data2", "read"} is added successfully
+	// because AddPoliciesEx automatically filters the existing {"user1", "data1", "read"}
+	// ok == true
+	fmt.Println(ok)
+	testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+}
+```
+
 ## RBAC API
 
 Casbin provided come APIs for you to modify the RBAC model and policies. If you are familiar with RBAC, you can use these APIs easily.
