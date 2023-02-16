@@ -1,4 +1,4 @@
- ---
+---
 id: management-api
 title: Management API
 description: The primitive API that provides full support for Casbin policy management
@@ -1837,6 +1837,11 @@ For example:
 ok, err := e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
 ```
 
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ### `AddNamedPolicy()`
 
 AddNamedPolicy adds an authorization rule to the current named policy.
@@ -2025,6 +2030,11 @@ For example:
 ok, err := e.AddNamedPoliciesEx("p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
 ```
 
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ### `SelfAddPoliciesEx()`
 
 SelfAddPoliciesEx adds authorization rules to the current named policy with autoNotifyWatcher disabled.
@@ -2040,6 +2050,10 @@ For example:
 
 ```go
 ok, err := e.SelfAddPoliciesEx("p", "p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ### `RemovePolicy()`
@@ -2861,6 +2875,10 @@ For example:
 ok, err := e.AddGroupingPoliciesEx([][]string{{"user1", "member"}, {"user2", "member"}})
 ```
 
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
 ### `AddNamedGroupingPolicy()`
 
 AddNamedGroupingPolicy adds a named role inheritance rule to the current policy.
@@ -3036,6 +3054,10 @@ For example:
 
 ```go
 ok, err := e.AddNamedGroupingPoliciesEx("g", [][]string{{"user1", "member"}, {"user2", "member"}})
+```
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ### `RemoveGroupingPolicy()`
