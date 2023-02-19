@@ -266,6 +266,10 @@ var _hmt = _hmt || [];
       src: "/js/hotjar.js",
       async: true,
     },
+    {
+      src: "/js/probe.js",
+      async: true,
+    },
   ],
   presets: [
     [
