@@ -28,6 +28,14 @@ Button.defaultProps = {
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+
+  // To store proper width of the viewport
+  const [deviceWidth, setDeviceWidth] = React.useState(window.innerWidth);
+
+  // To update width
+  window.onload = () => setDeviceWidth(window.innerWidth);
+  window.onresize = () => setDeviceWidth(window.innerWidth);
+
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
@@ -54,10 +62,11 @@ function HomepageHeader() {
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin-rs"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/rust.svg" />Rust</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/CasbinRuby/casbin-ruby"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/ruby.svg" />Ruby</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/SwiftCasbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/swift-15.svg" />Swift (Objective-C)</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/lua-casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/lua-5.svg" />Lua (OpenResty, Kong, APISIX)</Link>
+            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex", alignItems: "center"}} to="https://github.com/casbin/lua-casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/lua-5.svg" />Lua {deviceWidth < 600 && <br />}(OpenResty, Kong, APISIX)</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/dart-casbin"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/dart.svg" />Dart (Flutter)</Link>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin-ex"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/elixir-lang-icon.svg" />Elixir</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="/docs/cloud-native"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/kubernets.svg" />Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)</Link>
+            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex", alignItems: "center"}} to="/docs/cloud-native"><embed className={styles.embedbutton} src="https://cdn.casbin.org/language/kubernets.svg" />Cloud Native {deviceWidth < 600 && <br />}(Kubernetes, Istio, {deviceWidth < 600 && <br />}Envoy, KubeSphere)</Link>
+
           </div>
         </div>
       </div>
