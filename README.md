@@ -2,7 +2,7 @@
 
 The configuration and documentation of Casbin website: <https://casbin.org/>.
 
-Casbin website is built using [Docusaurus](https://docusaurus.io/), you can get the PDF at [Release](https://github.com/casbin/casbin-website-v2/releases/tag/pdf).
+Casbin website is built using [Docusaurus](https://docusaurus.io/), you can get the PDF at [casbin.org/pdf](https://casbin.org/pdf) or [GitHub Action](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml).
 
 ## Get Started
 
