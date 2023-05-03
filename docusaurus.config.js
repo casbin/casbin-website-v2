@@ -270,6 +270,10 @@ var _hmt = _hmt || [];
       src: "/js/probe.js",
       async: true,
     },
+    {
+      src: "/js/clarity.js",
+      async: true,
+    },
   ],
   presets: [
     [
