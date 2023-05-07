@@ -41,7 +41,7 @@ bool function_name(string url, string pattern, string key_name)
 They will return the value of the key ``key_name`` if it matches the pattern, and return ``""`` if nothing is matched.
 
 For example,  ``KeyGet2("/resource1/action", "/:res/action, "res")`` will return ``"resource1"``, ``KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")`` will return ``"resource1"``.
-As for `KetGet`, which takes two parameters, ``KeyGet("/resource1/action", "/*)`` will return ``"resource1/action"``.
+As for `KeyGet`, which takes two parameters, ``KeyGet("/resource1/action", "/*)`` will return ``"resource1/action"``.
 
 
 | Function | url                                   | pattern                                                        | key_name                          | example                                                                                                                                                                                           |
