@@ -397,7 +397,7 @@ GetImplicitUsersForResourceByDomain("data1", "domain1") will return `[["alice", 
 ```
 
 ```go
-res, _ := e.GetAllDomains()
+ImplicitUsers, err := e.GetImplicitUsersForResourceByDomain("data1", "domain1")
 ```
 
 ```mdx-code-block
