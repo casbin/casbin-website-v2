@@ -1594,8 +1594,6 @@ g, alice, admin
 ```
 
 e.GetAllowedObjectConditions("alice", "read", "r.obj.") will return ` ["price < 25", "category_id = 2"], nil`
-`
-`
 
 Note:
 
@@ -1621,3 +1619,40 @@ conditions, err := e.GetAllowedObjectConditions("alice", "read", "r.obj.")
 </TabItem>
 </Tabs>
 ```
+
+### `GetImplicitUsersForResource()`
+
+GetImplicitUsersForResource return implicit user based on resource.
+
+For example:
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+GetImplicitUsersForResource("data2") will return `[["bob", "data2", "write"], ["alice", "data2", "read"] ["alice", "data2", "write"]], nil`.
+
+GetImplicitUsersForResource("data1") will return `[["alice", "data1", "read"]], nil`.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResource("data2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+Only users will be returned, roles (2nd arg in "g") will be excluded.
+
+:::
