@@ -34,41 +34,108 @@ module.exports = {
       },
       items: [
         {
-          type: "doc",
-          docId: "overview",
-          position: "left",
+          type: "dropdown",
           label: "Docs",
+          position: "left",
+          items: [
+            {
+              href: "/docs/Overview",
+              label: "Basics",
+            },
+            {
+              href: "/docs/supported-models",
+              label: "Access Control Model",
+            },
+            {
+              href: "/docs/model-storage",
+              label: "Storage & Load",
+            },
+            {
+              href: "/docs/enforcers",
+              label: "Extensions",
+            },
+            {
+              href: "/docs/management-api",
+              label: "API",
+            },
+            {
+              href: "/docs/multi-threading",
+              label: "Advanced Usage",
+            },
+            {
+              href: "/docs/admin-portal",
+              label: "Management",
+            },
+            {
+              href: "/docs/ide-plugins",
+              label: "IDE plugins",
+            },
+            {
+              href: "/docs/adopters",
+              label: "More",
+            },
+          ],
         },
-        {to: "/blog", label: "Blog", position: "left"},
+        {to: "/blog", label: "Blog", position: "left",
+        },
         {
           to: "/help",
           label: "Help",
           position: "left",
         },
         {
-          href: "/docs/management-api",
-          label: "API",
-          position: "left",
-        },
-        {
           href: "/editor",
           label: "Editor",
           position: "left",
-        },
-        {
-          href: "/docs/ide-plugins",
-          label: "IDE plugins",
-          position: "left",
+          className: "navbar-editor",
         },
         {
           href: "https://casdoor.com",
           label: "For Enterprise",
           position: "left",
+          className: "navbar-ForEntprse",
         },
         {
           href: "https://casdoor.com",
           label: "Hosting Plan (SaaS)",
           position: "left",
+          className: "navbar-HostPl",
+        },
+        {
+          type: "dropdown",
+          className: "navbar-More",
+          label: "More",
+          position: "left",
+          items: [
+            {
+              href: "https://casdoor.com",
+              label: "For Enterprise",
+            },
+            {
+              href: "https://casdoor.com",
+              label: "Hosting Plan (SaaS)",
+            },
+          ],
+        },
+        {
+          type: "dropdown",
+          className: "navbar-Most",
+          label: "More",
+          position: "left",
+          items: [
+            {
+              href: "/editor",
+              label: "Editor",
+            },
+            {
+              href: "https://casdoor.com",
+              label: "For Enterprise",
+            },
+            {
+              href: "https://casdoor.com",
+              label: "Hosting Plan (SaaS)",
+            },
+          ],
         },
         {
           type: "localeDropdown",
