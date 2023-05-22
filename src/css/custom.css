@@ -311,3 +311,63 @@ html[data-theme="dark"]
     --ifm-spacing-horizontal: 1rem;
   }
 }
+
+/* 默认样式，可见状态 */
+.navbar-ForEntprse {
+  display: block;
+}
+
+/* 在分辨率小于等于1410px时隐藏组件 */
+@media (max-width: 1410px) {
+  .navbar-ForEntprse {
+    display: none;
+  }
+}
+
+/* 默认样式，可见状态 */
+.navbar-HostPl {
+  display: block;
+}
+
+/* 在分辨率小于等于1410px时隐藏组件 */
+@media (max-width: 1410px) {
+  .navbar-HostPl {
+    display: none;
+  }
+}
+
+/* 默认样式，可见状态 */
+.navbar-editor {
+  display: block;
+}
+
+/* 在分辨率小于等于1410px时隐藏组件 */
+@media (max-width: 1260px) {
+  .navbar-editor {
+    display: none;
+  }
+}
+
+/* 默认样式，不可见状态 */
+.navbar-More {
+  display: none;
+}
+
+/* 在分辨率大于等于1410px时隐藏组件 */
+@media (min-width: 1261px) and (max-width: 1410px) {
+  .navbar-More {
+    display: block;
+  }
+}
+
+/* 默认样式，不可见状态 */
+.navbar-Most {
+  display: none;
+}
+
+/* 在分辨率大于等于1260px时隐藏组件 */
+@media (max-width: 1260px) {
+  .navbar-Most {
+    display: block;
+  }
+}
