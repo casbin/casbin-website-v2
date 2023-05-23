@@ -346,7 +346,7 @@ html[data-theme="dark"]
   display: none;
 }
 
-@media (min-width: 996px) and (max-width: 1410px) {
+@media (max-width: 1410px) {
   .navbar-More {
     display: block;
   }
