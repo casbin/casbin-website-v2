@@ -76,12 +76,17 @@ module.exports = {
             },
           ],
         },
-        {to: "/blog", label: "Blog", position: "left",
+        {
+          to: "/blog",
+          label: "Blog",
+          position: "left",
+          className: "navbar-blog",
         },
         {
           to: "/help",
           label: "Help",
           position: "left",
+          className: "navbar-help",
         },
         {
           href: "/editor",
@@ -93,7 +98,7 @@ module.exports = {
           href: "https://casdoor.com",
           label: "For Enterprise",
           position: "left",
-          className: "navbar-ForEntprse",
+          className: "navbar-ForEntrpse",
         },
         {
           href: "https://casdoor.com",
@@ -108,32 +113,17 @@ module.exports = {
           position: "left",
           items: [
             {
-              href: "https://casdoor.com",
-              label: "For Enterprise",
-            },
-            {
-              href: "https://casdoor.com",
-              label: "Hosting Plan (SaaS)",
-            },
-          ],
-        },
-        {
-          type: "dropdown",
-          className: "navbar-Most",
-          label: "More",
-          position: "left",
-          items: [
-            {
               href: "/editor",
               label: "Editor",
+              className: "navbar-editor-in",
             },
             {
-              href: "https://casdoor.com",
-              label: "For Enterprise",
+              to: "/blog",
+              label: "Blog",
             },
             {
-              href: "https://casdoor.com",
-              label: "Hosting Plan (SaaS)",
+              to: "/help",
+              label: "Help",
             },
           ],
         },
