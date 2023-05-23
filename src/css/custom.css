@@ -312,62 +312,76 @@ html[data-theme="dark"]
   }
 }
 
-/* 默认样式，可见状态 */
-.navbar-ForEntprse {
+.navbar-blog {
   display: block;
 }
 
-/* 在分辨率小于等于1410px时隐藏组件 */
 @media (max-width: 1410px) {
-  .navbar-ForEntprse {
+  .navbar-blog {
     display: none;
   }
 }
 
-/* 默认样式，可见状态 */
-.navbar-HostPl {
+.navbar-help {
   display: block;
 }
 
-/* 在分辨率小于等于1410px时隐藏组件 */
 @media (max-width: 1410px) {
-  .navbar-HostPl {
+  .navbar-help {
     display: none;
   }
 }
 
-/* 默认样式，可见状态 */
 .navbar-editor {
   display: block;
 }
 
-/* 在分辨率小于等于1410px时隐藏组件 */
 @media (max-width: 1260px) {
   .navbar-editor {
     display: none;
   }
 }
 
-/* 默认样式，不可见状态 */
 .navbar-More {
   display: none;
 }
 
-/* 在分辨率大于等于1410px时隐藏组件 */
-@media (min-width: 1261px) and (max-width: 1410px) {
+@media (min-width: 996px) and (max-width: 1410px) {
   .navbar-More {
     display: block;
   }
 }
 
-/* 默认样式，不可见状态 */
-.navbar-Most {
+.navbar-editor-in {
   display: none;
 }
 
-/* 在分辨率大于等于1260px时隐藏组件 */
 @media (max-width: 1260px) {
-  .navbar-Most {
+  .navbar-editor-in {
     display: block;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1300px) {
+  .navbar-ForEntrpse {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 996px) and (max-width: 1100px) {
+  .navbar-ForEntrpse {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1300px) {
+  .navbar-HostPl {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 996px) and (max-width: 1100px) {
+  .navbar-HostPl {
+    font-size: 9px;
   }
 }
