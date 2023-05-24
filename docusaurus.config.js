@@ -125,6 +125,16 @@ module.exports = {
               to: "/help",
               label: "Help",
             },
+            {
+              href: "https://casdoor.com",
+              label: "Hosting Plan (SaaS)",
+              className: "navbar-HostPl-in",
+            },
+            {
+              href: "https://casdoor.com",
+              label: "For Enterprise",
+              className: "navbar-ForEntrpse-in",
+            },
           ],
         },
         {
