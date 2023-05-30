@@ -401,6 +401,8 @@ html[data-theme="dark"]
   }
 }
 
-.navbar__item.dropdown.dropdown--hoverable:has(.navbar-More) {
-  display: none;
+@media (min-width: 1410px) {
+  .navbar__item.dropdown.dropdown--hoverable:has(.navbar-More) {
+    display: none;
+  }
 }
