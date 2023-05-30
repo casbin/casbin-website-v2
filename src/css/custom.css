@@ -397,3 +397,7 @@ html[data-theme="dark"]
     display: block;
   }
 }
+
+.navbar__item.dropdown.dropdown--hoverable:has(.navbar-More) {
+  display: none;
+}
