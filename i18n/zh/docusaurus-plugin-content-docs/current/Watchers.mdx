@@ -1,0 +1,124 @@
+---
+id: watchers
+title: 监视器
+description: 保持多个Casbin执行实例之间的一致性
+keywords:
+  - 监视器
+  - 多个Casbin enforcer
+  - WatcherEx
+authors:
+  - hsluoyz
+---
+
+
+
+我们支持使用分布式消息系统，例如 [etcd](https://github.com/coreos/etcd) 来保持多个Casbin执行器实例之间的一致性。 因此，我们的用户可以同时使用多个Casbin 执行器来处理大量的权限检查请求。
+
+与策略存储适配器类似，我们没有把watcher的代码放在主库中。 任何对新消息系统的支持都应该作为watcher程序来实现。 完整的Casbin watchers列表如下所示。 欢迎任何第三方对 watcher做出新的贡献，如果有请告知我们，我将把它放在这个列表中:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Watcher                                                                                                            | 类型               | 作者                                             | 描述                                                               |
+| ------------------------------------------------------------------------------------------------------------------ | ---------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+| [PostgreSQL WatcherEx](https://github.com/IguteChung/casbin-psql-watcher)                                          | Database         | [@IguteChung](https://github.com/IguteChung)   | WatcherEx for [PostgreSQL](https://www.postgresql.org/)          |
+| [Redis WatcherEx](https://github.com/casbin/redis-watcher)                                                         | KV store         | Casbin                                         | WatcherEx for [Redis](http://redis.io/)                          |
+| [Redis Watcher](https://github.com/billcobbler/casbin-redis-watcher)                                               | KV store         | [@billcobbler](https://github.com/billcobbler) | [Redis](http://redis.io/)的监视器                                    |
+| [Etcd Watcher](https://github.com/casbin/etcd-watcher)                                                             | KV store         | Casbin                                         | [etcd](https://github.com/coreos/etcd)的监视器                       |
+| [TiKV 监视器](https://github.com/casbin/tikv-watcher)                                                                 | KV store         | Casbin                                         | [TiKV 的监视器](https://github.com/tikv/tikv)                        |
+| [Kafka 监视器](https://github.com/wgarunap/casbin-kafka-watcher)                                                      | Messaging system | [@wgarunap](https://github.com/wgarunap)       | [Apache Kafka](https://kafka.apache.org/)的监视器                    |
+| [NATS Watcher](https://github.com/Soluto/casbin-nats-watcher)                                                      | Messaging system | [Soluto](https://github.com/Soluto)            | [NATS](https://nats.io/)的监视器                                     |
+| [ZooKeeper Watcher](https://github.com/grepsr/casbin-zk-watcher)                                                   | Messaging system | [Grepsr](https://github.com/grepsr)            | [Apache ZooKeeper](https://zookeeper.apache.org/)的监视器            |
+| [NATS, RabbitMQ, GCP Pub/Sub, AWS SNS & SQS, Kafka, InMemory](https://github.com/rusenask/casbin-go-cloud-watcher) | Messaging System | [@rusenask](https://github.com/rusenask/)      | 监视器基于与领先的云供应商和自托管基础设施运作的[Go Cloud Dev Kit](https://gocloud.dev/) |
+| [RocketMQ 观察器](https://github.com/fmyxyz/casbin-rocketmq-watcher)                                                  | Messaging system | [@fmyxyz](https://github.com/fmyxyz)           | [Apache RocketMQ的监视器](https://rocketmq.apache.org/)              |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Watcher                                                    | 类型               | 作者                                         | 描述                                            |
+| ---------------------------------------------------------- | ---------------- | ------------------------------------------ | --------------------------------------------- |
+| [Etcd Adapter](https://github.com/mapleafgo/jcasbin-extra) | KV store         | [@mapleafgo](https://github.com/mapleafgo) | [etcd](https://github.com/coreos/etcd)的监视器    |
+| [Redis Watcher](https://github.com/jcasbin/redis-watcher)  | KV store         | Casbin                                     | [Redis](http://redis.io/)的监视器                 |
+| [Kafka 监视器](https://github.com/jcasbin/kafka-watcher)      | Messaging system | Casbin                                     | [Apache Kafka](https://kafka.apache.org/)的监视器 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Watcher                                                                                     | 实现要素             | 作者                                             | 描述                                                                                       |
+| ------------------------------------------------------------------------------------------- | ---------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [Etcd Watcher](https://github.com/node-casbin/etcd-watcher)                                 | KV store         | Casbin                                         | [etcd](https://github.com/coreos/etcd)的监视器                                               |
+| [Redis Watcher](https://github.com/node-casbin/redis-watcher)                               | KV store         | Casbin                                         | [Redis](http://redis.io/)的监视器                                                            |
+| [Pub/Sub Watcher](https://github.com/node-casbin/pubsub-watcher)                            | Messaging system | Casbin                                         | [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)的监视器                         |
+| [MongoDB Change Streams Watcher](https://github.com/node-casbin/mongo-changestream-watcher) | 数据库              | Casbin                                         | Watcher for [MongoDB Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) |
+| [Postgres Watcher](https://github.com/mcollina/casbin-pg-watcher)                           | 数据库              | [Matteo Collina](https://github.com/mcollina/) | [PostgreSQL](https://www.postgresql.org/)的监视器                                            |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Watcher                                                                     | 类型       | 作者                                              | 描述                                            |
+| --------------------------------------------------------------------------- | -------- | ----------------------------------------------- | --------------------------------------------- |
+| [Etcd Watcher](https://github.com/pycasbin/etcd-watcher)                    | KV store | Casbin                                          | [etcd](https://github.com/coreos/etcd)的监视器    |
+| [Redis Watcher](https://github.com/pycasbin/redis-watcher)                  | KV store | Casbin                                          | [Redis](http://redis.io/)的监视器                 |
+| [Redis Watcher](https://github.com/ScienceLogic/flask-casbin-redis-watcher) | KV store | [ScienceLogic](https://github.com/ScienceLogic) | [Redis](http://redis.io/)的监视器                 |
+| [PostgreSQL Watcher](https://github.com/pycasbin/postgresql-watcher)        | Database | Casbin                                          | [PostgreSQL](https://www.postgresql.org/)的监视器 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| Watcher                                                           | 类型       | 作者                               | 描述                            |
+| ----------------------------------------------------------------- | -------- | -------------------------------- | ----------------------------- |
+| [Redis Watcher](https://github.com/Sbou/Casbin.NET-Redis-Watcher) | KV store | [@Sbou](https://github.com/Sbou) | [Redis](http://redis.io/)的监视器 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+```
+
+| Watcher                                                                    | 类型               | 作者                                          | 描述                                         |
+| -------------------------------------------------------------------------- | ---------------- | ------------------------------------------- | ------------------------------------------ |
+| [Redis Watcher](https://github.com/CasbinRuby/casbin-ruby-redis-watcher)   | KV store         | [CasbinRuby](https://github.com/CasbinRuby) | [Redis](http://redis.io/)的监视器              |
+| [RabbitMQ 监视器](https://github.com/CasbinRuby/casbin-ruby-rabbitmq-watcher) | Messaging system | [CasbinRuby](https://github.com/CasbinRuby) | [RabbitMQ 的监视器](https://www.rabbitmq.com/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Watcher                                                          | 类型       | 作者                                     | 描述                            |
+| ---------------------------------------------------------------- | -------- | -------------------------------------- | ----------------------------- |
+| [Redis Watcher](https://github.com/php-casbin/webman-permission) | KV store | [@Tinywan](https://github.com/Tinywan) | [Redis](http://redis.io/)的监视器 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## WatcherEx
+
+为了支持多个实例之间的增量同步，我们提供 `WatcherEx` 接口。 我们希望它能够在策略改变时通知其他实例，但目前尚未实现 `WatcherEx`。 我们推荐您使用调度器来实现它。
+
+与 `个监视器` 接口相比， `WatcherEx` 可以区分收到的更新动作类型。 `添加策略` 和 `删除策略`.
+
+WatcherEx 的调用接口:
+
+| 应用程序接口                                                                                        | 描述                                                                                                                                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SetUpdateCallback(func(string)) error                                                         | SetUpdateCallback sets the callback function that the watcher will call, when the policy in DB has been changed by other instances. 一种典型的回调是Enforcer.LoadPolicy()。                                                                                                            |
+| Update() error                                                                                | Update calls the update callback of other instances to synchronize their policy. 它通常是在改变数据库中的策略之后进行的，如Enforcer.SavePolicy(), Enforcer.AddPolicy(), Enforcer.RemovePolicy()等。                                                                                                  |
+| Close()                                                                                       | Close stops and releases the watcher, the callback function will not be called any more.                                                                                                                                                                                      |
+| UpdateForAddPolicy(sec, ptype string, params ...string) error                                 | UpdateForAddPolicy calls the update callback of other instances to synchronize their policy. 它是在 Enforcer.AddPolicy(), Enforcer.AddNamedPolicy(), Enforcer.AddGroupingPolicy() 和 Enforcer.AddNamedGroupingPolicy() 后被调用。                                                      |
+| UpdateForRemovePolicy(sec, ptype string, params ...string) error                              | UPdateForRemovePolicy calls the update callback of other instances to synchronize their policy. 它是在政策被Enforcer.RemovePolicy(), Enforcer.RemoveNamedPolicy(), Enforcer.RemoveGroupingPolicy() 和 Enforcer.RemoveNamedGroupingPolicy() 删除后被调用。                                   |
+| UpdateForRemoveFilteredPolicy(sec, ptype string, fieldIndex int, fieldValues ...string) error | UpdateForRemoveFilteredPolicy calls the update callback of other instances to synchronize their policy. 它是在Enforcer.RemoveFilteredPolicy(), Enforcer.RemoveFilteredNamedPolicy(), Enforcer.RemoveFilteredGroupingPolicy() 和 Enforcer.RemoveFilteredNamedGroupingPolicy()之后被调用 |
+| UpdateForSavePolicy(model model.Model) error                                                  | UpdateForSavePolicy calls the update callback of other instances to synchronize their policy. 它在 Enforcer.AddPolicy()被调用后调用                                                                                                                                                   |
+| UpdateForAddPolicies(sec string, ptype string, rules ...[]string) error                       | UpdateForAddPolicies calls the update callback of other instances to synchronize their policy. 它是在Enforcer.AddPolicies(), Enforcecer.AddNamedPolicies(), Enforcer.AddGroupingPolicies() 和 Enforcer.AddNamedGroupingPolicies()之后被调用                                            |
+| UpdateForRemovePolicies(sec string, ptype string, rules ...[]string) error                    | UpdateForRemovePolicies calls the update callback of other instances to synchronize their policy. 它是在Enforcer.RemovePolicies(), Enforcecer.RemoveNamedPolicies(), Enforcer.RemoveGroupingPolicies() 和 Enforcer.RemoveNamedGroupingPolicies() 后被调用。                            |

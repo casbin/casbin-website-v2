@@ -1,0 +1,124 @@
+---
+id: watchers
+title: Beobachter
+description: Keeping consistence between multiple Casbin enforcer instances
+keywords:
+  - watcher
+  - multiple Casbin enforcer
+  - WatcherEx
+authors:
+  - hsluoyz
+---
+
+
+
+Wir unterstützen verteilte Messaging-Systeme wie [etcd](https://github.com/coreos/etcd) um die Konsistenz zwischen mehreren Casbin-Vollstreckungsinstanzen zu gewährleisten. So können unsere Benutzer gleichzeitig mehrere Casbin-Durchsetzer verwenden, um eine große Anzahl von Berechtigungsprüfungen zu bearbeiten.
+
+Ähnlich wie bei Richtlinien-Speicheradaptern legen wir Watcher-Code nicht in die Hauptbibliothek. Jede Unterstützung für ein neues Messaging-System sollte als Beobachter implementiert werden. Eine vollständige Liste der Casbin-Beobachter finden Sie wie unten. Jeder Beitrag von Drittanbietern zu einem neuen Beobachter ist willkommen, bitte informieren Sie uns und ich werde ihn in diese Liste setzen:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Beobachter                                                                                                         | Typ               | Autor                                          | Beschreibung                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------ | ----------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [PostgreSQL WatcherEx](https://github.com/IguteChung/casbin-psql-watcher)                                          | Database          | [@IguteChung](https://github.com/IguteChung)   | WatcherEx for [PostgreSQL](https://www.postgresql.org/)                                                                                       |
+| [Redis WatcherEx](https://github.com/casbin/redis-watcher)                                                         | KV Shop           | Casbin                                         | WatcherEx for [Redis](http://redis.io/)                                                                                                       |
+| [Redis-Beobachter](https://github.com/billcobbler/casbin-redis-watcher)                                            | KV Shop           | [@billcobbler](https://github.com/billcobbler) | Beobachter für [Redis](http://redis.io/)                                                                                                      |
+| [Etcd-Beobachter](https://github.com/casbin/etcd-watcher)                                                          | KV Shop           | Casbin                                         | Beobachter für [etcd](https://github.com/coreos/etcd)                                                                                         |
+| [TiKV-Beobachter](https://github.com/casbin/tikv-watcher)                                                          | KV Shop           | Casbin                                         | Beobachter für [TiKV](https://github.com/tikv/tikv)                                                                                           |
+| [Kafka-Beobachter](https://github.com/wgarunap/casbin-kafka-watcher)                                               | Nachrichtensystem | [@wgarunap](https://github.com/wgarunap)       | Beobachter für [Apache Kafka](https://kafka.apache.org/)                                                                                      |
+| [NATS-Beobachter](https://github.com/Soluto/casbin-nats-watcher)                                                   | Nachrichtensystem | [Lösung](https://github.com/Soluto)            | Beobachter für [NATS](https://nats.io/)                                                                                                       |
+| [ZooKeeper Beobachter](https://github.com/grepsr/casbin-zk-watcher)                                                | Nachrichtensystem | [Grepsr](https://github.com/grepsr)            | Beobachter für [Apache ZooKeeper](https://zookeeper.apache.org/)                                                                              |
+| [NATS, RabbitMQ, GCP Pub/Sub, AWS SNS & SQS, Kafka, InMemory](https://github.com/rusenask/casbin-go-cloud-watcher) | Nachrichtensystem | [@rusenask](https://github.com/rusenask/)      | Watcher basierend auf [Go Cloud Dev Kit](https://gocloud.dev/) das mit führenden Cloud-Anbietern und selbst gehosteter Infrastruktur arbeitet |
+| [Raketenbeobachter](https://github.com/fmyxyz/casbin-rocketmq-watcher)                                             | Nachrichtensystem | [@fmyxyz](https://github.com/fmyxyz)           | Beobachter für [Apache RocketMQ](https://rocketmq.apache.org/)                                                                                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Beobachter                                                   | Typ               | Autor                                      | Beschreibung                                             |
+| ------------------------------------------------------------ | ----------------- | ------------------------------------------ | -------------------------------------------------------- |
+| [Etcd-Adapter](https://github.com/mapleafgo/jcasbin-extra)   | KV Shop           | [@mapleafgo](https://github.com/mapleafgo) | Beobachter für [etcd](https://github.com/coreos/etcd)    |
+| [Redis-Beobachter](https://github.com/jcasbin/redis-watcher) | KV Shop           | Casbin                                     | Beobachter für [Redis](http://redis.io/)                 |
+| [Kafka-Beobachter](https://github.com/jcasbin/kafka-watcher) | Nachrichtensystem | Casbin                                     | Beobachter für [Apache Kafka](https://kafka.apache.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Beobachter                                                                                  | Typ               | Autor                                          | Beschreibung                                                                             |
+| ------------------------------------------------------------------------------------------- | ----------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [Etcd-Beobachter](https://github.com/node-casbin/etcd-watcher)                              | KV Shop           | Casbin                                         | Beobachter für [etcd](https://github.com/coreos/etcd)                                    |
+| [Redis-Beobachter](https://github.com/node-casbin/redis-watcher)                            | KV Shop           | Casbin                                         | Beobachter für [Redis](http://redis.io/)                                                 |
+| [Öffentlich/Sub-Beobachter](https://github.com/node-casbin/pubsub-watcher)                  | Nachrichtensystem | Casbin                                         | Beobachter für [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)              |
+| [MongoDB Change Streams Watcher](https://github.com/node-casbin/mongo-changestream-watcher) | Datenbank         | Casbin                                         | Watcher for [MongoDB Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) |
+| [Postgre-Beobachter](https://github.com/mcollina/casbin-pg-watcher)                         | Datenbank         | [Matteo Collina](https://github.com/mcollina/) | Beobachter für [PostgreSQL](https://www.postgresql.org/)                                 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Beobachter                                                                  | Typ      | Autor                                                 | Beschreibung                                             |
+| --------------------------------------------------------------------------- | -------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| [Etcd-Beobachter](https://github.com/pycasbin/etcd-watcher)                 | KV Shop  | Casbin                                                | Beobachter für [etcd](https://github.com/coreos/etcd)    |
+| [Redis-Beobachter](https://github.com/pycasbin/redis-watcher)               | KV Shop  | Casbin                                                | Beobachter für [Redis](http://redis.io/)                 |
+| [Redis Watcher](https://github.com/ScienceLogic/flask-casbin-redis-watcher) | KV store | [Wissenschaftslogik](https://github.com/ScienceLogic) | Watcher for [Redis](http://redis.io/)                    |
+| [PostgreSQL-Beobachter](https://github.com/pycasbin/postgresql-watcher)     | Database | Casbin                                                | Beobachter für [PostgreSQL](https://www.postgresql.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| Beobachter                                                           | Typ     | Autor                            | Beschreibung                             |
+| -------------------------------------------------------------------- | ------- | -------------------------------- | ---------------------------------------- |
+| [Redis-Beobachter](https://github.com/Sbou/Casbin.NET-Redis-Watcher) | KV Shop | [@Sbou](https://github.com/Sbou) | Beobachter für [Redis](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+```
+
+| Beobachter                                                                        | Typ               | Autor                                       | Beschreibung                                         |
+| --------------------------------------------------------------------------------- | ----------------- | ------------------------------------------- | ---------------------------------------------------- |
+| [Redis-Beobachter](https://github.com/CasbinRuby/casbin-ruby-redis-watcher)       | KV Shop           | [CasbinRuby](https://github.com/CasbinRuby) | Beobachter für [Redis](http://redis.io/)             |
+| [RabbitMQ-Beobachter](https://github.com/CasbinRuby/casbin-ruby-rabbitmq-watcher) | Nachrichtensystem | [CasbinRuby](https://github.com/CasbinRuby) | Beobachter für [RabbitMQ](https://www.rabbitmq.com/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Beobachter                                                          | Typ     | Autor                                  | Beschreibung                             |
+| ------------------------------------------------------------------- | ------- | -------------------------------------- | ---------------------------------------- |
+| [Redis-Beobachter](https://github.com/php-casbin/webman-permission) | KV Shop | [@Tinywan](https://github.com/Tinywan) | Beobachter für [Redis](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## WatcherEx
+
+Um die inkrementelle Synchronisation zwischen mehreren Instanzen zu unterstützen, stellen wir die `WatcherEx` Schnittstelle zur Verfügung. Wir hoffen, dass es andere Instanzen benachrichtigen kann, wenn sich die Richtlinie ändert, aber es gibt derzeit keine Implementierung von `WatcherEx`. Wir empfehlen Dispatcher, um dies zu erreichen.
+
+Verglichen mit `Watcher` Schnittstelle kann `WatcherEx` unterscheiden, welche Art von Update-Aktion empfangen wird, z. ., `AddPolicy` und `RemovePolicy`.
+
+WatcherEx Apis:
+
+| API                                                                                           | Beschreibung                                                                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SetUpdateCallback(func(string)) error                                                         | SetUpdateCallback sets the callback function that the watcher will call, when the policy in DB has been changed by other instances. Ein klassischer Callback ist Enforcer.LoadPolicy().                                                                                                        |
+| Update() error                                                                                | Update calls the update callback of other instances to synchronize their policy. Es wird normalerweise nach Änderung der Richtlinien in DB aufgerufen, wie Enforcer.SavePolicy(), Enforcer.AddPolicy(), Enforcer.RemovePolicy(), etc.                                                          |
+| Close()                                                                                       | Close stops and releases the watcher, the callback function will not be called any more.                                                                                                                                                                                                       |
+| UpdateForAddPolicy(sec, ptype string, params ...string) error                                 | UpdateForAddPolicy calls the update callback of other instances to synchronize their policy. Es wird aufgerufen, nachdem eine Richtlinie über Enforcer.AddPolicy(), Enforcer.AddNamedPolicy(), Enforcer.AddGroupingPolicy() und Enforcer.AddNamedGroupingPolicy() hinzugefügt wurde.           |
+| UpdateForRemovePolicy(sec, ptype string, params ...string) error                              | UPdateForRemovePolicy calls the update callback of other instances to synchronize their policy. Es wird aufgerufen, nachdem eine Richtlinie von Enforcer.RemovePolicy(), Enforcer.RemoveNamedPolicy(), Enforcer.RemoveGroupingPolicy() und Enforcer.RemoveNamedGroupingPolicy() entfernt wird. |
+| UpdateForRemoveFilteredPolicy(sec, ptype string, fieldIndex int, fieldValues ...string) error | UpdateForRemoveFilteredPolicy calls the update callback of other instances to synchronize their policy. Es wird nach Enforcer.RemoveFilteredPolicy(), Enforcer.RemoveFilteredNamedPolicy(), Enforcer.RemoveFilteredGroupingPolicy() und Enforcer.RemoveFilteredGroupingPolicy() aufgerufen.    |
+| UpdateForSavePolicy(model model.Model) error                                                  | UpdateForSavePolicy calls the update callback of other instances to synchronize their policy. Es wird nach Enforcer.SavePolicy() aufgerufen                                                                                                                                                    |
+| UpdateForAddPolicies(sec string, ptype string, rules ...[]string) error                       | UpdateForAddPolicies calls the update callback of other instances to synchronize their policy. Es wird nach Enforcer.AddPolicies(), Enforcer.AddNamedPolicies(), Enforcer.AddGroupingPolicies() und Enforcer.AddNamedGroupingPolicies() aufgerufen.                                            |
+| UpdateForRemovePolicies(sec string, ptype string, rules ...[]string) error                    | UpdateForRemovePolicies calls the update callback of other instances to synchronize their policy. Es wird nach Enforcer.RemovePolicies(), Enforcer.RemoveNamedPolicies(), Enforcer.RemoveGroupingPolicies() und Enforcer.RemoveNamedGroupingPolicies().                                        |

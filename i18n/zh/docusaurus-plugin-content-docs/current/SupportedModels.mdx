@@ -1,0 +1,41 @@
+---
+id: supported-models
+title: 支持的模型
+description: 支持的 Casbin 模型
+keywords:
+  - 支持的模型
+authors:
+  - nodece
+---
+
+1. [**ACL (Access Control List, 访问控制列表)**](https://en.wikipedia.org/wiki/Access_control_list)
+2. **具有 [超级用户](https://en.wikipedia.org/wiki/Superuser) 的 ACL**
+3. **没有用户的 ACL**: 对于没有身份验证或用户登录的系统尤其有用。
+3. **没有资源的 ACL**: 某些场景可能只针对资源的类型, 而不是单个资源, 诸如 `write-article`, `read-log`等权限。 它不控制对特定文章或日志的访问。
+4. **[RBAC (基于角色的访问控制)](https://en.wikipedia.org/wiki/Role-based_access_control)**
+5. **支持资源角色的RBAC**: 用户和资源可以同时具有角色 (或组)。
+6. **支持域/租户的RBAC**: 用户可以为不同的域/租户设置不同的角色集。
+7. **[ABAC (基于属性的访问控制)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: 支持利用`resource.Owner`这种语法糖获取元素的属性。
+8. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: 支持路径, 如 `/res/*`, `/res/: id` 和 HTTP 方法, 如 `GET`, `POST`, `PUT`, `DELETE`。
+9. **拒绝优先**: 支持允许和拒绝授权, 拒绝优先于允许。
+10. **优先级**: 策略规则按照先后次序确定优先级，类似于防火墙规则。
+
+## 例子
+
+| 访问控制模型      | Model 文件                                                                                                                             | Policy 文件                                                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| ACL         | [basic_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_model.conf)                                           | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| 具有超级用户的ACL  | [basic_with_root_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_with_root_model.conf)                     | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| 没有用户的ACL    | [basic_without_users_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_model.conf)             | [basic_without_users_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_policy.csv)             |
+| 没有资源的ACL    | [basic_without_resources_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_model.conf)     | [basic_without_resources_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_policy.csv)     |
+| RBAC        | [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)                                             | [rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)                                             |
+| 具有资源角色的RBAC | [rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) | [rbac_with_resource_roles_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_policy.csv) |
+| 带有域/租户的RBAC | [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)                 | [rbac_with_domains_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_policy.csv)                 |
+| ABAC        | [abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                             | 无                                                                                                                                    |
+| RESTful     | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                                     | [keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                     |
+| 拒绝改写        | [rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)             | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| 同意与拒绝       | [rbac_with_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_model.conf)                       | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| 优先级         | [priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/priority_model.conf)                                     | [priority_policy.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy.csv)                                     |
+| 明确优先级       | [priority_model_explicit](https://github.com/casbin/casbin/blob/master/examples/priority_model_explicit.conf)                      | [priority_policy_explicit.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy_explicit.csv)                 |
+| 主体优先级       | [subject_priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/subject_priority_model.conf)                   | [subject_priority_policyl.csv](https://github.com/casbin/casbin/blob/master/examples/subject_priority_policy.csv)                  |
+

@@ -1,0 +1,41 @@
+---
+id: supported-models
+title: Поддерживаемые модели
+description: Supported models of Casbin
+keywords:
+  - supported models
+authors:
+  - nodece
+---
+
+1. [**ACL (список контроля доступа)**](https://en.wikipedia.org/wiki/Access_control_list)
+2. **ACL с [суперпользователем](https://en.wikipedia.org/wiki/Superuser)**
+3. **ACL без пользователей**: особенно полезен для систем, которые не имеют аутентификации или авторизации пользователей.
+3. **ACL без ресурсов**: некоторые сценарии могут быть направлены на один вид ресурсов вместо отдельного ресурса, используя разрешения, такие как `write-article`, `чтение лога`. Он не контролирует доступ к определенной статье или журналу.
+4. **[RBAC (контроль доступа, основанный на ролях)](https://en.wikipedia.org/wiki/Role-based_access_control)**
+5. **RBAC с ролями ресурса**: как пользователи, так и ресурсы могут иметь роли (или группы) одновременно.
+6. **RBAC с доменами/арендаторами**: пользователи могут иметь разные роли для различных доменов/арендаторов.
+7. **[АВАС (контроль доступа, основанный на атрибутах)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: сахар синтаксис, как `ресурс.Владелец` может быть использован для получения атрибута ресурса.
+8. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: поддерживает пути как `/res/*`, `/res/:id` и HTTP методы, такие как `GET`, `POST`, `ПУТ`, `УДАЛИТЬ`.
+9. **Запретить переопределение**: и разрешение, и запретить авторизацию поддерживается, запретить переопределить разрешение.
+10. **Приоритет**: правила политики могут быть приоритизированы как правила брандмауэра.
+
+## Примеры
+
+| Модель                       | Файл модели                                                                                                                          | Файл политики                                                                                                                        |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| ACL                          | [basic_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_model.conf)                                           | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| ACL с суперпользователем     | [conf с root_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_with_root_model.conf)                           | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| ACL без пользователей        | [basic_without_users_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_model.conf)             | [basic_without_users_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_policy.csv)             |
+| ACL без ресурсов             | [basic_without_resources_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_model.conf)     | [basic_without_resources_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_policy.csv)     |
+| RBAC                         | [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)                                             | [rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)                                             |
+| RBAC с ролями ресурсов       | [rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) | [rbac_with_resource_roles_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_policy.csv) |
+| RBAC с доменами/арендаторами | [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)                 | [rbac_with_domains_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_policy.csv)                 |
+| АДАТ                         | [abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                             | Н/Д                                                                                                                                  |
+| Восстановленный              | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                                     | [keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                     |
+| Запретить переопределение    | [rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)             | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| Замедлить и запретить        | [конф rbac_с отрицанием](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_model.conf)                            | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| Приоритет                    | [приоритет_модель.conf](https://github.com/casbin/casbin/blob/master/examples/priority_model.conf)                                   | [приоритет_policy.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy.csv)                                    |
+| Невероятный Приоритет        | [priority_model_explicit](https://github.com/casbin/casbin/blob/master/examples/priority_model_explicit.conf)                      | [priority_policy_explic.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy_explicit.csv)                   |
+| Предмет - Приоритет          | [subject_priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/subject_priority_model.conf)                   | [subject_priority_policyl.csv](https://github.com/casbin/casbin/blob/master/examples/subject_priority_policy.csv)                  |
+

@@ -1,0 +1,56 @@
+---
+id: data-permissions
+title: Autorisations des données
+description: Solutions for data permissions
+keywords:
+  - Data Permissions
+  - implicit
+authors:
+  - ErikQQY
+---
+
+
+
+Nous avons deux solutions pour les autorisations de données (filtrage). Utilisation des API d'affectation implicite. Ou utilisez simplement l'API BatchEnforce() .
+
+### 1. Requête de rôles ou de permissions implicites
+
+Lorsqu'un utilisateur hérite d'un rôle ou d'une permission via la hiérarchie RBAC au lieu de les assigner directement dans une règle de règle, nous appelons un tel type d'affectation comme `implicite`. Interroger de telles relations implicites, vous devez utiliser ces 2 API : `GetImplicitRolesForUser()` et `GetImplicitPermissionsForUser` au lieu de `GetRolesForUser()` et `GetPermissionsForUser`. Pour plus de détails, veuillez consulter [ce problème GitHub](https://github.com/casbin/casbin/issues/137).
+
+### 2. Utilisez `BatchEnforce()`
+
+BatchEnforce exécute chaque requête et renvoie un tableau bool
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

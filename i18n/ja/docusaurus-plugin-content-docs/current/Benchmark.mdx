@@ -1,0 +1,98 @@
+---
+id: benchmark
+title: Benchmarks
+description: The overhead of policy enforcement of Casbin
+keywords:
+  - benchmarks
+  - overhead
+authors:
+  - hsluoyz
+---
+
+
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+[model_b_test.go](https://github.com/casbin/casbin/blob/master/model_b_test.go) では、ポリシー施行のオーバーヘッドがベンチマークされています。 テストベッドは次のとおりです。
+
+```
+Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 2601Mhz, 4 Core(s), 8 Logical Processor(s)
+```
+
+`のベンチマーク結果 -bench=. -benchmem` は以下の通りです (op = `Enforce()` コール, ms = ミリ秒, KB = kiloバイト):
+
+| テストケース                   | ルールのサイズ                        | オーバーヘッド時間 (ms/op) | Memory overhead (KB) |
+| ------------------------ | ------------------------------ | ----------------- | -------------------- |
+| ACL                      | 2つのルール（2ユーザー）                  | 0.015493          | 5.649                |
+| RBAC                     | 5つのルール（2ユーザー、1ロール）             | 0.021738          | 7.522                |
+| RBAC (小)                 | 1100 ルール (1000 ユーザー、100 ロール)   | 0.164309          | 80.620               |
+| RBAC (medium)            | 11000ルール（10000ユーザー、1000ロール）    | 2.258262          | 765.152              |
+| RBAC (大)                 | 110000ルール（100000ユーザー、10000ロール） | 23.916776         | 7,606                |
+| RBAC with resource roles | 6つのルール（2人のユーザー、2つのロール）         | 0.021146          | 7.906                |
+| ドメイン/テナントとRBAC           | 6 ルール (2 ユーザー, 1 ロール, 2 ドメイン)  | 0.032696          | 10.755               |
+| ABAC                     | 0 ルール (0 ユーザー)                 | 0.007510          | 2.328                |
+| RESTful                  | 5 ルール (3 ユーザー)                 | 0.045398          | 91.774               |
+| 無効にする                    | 6つのルール（2ユーザー、1ロール）             | 0.023281          | 8.370                |
+| 優先度                      | 9 ルール (2 ユーザー、2 ロール)           | 0.016389          | 5.313                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+The overhead of policy enforcement of [Casbin CPP](https://github.com/casbin/casbin-cpp) is benchmarked in [`tests/benchmarks`](https://github.com/casbin/casbin-cpp/tree/master/tests/benchmarks) directory with the help of [Google's benchmarking tool](https://github.com/google/benchmark). これらのベンチマークのテストベッドは次のとおりです:
+
+```
+Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz, 4 コア, 4 スレッド
+```
+
+`casbin_benchmark` ターゲットを `Release` の構成 (op = `enforce()` で実行したベンチマーク結果) ms = millisecond):
+
+| テストケース                   | ルールのサイズ                        | オーバーヘッド時間 (ms/op) |
+| ------------------------ | ------------------------------ | ----------------- |
+| ACL                      | 2つのルール（2ユーザー）                  | 0.0195            |
+| RBAC                     | 5つのルール（2ユーザー、1ロール）             | 0.0288            |
+| RBAC (小)                 | 1100 ルール (1000 ユーザー、100 ロール)   | 0.300             |
+| RBAC (medium)            | 11000ルール（10000ユーザー、1000ロール）    | 2.113             |
+| RBAC (大)                 | 110000ルール（100000ユーザー、10000ロール） | 21.450            |
+| RBAC with resource roles | 6つのルール（2人のユーザー、2つのロール）         | 0.03              |
+| ドメイン/テナントとRBAC           | 6 ルール (2 ユーザー, 1 ロール, 2 ドメイン)  | 0.041             |
+| ABAC                     | 0 ルール (0 ユーザー)                 | NA                |
+| RESTful                  | 5 ルール (3 ユーザー)                 | NA                |
+| 無効にする                    | 6つのルール（2ユーザー、1ロール）             | 0.0246            |
+| 優先度                      | 9 ルール (2 ユーザー、2 ロール)           | 0.035             |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua (JIT)" label="Lua (JIT)">
+```
+
+[Lua Casbinの](https://github.com/casbin/lua-casbin) ポリシー執行のオーバーヘッドは、 [bench.lua](https://github.com/casbin/lua-casbin/blob/master/bench.lua) でベンチマークされている。 テストベッドは、CPUを備えたUbuntu VMでした。
+
+```
+AMD Ryzen(TM) 5 4600H CPU @ 3.0GHz, 6 コア, 12 スレッド
+```
+
+`luajit bench.lua` のベンチマーク結果は以下のとおりです (op = `enforce()` 呼び出し、ms = ミリ秒):
+
+| テストケース                   | ルールのサイズ                        | オーバーヘッド時間 (ms/op) |
+| ------------------------ | ------------------------------ | ----------------- |
+| ACL                      | 2つのルール（2ユーザー）                  | 0.0533            |
+| RBAC                     | 5つのルール（2ユーザー、1ロール）             | 0.0972            |
+| RBAC (小)                 | 1100 ルール (1000 ユーザー、100 ロール)   | 0.8598            |
+| RBAC (medium)            | 11000ルール（10000ユーザー、1000ロール）    | 8.6848            |
+| RBAC (大)                 | 110000ルール（100000ユーザー、10000ロール） | 90.3217           |
+| RBAC with resource roles | 6つのルール（2人のユーザー、2つのロール）         | 0.1124            |
+| ドメイン/テナントとRBAC           | 6 ルール (2 ユーザー, 1 ロール, 2 ドメイン)  | 0.1978            |
+| ABAC                     | 0 ルール (0 ユーザー)                 | 0.0305            |
+| RESTful                  | 5 ルール (3 ユーザー)                 | 0.1085            |
+| 無効にする                    | 6つのルール（2ユーザー、1ロール）             | 0.1934            |
+| 優先度                      | 9 ルール (2 ユーザー、2 ロール)           | 0.1437            |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

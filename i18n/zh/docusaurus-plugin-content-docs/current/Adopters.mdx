@@ -1,0 +1,76 @@
+---
+id: adopters
+title: 使用者
+description: Casbin的采用者
+keywords:
+  - 采用者
+  - 示例
+authors:
+  - nodece
+---
+
+
+
+## 直接集成
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 名称                                                              | 描述                                | 模型                                                                                                         | 策略                                                                                                   |
+| --------------------------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [VMware Harbor](https://github.com/goharbor/harbor)             | VMware的开源可信云本地注册表项目，用于存储、签名和扫描内容。 | [Code](https://github.com/goharbor/harbor/blob/master/src/pkg/permission/evaluator/rbac/casbin.go#L24-L44) | [Beego ORM](https://github.com/goharbor/harbor/blob/master/src/replication/dao/policy.go#L24-L26)    |
+| [Intel RMD](https://github.com/intel/rmd)                       | 英特尔的资源管理守护进程。                     | [.conf](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/model.conf)                               | [.csv](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/policy.csv)                          |
+| [VMware Dispatch](https://github.com/vmware/dispatch)           | 用于部署和管理无服务器风格应用程序的框架。             | [Code](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers.go#L46-L55)            | [Code](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers_test.go#L35-L45) |
+| [Skydive](https://github.com/skydive-project/skydive)           | 一个开源的实时网络拓扑和协议分析器。                | [Code](https://github.com/skydive-project/skydive/blob/master/config/config.go#L136-L140)                  | [.csv](https://github.com/skydive-project/skydive/blob/master/rbac/policy.csv)                       |
+| [Zenpress](https://github.com/insionng/zenpress)                | 用Golang编写的CMS系统。                  | [.conf](https://github.com/insionng/zenpress/blob/master/content/config/rbac_model.conf)                   | [Gorm](https://github.com/insionng/zenpress/blob/master/model/user.go#L53-L77)                       |
+| [Argo CD](https://github.com/argoproj/argo-cd)                  | 为Kubernetes持续提供的GitOps。           | [.conf](https://github.com/argoproj/argo-cd/blob/master/util/rbac/model.conf)                              | [.csv](https://github.com/argoproj/argo-cd/blob/master/util/rbac/builtin-policy.csv)                 |
+| [Muxi Cloud](https://github.com/muxiyun/Mae)                    | 一种更容易管理Kubernetes集群的方法。           | [.conf](https://github.com/muxiyun/Mae/blob/master/conf/casbinmodel.conf)                                  | [Code](https://github.com/muxiyun/Mae/blob/master/pkg/casbin/initPolicy.go#L21-L95)                  |
+| [EngineerCMS](https://github.com/3xxx/EngineerCMS)              | CMS管理工程师的知识。                      | [.conf](https://github.com/3xxx/EngineerCMS/blob/master/conf/rbac_model.conf)                              | [SQLite](https://github.com/3xxx/EngineerCMS/blob/master/database/engineer.db)                       |
+| [Cyber Auth API](https://github.com/CyberlifeCN/cyber-auth-api) | 一个Golang身份验证API项目。                | [.conf](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_model.conf)                   | [.csv](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_policy.csv)              |
+| [IRIS Community](https://github.com/irisnet/iris-community)     | IRIS社区活动网页                        | [.conf](https://github.com/irisnet/iris-community/blob/master/authz/authz_model.conf)                      | [.csv](https://github.com/irisnet/iris-community/blob/master/authz/authz_policy.csv)                 |
+| [Metadata DB](https://github.com/Bnei-Baruch/mdb)               | BB归档元数据数据库。                       | [.conf](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_model.conf)                        | [.csv](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_policy.csv)                   |
+| [Qilin API](https://github.com/ProtocolONE/qilin.api)           | 游戏内容下的ProtocolONE许可证管理工具。         | [Code](https://github.com/ProtocolONE/rbac/blob/master/model.go)                                           | [.csv](https://github.com/ProtocolONE/rbac/tree/master/conf)                                         |
+| [Devtron Labs](https://github.com/devtron-labs/devtron)         | Kubernetes软件发送Workflow。           | [.conf](https://github.com/devtron-labs/devtron/blob/main/auth_model.conf)                                 | [Xorm](https://github.com/devtron-labs/devtron/blob/main/internal/casbin/Adapter.go)                 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| 名称                                                               | 描述                       | 模型                                                                                                                                                                                  | 策略 |
+| ---------------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -- |
+| [lighty.io](https://github.com/PantheonTechnologies/lighty-core) | OpenDaylight的SDN控制器解决方案。 | [README](https://github.com/PantheonTechnologies/lighty-core/blob/6f2ceaae6a68e08c96d14d2fa8ee060ad9f61606/lighty-examples/lighty-controller-springboot-netconf/README.md#security) | 无  |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名称                                                                      | 描述                                                                                                                                    | 模型                                                                                                                                | 策略                                                                                                                                  |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Notadd](https://github.com/notadd/notadd)                              | A micro-service development architecture based on Nest.js.                                                                            | [.conf](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/rbac_model.conf) | [DB adapter](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/adapter.ts)   |
+| [ARC API](https://github.com/sourcefuse/loopback4-microservice-catalog) | A Catalog of Microservices based on [Loopback](https://loopback.io/doc/en/lb4/) Created by [SourceFuse](https://www.sourcefuse.com/). | [Usage](https://github.com/sourcefuse/loopback4-authorization#Extension-enhancement-using-CASBIN-authorisation)                   | [Provider](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/casbin-authorization-action.provider.ts) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 名称                                            | 描述              | 模型                                                                                            | 策略 |
+| --------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------- | -- |
+| [dtrace](https://github.com/EduScaled/dtrace) | EduScaled的跟踪系统。 | [Commit](https://github.com/EduScaled/dtrace/commit/6e8d6b52ec2fa120e8ad63f84a4aecc3eae14c02) | 无  |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+## 通过插件集成
+
+| 名称                                                    | 描述                                                              | 插件                                                                                                                                                              | 模型                                                                                                   | 策略                                                                                                   |
+| ----------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Docker](https://github.com/docker/docker)            | 全球领先的软件容器平台                                                     | [casbin-authz-plugin](https://github.com/casbin/casbin-authz-plugin) ([Docker 推荐](https://docs.docker.com/engine/extend/legacy_plugins/#authorization-plugins)) | [.conf](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_model.conf)         | [.csv](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_policy.csv)          |
+| [Gobis](https://github.com/orange-cloudfoundry/gobis) | 用go编写的[Orange](https://github.com/orange-cloudfoundry)的轻量级API网关 | [casbin](https://github.com/orange-cloudfoundry/gobis-middlewares/tree/master/casbin)                                                                           | [Code](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/model.go#L52-L65) | [请求](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/adapter.go#L46-L64) |

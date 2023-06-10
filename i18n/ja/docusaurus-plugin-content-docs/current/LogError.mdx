@@ -1,0 +1,227 @@
+---
+id: log-error
+title: ログ & エラー処理
+description: Casbin log & error handling
+keywords:
+  - log
+  - error
+  - error handling
+authors:
+  - hsluoyz
+---
+
+
+
+## ログ
+
+Casbin は、デフォルトのように、ビルトインの `ログ` を使用してコンソールにログを出力します。
+
+```log
+2017/07/15 19:43:56 [Request: alice, data1, read ---> true]
+```
+
+ログはデフォルトで有効になっていません。 `Enforcer.EnableLog()` または `NewEnforcer()` の最後のパラメータで切り替えることができます。
+
+:::note
+
+私たちはすでにGolangでモデルのロギング、要求を強制的に行う、役割、ポリシーをサポートしています。 ログを記録するための独自のログを定義することができます。 Pythonを使っているならば、pycasbinはデフォルトのPythonロギングメカニズムを利用します。 pycasbin パッケージはロガーを設定するために logging.getLogger() を呼び出します。 親アプリケーションでロガーを初期化する以外に特別なログ設定は必要ありません。 親アプリケーション内でロギングがintitilizedされていない場合、pycasbinからのログメッセージは表示されません。
+
+:::
+
+### 異なるエンフォーサーに異なるロガーを使用する
+
+すべてのエンフォーサーは、情報を記録する独自のロガーを持つことができ、実行時に変更することができます。
+
+`NewEnforcer()`の最後のパラメータを介して、適切なロガーを使用することができます。 この方法を使ってエンフォーサーを初期化すれば enabled パラメータを使う必要はありません。ロガーの有効化されたフィールドの優先度が高くなります。
+
+```go
+// Set a default logger as enforcer e1's logger. (Automatic Copy)
+// This operation could also be seeed as changing the logger of e1 at run-time.
+e1.SetLogger(&Log.DefaultLogger{})
+
+// Enforcer e2 のロガーとして別のロガーを設定します。
+e2.SetLogger(&YouOwnLogger)
+
+// Enformere3を初期化するときにロガーを設定します。
+e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
+```
+
+#### サポートされているロガー
+
+私たちはあなたが情報をログに記録するのを助けるためにいくつかのロガーを提供しています。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Logger                                                                          | 作成者    | 説明                                                                                             |
+| ------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------- |
+| [脱脂ロガー（内蔵）](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | golangログを使用するデフォルトのロガー。                                                                        |
+| [Zap logger](https://github.com/casbin/zap-logger)                              | Casbin | [zap](https://github.com/uber-go/zap)を使用すると、json エンコードされたログを提供し、独自の zap-logger でさらにカスタマイズできます。 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Logger                                                          | 作成者    | 説明                                                         |
+| --------------------------------------------------------------- | ------ | ---------------------------------------------------------- |
+| [psr3-bridge logger](https://github.com/php-casbin/psr3-bridge) | Casbin | [PSR-3](https://www.php-fig.org/psr/psr-3/) 準拠のブリッジを提供します。 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### ロガーの書き込み方法
+
+ロガーは [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20) インターフェイスを実装する必要があります。
+
+| 方法           | タイプ       | 説明                    |
+| ------------ | --------- | --------------------- |
+| EnableLog()  | mandatory | メッセージを印刷するかどうかを制御します。 |
+| IsEnabled()  | mandatory | 現在のロガーが有効な状態を表示します。   |
+| LogModel()   | mandatory | モデルに関連するログ情報。         |
+| LogEnforce() | mandatory | エンフォースに関連するログ情報。      |
+| LogRole()    | mandatory | ロールに関連するログ情報。         |
+| LogPolicy()  | mandatory | ポリシーに関連するログ情報。        |
+
+
+カスタム `ロガー` を `Enforcer.SetLogger()` に渡すことができます。
+
+Golangのロガーをカスタマイズする例を以下に示します。
+
+```go
+import (
+    "fmt"
+    "log"
+    "strings"
+)
+
+// DefaultLogger is the implementation for a Logger using golang log.
+type DefaultLogger struct {
+    enabled bool
+}
+
+func (l *DefaultLogger) EnableLog(enable bool) {
+    l.enabled = enable
+}
+
+func (l *DefaultLogger) IsEnabled() bool {
+    return l.enabled
+}
+
+func (l *DefaultLogger) LogModel(model [][]string) {
+    if !l.enabled {
+        return
+    }
+    var str strings.Builder
+    str.WriteString("Model: ")
+    for _, v := range model {
+        str.WriteString(fmt.Sprintf("%v\n", v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogEnforce(matcher string, request []interface{}, result bool, explains [][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var reqStr strings.Builder
+    reqStr.WriteString("Request: ")
+    for i, rval := range request {
+        if i != len(request)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", rval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v", rval))
+        }
+    }
+    reqStr.WriteString(fmt.Sprintf(" ---> %t\n", result))
+
+    reqStr.WriteString("Hit Policy: ")
+    for i, pval := range explains {
+        if i != len(explains)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", pval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v \n", pval))
+        }
+    }
+
+    log.Println(reqStr.String())
+}
+
+func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var str strings.Builder
+    str.WriteString("Policy: ")
+    for k, v := range policy {
+        str.WriteString(fmt.Sprintf("%s : %v\n", k, v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogRole(roles []string) {
+    if !l.enabled {
+        return
+    }
+
+    log.Println("Roles: ", roles)
+}
+
+```
+
+## エラー処理
+
+次のような理由でCasbinを使用すると、エラーやパニックが発生する可能性があります。
+
+1. モデル ファイル (.conf) で無効な構文です。
+2. ポリシーファイル (.csv) の構文が無効です。
+3. ストレージアダプタからのカスタムエラー。例えば、MySQLは接続できません。
+4. Casbin's bug.
+
+エラーやパニックに気をつける必要がある5つの主な関数があります。
+
+| 関数                                                                             | エラー時の動作 |
+| ------------------------------------------------------------------------------ | ------- |
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer)        | 返品エラー   |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel)   | 返品エラー   |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | 返品エラー   |
+| [SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | 返品エラー   |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce)       | 返品エラー   |
+
+:::note
+
+`NewEnforcer()` は内部で `LoadModel()` と `LoadPolicy()` を呼び出します。 したがって、 `NewEnforcer()` を使用する場合、後者の 2 つの呼び出しを呼び出す必要はありません。
+
+:::
+
+## 有効 & 無効
+
+エンフォーサーは `Enforcer.EnableEnforce()` 関数で無効にできます。 無効になっている場合、 `Enforcer.Enforce()` は常に `true` を返します。 ポリシーの追加や削除などの他の操作は影響を受けません。 例を示します:
+
+```go
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+
+// Will return false.
+// デフォルトでは、エンフォーサーは有効です。
+e.Enforce("non-authorized-user", "data1", "read")
+
+// 実行時に強制力を無効にする
+e.EnableEnforce(false)
+
+// Will return true for any request.
+e.Enforce("non-authorized-user", "data1", "read")
+
+// Enable the enforcer again.
+e.EnableEnforce(true)
+
+// Will return false.
+e.Enforce("non-authorized-user", "data1", "read")
+```

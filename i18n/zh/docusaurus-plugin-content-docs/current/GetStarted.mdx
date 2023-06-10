@@ -1,0 +1,660 @@
+---
+id: get-started
+title: 开始使用
+description: 开始使用 Casbin
+keywords:
+  - Casbin
+  - 开始使用
+  - 安装
+  - 使用方法
+authors:
+  - nodece
+---
+
+
+
+## 安装
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```
+go get github.com/casbin/casbin/v2
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+对于Maven：
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.casbin/jcasbin -->
+<dependency>
+    <groupId>org.casbin</groupId>
+    <artifactId>jcasbin</artifactId>
+    <version>1.x.y</version>
+</dependency>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```bash
+# NPM
+npm install casbin --save
+
+# Yarn
+yarn add casbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+在您项目的 `comper.json` 中 require 这个包。 下载软件包：
+
+```bash
+composer require casbin/casbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```bash
+pip install casbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+
+```bash
+dotnet add package Casbin.NET
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```bash
+# 下载源
+git clone https://github.com/casbin/cabin-cop.git
+
+# 生成项目文件
+cd casbin-cpp && mkdir build && cd build && cmake ... -DCMAKE_BUILD_TYPE=Release
+
+# 构建并安装 casbin
+cmake --build . --config Release --target casbin install -j 10
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```bash
+cargo install cargo-edit
+cargo add casbin
+
+// 如果你使用 async-std 作为异步执行器
+cargo add async-std
+
+// 如果你使用 tokio 作为异步执行器
+cargo add tokio // 确保你启用了 "macros" 特性
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+Casbins4D 以包的形式提供（目前为 Delphi 10.3 Rio），您可以在 IDE 中安装它。 然而，没有可视化组件，意味着你可以在包外独立使用这些 unit。 只需在你的项目中导入 unit 即可（如果你不介意它们的数量）。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```bash
+luarocks install casbin  
+```
+
+如果报出错误：您的用户没有写入/usr/local/lib/luarocks/rocks 的权限，您可能需要以 root 用户身份运行或使用本地树，加上 --local 参数。 您可以将 --local 参数添加到您的命令后面，就像这样修改：
+
+```bash
+luarocks install casbin  --local
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## 新建一个Casbin enforcer
+
+Casbin使用配置文件来设置访问控制模型
+
+它有两个配置文件, `model.conf` 和 `policy.csv`。 其中, `model.conf` 存储了我们的访问模型, 而 `policy.csv` 存储的是我们具体的用户权限配置。 Casbin的使用非常精炼。 基本上，我们只需要一种主要的结构：**enforcer** 当构造这个结构的时候， `model.conf` 和 `policy.csv` 将会被加载。
+
+用另一种说法就是，当新建Casbin enforcer的时候 你必须提供一个 [Model](supported-models) 和一个 [Adapter](adapters)。
+
+Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) for more information.
+
+- 使用Model文件和默认 [FileAdapter](adapters#file-adapter-built-in):
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import "github.com/casbin/casbin/v2"
+
+e, err := casbin.NewEnforcer("path/to/model.conf", "path/to/policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+import org.casbin.jcasbin.main.Enforcer;
+
+Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+import { newEnforcer } from 'casbin';
+
+const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+require_once './vendor/autoload.php';
+
+use Casbin\Enforcer;
+
+$e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+import casbin
+
+e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+using NetCasbin; 
+
+var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```cpp
+#include <iostream>
+#include <casbin/casbin.h>
+
+int main() {
+    // 创建一个执行者
+    casbin::Enforcer e("path/to/model.conf", "path/to/policy.csv");
+
+    // 你的代码 ..
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+var
+  casbin: ICasbin;
+begin
+  casbin := TCasbin.Create('path/to/model.conf', 'path/to/policy.csv');
+  ...
+end
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+use casbin::prelude::*;
+
+// 如果你使用 async_td 作为异步执行器
+#[cfg(feature = "runtime-async-std")]
+#[async_std::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model.conf", "path/to/policy.csv").await?;
+    Ok(())
+}
+
+// 如果你使用 tokio 作为异步执行器
+#[cfg(feature = "runtime-tokio")]
+#[tokio::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model.conf", "path/to/policy.csv").await?;
+    Ok(())
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+local Enforcer = require("casbin")
+local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin Enforcer
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+- 与其他Adapter一起使用Model text
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "log"
+
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    xormadapter "github.com/casbin/xorm-adapter/v2"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+// 使用MySQL数据库初始化一个Xorm适配器
+a, err := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/casbin")
+if err != nil {
+    log.Fatalf("error: adapter: %s", err)
+}
+
+m, err := model.NewModelFromString(`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+`)
+if err != nil {
+    log.Fatalf("error: model: %s", err)
+}
+
+e, err := casbin.NewEnforcer(m, a)
+if err != nil {
+    log.Fatalf("error: enforcer: %s", err)
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+import casbin
+import casbin_sqlalchemy_adapter
+
+
+# 将SQLAlchemy Casbin适配器与SQLLite DB一起使用
+adapter = casbin_sqlalchemy_adapter.Adapter('sqlite:///test.db')
+
+# 创建配置模型策略
+with open("rbac_example_model.conf", "w") as f:
+    f.write("""
+    [request_definition]
+    r = sub, obj, act
+
+    [policy_definition]
+    p = sub, obj, act
+
+    [policy_effect]
+    e = some(where (p.eft == allow))
+
+    [matchers]
+    m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+    """)
+
+# 从适配器和配置策略创建执行器
+e = casbin.Enforcer('rbac_example_model.conf', adapter)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### 检查权限
+
+在访问发生之前, 在代码中添加强制挂钩:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+sub := "alice" // 想要访问资源的用户。
+obj: = "data1" // 将被访问的资源。
+act := "read" // 用户对资源执行的操作。
+
+ok, err := e.Enforce(sub, obj, act)
+
+if err != nil {
+    // 处理err
+}
+
+if ok == true {
+    // 允许alice读取data1
+} else {
+    // 拒绝请求，抛出异常
+}
+
+// 您可以使用BatchEnforce()来批量执行一些请求
+// 这个方法返回布尔切片，此切片的索引对应于二维数组的行索引。
+// 例如results[0] 是{"alice", "data1", "read"}的结果
+results, err := e.BatchEnforce([[] []interface{}{"alice", "data1", "read"}, {"bob", datata2", "write"}, {"jack", "data3", "read"}})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String sub = "alice"; // 想要访问资源的用户
+String obj = "data1"; // 将要被访问的资源
+String act = "read"; // 用户对资源进行的操作
+
+if (e.enforce(sub, obj, act) == true) {
+    // 允许alice读取data1
+} else {
+    // 拒绝请求，抛出异常
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```js
+const sub = 'alice'; // 想要访问资源的用户
+const obj = 'data1'; // 将要被访问的资源
+const act = 'read'; // 用户对资源进行的操作
+
+if ((await e.enforce(sub, obj, act)) === true) {
+    // 允许alice读取data1
+} else {
+    // 拒绝请求，抛出异常
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$sub = "alice"; // 想要访问资源的用户
+$obj = "data1"; // 将要被访问的资源
+$act = "read"; // 用户对资源进行的操作
+
+if ($e->enforce($sub, $obj, $act) === true) {
+    // 允许alice读取data1
+} else {
+    // 拒绝请求，抛出异常
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+sub = "alice"  # 想要访问资源的用户
+obj = "data1"  # 将要被访问的资源
+act = "read"  # 用户对资源进行的操作
+
+if e.enforce(sub, obj, act):
+    # 允许alice读取data1
+    pass
+else:
+    # 拒绝请求，抛出异常
+    pass
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var sub = "alice";  # 想要访问资源的用户
+var obj = "data1";  # 将要被访问的资源
+var act = "read";  # 用户对资源进行的操作
+
+if (await e.EnforceAsync(sub, obj, act)) 
+{
+    // 允许alice读取data1
+}
+else
+{
+    // 拒绝请求，抛出异常
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```cpp
+    casbin::Enforcer e("../assets/model.conf", "../assets/policy.csv");
+
+    if (e.Enforce({"alice", "/alice_data/hello", "GET"})) {
+        std::cout << "Enforce OK" << std::endl;
+    } else {
+        std::cout << "Enforce NOT Good" << std::endl;
+    }
+
+    if (e.Enforce({"alice", "/alice_data/hello", "POST"})) {
+        std::cout << "Enforce OK" << std::endl;
+    } else {
+        std::cout << "Enforce NOT Good" << std::endl;
+    }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+if casbin.enforce(['alice,data1,read']) then
+  // Alice很开兴它能够读取data1了
+else
+  // Alice很伤心
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+  let sub = "alice"; // 想要访问资源的用户
+  let obj = "data1"; // 将会被访问的资源
+  let act = "read"; // 用户对资源的操作
+
+  if e.enforce((sub, obj, act)).await? {
+      // 允许alice读取data1
+  } else {
+      // 发生错误
+  }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+if e:enforce("alice", "data1", "read") then
+   -- 允许alice读取data1
+else
+   -- 拒绝请求，抛出异常
+end
+
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Casbin还提供了在运行时进行权限管理的API。 例如，你可以获得分配给一个用户的所有角色，如下所示：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+roles, err := e.GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> roles = e.getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const roles = await e.getRolesForUser('alice');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$roles = $e->getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = e.GetRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+roles = e.rolesForEntity("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let roles = e.get_roles_for_user("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+local roles = e:GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+更多使用方法见 [Management API](/docs/management-api)和 [RBAC API](/docs/rbac-api)。
+
+请查看测试用例以获取更多使用方式。

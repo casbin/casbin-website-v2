@@ -1,0 +1,196 @@
+---
+id: frontend
+title: 前端使用
+description: Casbin.js是一个能够帮助你在前端应用中管理访问控制权限的Casbin前端版本。
+keywords:
+  - Casbin.js
+  - react-authz
+  - rbac-react
+  - vue-authz
+  - angular-authz
+authors:
+  - hsluoyz
+---
+
+
+
+[Casbin.js](https://github.com/casbin/casbin.js)是一个能够帮助你在前端应用中管理访问控制权限的Casbin前端版本。
+
+
+## 安装
+
+```bash
+npm install casbin.js
+npm install casbin
+```
+或者
+```bash
+yarn add casbin.js
+```
+
+## 前端中间件
+
+| 中间件                                                         | 类型      | 作者                                     | 描述                                         |
+| ----------------------------------------------------------- | ------- | -------------------------------------- | ------------------------------------------ |
+| [react-authz](https://github.com/casbin-js/react-authz)     | React   | Casbin                                 | Casbin.js 的 React 包装器                      |
+| [rbac-react](https://github.com/daobeng/rbac-react)         | React   | [@daobeng](https://github.com/daobeng) | React 基于角色的访问控制, 使用 HOCs, CASL 和 Casbin.js |
+| [vue-authz](https://github.com/casbin-js/vue-authz)         | Vue     | Casbin                                 | Casbin.js 的 Vue 包装器                        |
+| [angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin                                 | Casbin.js的Angular包装器                       |
+
+## 快速入门
+您可以在您的前端应用程序中使用 `manual` 模式，并随时设置权限。
+```javascript
+const casbinjs = require("casbin.js");
+// 设置用户权限
+// 他/她可以可以读取data1和data2并且可以写入data1
+const permission = {
+    "read": ["data1", "data2"],
+    "write": ["data1"]
+}
+
+// 在manual模式使用Casbin.js需要您手动设置权限
+const authorizer = new casbinjs.Authorizer("manual");
+```
+
+现在我们有了一个授权者 `authorizer`。 我们可以通过使用API `authorizer.can()`和`authorizer.cannot()`获得得许可规则。 这2个API的返回值是JavaScript Promise ([详细信息](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)) 所以我们应该使用 `then()` 返回值的方法，例如：
+
+```javascript
+result = authorizer.can("write", "data1");
+result.then((success, failed) => {
+    if (success) {
+        console.log("you can write data1");
+    } else {
+        console.log("you cannot write data1");
+    }
+});
+// 输出：您可以写入data1
+```
+
+和 `cannnot()` 以同样方式使用：
+
+```javascript
+result = authorizer.cannot("read", "data2");
+result.then((success, failed) => {
+    if (success) {
+        console.log("you cannot read data2");
+    } else {
+        console.log("you can read data2");
+    }
+});
+// 输出：您可以读取data2
+```
+
+在上面的代码中，变量 `success` 意味着请求获得结果而不产生错误， 而不意味着权限规则是 `true` `failed` 也和权限规则无关 只有在请求过程中出现错误时才有意义。
+
+您可以参考我们的[React示例](https://github.com/casbin-js/examples)来查看Casbin.js的实际用法。
+
+
+<!-- #### Permission Object
+Casbin.js will accept a JSON object to manipulate the correspoding permission of a visitor. For example:
+```
+{
+    "read": ["data1", "data2"],
+    "write": ["data1"]
+}
+```
+The permission object above shows the visitor can `read` `data1` and `data2` objects, while can only `write` `data1` objects. -->
+
+
+## 高级用法
+
+Casbin.js提供了一个完美的解决方案来将您的前端访问控制管理和后端Casbin服务一体化。
+
+
+在初始化 Casbin.js `Authorizer`时使用 `auto` 模式并指定你的后端地址，它会自动同步权限并调整前端状态。
+
+```javascript
+const casbinjs = require('casbin.js');
+
+// 设置您的后端Casbin服务url
+const authorizer = new casbinjs.Authorizer(
+    'auto', // 模式
+    {endpoint: 'http://your_endpoint/api/casbin'}
+);
+
+// 设置您的访客
+// Casbin.js 会自动与你的后端Casbin服务同步权限。
+authorizer.setUser("Tom");
+
+// 评估权限
+result = authorizer.can("read", "data1");
+result.then((success, failed) => {
+    if (success) {
+        // 一些前端操作
+    }
+});
+```
+
+因此，您需要开放一个接口(例如一个 RestAPI)来创建权限对象并将其返回前端。 在你的 API 控制器中，调用 `CasbinJsGetUserPermission` 以创建权限对象。 下面是一个 Beego 框架的示例：
+
+:::note
+
+注意您的端点服务器应该返回类似的内容
+```json
+{
+    "other":"other",
+    "data": "What you get from `CasbinJsGetPermissionForUser`"
+}
+```
+
+:::
+
+```go
+// 路由器
+beego.Router("api/casbin", &controllers.APIController{}, "GET:GetFrontendPermission")
+
+// 控制器
+func (c *APIController) GetFrontendPermission() {
+    // 在 GET 请求的参数中获取访客。 (The key is "casbin_subject")
+    visitor := c.Input().Get("casbin_subject")
+    // `e` is an initialized instance of Casbin Enforcer
+    c.Data["perm"] = casbin.CasbinJsGetPermissionForUser(e, visitor)
+    // Pass the data to the fronend.
+    c.ServeJSON()
+}
+```
+
+:::note
+
+目前， `CasbinJsGetPermissionForUser` api 仅在 Go Casbin 和 Node-Casbin 中被支持。 如果您希望这个api支持其它语言，请在此[提交issue](https://github.com/casbin/casbin.js/issues) 或者留下评论。
+
+:::
+
+
+## API 列表
+
+#### `setPermission(permission: string)`
+设置权限对象。 始终在 `manual` 模式中使用。
+
+#### `setUser(user: string)`
+设置访客身份并更新权限。 始终在 `auto`模式中使用。
+
+#### `can(action: string, object: string)`
+检查用户是否能对 `object` 执行 `action`。
+
+#### `cannot(action: string, object: string)`
+检查用户是否**不能**对 `object` 执行 `action`。
+
+#### `canAll(action: string, objects: Array<object>)`
+检查用户是否能在`objects`对**所有**对象执行`action`。
+
+#### `canAny(action: string, objects: Array<object>)`
+检查用户是否能对 `objects` 中的**任意一个**执行 `action`。
+
+
+## 为什么选择 Casbin.js
+
+人们可能会想知道Node-Casbin和Casbin.js之间的区别。 总的来说，Node-Casbin 是一个用 NodeJS 环境实现的 Casbin 核心，它通常在服务端用作一个访问控制工具包。 Casbin.js 是一个能帮助您在客户端使用Casbin为你网页里的用户授权的前端库。
+
+通常，由于以下问题，直接构建一个 Casbin 服务并在网页前端执行授权/执行是不妥当的：
+1. 当有人启动客户端时，执行器会被初始化，随后在后端持久层中拉取所有策略。 高并发会为数据库带来巨大的压力并带来极高的网络成本。 
+2. 将所有策略悉数加载进客户端会带来安全风险。
+3. 区分客户端和服务器以及灵活的开发有困难。
+
+我们希望有一种能够简化 Casbin 前端开发的工具。 实际上，Casbin.js 的核心是在客户端操纵当前用户的权限。 正如你提到的，Casbin.js 从一个指定的后端获取数据。 这个程序会与 Casbin 后端服务同步权限。 取得权限数据之后，开发者可以使用 Casbin.js 提供的接口来在前端管理用户行为。
+
+Casbin.js 避免了以上提及的两个问题：Casbin 服务将不再被反复请求数据，并且减少了客户端与服务端之间传递数据量。 我们也避免了将所有的策略都储存在前端的问题。 用户仅能操作与之相关的权限，对其它诸如访问控制模型、其他用户的权限的内容将一无所知。 此外，Casbin.js 还能有效地在授权管理方面分离客户端和服务端。

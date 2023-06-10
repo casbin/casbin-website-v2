@@ -1,0 +1,82 @@
+---
+id: role-managers
+title: Менеджеры ролей
+description: The role manager is used to manage the RBAC role hierarchy in Casbin
+keywords:
+  - rolemanager
+  - role manager
+authors:
+  - hsluoyz
+---
+
+
+
+Менеджер ролей используется для управления иерархией ролей RBAC (картирование ролей пользователя) в Касбине. Менеджер ролей может получить данные ролей из правил политики Casbin или внешних источников, таких как LDAP, Okta, Auth0, Azure AD, и т.д. Мы поддерживаем различные реализации ролевого менеджера. Чтобы сохранить легкий вес, мы не помещаем код ролевого менеджера в основную библиотеку (кроме менеджера по умолчанию). Полный список ролевых менеджеров Касбина приводится ниже. Любой вклад сторонних разработчиков в новый менеджер приветствуется, пожалуйста, сообщите нам и я поместим его в этот список:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Роль менеджера                                                                                                                  | Автор                                            | Описание                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Менеджер ролей по умолчанию (встроен)](https://github.com/casbin/casbin/blob/master/rbac/default-role-manager/role_manager.go) | Casbin                                           | Поддержка иерархии ролей, хранящейся в политике Касбина                                                                                                        |
+| [Менеджер ролей сессии](https://github.com/casbin/session-role-manager)                                                         | [EDOMO Система](https://github.com/edomosystems) | Поддерживает иерархию ролей, хранящуюся в политике Касбин, с хронологическими сессиями                                                                         |
+| [Okta ролей менеджер](https://github.com/casbin/okta-role-manager)                                                              | Casbin                                           | Поддерживает иерархию ролей хранится в [Okta](https://www.okta.com/)                                                                                           |
+| [Авторский менеджер ролей](https://github.com/casbin/auth0-role-manager)                                                        | Casbin                                           | Поддерживает иерархию ролей, сохраненную в [Auth0](https://auth0.com/) [Authorization Extension](https://auth0.com/docs/extensions/authorization-extension/v2) |
+
+Для разработчиков: все ролевые менеджеры должны реализовать интерфейс [RoleManager](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go). [Session Role Manager](https://github.com/casbin/session-role-manager) может использоваться в качестве справочной реализации.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Роль менеджера                                                                                                                                       | Автор  | Описание                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------- |
+| [Менеджер ролей по умолчанию (встроен)](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) | Casbin | Поддержка иерархии ролей, хранящейся в политике Касбина |
+
+Для разработчиков: все ролевые менеджеры должны реализовать интерфейс [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java). [Роли Менеджер по умолчанию](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) может использоваться в качестве справочной реализации.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Роль менеджера                                                                                                            | Автор  | Описание                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------- |
+| [Менеджер ролей по умолчанию (встроен)](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) | Casbin | Поддержка иерархии ролей, хранящейся в политике Касбина                                |
+| [Менеджер ролей сессии](https://github.com/node-casbin/session-role-manager)                                              | Casbin | Поддерживает иерархию ролей, хранящуюся в политике Касбин, с хронологическими сессиями |
+
+Для разработчиков: все ролевые менеджеры должны реализовать интерфейс [RoleManager](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts). [Роли Менеджер по умолчанию](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) может использоваться в качестве справочной реализации.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Роль менеджера                                                                                                                            | Автор  | Описание                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------- |
+| [Менеджер ролей по умолчанию (встроен)](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) | Casbin | Поддержка иерархии ролей, хранящейся в политике Касбина |
+
+Для разработчиков: все ролевые менеджеры должны реализовать интерфейс [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php). [Роли Менеджер по умолчанию](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) может использоваться в качестве справочной реализации.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Роль менеджера                                                                                                                           | Автор  | Описание                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------- |
+| [Менеджер ролей по умолчанию (встроен)](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) | Casbin | Поддержка иерархии ролей, хранящейся в политике Касбина |
+
+Для разработчиков: все ролевые менеджеры должны реализовать интерфейс [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py). [Роли Менеджер по умолчанию](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) может использоваться в качестве справочной реализации.
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+Подробнее смотрите в разделе [API](/docs/rolemanager-api).

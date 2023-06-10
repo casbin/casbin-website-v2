@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: 모델(Model) 저장
+description: Model storage
+keywords:
+  - model storage
+authors:
+  - hsluoyz
+---
+
+정책(policy) 과는 달리, 모델(model) 은 한 번만 불러오고, 저장은 할 수 없습니다. 왜냐하면 모델은 동적 요소가 아니고, 실행 시간에 변경되서는 안 되기 때문입니다. 따라서 모델을 저장하기 위한 API는 구현되지 않았습니다.
+
+대신, 모델을 정적 혹은 동적으로 불러오는 3가지 방법을 제공합니다.
+
+## .CONF 파일로부터 불러오기
+
+This is the most common way to use Casbin. It's easy to understand for beginners and convenient for sharing when you ask Casbin team for help.
+
+`.CONF` 파일 내용 [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+다음과 같이 모델을 불러올 수 있습니다.
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## 코드로부터 불러오기
+
+The model can be initialized dynamically from code instead of using `.CONF` file. Here's an example for the RBAC model:
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+// Initialize the model from Go code.
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "some(where (p.eft == allow))")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+
+// .CSV 파일 어댑터로 정책 규칙을 불러옵니다.
+// 파일 대신 다른 어댑터를 사용하려면 변경하세요.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Create the enforcer.
+e := casbin.NewEnforcer(m, a)
+```
+
+## 문자열로부터 불러오기
+
+Or you can just load the entire model text from a multi-line string. The good point for this way is that you do not need to maintain a model file.
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+)
+
+// Initialize the model from a string.
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+m, _ := model.NewModelFromString(text)
+
+// Load the policy rules from the .CSV file adapter.
+// 파일 대신 다른 어댑터를 사용하려면 변경하세요.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Create the enforcer.
+e := casbin.NewEnforcer(m, a)
+```

@@ -1,0 +1,97 @@
+---
+id: function
+title: 函数
+description: 你可以使用内置函数，或者指定你自己的函数。
+keywords:
+  - 函数
+  - 自定义
+authors:
+  - hsluoyz
+---
+
+
+
+## Matchers中的函数
+
+你甚至可以在Matcher中指定函数，使它更强大。 你可以使用内置函数，或者指定你自己的函数。 所有内置的函数均采用以下格式：
+
+```c
+bool function_name(string url, string pattern)
+```
+
+它返回一个布尔值表示 `url` 是否匹配 `模式`。
+
+支持的内置函数如下：
+
+| 函数         | url                                 | 模式                                                  | 示例                                                                                                                                                                                                    |
+| ---------- | ----------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| keyMatch   | 一个URL 路径，例如 `/alice_data/resource1` | 一个URL 路径或 `*` 模式下，例如 `/alice_data/*`                | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
+| keyMatch2  | 一个URL 路径，例如 `/alice_data/resource1` | 一个URL 路径或 `:` 模式下，例如 `/alice_data/:resource`        | [keymatch2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
+| keyMatch3  | 一个URL 路径，例如 `/alice_data/resource1` | 一个URL 路径或 `{}` 模式下，例如 `/alice_data/{resource}`      | https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L171-L196                                                                             |
+| keyMatch4  | 一个URL 路径，例如 `/alice_data/resource1` | 一个URL 路径或 `{}` 模式下，例如 `/alice_data//{id}/book/{id}` | https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L208-L222                                                                             |
+| regexMatch | 任意字符串                               | 正则表达式模式                                             | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
+| ipMatch    | 一个 IP 地址，例如 `192.168.2.123`         | 一个 IP 地址或一个 CIDR ，例如`192.168.2.0/24`                | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)/[ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)         |
+| globMatch  | 类似路径的 `/alice_data/resource1`       | 一个全局模式，例如 `/alice_data/*`                           | https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466                                                                             |
+
+
+获取密钥函数通常需要三个参数(除了 `keyget`)：
+
+```c
+bool function_name(string url, string pattern, string key_name)
+```
+
+如果密钥 `key_name` 与模式匹配，他们将返回它的值。如果没有匹配，则返回 `""`。
+
+例如，  `KeyGet2("/resource1/action", "/:res/action", "res")` 将返回 `"resource1"`, `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` 将返回 `"resource1"` As for `KeyGet`, which takes two parameters, `KeyGet("/resource1/action", "/*)` will return `"resource1/action"`.
+
+
+| 函数      | url                                 | 模式                                               | 密钥名称       | 示例                                                                                                                                                                                              |
+| ------- | ----------------------------------- | ------------------------------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| keyGet  | 一个URL 路径，例如 `/alice_data/resource1` | 一个URL 路径或 `*` 模式下，例如 `/alice_data/*`             | \         | [keyget_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)   |
+| keyGet2 | 一个URL 路径，例如 `/proj/resource1/ `     | 一个URL 路径或 `:` 模式下，例如 `/alice_data/:resource`     | 模式中指定的密钥名称 | [keyget_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget2_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
+| keyGet3 | 一个URL 路径，例如 `/proj/res3_admin/ `    | 一个URL 路径或 `{}` 模式下，例如 `/proj/{resource}_admin/ ` | 模式中指定的密钥名称 | https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247                                                                       |
+
+
+详情见：https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go
+
+## 怎样增加自定义函数
+
+首先准备您的函数。 它接受一些参数，然后返回一个布尔类型：
+
+```go
+func KeyMatch(key1 string, key2 string) bool {
+    i := strings.Index(key2, "*")
+    if i == -1 {
+        return key1 == key2
+    }
+
+    if len(key1) > i {
+        return key1[:i] == key2[:i]
+    }
+    return key1 == key2[:i]
+}
+```
+
+然后用 `interface{}` 类型的接口包装它：
+
+```go
+func KeyMatchFunc(args ...interface{}) (interface{}, error) {
+    name1 := args[0].(string)
+    name2 := args[1].(string)
+
+    return (bool)(KeyMatch(name1, name2)), nil
+}
+```
+
+最后，在Casbin的执行者(enforcer)中注册这个函数：
+
+```go
+e.AddFunction("my_func", KeyMatchFunc)
+```
+
+现在，您可以在您的模型CONF中像这样使用这个函数：
+
+```ini
+[matchers]
+m = r.sub == p.sub && my_func(r.obj, p.obj) && r.act == p.act
+```

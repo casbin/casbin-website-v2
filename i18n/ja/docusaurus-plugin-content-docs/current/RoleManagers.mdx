@@ -1,0 +1,82 @@
+---
+id: role-managers
+title: ロールマネージャー
+description: The role manager is used to manage the RBAC role hierarchy in Casbin
+keywords:
+  - rolemanager
+  - role manager
+authors:
+  - hsluoyz
+---
+
+
+
+ロールマネージャは、Casbin内のRBACロール階層(ユーザーロールマッピング)を管理するために使用されます。 ロールマネージャは、CasbinポリシールールまたはLDAP、Okta、Auth0、Azure ADなどの外部ソースからロールデータを取得できます。 ロールマネージャの実装をサポートします。 軽量を維持するために、メインライブラリにロールマネージャーのコードを入れません(デフォルトのロールマネージャを除く)。 Casbin ロールマネージャの完全なリストは以下のとおりです。 新しいロールマネージャーに対するサードパーティの貢献を歓迎します。お知らせください。このリストに記載します:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| ロールマネージャー                                                                                                        | 作成者                                           | 説明                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [デフォルトのロールマネージャー（ビルトイン）](https://github.com/casbin/casbin/blob/master/rbac/default-role-manager/role_manager.go) | Casbin                                        | Casbin ポリシーに格納されたロール階層をサポート                                                                                                           |
+| [セッションロールマネージャー](https://github.com/casbin/session-role-manager)                                                 | [EDOMO システム](https://github.com/edomosystems) | Casbin ポリシーに保存されているロール階層をサポートし、時間範囲ベースのセッションを使用します。                                                                                   |
+| [Okta ロールマネージャー](https://github.com/casbin/okta-role-manager)                                                    | Casbin                                        | [Okta](https://www.okta.com/) に格納されたロール階層をサポート                                                                                        |
+| [Auth0 ロールマネージャー](https://github.com/casbin/auth0-role-manager)                                                  | Casbin                                        | [Auth0](https://auth0.com/)の [Authorization Extension](https://auth0.com/docs/extensions/authorization-extension/v2) に格納されたロール階層をサポート |
+
+開発者の場合: すべてのロールマネージャは、 [RoleManager](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go) インターフェイスを実装する必要があります。 [セッションロールマネージャー](https://github.com/casbin/session-role-manager) をリファレンス実装として使用できます。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| ロールマネージャー                                                                                                                             | 作成者    | 説明                          |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------- |
+| [デフォルトのロールマネージャー（ビルトイン）](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) | Casbin | Casbin ポリシーに格納されたロール階層をサポート |
+
+開発者の場合: すべてのロールマネージャは、 [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java) インターフェイスを実装する必要があります。 [デフォルトロールマネージャー](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) をリファレンス実装として使用できます。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| ロールマネージャー                                                                                                  | 作成者    | 説明                                                  |
+| ---------------------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------- |
+| [デフォルトのロールマネージャー（ビルトイン）](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) | Casbin | Casbin ポリシーに格納されたロール階層をサポート                         |
+| [セッションロールマネージャー](https://github.com/node-casbin/session-role-manager)                                      | Casbin | Casbin ポリシーに保存されているロール階層をサポートし、時間範囲ベースのセッションを使用します。 |
+
+開発者の場合: すべてのロールマネージャは、 [RoleManager](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts) インターフェイスを実装する必要があります。 [デフォルトロールマネージャー](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) をリファレンス実装として使用できます。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| ロールマネージャー                                                                                                                  | 作成者    | 説明                          |
+| -------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------- |
+| [デフォルトのロールマネージャー（ビルトイン）](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) | Casbin | Casbin ポリシーに格納されたロール階層をサポート |
+
+開発者の場合: すべてのロールマネージャは、 [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php) インターフェイスを実装する必要があります。 [デフォルトロールマネージャー](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) をリファレンス実装として使用できます。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| ロールマネージャー                                                                                                                 | 作成者    | 説明                          |
+| ------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------- |
+| [デフォルトのロールマネージャー（ビルトイン）](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) | Casbin | Casbin ポリシーに格納されたロール階層をサポート |
+
+開発者の場合: すべてのロールマネージャは、 [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py) インターフェイスを実装する必要があります。 [デフォルトロールマネージャー](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) をリファレンス実装として使用できます。
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+詳細は [API](/docs/rolemanager-api) セクションを参照してください。

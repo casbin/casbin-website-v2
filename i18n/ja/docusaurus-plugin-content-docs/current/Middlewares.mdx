@@ -1,0 +1,171 @@
+---
+id: middlewares
+title: ミドルウェア
+description: Casbin middlewares
+keywords:
+  - middleware
+authors:
+  - hsluoyz
+---
+
+
+
+### Web frameworks
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 名前                                               | 説明                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Gin](https://github.com/gin-gonic/gin)          | プラグインを介して、Martini-like API を搭載した HTTP ウェブフレームワーク: [authz](https://github.com/gin-contrib/authz) または [gin-casbin](https://github.com/maxwellhertz/gin-casbin)                                                                                                                                                                                                       |
+| [Beego](https://github.com/beego/beego)          | 組み込みプラグインを介して、Goのためのオープンソースで高性能なWebフレームワーク: [plugins/authz](https://github.com/astaxie/beego/blob/master/plugins/authz)                                                                                                                                                                                                                                            |
+| [キャディ](https://github.com/caddyserver/caddy)     | 高速でクロスプラットフォームなHTTP/2 Webサーバー、自動HTTPS、プラグインを介して: [caddy-authz](https://github.com/casbin/caddy-authz)                                                                                                                                                                                                                                                              |
+| [Traefik](https://github.com/traefik/traefik)    | The cloudネイティブアプリケーション・プロキシ, via plugin: [traefik-auth-plugin](https://github.com/Knight-7/auth-plugin)                                                                                                                                                                                                                                                            |
+| [Kratos](https://github.com/go-kratos/kratos)    | Your ultimate Go microservices framework for the cloud-native era, via plugin: [tx7do/kratos-casbin](https://github.com/tx7do/kratos-casbin) or [overstarry/kratos-casbin](https://github.com/overstarry/kratos-casbin)                                                                                                                                            |
+| [Go Kit](https://github.com/go-kit/kit)          | マイクロサービスのためのツールキット、組み込みプラグインを介して: [plugins/authz](https://github.com/go-kit/kit/tree/master/auth/casbin)                                                                                                                                                                                                                                                           |
+| [繊維](https://github.com/gofiber/fiber)           | An Express inspired web framework written in Go, via middleware: [casbin in gofiber/contrib](https://github.com/gofiber/contrib/tree/main/casbin) or [fiber-casbinrest](https://github.com/prongbang/fiber-casbinrest) or [fiber-boilerplate](https://github.com/sujit-baniya/fiber-boilerplate) or [gofiber-casbin](https://github.com/pcminh0505/gofiber-casbin) |
+| [Revel](https://github.com/revel/revel)          | プラグインを介して、Go 言語の高い生産性、フルスタックウェブフレームワーク: [auth/casbin](https://github.com/revel/modules/tree/master/auth/casbin)                                                                                                                                                                                                                                                    |
+| [Echo](https://github.com/labstack/echo)         | High performance, minimalist Go web framework, via plugin: [echo-authz](https://github.com/labstack/echo-contrib/tree/master/casbin) or [echo-casbin](https://github.com/alexferl/echo-casbin) or [casbinrest](https://github.com/prongbang/casbinrest) or [echo-boilerplate](https://github.com/alexferl/echo-boilerplate)                                        |
+| [アイリス](https://github.com/kataras/iris)          | Go in (THIS) Earthのための最速のウェブフレームワーク。 HTTP/2 Ready-To-GO, via plugin: [casbin](https://github.com/iris-contrib/middleware/tree/master/casbin) or [iris-middleware-casbin](https://github.com/kokobing/iris-middleware-casbin)                                                                                                                                       |
+| [GoFrame](https://github.com/gogf/gf)            | Golangのモジュール化された、強力で、高性能で、エンタープライズクラスのアプリケーション開発フレームワーク。プラグインを介して: [gf-casbin](https://github.com/dobyte/gf-casbin)                                                                                                                                                                                                                                                |
+| [Negroni](https://github.com/urfave/negroni)     | Golang, via plugin: [negroni-authz](https://github.com/casbin/negroni-authz)                                                                                                                                                                                                                                                                                       |
+| [Chi](https://github.com/pressly/chi)            | プラグインを介してHTTPサービスを構築するための軽量で、慣用的で構成可能なルータ: [chi-authz](https://github.com/casbin/chi-authz)                                                                                                                                                                                                                                                                        |
+| [Buffalo](https://github.com/gobuffalo/buffalo)  | プラグインを介して、あなたの生活をより簡単にするように設計されたウェブ開発エコシステムを移動します: [buffalo-mw-rbac](https://github.com/kgosse/buffalo-mw-rbac)                                                                                                                                                                                                                                                    |
+| [Macaron](https://github.com/go-macaron/macaron) | プラグインを介してGoの高生産性とモジュール化されたウェブフレームワーク: [authz](https://github.com/go-macaron/authz)                                                                                                                                                                                                                                                                                 |
+| [DotWeb](https://github.com/devfeel/dotweb)      | プラグイン経由でシンプルで簡単にWebマイクロフレームワークを利用できます: [authz](https://github.com/devfeel/middleware/tree/master/authz)                                                                                                                                                                                                                                                            |
+| [Tango](https://github.com/lunny/tango)          | Micro & pluggable web framework for Go, via plugin: [authz](https://gitea.com/tango/authz)                                                                                                                                                                                                                                                                         |
+| [Baa](https://github.com/go-baa/baa)             | プラグイン経由でルーティング、ミドルウェア、依存性インジェクション、httpコンテキストを使用した、ExpressGo Webフレームワーク: [authz](https://github.com/baa-middleware/authz)                                                                                                                                                                                                                                           |
+| [Tyk](https://github.com/TykTechnologies/tyk)    | An open source Enterprise API Gateway, supporting REST, GraphQL, TCP and gRPC protocols, via plugin: [tyk-authz](https://github.com/casbin/tyk-authz)                                                                                                                                                                                                              |
+| [Hertz](https://github.com/cloudwego/hertz)      | Go HTTP framework with high-performance and strong-extensibility for building micro-services, via plugin: [casbin](https://github.com/hertz-contrib/casbin)                                                                                                                                                                                                        |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| 名前                                                   | 説明                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [スプリングブーツ](https://projects.spring.io/spring-boot/)  | スプリング駆動のアプリケーションやサービスを簡単に作成できます。 via plugin: [casbin-spring-boot-starter](https://github.com/jcasbin/casbin-spring-boot-starter) または [jcasbin-springboot-plugin](https://github.com/jcasbin/jcasbin-springboot-plugin) または [jCasbin を使用したシンプルな SpringBoot セキュリティデモ](https://github.com/jveverka/spring-examples/tree/master/spring-jcasbin) |
+| [アパッシロ](https://shiro.apache.org/)                   | 認証、承認、暗号化、セッション管理をプラグインで実行する、強力で使いやすいJavaセキュリティフレームワーク。 [shiro-casbin](https://github.com/jcasbin/shiro-casbin) または [shiro-jcasbin-spring-boot-starter](https://github.com/mapleafgo/shiro-jcasbin-spring-boot-starter)                                                                                                                     |
+| [Vert.x](https://vertx.io/)                          | JVM上でリアクティブなアプリケーションを構築するためのツールキット、プラグインを介して: [vertx-auth-jcasbin](https://github.com/vert-x3/vertx-auth/pull/215)                                                                                                                                                                                                                          |
+| [JFinal](http://www.jfinal.com/)                     | プラグインを介して、シンプルで軽く、迅速で、独立で拡張可能なJava WEB + ORMフレームワーク: [jfinal-authz](https://github.com/jcasbin/jfinal-authz)                                                                                                                                                                                                                                |
+| [Nutz](https://nutzam.com/)                          | すべての Java 開発者向けの Web フレームワーク (MVC/IOC/AOP/DAO/JSON) via plugin: [nutz-authz](https://github.com/jcasbin/nutz-authz)                                                                                                                                                                                                                         |
+| [mangoo I/O](https://github.com/svenkubiak/mangooio) | 内蔵プラグインを介して、直感的で軽量で高性能なフルスタックJava Webフレームワーク: [AuthorizationService.java](https://github.com/svenkubiak/mangooio/blob/e8c647a3f7c427bce27377025bec074f6d767f50/mangooio-core/src/main/java/io/mangoo/services/AuthorizationService.java)                                                                                                    |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名前                                                                    | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [シールド](https://github.com/odpf/shield)                                | カスビンの上に構築されたリバースプロキシを認識するauthZサーバーとauthZ。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [エクスプレス](https://github.com/expressjs/express)                        | プラグイン経由: [express-authz](https://github.com/node-casbin/express-authz)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [Koa](https://github.com/koajs/koa)                                   | ES2017 非同期関数を使用する node.js 用の表現型ミドルウェア。プラグインを介して: [koa-authz](https://github.com/node-casbin/koa-authz) または [koajs-starter](https://github.com/djordjep/koajs-starter) または [koa-casbin](https://github.com/zcong1993/koa-casbin)                                                                                                                                                                                                                                                                                                                                   |
+| [LoopBack 4](https://github.com/koajs/koa)                            | プラグインを介してAPIとマイクロサービスを構築するための拡張性の高いNode.js と TypeScript フレームワーク: [loopback4-authorization](https://github.com/sourcefuse/loopback4-authorization)                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| [Nest](https://nestjs.com/)                                           | TypeScript & JavaScript上で効率的でスケーラブルなサーバーサイドアプリケーションを構築するためのプログレッシブNode.jsフレームワーク。 via plugin: [nest-authz](https://github.com/dreamdevil00/nest-authz) or [nest-casbin](https://github.com/pardjs/nest-casbin) or [NestJS Casbin Module](https://github.com/switchit-conseil/nestjs-casbin-module) or [nestjs-casbin](https://github.com/juicycleff/nestjs-casbin) or [shanbe-api](https://github.com/merajsahebdar/shanbe-api) or [acl-nest](https://github.com/Twiddlle/acl-nest) or [nestjs-casbin-typeorm](https://github.com/0xb4lamx/nestjs-casbin-typeorm) |
+| [Fastify](https://github.com/fastify/fastify)                         | Node.js 向けの高速かつ低オーバーヘッドの Web フレームワーク。plugin: [fastify-casbin](https://github.com/nearform/fastify-casbin) または [fastify-casbin-rest](https://github.com/nearform/fastify-casbin-rest)                                                                                                                                                                                                                                                                                                                                                                              |
+| [卵](https://github.com/eggjs/egg)                                     | Node.js & Koaを使用してより良いエンタープライズフレームワークとアプリを構築するために、プラグインを介して生まれました: [egg-authz](https://github.com/node-casbin/egg-authz) または [egg-zrole](https://github.com/klren0312/egg-zrole)                                                                                                                                                                                                                                                                                                                                                                                  |
+| [hapi](https://hapi.dev/)                                             | シンプルでセキュアなフレームワーク開発者の信頼。 via plugin: [hapi-authz](https://github.com/node-casbin/hapi-authz)                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| [Casbin JWT エクスプレス](https://github.com/tiagostutz/casbin-jwt-express) | Casbinを使用してACLルールを検証するステートレスJWTトークンを使用するAuthorization middleware                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| 名前                                                 | 説明                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Laravel](https://laravel.com/)                    | The PHP framework for web artisans, via plugin: [laravel-authz](https://github.com/php-casbin/laravel-authz)                                                                                                                                                                                       |
+| [Yii PHP Framework](https://www.yiiframework.com/) | プラグインを介して、高速で安全で効率的なPHPフレームワーク: [yi-permission](https://github.com/php-casbin/yii-permission) または [yi-casbin](https://github.com/php-casbin/yii-casbin)                                                                                                                                            |
+| [CakePHP](https://cakephp.org/)                    | プラグイン経由で速くビルドし、固体PHPフレームワークを成長させます: [ケーキパーミッション](https://github.com/php-casbin/cake-permission)                                                                                                                                                                                                    |
+| [CodeIgniter](https://codeigniter.com/)            | CodeIgniter4 Web Frameworkのロールと権限を持つユーザーに関連付けるプラグイン: [CodeIgniter Permission](https://github.com/php-casbin/codeigniter-permission)                                                                                                                                                                |
+| [ThinkPHP 5.1](http://www.thinkphp.cn/)            | ThinkPHP 5.1 フレームワーク、プラグインを介して: [think-cassbin](https://github.com/php-casbin/think-casbin)                                                                                                                                                                                                        |
+| [ThinkPHP 6.0](http://www.thinkphp.cn/)            | ThinkPHP 6.0 フレームワーク、プラグイン経由: [think-cell](https://github.com/php-casbin/think-authz)                                                                                                                                                                                                              |
+| [Symfony](https://symfony.com/)                    | プラグインを介した Symfony PHP フレームワーク: [symfony-permission](https://github.com/php-casbin/symfony-permission) または [symfony-casbin](https://github.com/videni/symfony-casbin)                                                                                                                               |
+| [Hyperf](https://github.com/hyperf/hyperf)         | A coroutine framework that focuses on hyperspeed and flexibility, via plugin: [hyperf-permission](https://github.com/php-casbin/hyperf-permission) or [donjan-deng/hyperf-casbin](https://github.com/donjan-deng/hyperf-casbin) or [cblink/hyperf-casbin](https://github.com/cblink/hyperf-casbin) |
+| [EasySwoole](https://www.easyswoole.com/)          | Swoole拡張に基づく配布された永続的なPHPフレームワーク、プラグインを介して: [easyswoole-permissions](https://github.com/php-casbin/easyswoole-permission) または [easyswoole-hyperfOrm-permission](https://github.com/ice-leng/easyswoole-hyperfOrm-permission)                                                                        |
+| [Slim](https://www.slimframework.com/)             | プラグインを介して、シンプルでパワフルな Web アプリケーションや API を素早く書くことができる PHP マイクロフレームワーク: [casbin-with-slim](https://github.com/php-casbin/casbin-with-slim)                                                                                                                                                            |
+| [Phalcon](https://phalcon.io/)                     | プラグインを介して、C拡張として提供されるフルスタックPHPフレームワーク: [phalcon-permission](https://github.com/php-casbin/phalcon-permission)                                                                                                                                                                                      |
+| [Webman](https://github.com/walkor/webman)         | High performance HTTP Service Framework for PHP based on Workerman, via plugin: [webman-permission](https://github.com/php-casbin/webman-permission) or [webman-casbin](https://github.com/sunsgneayo/webman-casbin)                                                                               |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 名前                                             | 説明                                                                                                                                                                                                                                                                                    |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Django](https://www.djangoproject.com/)       | A high-level Python Web framework, via plugin: [django-casbin](https://github.com/pycasbin/django-casbin) or [django-authorization](https://github.com/pycasbin/django-authorization)                                                                                                 |
+| [フラスコ](http://flask.pocoo.org/)                | Werkzeug、Jinja 2と善意に基づいたPython用のマイクロフレームワーク via plugin: [flask-authz](https://github.com/pycasbin/flask-authz) or [Flask-Casbin (3rd-party, but may more friendly)](https://github.com/daymien/Flask-Casbin) or [rbac-flask](https://github.com/daobeng/rbac-flask/tree/flask-casbin) |
+| [FastAPI](https://github.com/tiangolo/fastapi) | Python 3でAPIを構築するための近代的で高速な(高性能な)Webフレームワーク。 + based on standard Python type hints, via plugin: [fastapi-authz](https://github.com/pycasbin/fastapi-authz) or [Fastapi-app](https://github.com/lqmanh/fastapi-app)                                                                    |
+| [OpenStack](https://www.openstack.org/)        | 世界で最も広く展開されているオープンソースクラウドソフトウェアは、プラグインを介して: [openstack-patron](https://github.com/casbin/openstack-patron)                                                                                                                                                                            |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| 名前                                                           | 説明                                                                                                                                                                                                                                            |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ASP.NETコア](https://docs.microsoft.com/en-us/aspnet/core)    | An open-source and cross-platform framework for building modern cloud based internet connected applications, such as web apps, IoT apps and mobile backends, via plugin: [Casbin.AspNetCore](https://github.com/casbin-net/Casbin.AspNetCore) |
+| [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core) | プラグインを介して ASP.NET Core フレームワークで Casbin を使用する簡単なデモ: [CasbinACL-aspNetCore](https://github.com/MustafaMustafayev/CasbinACL-aspNetCore)                                                                                                          |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+| 名前                                               | 説明                                                                                                                                                                                                                                                                                            |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Actix](https://github.com/actix/actix)          | プラグイン経由のRustアクターフレームワーク: [actix-casbin](https://github.com/casbin-rs/actix-casbin)                                                                                                                                                                                                            |
+| [Actix web](https://github.com/actix/actix-web)  | プラグインを介して、小型で実用的で非常に速い錆びたウェブフレームワーク: [actix-casbin-auth](https://github.com/casbin-rs/actix-casbin-auth)                                                                                                                                                                                      |
+| [ロケット弾](https://github.com/SergioBenitez/Rocket) | Rust のためのウェブフレームワーク。柔軟性、使いやすさ、型の安全性を犠牲にすることなく、高速で安全な Web アプリケーションを簡単に作成できます。 via plugin: [rocket-authz](https://github.com/casbin-rs/rocket-authz) or [rocket-casbin-auth](https://github.com/oiatz/rocket-casbin-auth) or [rocket-casbin-demo](https://github.com/simoin/Rocket_Casbin_Demo) |
+| [Axum web](https://github.com/tokio-rs/axum)     | A ergonomic and modular rust web framework, via plugin: [axum-casbin-auth](https://github.com/casbin-rs/axum-casbin-auth)                                                                                                                                                                     |
+| [Poem web](https://github.com/poem-web/poem)     | A full-featured and easy to use web framework with the Rust programming language, via plugin: [poem-casbin](https://github.com/casbin-rs/poem-casbin)                                                                                                                                         |
+
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+| 名前                                         | 説明                                                                                                                                                                                                    |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [OpenResty](https://openresty.org/)        | プラグインを介して NGINX と LuaJIT に基づく動的な Web プラットフォーム: [lua-resty-casbin](https://github.com/casbin-lua/lua-resty-casbin) と [casbin-openresty-example](https://github.com/rushitote/casbin-openresty-example) |
+| [Kong](https://github.com/Kong/kong)       | クラウドネイティブでプラットフォームに依存せず、拡張性に優れたAPIゲートウェイは、プラグインを介して高性能と拡張性を区別します。 [kong-authz](https://github.com/casbin-lua/kong-authz)                                                                              |
+| [APISIX](https://github.com/apache/apisix) | プラグインを介した動的でリアルタイムで高性能なAPIゲートウェイ: [authz-casbin](https://github.com/apache/apisix/blob/master/docs/en/latest/plugins/authz-casbin.md)                                                                 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Swift" label="Swift">
+```
+
+| 名前                                      | 説明                                                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [Vapor](https://github.com/vapor/vapor) | プラグインを介したサーバーサイドのSwift Webフレームワーク: [vapor-authz](https://github.com/SwiftCasbin/vapor-authz) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### クラウドプロバイダー
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名前                          | 説明                                                                                                                                |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [Okta](https://okta.com/)   | すべてのアイデンティティを確保するための信頼できる1つのプラットフォーム、プラグイン： [casbin-spring-boot-demo](https://github.com/myriad-personal/casbin-spring-boot-demo) |
+| [Auth0](https://auth0.com/) | プラグインを介した実装、適応性のある認証および認証プラットフォーム: [casbin-auth0-rbac](https://auth0.com/)                                                        |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

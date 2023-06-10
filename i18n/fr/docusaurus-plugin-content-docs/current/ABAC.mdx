@@ -1,0 +1,95 @@
+---
+id: abac
+title: ABAC
+description: ABAC based on Casbin
+keywords:
+  - ABAC
+  - ABAC model
+authors:
+  - hsluoyz
+---
+
+## Qu'est ce que le modèle ABAC?
+
+ABAC signifie `Attribute-Based Access Control` (contrôle d'accès basé sur l'attribut), ce qui signifie que vous pouvez utiliser les attributs (propriétés) du sujet, objet ou de l'action plutôt qu'eux-même (la chaîne de caractère) pour contrôler l'accès. Vous avez peut-être déjà entendu parler d'un langage de contrôle d'accès ABAC compliqué nommé XACML. Comparé à XACML, l'ABAC de Casbin est très simple : en ABAC, vous pouvez utiliser des structs (ou des instances de classe basées sur le langage de programmation) au lieu de chaîne de caractères pour les éléments du modèle.
+
+Utilisez l'exemple officiel ABAC par exemple :
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == r.obj.Owner
+```
+
+Nous utilisons `r.obj.Owner` au lieu de `r.obj` dans le matcher. La fonction `r.obj` passée dans la fonction `Enforce()` sera une structure ou une instance de classe au lieu de chaîne. Casbin utilisera la réflexion pour récupérer la variable membre `obj` dans cette struct ou classe pour vous.
+
+Voici une définition pour la classe ou la structure `r.obj`:
+
+```go
+type testResource struct {
+    Name  string
+    Owner string
+}
+```
+
+## Comment utiliser ABAC?
+
+Simplement parler, pour utiliser ABAC, vous devez faire deux choses:
+
+1. Spécifiez les attributs dans le modèle de correspondance.
+2. Passe dans l'instance struct ou class pour l'élément comme argument dans la fonction `Enforce()` de Casbin.
+
+:::avertissement
+
+Actuellement, seulement demander des éléments comme `r.sub`, `r.obj`, `r.act` et ainsi de suite sur le support ABAC. Vous ne pouvez pas l'utiliser sur des éléments de politique comme `p. ub`, car il n'y a aucun moyen de définir une structure ou une classe dans la politique de Casbin.
+
+:::
+
+:::tip
+
+Vous pouvez utiliser plusieurs attributs ABAC dans un matcher, par exemple : `m = r.sub.Domain == r.obj.Domain`.
+
+:::
+
+:::tip
+
+Si vous avez besoin d'utiliser des virgules dans la charte, qui entre en conflit avec le séparateur de csv et nous devons l'échappe. Casbin analyse le fichier de régulation à travers la bibliothèque [csv](https://pkg.go.dev/encoding/csv), vous pouvez entourer l'instruction avec des guillemets. Par exemple, `"keyMatch("bob", r.sub.Role)"` ne sera pas divisé.
+
+:::
+
+## Mise à l'échelle du modèle pour les règles complexes et un grand nombre de règles ABAC.
+
+L'instance ci-dessus de l'implémentation d'ABAC est très simple, mais souvent le système d'autorisation a besoin d'un très grand nombre de règles ABAC. Pour répondre à cette nécessité, l'implémentation ci-dessus augmentera la verbosité du modèle dans une large mesure. Il est donc judicieux d’ajouter les règles dans la politique plutôt que dans le modèle. Ceci est fait en introduisant une construction fonctionnelle `eval()`. Voici l'exemple de gestion de tels modèles ABAC.
+
+Ceci est la définition du fichier `CONF` utilisé pour définir le modèle ABAC.
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
+```
+
+Ici, `p.sub_rule` est de type struct ou class(type défini par l'utilisateur) qui se compose d'attributs nécessaires à utiliser dans la politique.
+
+C'est la politique qui est utilisée contre le modèle de `Enforcement`. Maintenant, vous pouvez utiliser l'instance d'objet qui est passée à la fonction `eval()` comme paramètre pour définir certaines contraintes ABAC.
+
+```csv
+p, r.sub.Age > 18, /data1, read
+p, r.sub.Age < 60, /data2, write
+```

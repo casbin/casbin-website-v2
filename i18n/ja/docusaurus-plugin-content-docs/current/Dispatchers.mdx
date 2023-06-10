@@ -1,0 +1,60 @@
+---
+id: dispatchers
+title: 派遣者
+description: Dispatcher provide a way to synchronize incremental changes of policy
+keywords:
+  - dispatcher
+authors:
+  - dovics
+---
+
+
+
+ディスパッチャは、ポリシーの増分変更を同期させる方法を提供します。 これは、すべてのエンフォーサーインスタンスの一貫性を確保するために、いかだなどの一貫性アルゴリズムに基づく必要があります。 ディスパッチャを使用すると、分散クラスタを簡単に確立できます。
+
+派遣者の方法は二つに分かれています。 最初はカシュビンと組み合わせた方法です。 これらの方法はカシュビン内部で呼び出されるべきです。 ユーザーは、カスビン自体が提供するより完全な API を使用することができます。
+
+もう一つはディスパッチャ自身によって定義されたメソッドで、ディスパッチャの初期化メソッドを含みます。 動的メンバシップや設定変更などの異なるアルゴリズムによって提供されるさまざまな機能
+
+:::note
+
+派遣担当者は実行時にカスビンの執行者の一貫性を確保することを望みます そのため、初期化時にポリシーが一致しない場合、ディスパッチャは正しく動作しません。 dispatcher を使用する前に、すべてのインスタンスの状態が一貫性を保つ必要があります。
+
+:::
+
+Casbinディスパッチャーの完全なリストは以下のとおりです。 新しいディスパッチャに対するサードパーティの貢献を歓迎します。お知らせください。このリストに記載します:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| ディスパッチャー                                                                | タイプ  | 作成者                                | 説明                                                                      |
+| ----------------------------------------------------------------------- | ---- | ---------------------------------- | ----------------------------------------------------------------------- |
+| [Hashicorp Raft Dispatcher](https://github.com/casbin/hraft-dispatcher) | raft | Casbin                             | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+| [KDKYG/casbin-dispatcher](https://github.com/KDKYG/casbin-dispatcher)   | raft | [@KDKYG](https://github.com/KDKYG) | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DistributedEnforcer
+
+DistributedEnforker wraps ディスパッチャの SyncedEnforcer をラップします。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+

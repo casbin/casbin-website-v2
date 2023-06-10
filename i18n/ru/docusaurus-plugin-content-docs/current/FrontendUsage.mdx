@@ -1,0 +1,196 @@
+---
+id: frontend
+title: Использование интерфейса
+description: Casbin.js is a Casbin addon that facilites your access-control management in the frontend application
+keywords:
+  - Casbin.js
+  - react-authz
+  - rbac-react
+  - vue-authz
+  - angular-authz
+authors:
+  - hsluoyz
+---
+
+
+
+[Casbin.js](https://github.com/casbin/casbin.js) является аддоном Casbin, который позволяет управлять доступом в интерфейсе приложения.
+
+
+## Установка
+
+```bash
+npm install casbin.js
+npm install casbin
+```
+или
+```bash
+yarn add casbin.js
+```
+
+## Интерфейс
+
+| Среднее                                                        | Тип     | Автор                                  | Описание                                                                    |
+| -------------------------------------------------------------- | ------- | -------------------------------------- | --------------------------------------------------------------------------- |
+| [react-authz](https://github.com/casbin-js/react-authz)        | Реакция | Casbin                                 | React оболочка для Casbin.js                                                |
+| [рбак-реакция](https://github.com/daobeng/rbac-react)          | Реакция | [@daobeng](https://github.com/daobeng) | Управление доступом на основе ролей в React с помощью HOC, CASL и Casbin.js |
+| [vue-authz](https://github.com/casbin-js/vue-authz)            | Vue     | Casbin                                 | Оболочка Vue для Casbin.js                                                  |
+| [углово-авторский](https://github.com/casbin-js/angular-authz) | Угловой | Casbin                                 | Угловая обертка для Casbin.js                                               |
+
+## Быстрый старт
+Вы можете использовать режим `вручную` в интерфейсе приложения и устанавливать разрешение всякий раз, когда захотите.
+```javascript
+const casbinjs = require("casbin". s");
+// Установить права пользователя:
+// Он может читать `data1` и `data2` объекты и может записать `data1` объект
+const permission = {
+    "read": ["data1", "data2"],
+    "write": ["data1"]
+}
+
+// Запустить casbin. в ручном режиме, который требует установки разрешения вручную.
+const authorizer = new casbinjs.Authorizer("manual");
+```
+
+теперь у нас есть авторизатор `авторизатор`. Мы можем получить от него правила доступа, используя API `authorizer.can()` и `authorizer.cannot()`. Возвращаемыми значениями этих 2 API являются Promises JavaScript ([подробнее здесь](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)), поэтому мы должны использовать метод `then()` возвращаемого значения:
+
+```javascript
+result = authorizer.can("write", "data1");
+result.then((success, failed) => {
+    if (success) {
+        console.log("you can write data1");
+    } else {
+        console.log("you cannot write data1");
+    }
+});
+// output: you can write data1
+```
+
+и `cannot()` используется таким же образом:
+
+```javascript
+result = authorizer.cannot("read", "data2");
+result.then((success, failed) => {
+    if (success) {
+        console.log("you cannot read data2");
+    } else {
+        console.log("you can read data2");
+    }
+});
+// output: you can read data2
+```
+
+в коде выше, переменная `успех` в параметрах означает, что запрос получает результат без ошибки и не означает, что правило прав доступа `истинно`. `не удалось` также не имеет отношения к правилам доступа. Это имеет смысл только когда что-то пойдет не так в процессе запроса.
+
+Вы можете обратиться к нашему [примеру React](https://github.com/casbin-js/examples) , чтобы увидеть практическое использование Casbin.js
+
+
+<!-- #### Permission Object
+Casbin.js will accept a JSON object to manipulate the correspoding permission of a visitor. For example:
+```
+{
+    "read": ["data1", "data2"],
+    "write": ["data1"]
+}
+```
+The permission object above shows the visitor can `read` `data1` and `data2` objects, while can only `write` `data1` objects. -->
+
+
+## Расширенное использование
+
+Casbin.js предлагает идеальное решение для интеграции управления доступом интерфейса с вашим сервисом Casbin.
+
+
+Используйте режим `auto` и укажите вашу конечную точку при инициализации Casbin. s `Authorizer`, он автоматически синхронизирует права и манипулирует статусом интерфейса.
+
+```javascript
+const casbinjs = require('casbin.js');
+
+// Устанавливаем URL-адрес вашего бэкэнда
+const authorizer = new casbinjs. uthorizer(
+    'auto', // mode
+    {endpoint: 'http://your_endpoint/api/casbin'}
+);
+
+// Установка посетителя.
+// Casbin.js автоматически синхронизирует разрешение с вашим сервисом Casbin.
+authorizer.setUser("Том");
+
+// Оценка результатов
+= authorizer.can("read", "data1");
+результат. ru(успех, failed) => {
+    if (success) {
+        // Некоторая процедура интерфейса ...
+    }
+});
+```
+
+Соответственно, вам нужно раскрыть интерфейс (например, RestAPI) для создания объекта разрешения и передачи его фронтенду. В вашем контроллере API вызовите `CasbinJsGetUserPermission` для создания объекта разрешения. Вот пример в Биго:
+
+::note
+
+Ваш сервер конечной точки должен вернуть что-то вроде
+```json
+{
+    "other":"other",
+    "data": "What you get from `CasbinJsGetPermissionForUser`"
+}
+```
+
+:::
+
+```go
+// Маршрутизатор
+beego.Router("api/casbin", &controllers.APIController{}, "GET:GetFrontendPermission")
+
+// Контроллер
+func (c *APIController) GetFrontendPermission() {
+    // Получить посетителя с GET параметров. (The key is "casbin_subject")
+    visitor := c.Input().Get("casbin_subject")
+    // `e` is an initialized instance of Casbin Enforcer
+    c.Data["perm"] = casbin.CasbinJsGetPermissionForUser(e, visitor)
+    // Pass the data to the fronend.
+    c.ServeJSON()
+}
+```
+
+::note
+
+В настоящее время `CasbinJsGetPermissionForUser` api поддерживается только в Go Casbin и Node-Casbin. Если вы хотите, чтобы этот api поддерживался на других языках, [поставьте проблему](https://github.com/casbin/casbin.js/issues) или оставьте комментарий ниже.
+
+:::
+
+
+## Список API
+
+#### `setPermission(permission: string)`
+Задать разрешение объекта. Always used in `manual` mode.
+
+#### `setUser(user: string)`
+Задайте идентификатор посетителя и обновите разрешение. Всегда используется в режиме `auto`.
+
+#### `can(action: string, object: string)`
+Отметьте, если пользователь может выполнить `действие` на `объекте`.
+
+#### `cannot(action: string, object: string)`
+Check if the user **cannot** perform `action` on `object`.
+
+#### `canAll(action: string, objects: Array<object>)`
+Check if the user can perform `action` on **all** object in `objects`.
+
+#### `canAny(action: string, objects: Array<object>)`
+Check if the user can perform `action` on **any one** of the `objects`.
+
+
+## Почему Casbin.js
+
+Люди могут удивляться разницей между Node-Casbin и Casbin.js. Одним словом, Node-Casbin является ядром Casbin, реализованного в среде NodeJS, и обычно используется в качестве инструмента управления доступом на сервере. Casbin.js это интерфейсная библиотека, которая поможет вам использовать Casbin для авторизации пользователя веб-страницы на клиентской стороне.
+
+Обычно нецелесообразно непосредственно создавать службу Casbin и выполнять задачи по санкционированию/принудительной реализации на веб-интерфейсе из-за следующих проблем:
+1. Когда кто-то включит клиента, он будет инициализирован, и все политики будут взяты из стойких слоев бэкэнда. Высокое соотношение может привести к жесткому давлению на базы данных и стоимости большого количества пропускной способности сети. 
+2. Загрузка всех политик на стороне клиента может привести к безопасным рискам.
+3. Трудно разделить между клиентом и сервером, а также agile-разработки.
+
+Мы желаем инструмента, который облегчает процесс использования Casbin на фронтенде. На самом деле, ядром Casbin.js является манипуляция правами текущего пользователя на клиентской стороне. Как вы говорили, Casbin.js делает выборку из указанной конечной точки. Эта процедура будет синхронизировать разрешение пользователя с сервисом Casbin. После получения данных о разрешениях, разработчики могут использовать интерфейсы Casbin.js для управления поведением пользователя на стороне интерфейса.
+
+Касбин. s избежать двух проблем, о которых говорилось выше: служба Касбин больше не будет повторяться повторно, и уменьшается размер передачи сообщений между клиентом и сервером. Мы также избегаем хранить все политики на фронтенде. Пользователь может получить доступ только по своему собственному разрешению, но не имеет никаких представлений о таких вещах, как модель контроля доступа и разрешения других пользователей. Кроме того, Casbin.js может эффективно разрезать клиента и сервера в управлении авторизацией.

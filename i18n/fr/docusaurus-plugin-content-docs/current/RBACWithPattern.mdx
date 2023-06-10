@@ -1,0 +1,130 @@
+---
+id: rbac-with-pattern
+title: RBAC avec motif
+description: RBAC with Pattern
+keywords:
+  - RBAC with pattern
+  - pattern matching
+authors:
+  - hsluoyz
+---
+
+
+
+## Démarrage rapide
+
+- utiliser le modèle dans `g(_,_)`
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+
+- utiliser le modèle avec le domaine
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+- utiliser tous les modèles
+
+  juste l'utilisation combinée de deux API
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` API,  which determine how the pattern matches.
+
+:::note
+
+Si vous utilisez l'éditeur en ligne, il spécifie la fonction de recherche de motifs dans le coin inférieur gauche. ![editor-tips](/img/editor-tips.png)
+
+:::
+
+## Utiliser la correspondance de motif dans RBAC
+
+Parfois, vous voulez que certains sujets, objets ou domaines/locataires avec le modèle spécifique soient automatiquement attribués à un rôle. Les fonctions de masquage dans RBAC peuvent vous aider à le faire. Une fonction de correspondance de patron partage les mêmes paramètres et la même valeur de retour que la fonction de recherche [précédente](/docs/syntax-for-models#functions-in-matchers).
+
+La fonction de recherche de motifs supporte chaque paramètre de g.
+
+Nous savons que normalement RBAC est exprimé comme `g(r.sub, p.sub)` dans le matcher. Ensuite, nous utiliserons une politique comme:
+
+```
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+Ainsi, `alice` peut lire tous les livres y compris le `livre 1` et `livre 2`. Mais il peut y avoir des milliers de livres et il est très ennuyeux d'ajouter chaque livre au rôle (ou groupe) du livre avec une règle de politique `g`.
+
+Mais avec les fonctions de recherche de masques, vous pouvez écrire la politique avec une seule ligne :
+
+```
+g, /book/:id, book_group
+```
+
+Casbin fera automatiquement correspondre `/book/1` et `/book/2` dans le patron `/book/:id` pour vous. Vous devez seulement enregistrer la fonction avec le responsable comme :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Lorsque vous utilisez une fonction de masquage dans les domaines/locataires, vous devez enregistrer la fonction pour la faire fonctionner et la modéliser.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Si vous ne comprenez pas ce que signifie `g(r.sub, p.sub, r.dom)` , veuillez lire [rbac-with-domains](/docs/rbac-with-domains). En bref, `g(r.sub, p.sub, r.dom)` vérifiera si l'utilisateur `r. ub` a un rôle `p.sub` dans le domaine `r.dom`. Voilà donc comment fonctionne le matcher. Vous pouvez voir l'exemple complet [ici](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
+
+En dehors de la syntaxe de masques correspondant à la syntaxe ci-dessus, nous pouvons également utiliser un motif de domaine pur.
+
+Par exemple, si nous voulons que `sous` ait accès dans différents domaines, `domain1` et `domain2`, nous pouvons utiliser le modèle de domaine pur :
+
+```
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+Dans cet exemple, nous voulons que `alice` lise et écrive des données `` dans les domaines 1 et 2, le masque correspondant à `*` dans `g` fait `alice` ont accès à deux domaines.
+
+En utilisant le masque de correspondance, surtout dans les scénarios qui sont plus compliqués et il y a beaucoup de domaines ou d'objets que nous devons prendre en considération, nous pouvons implémenter la `policy_definition` plus élégante et efficace.

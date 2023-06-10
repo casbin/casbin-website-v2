@@ -1,0 +1,86 @@
+---
+id: admin-portal
+title: Admin Portal
+description: Casbin 管理门户网站
+keywords:
+  - 管理门户网站
+  - casdoor
+authors:
+  - hsluoyz
+---
+
+
+
+我们提供了一个用于模型管理和策略管理的门户网站 [Casdoor](https://casdoor.org)
+
+![模型编辑器](https://hsluoyz.github.io/casbin/ui_model_editor.png)
+
+![策略编辑器](https://hsluoyz.github.io/casbin/ui_policy_editor.png)
+
+还有第三方门户管理项目，使用Casbin作为授权引擎。 您可以基于这些项目建立您自己的 Cabin 服务。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Project                                                                                                        | 作者                                                 | 前端                   | 后端       | 描述                                                |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------- | -------- | ------------------------------------------------- |
+| [Casdoor](https://casdoor.org)                                                                                 | Casbin                                             | React + Ant Design   | Beego    | 基于 Beego + XORM + React                           |
+| [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)                                            | [@go-admin-team](https://github.com/go-admi-team)  | Vue + Element UI     | Gin      | go-admin基于Gin + Casbin + GORM                     |
+| [gin-vue-admin](https://github.com/piexlmax/gin-vue-admin)                                                     | [@piexlmax](https://github.com/piexlmax)           | Vue + Element UI     | Gin      | 基于Gin + GORM + Vue                                |
+| [gin-admin](https://github.com/LyricTian/gin-admin)                                                            | [@LyricTian](https://github.com/LyricTian)         | React + Ant Design   | Gin      | RBAC脚手架基于Gin + GORM + Casbin + Ant设计反应            |
+| [go-admin](https://github.com/hequan2017/go-admin)                                                             | [@hequan2017](https://github.com/hequan2017)       | 无                    | Gin      | 基于Gin + GORM + JWT + RBAC (Casbin) 的RESTful API网关 |
+| [zeus-admin](https://github.com/bullteam/zeus-admin)                                                           | [bullteam](https://github.com/bullteam)            | Vue + Element UI     | Gin      | 基于JWT + Casbin的统一权限管理平台                           |
+| [IrisAdminApi](https://github.com/snowlyg/IrisAdminApi)                                                        | [@snowlyg](https://github.com/snowlyg)             | Vue + Element UI     | Iris     | 基于 Iris + Casbin 的 后端 API                         |
+| [Gfast](https://github.com/tiger1103/gfast)                                                                    | [@tiger1103](https://github.com/tiger1103)         | Vue + Element UI     | Go Frame | 基于 GF (Go Frame) 的管理门户网站                          |
+| echo-admin ([前端](https://github.com/RealLiuSha/echo-admin-ui), [后端](https://github.com/RealLiuSha/echo-admin)) | [@RealLiuSha](https://github.com/RealLiuSha)       | Vue 2.x + Element UI | Echo     | 基于 Echo + Gorm + Casbin + Uber-FX 的管理门户网站         |
+| [Spec-Center](https://github.com/atul-wankhade/Spec-Center)                                                    | [@atul-wankhade](https://github.com/atul-wankhade) | 无                    | Mux      | 基于 Casbin + MongoDB 的 Golang RESTful 平台           |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Project                                                        | 作者                                       | 前端 | 后端         | 描述                                               |
+| -------------------------------------------------------------- | ---------------------------------------- | -- | ---------- | ------------------------------------------------ |
+| [spring-boot-web](https://github.com/BazookaW/spring-boot-web) | [@BazookaW](https://github.com/BazookaW) | 无  | SpringBoot | 基于 SpringBoot 2.0 + MyBatisPlus + Casbin 的管理门户网站 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Project                                                                                        | 作者                                                 | 前端                  | 后端      | 描述                                                                     |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------- | ------- | ---------------------------------------------------------------------- |
+| [node-mysql-rest-api](https://github.com/JoemaNequinto/node-mysql-rest-api)                    | [@JoemaNequinto](https://github.com/JoemaNequinto) | 无                   | Express | 一个使用 Express, Sequelize, JWT 和 Casbin 在Node.js 建造RESTful APIs 微型服务的应用。 |
+| [Casbin-Role-Mgt-Dashboard-RBAC](https://github.com/alikhan866/Casbin-Role-Mgt-Dashboard-RBAC) | [@alikhan866](https://github.com/alikhan866)       | React + Material UI | Express | 带有Enforcer可以检查过程中执行结果且对新手友好的RBAC管理                                     |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Project                                                                                           | 作者                                                     | 前端        | 后端      | 描述                                  |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------- | ------- | ----------------------------------- |
+| [fastapi-mysql-generator](https://github.com/CoderCharm/fastapi-mysql-generator)                  | [@CoderCharm](https://github.com/CoderCharm)           | 无         | FastAPI | FastAPI + MySQL + JWT + Casbin      |
+| [FastAPI-MySQL-Tortoise-Casbin](https://github.com/xingxingzaixian/FastAPI-MySQL-Tortoise-Casbin) | [@xingxingzaixian](https://github.com/xingxingzaixian) | 无         | FastAPI | FastAPI + MySQL + Tortoise + Casbin |
+| [openstack-policy-editor](https://github.com/casbin/openstack-policy-editor)                      | Casbin                                                 | Bootstrap | Django  | Casbin 的 Web 界面                     |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Project                                                                                                         | 作者                                           | 前端                 | 后端        | 描述                                                        |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------ | --------- | --------------------------------------------------------- |
+| [Tadmin](https://github.com/leeqvip/tadmin)                                                                     | [@leeqvip](https://github.com/leeqvip)       | AmazeUI            | ThinkPHP  | 基于 ThinkPHP 的一款非侵入式后台开发框架                                 |
+| [video.tinywan.com](https://github.com/Tinywan/video.tinywan.com)                                               | [@Tinywanner](https://github.com/Tinywan)    | LayUI              | ThinkPHP  | 基于 ThinkPHP5 + ORM + JWT + RBAC (Casbin) 的 RESTful API 网关 |
+| [laravel-casbin-admin](https://github.com/pl1998/laravel-casbin-admin)                                          | [@pl1998](https://github.com/pl1998)         | Vue + Element UI   | Laravel   | 基于vue-element-admin和Laravel的RBAC许可管理系统                    |
+| larke-admin ([前端](https://github.com/deatil/larke-admin-frontend), [后端](https://github.com/deatil/larke-admin)) | [@deatil](https://github.com/deatil)         | Vue 2 + Element UI | Laravel 8 | 基于Laravel 8, JWT 和 RBAC的门户网站                              |
+| [hyperf-vuetify-admin](https://github.com/TragicMale/hyperf-vuetify-admin)                                      | [@TragicMale](https://github.com/TragicMale) | Vue + Vuetify 2.x  | Hyperf    | 基于Hyperf、Vuetify和Casbin的管理门户网站                            |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

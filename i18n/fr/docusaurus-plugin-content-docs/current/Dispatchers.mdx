@@ -1,0 +1,60 @@
+---
+id: dispatchers
+title: Répartiteurs
+description: Dispatcher provide a way to synchronize incremental changes of policy
+keywords:
+  - dispatcher
+authors:
+  - dovics
+---
+
+
+
+Le répartiteur fournit un moyen de synchroniser les changements incrémentaux de la politique. Il devrait être basé sur des algorithmes de cohérence tels que raft pour assurer la cohérence de toutes les instances de contrôle. Les utilisateurs du répartiteur peuvent facilement établir des grappes distribuées.
+
+La méthode du répartiteur est divisée en deux parties. La première est la méthode combinée à la casbine. Ces méthodes doivent être appelées à l'intérieur de la casbine. Les utilisateurs peuvent utiliser l'api plus complet fourni par casbin lui-même.
+
+L'autre partie est la méthode définie par le répartiteur lui-même, y compris la méthode d'initialisation du répartiteur, et différentes fonctions fournies par différents algorithmes, tels que l'appartenance dynamique, les changements de configuration, etc.
+
+:::note
+
+nous espérons que le répartiteur assure simplement la cohérence de Casbin enforcer à l'exécution. Donc, si la politique est incohérente lors de l'initialisation, le répartiteur ne fonctionnera pas correctement. Les utilisateurs doivent s'assurer que l'état de toutes les instances est cohérent avant d'utiliser le répartiteur.
+
+:::
+
+Une liste complète des distributeurs Casbin est fournie ci-dessous. Toute contribution de tierce partie sur un nouveau répartiteur est la bienvenue, veuillez nous en informer et nous la mettrons dans cette liste:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Répartiteur                                                             | Type de texte | Auteur                             | Description                                                             |
+| ----------------------------------------------------------------------- | ------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| [Hashicorp Raft Dispatcher](https://github.com/casbin/hraft-dispatcher) | raft          | Casbin                             | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+| [KDKYG/casbin-dispatcher](https://github.com/KDKYG/casbin-dispatcher)   | raft          | [@KDKYG](https://github.com/KDKYG) | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DistributedEnforcer
+
+DistributedEnforcer wraps SyncedEnforcer pour le répartiteur.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+

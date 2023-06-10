@@ -1,0 +1,73 @@
+---
+id: effector
+title: Эффект
+description: Effector is the interface for Casbin effectors
+keywords:
+  - effector
+  - Effect
+  - MergeEffects
+authors:
+  - ErikQQY
+---
+
+
+
+Эффект является результатом правила политики. И `Эффект` - это интерфейс для эффектов Камбина.
+
+### `Эффекты слияния ()`
+
+Объединить все совпадающие результаты, собранные силовиком в единое решение.
+
+Например:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+В этом примере:
+
+* `Эффект` является окончательным решением, объединенным этой функцией (Инициализация как `Неопределенная`).
+* `explainIndex` - это индекс `eft` который `Разрешить` или `Отклонить`.(Инициализация как `-1`)
+* `err` используется для проверки поддерживаемого эффекта.
+* `expr` - это эффекты политики, хранящиеся как `строка`
+* `эффекты` - это массив эффекта, который может быть `Разрешить`, `Неопределенно` или `Отклонить`
+* `совпадает с` массивом, показывающим, что если результат соответствует политике.
+* `policyIndex` является индексом политики модели.
+* `Продолжительность политики` является продолжительностью политики.
+
+Код выше показывает, как мы можем передать параметры функции `MergeEffects` , и функция обрабатывает эффекты и совпадения, основанные на `expr`
+
+Чтобы развернуть Effector, мы можем сделать это:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+The basic idea of the `MergeEffects` indicates that if the `expr` can match the results which means that the `p_eft` is `allow`, then we can merge all effects at last. И если нет никаких отрицательных правил, то мы разрешаем.
+
+::note
+
+Если `expr` не может совпадать с `"priority(p_eft) || deny"` и `policyIndex` короче `policyLength-1`, это будет **короткий контур** некоторые эффекты в центре.
+
+:::

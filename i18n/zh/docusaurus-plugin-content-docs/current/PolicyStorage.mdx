@@ -1,0 +1,84 @@
+---
+id: policy-storage
+title: Policy的存储
+description: Policy的存储
+keywords:
+  - 策略的存储
+authors:
+  - hsluoyz
+---
+
+在Casbin，策略存储作为 [适配器](/docs/adapters) 来实现。
+
+## 从 CSV 文件载入策略
+
+这是使用Casbin的最常见方式。 当您请求Casbin团队帮助时，对初学者很容易理解，并且方便分享。
+
+`CSV` 文件示例 [rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)
+
+```
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+:::note
+
+如果你的文件包含逗号`,` , 你应该用双引号把它包裹, 例如:
+
+```
+p, alice, "data1,data2", read --correcy
+p, alice, data1,data2, read --insur ("data1,data2" 应该是一个整体)
+```
+
+如果您的文件包含逗号`,` 和双引号`"`, 你应该用双引号将字段放在一起, 并将任何嵌入的双引号加倍。
+
+```
+p, alice, data, "r.act in (""get"", ""post"")" --correct
+p, alice, data, "r.act in ("get", "post")" --insur --unction (should use "" to fescape "")
+```
+
+相关问题: [issue#886](https://github.com/casbin/casbin/issues/886)
+
+:::
+
+## 适配器 API
+
+| 接口名                    | 类型   | 描述                    |
+| ---------------------- | ---- | --------------------- |
+| LoadPolicy()           | 基本设置 | 从持久层中加载policy规则       |
+| SavePolicy()           | 基本设置 | 将policy规则保存至持久层       |
+| AddPolicy()            | 可选   | 添加单条policy规则至持久层      |
+| RemovePolicy()         | 可选   | 从持久层删除单条policy规则      |
+| RemoveFilteredPolicy() | 可选   | 从持久层删除符合筛选条件的policy规则 |
+
+## 数据库存储格式
+
+**您的策略文件**
+
+```
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, admin
+```
+
+**相应的数据库结构(比如 MySQL)**
+
+| id | ptype | v0          | v1    | v2 | v3 | v4 | v5 |
+| -- | ----- | ----------- | ----- | -- | -- | -- | -- |
+| 1  | p     | data2_admin | data2 | 可读 |    |    |    |
+| 2  | p     | data2_admin | data2 | 可写 |    |    |    |
+| 3  | g     | alice       | admin |    |    |    |    |
+
+**每一列的含义**
+
+- `id`: 仅存在于数据库中作为主键。 不是 `级联策略` 的一部分。 它生成的方式取决于特定的适配器
+
+- `ptype`: 它对应 `p`, `g`, `g2`, 等等。
+- `v0-v5`: 列名称没有特定的意义, 并对应 `policy csv` 从左到右的值。 列数取决于您自己定义的数量。 理论上，可以有无限的列数。 但通常在适配器中只有 **6** 列。 如果您觉得还不够，请向相应的适配器仓库提交问题。
+
+## 适配器详情
+
+更多关于适配器api和数据库表结构设计的详细信息，请转到：  [/docs/adapters](/docs/adapters)

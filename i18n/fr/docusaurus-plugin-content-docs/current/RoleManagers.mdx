@@ -1,0 +1,82 @@
+---
+id: role-managers
+title: Responsables des rôles
+description: The role manager is used to manage the RBAC role hierarchy in Casbin
+keywords:
+  - rolemanager
+  - role manager
+authors:
+  - hsluoyz
+---
+
+
+
+Le gestionnaire de rôle est utilisé pour gérer la hiérarchie des rôles RBAC (cartographie des rôles utilisateurs) dans Casbin. Un gestionnaire de rôle peut récupérer les données du rôle à partir des règles de politique de Casbin ou de sources externes telles que LDAP, Okta, Auth0, Azure AD, etc. Nous supportons différentes implémentations d'un gestionnaire de rôles. Pour rester léger, nous ne plaçons pas le code du gestionnaire de rôle dans la bibliothèque principale (à l'exception du gestionnaire de rôle par défaut). Une liste complète des gestionnaires de rôle de Casbin est fournie ci-dessous. Toute contribution de tierce partie sur un nouveau gestionnaire de rôle est la bienvenue, merci de nous en informer et je la mettrai dans cette liste:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Responsable du rôle                                                                                                                 | Auteur                                            | Description                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Gestionnaire de rôle par défaut (intégré)](https://github.com/casbin/casbin/blob/master/rbac/default-role-manager/role_manager.go) | Casbin                                            | Supporte la hiérarchie des rôles stockée dans la politique de Casbin                                                                                    |
+| [Gestionnaire de rôle de session](https://github.com/casbin/session-role-manager)                                                   | [Systèmes EDOMO](https://github.com/edomosystems) | Supporte la hiérarchie des rôles stockée dans la politique Casbin, avec des sessions basées sur une plage de temps                                      |
+| [Gestionnaire de rôle Okta](https://github.com/casbin/okta-role-manager)                                                            | Casbin                                            | Supporte la hiérarchie des rôles stockée dans [Okta](https://www.okta.com/)                                                                             |
+| [Gestionnaire de rôle Auth0](https://github.com/casbin/auth0-role-manager)                                                          | Casbin                                            | Supports role hierarchy stored in [Auth0](https://auth0.com/)'s [Authorization Extension](https://auth0.com/docs/extensions/authorization-extension/v2) |
+
+Pour les développeurs : tous les gestionnaires de rôles doivent implémenter l'interface [RoleManager](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go). [Gestionnaire de rôle de session](https://github.com/casbin/session-role-manager) peut être utilisé comme une implémentation de référence.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Responsable du rôle                                                                                                                                      | Auteur | Description                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------- |
+| [Gestionnaire de rôle par défaut (intégré)](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) | Casbin | Supporte la hiérarchie des rôles stockée dans la politique de Casbin |
+
+Pour les développeurs : tous les gestionnaires de rôles doivent implémenter l'interface [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java). [Le gestionnaire de rôle par défaut](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) peut être utilisé comme une implémentation de référence.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Responsable du rôle                                                                                                           | Auteur | Description                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| [Gestionnaire de rôle par défaut (intégré)](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) | Casbin | Supporte la hiérarchie des rôles stockée dans la politique de Casbin                                               |
+| [Gestionnaire de rôle de session](https://github.com/node-casbin/session-role-manager)                                        | Casbin | Supporte la hiérarchie des rôles stockée dans la politique Casbin, avec des sessions basées sur une plage de temps |
+
+Pour les développeurs : tous les gestionnaires de rôles doivent implémenter l'interface [RoleManager](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts). [Le gestionnaire de rôle par défaut](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) peut être utilisé comme une implémentation de référence.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Responsable du rôle                                                                                                                           | Auteur | Description                                                          |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------- |
+| [Gestionnaire de rôle par défaut (intégré)](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) | Casbin | Supporte la hiérarchie des rôles stockée dans la politique de Casbin |
+
+Pour les développeurs : tous les gestionnaires de rôles doivent implémenter l'interface [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php). [Le gestionnaire de rôle par défaut](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) peut être utilisé comme une implémentation de référence.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Responsable du rôle                                                                                                                          | Auteur | Description                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------- |
+| [Gestionnaire de rôle par défaut (intégré)](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) | Casbin | Supporte la hiérarchie des rôles stockée dans la politique de Casbin |
+
+Pour les développeurs : tous les gestionnaires de rôles doivent implémenter l'interface [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py). [Le gestionnaire de rôle par défaut](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) peut être utilisé comme une implémentation de référence.
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+Voir la section [API](/docs/rolemanager-api) pour plus de détails.

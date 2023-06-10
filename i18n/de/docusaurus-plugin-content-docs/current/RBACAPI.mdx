@@ -1,0 +1,1634 @@
+---
+id: rbac-api
+title: RBAC API
+description: A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code
+keywords:
+  - RBAC
+  - API
+authors:
+  - nodece
+---
+
+
+
+Eine benutzerfreundlichere API für RBAC. Diese API ist eine Teilmenge der Management-API. Die RBAC-Benutzer können diese API verwenden, um den Code zu vereinfachen.
+
+## Referenz
+
+globale Variable `e` ist Enforcer Instanz.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforcer::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRolesForUser()`
+
+GetRolesForUser erhält die Rollen, die ein Benutzer hat.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.getRolesForUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.GetRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+laßt Rollen = e.get_roles_for_user("alice", keine); // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsersForRole()`
+
+GetUsersForRole holt die Benutzer, die eine Rolle haben.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetUsersForRole("data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.getUsersForRole('data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->getUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+users = e.get_users_for_role("data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.GetUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+den Benutzern = e.get_users_for_role("data1_admin", keine); // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasRoleForUser()`
+
+HasRoleForUser bestimmt, ob ein Benutzer eine Rolle hat.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.HasRoleForUser("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.hasRoleForUser('alice', 'data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->hasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_role_for_user("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.HasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_role_for_user("alice", "data1_admin", keine); // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean res = e.hasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddRoleForUser()`
+
+AddRoleForUser fügt eine Rolle für einen Benutzer hinzu. Gibt false zurück, wenn der Benutzer bereits die Rolle hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddRoleForUser("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addRoleForUser('alice', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```PHP
+$e->addRoleForUser("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.add_role_for_user("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddRoleForUser("alice", "data2_admin");
+or
+var added = await e.AddRoleForUserAsync("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_role_for_user("alice", "data2_admin", keine).await?; // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addRoleForUser("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `AddRolesForUser()`
+
+AddRolesForUser fügt mehrere Rollen für einen Benutzer hinzu. Gibt false zurück, wenn der Benutzer bereits eine dieser Rollen hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var roles = []string{"data2_admin", "data1_admin"}
+e.AddRolesForUser("alice", roles)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const roles = ["data1_admin", "data2_admin"];
+roles.map((role) => e.addRoleForUser("alice", role));
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+lasse Rollen = vec!["data1_admin".to_owned(), "data2_admin".to_owned()];
+lasse all_added = e.add_roles_for_user("alice", Rollen, None).await?; // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `DeleteRoleForUser()`
+
+DeleteRoleForUser löscht eine Rolle für einen Benutzer. Gibt false zurück, wenn der Benutzer nicht die Rolle hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRoleForUser("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRoleForUser('alice', 'data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_role_for_user("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteRoleForUser("alice", "data1_admin");
+or
+var deleted = await e.DeleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+delete_role_for_user("alice", "data1_admin", keine).warte?; // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRolesForUser()`
+
+DeleteRolesForUser löscht alle Rollen eines Benutzers. Gibt false zurück, wenn der Benutzer keine Rollen hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRolesForUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deletedAtLeastOne = e.DeleteRolesForUser("alice");
+or
+var deletedAtLeastOne = await e.DeleteRolesForUserAsync("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+deleted_at_least_one = e.delete_roles_for_user("alice", keine).warte?; // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deletedAtLeastOne = e.deleteRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteUser()`
+
+Löscht Benutzer einen Benutzer. Gibt false zurück, wenn der Benutzer nicht existiert (auch nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```
+e.DeleteUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteUser("alice");
+or
+var deleted = await e.DeleteUserAsync("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_user("alice").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deleteUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRole()`
+
+Lösche Rolle löscht eine Rolle.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRole("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRole("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRole("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_role("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteRole("data2_admin");
+or
+var deleted = await e.DeleteRoleAsync("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_role("data2_admin").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+e.deleteRole("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeletePermission()`
+
+DeletePermission löscht eine Berechtigung. Gibt false zurück, wenn die Berechtigung nicht vorhanden ist (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermission("read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermission('read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermission("read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permission("read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeletePermission("read");
+or
+var deleted = await e.DeletePermissionAsync("read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_permission(vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deletePermission("read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `AddPermissionForUser()`
+
+AddPermissionForUser fügt eine Berechtigung für einen Benutzer oder eine Rolle hinzu. Gibt falsch zurück, wenn der Benutzer oder die Rolle bereits die Berechtigung hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddPermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addPermissionForUser('bob', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->addPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.add_permission_for_user("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddPermissionForUser("bob", "read");
+or
+var added = await e.AddPermissionForUserAsync("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPermissionsForUser()`
+
+AddPermissionsForUser fügt mehrere Berechtigungen für einen Benutzer oder eine Rolle hinzu. Gibt falsch zurück, wenn der Benutzer oder die Rolle bereits eine der Berechtigungen hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var permissions = [][]string{{"data1", "read"},{"data2","write"}}
+for i := 0; i < len(permissions); i++ {
+    e.AddPermissionsForUser("alice", permissions[i])
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const permissions = [
+    ["data1", "read"],
+    ["data2", "write"],
+];
+
+permissions.map((permission) => e.addPermissionForUser("bob", ...permission));
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let permissions = vec![
+    vec!["data1".to_owned(), "read".to_owned()],
+    vec!["data2".to_owned(), "write".to_owned()],
+];
+
+let all_added = e.add_permissions_for_user("bob", permissions).await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `DeletePermissionForUser()`
+
+DeletePermissionForUser löscht eine Berechtigung für einen Benutzer oder eine Rolle. Gibt false zurück, wenn der Benutzer oder die Rolle nicht über die Berechtigung verfügt (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permission_for_user("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeletePermissionForUser("bob", "read");
+or
+var deleted = await e.DeletePermissionForUserAsync("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deletePermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `DeletePermissionsForUser()`
+
+DeletePermissionsForUser löscht Berechtigungen für einen Benutzer oder eine Rolle. Gibt falsch zurück, wenn der Benutzer oder die Rolle keine Berechtigungen hat (aka nicht betroffen).
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermissionsForUser("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermissionsForUser('bob')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permissions_for_user("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deletedAtLeastOne = e.DeletePermissionsForUser("bob");
+or
+var deletedAtLeastOne = await e.DeletePermissionsForUserAsync("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted_at_least_one = e.delete_permissions_for_user("bob").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deletedAtLeastOne = e.deletePermissionForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetPermissionsForUser()`
+
+GetPermissionsForUser erhält Berechtigungen für einen Benutzer oder eine Rolle.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetPermissionsForUser("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.getPermissionsForUser('bob')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_permissions_for_user("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> permissions = e.getPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasPermissionForUser()`
+
+HasPermissionForUser bestimmt, ob ein Benutzer eine Berechtigung hat.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.HasPermissionForUser("alice", []string{"read"})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.hasPermissionForUser('alice', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->hasPermissionForUser("alice", []string{"read"});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_permission_for_user("alice", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var has = e.HasPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_permission_for_user("alice", vec!["data1".to_owned(), "read".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean has = e.hasPermissionForUser("alice", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitRolesForUser()`
+
+GetImplicitRolesForUser erhält implizite Rollen, die ein Benutzer hat. Verglichen mit GetRolesForUser() ruft diese Funktion neben direkten Rollen indirekte Rollen ab.
+
+Zum Beispiel:  
+g, alice, role:admin  
+g, role:admin, role:user
+
+GetRolesForUser("alice") kann nur erhalten: ["role:admin"].  
+Aber GetImplicitRolesForUser("alice") bekommt: ["role:admin", "role:user"].
+
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetImplicitRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.getImplicitRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_implicit_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitRoles = e.GetImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+e.get_implicit_roles_for_user("alice", kein); // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> implicitRoles = e.getImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitUsersForRole()`
+
+GetImplicitUsersForRole holt alle Benutzer, die die Rolle übernehmen. Im Vergleich zu GetUsersForRole() ermittelt diese Funktion indirekte Benutzer.
+
+Zum Beispiel:  
+g, alice, role:admin  
+g, role:admin, role:user
+
+GetUsersForRole("role:user") kann nur erhalten: ["role:admin"].  
+Aber GetImplicitUesrsForRole("role:user") bekommt: ["role:admin", "alice"].
+
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+users := e.GetImplicitUsersForRole("role:user")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const users = e.getImplicitUsersForRole("role:user");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> users = e.getImplicitUsersForRole("role:user");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitPermissionsForUser()`
+
+GetImplicitPermissionsForUser erhält implizite Berechtigungen für einen Benutzer oder eine Rolle.  
+Verglichen mit GetPermissionsForUser(), diese Funktion holt Berechtigungen für geerbte Rollen.
+
+Beispiel:  
+p, admin, data1, lesen Sie  
+p, alice, data2, lesen Sie  
+g, alice, admin
+
+GetPermissionsForUser("alice") kann nur erhalten: [["alice", "data2", "read"]].  
+Aber GetImplicitPermissionsForUser("alice") holt: [["admin", "data1", "read"], ["alice", "data2", "read"]].
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetImplicitPermissionsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```text
+await e.getImplicitPermissionsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_implicit_permissions_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitPermissions = e.GetImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+e.get_implicit_permissions_for_user("alice", kein); // Keine Domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> implicitPermissions = e.getImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedImplicitPermissionsForUser()`
+
+GetNamedImplicitPermissionsForUser erhält implizite Berechtigungen für einen Benutzer oder eine Rolle durch benannte Richtlinie Verglichen mit GetImplicitPermissionsForUser(). Diese Funktion erlaubt es Ihnen, den Richtliniennamen anzugeben.
+
+Beispiel: p, admin, data1, lesen Sie p2, admin, erstellen g, alice, admin
+
+GetImplicitPermissionsForUser("alice") nur erhalten: [["admin", "data1", "read"", dessen Richtlinie "p" ist
+
+Aber Sie können die Richtlinie als "p2" angeben, um sie zu erhalten: [["admin", "erstellen"]] von GetNamedImplicitPermissionsForUser("p2","alice")
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetNamedImplicitPermissionsForUser("p2","alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_named_implicit_permissions_for_user("p2", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetDomainsForUser()`
+GetDomainsForUser erhält alle Domains, die ein Benutzer hat.
+
+Beispiel: p, admin, domain1, data1, lesen Sie p, admin, domain2, data2, lesen Sie p, admin, domain2, data2, schreiben Sie g, alice, admin, domain1 g, alice, admin, domain2
+
+GetDomainsForUser("alice") könnte ["domain1", "domain2"] erhalten
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+result, err := e.GetDomainsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitResourcesForUser()`
+
+GetImplicitResourcesForUser gibt alle Richtlinien zurück, die für den Benutzer zutreffen sollten.
+
+Zum Beispiel:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+
+g, alice, data2_admin
+```
+
+GetImplicitResourcesForUser("alice") gibt `[[alice data1 read] [alice data2 read] [alice data2 write]]`
+
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+resources, err := e.GetImplicitResourcesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+
+### `GetImplicitUsersForPermission()`
+
+GetImplicitUsersForPermission gets implicit users for a permission.
+
+For example:
+```csv
+p, admin, data1, read
+p, bob, data1, read
+g, alice, admin
+```
+
+GetImplicitUsersForPermission("data1", "read") will return: `["alice", "bob"]`.
+
+Note: only users will be returned, roles (2nd arg in "g") will be excluded.
+
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+users, err := e.GetImplicitUsersForPermission("data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllowedObjectConditions()`
+
+GetAllowedObjectConditions returns a string array of object conditions that the user can access.
+
+For example:
+
+```csv
+p, alice, r.obj.price < 25, read
+p, admin, r.obj.category_id = 2, read
+p, bob, r.obj.author = bob, write
+
+g, alice, admin
+```
+
+e.GetAllowedObjectConditions("alice", "read", "r.obj.") will return `["price < 25", "category_id = 2"], nil`
+
+Note:
+
+0. prefix: You can customize the prefix of the object conditions, and "r.obj." is commonly used as a prefix. After removing the prefix, the remaining part is the condition of the object. If there is an obj policy that does not meet the prefix requirement, an `errors.ERR_OBJ_CONDITION` will be returned.
+
+1. If the 'objectConditions' array is empty, return `errors.ERR_EMPTY_CONDITION` This error is returned because some data adapters' ORM return full table data by default when they receive an empty condition, which tends to behave contrary to expectations.(e.g. GORM) If you are using an adapter that does not behave like this, you can choose to ignore this error.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+conditions, err := e.GetAllowedObjectConditions("alice", "read", "r.obj.")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitUsersForResource()`
+
+GetImplicitUsersForResource return implicit user based on resource.
+
+For example:
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+GetImplicitUsersForResource("data2") will return `[["bob", "data2", "write"], ["alice", "data2", "read"] ["alice", "data2", "write"]], nil`.
+
+GetImplicitUsersForResource("data1") will return `[["alice", "data1", "read"]], nil`.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResource("data2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+Only users will be returned, roles (2nd arg in "g") will be excluded.
+
+:::

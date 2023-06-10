@@ -1,0 +1,95 @@
+---
+id: abac
+title: ABAC
+description: ABAC based on Casbin
+keywords:
+  - ABAC
+  - ABAC model
+authors:
+  - hsluoyz
+---
+
+## ABACモデルは実際には何ですか?
+
+ABAC は `属性ベースのアクセス制御`です。つまり、件名の属性 (プロパティ) を使用できます。 オブジェクトまたはアクションは、アクセスを制御するためにそれ自身(文字列)の代わりになります。 XACML という複雑な ABAC アクセス制御言語を既に聞いたことがあるかもしれません。 CasbinのABACはXACMLと比較して非常に簡単です。 model要素には文字列の代わりに構造体(またはプログラミング言語に基づくクラスインスタンス)を使用できます。
+
+公式ABACの例を以下に示します。
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == r.obj.Owner
+```
+
+マッチャでは、 `r.obj.Owner` の代わりに `r.obj` を使用します。 `Enforce()` 関数で渡される `r.obj` は文字列の代わりに構造体またはクラスインスタンスになります。 Casbinはリフレクションを使用して、その構造体やクラスの `obj` メンバ変数を取得します。
+
+`r.obj` 構造体またはクラスの定義は次のとおりです。
+
+```go
+type testResource struct {
+    Name  string
+    Owner string
+}
+```
+
+## ABACの使い方は？
+
+簡単に言えば、ABACを使用するには、次の2つのことを行う必要があります。
+
+1. モデルマッチャで属性を指定します。
+2. Casbinの `Enforce()` 関数で、要素の構造体またはクラスインスタンスを引数として渡します。
+
+:::warning
+
+現在、 `r.sub`, `r.obj`, `r.act` などの要素のみが ABAC をサポートしています。 You cannot use it on policy elements like `p.sub`, because there is no way to define a struct or class in Casbin's policy.
+
+:::
+
+:::tip
+
+マッチャで複数の ABAC 属性を使用できます。例: `m = r.sub.Domain == r.obj.Domain`.
+
+:::
+
+:::tip
+
+CSVのセパレータと競合するポリシーでカンマを使用する必要がある場合は、エスケープする必要があります。 Casbin は [csv ライブラリ](https://pkg.go.dev/encoding/csv)からポリシーファイルを解析し、引用符で文を囲むことができます。 例えば、 `"keyMatch("bob", r.sub.Role)"` は分割されません。
+
+:::
+
+## 複雑で多数のABACルールのモデルのスケーリング。
+
+上記の ABAC 実装のインスタンスは非常にシンプルです。 しかし、多くの場合、認可システムは非常に複雑で大量のABACルールを必要とします。 この必要性を満たすために、上記の実装はモデルの詳細度を大幅に向上させます。 したがって、モデルではなくポリシーにルールを追加することが賢明です。 これは `eval()` 関数型コンストラクトを導入することによって行われます。 以下は ABAC モデルを管理するインスタンスの例です。
+
+これは、ABACモデルの定義に使用される `CONF` ファイルの定義です。
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
+```
+
+ここで、 `p.sub_rule` は、ポリシーで使用される必要のある属性で構成される、struct 型または class(ユーザー定義型) 型である。
+
+これは、 `Enforcement` のモデルに対して使用されるポリシーです。 これで、特定の ABAC 制約を定義するためのパラメータとして `eval()` に渡されるオブジェクトインスタンスを使用できるようになりました。
+
+```csv
+p, r.sub.Age > 18, /data1, read
+p, r.sub.Age < 60, /data2, write
+```

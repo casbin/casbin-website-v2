@@ -1,0 +1,46 @@
+{
+  "version.label": {
+    "message": "次へ",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.The basics": {
+    "message": "基本",
+    "description": "The label for category The basics in sidebar docs"
+  },
+  "sidebar.docs.category.Model": {
+    "message": "モデル",
+    "description": "The label for category Model in sidebar docs"
+  },
+  "sidebar.docs.category.Storage": {
+    "message": "ストレージ",
+    "description": "The label for category Storage in sidebar docs"
+  },
+  "sidebar.docs.category.Extensions": {
+    "message": "拡張",
+    "description": "The label for category Extensions in sidebar docs"
+  },
+  "sidebar.docs.category.API": {
+    "message": "API",
+    "description": "The label for category API in sidebar docs"
+  },
+  "sidebar.docs.category.Advanced usage": {
+    "message": "高度な使い方",
+    "description": "The label for category Advanced usage in sidebar docs"
+  },
+  "sidebar.docs.category.Management": {
+    "message": "管理",
+    "description": "The label for category Management in sidebar docs"
+  },
+  "sidebar.docs.category.Editor": {
+    "message": "エディター",
+    "description": "The label for category Editor in sidebar docs"
+  },
+  "sidebar.docs.category.More": {
+    "message": "もっと見る",
+    "description": "The label for category More in sidebar docs"
+  },
+  "sidebar.docs.link.PDF Download": {
+    "message": "PDF Download",
+    "description": "The label for link PDF Download in sidebar docs, linking to /pdf"
+  }
+}

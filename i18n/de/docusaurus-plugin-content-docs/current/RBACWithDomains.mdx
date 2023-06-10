@@ -1,0 +1,58 @@
+---
+id: rbac-with-domains
+title: RBAC mit Domänen
+description: RBAC with domains usage
+keywords:
+  - RBAC with domains
+authors:
+  - hsluoyz
+---
+
+## Rollendefinition mit Domäneninstanzen
+
+Die RBAC-Rollen in Casbin können global oder domänenspezifisch sein. Domain-spezifische Rollen bedeuten, dass die Rollen eines Benutzers unterschiedlich sein können, wenn der Benutzer sich in verschiedenen Domänen/Mietern befindet. Dies ist sehr nützlich für große Systeme wie eine Cloud, da die Benutzer in der Regel in verschiedenen Mietern sind.
+
+Die Rollendefinition mit Domänen/Mietern sollte so etwas wie folgt sein:
+
+```ini
+[role_definition]
+g = _, _, _
+```
+
+Der 3. `_` bedeutet den Namen der Domain/Mieter, dieser Teil sollte nicht geändert werden. Dann kann die Politik lauten:
+
+```
+p, admin, tenant1, data1, read
+p, admin, tenant2, data2, read
+
+g, alice, admin, tenant1
+g, alice, user, tenant2
+```
+
+Es bedeutet `admin` Rolle in `tenant1` kann `data1` lesen. Und `Alice` hat `admin` Rolle in `Tenant1`und hat `Benutzer` Rolle in `Tenant2`. So kann sie `Daten 1` lesen. Da `Alice` jedoch kein `Admin` in `Tenant2`ist, kann sie `data2` nicht lesen.
+
+Dann solltest du in einem Matcher die Rolle wie unten überprüfen:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+Beispiele finden Sie in der [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf).
+
+:::info Token name convention
+
+Note: Conventionally domain token name in policy definition is `dom` and placed as the second token(`sub, dom, obj, act`). Now Golang Casbin supports customized token name & place. If the domain token name is `dom`, the domain token can be placed at an arbitrary place and no extra action needs.  If the domain token name is not `dom` , `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized regardless of its position.
+
+```ini
+# `domain` here for `dom`
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // index start from 0
+users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, it will raise an error
+```
+
+:::

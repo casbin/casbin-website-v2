@@ -1,0 +1,82 @@
+---
+id: role-managers
+title: 角色管理器
+description: 角色管理器用于Casbin的RBAC角色层次结构
+keywords:
+  - 角色管理器
+  - role Manager
+authors:
+  - hsluoyz
+---
+
+
+
+角色管理器用于管理Casbin中的RBAC角色层次结构（用户角色映射）。 角色管理员可以从 Cabin 策略规则或外部来源，例如LDAP、Okata、Auth0、Azure AD等检索角色数据。 我们支持不同的角色管理器实现。 为了保持轻量，我们不会将角色管理器代码放在主库中（默认角色管理器除外）。 Casbin角色管理器的完整列表如下所示。 我们欢迎任何第三方的角色管理器实现，如果您通知我们，我们很乐意将它加入以下列表:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 角色管理器                                                                                                                     | 作者                                               | 描述                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [Default Role Manager (built-in)](https://github.com/casbin/casbin/blob/master/rbac/default-role-manager/role_manager.go) | Casbin                                           | 支持存储在Casbin策略中的角色层次结构                                                                                                                     |
+| [Session Role Manager](https://github.com/casbin/session-role-manager)                                                    | [EDOMO Systems](https://github.com/edomosystems) | 支持存储在Casbin策略中的角色层次结构，以及基于时间范围的会话                                                                                                         |
+| [Okta Role Manager](https://github.com/casbin/okta-role-manager)                                                          | Casbin                                           | 支持存储在[Okta](https://www.okta.com/)中的角色层次结构                                                                                                |
+| [Auth0 Role Manager](https://github.com/casbin/auth0-role-manager)                                                        | Casbin                                           | 支持存储在 [Auth0](https://auth0.com/)'s [Authorization Extension](https://auth0.com/docs/extensions/authorization-extension/v2) 授权扩展名中的角色层次结构 |
+
+对于开发人员：所有角色管理器都必须实现[ RoleManager ](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go)接口。 [会话角色管理器](https://github.com/casbin/session-role-manager) 可以用作参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| 角色管理器                                                                                                                                          | 作者     | 描述                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------- |
+| [Default Role Manager (built-in)](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) | Casbin | 支持存储在Casbin策略中的角色层次结构 |
+
+对于开发人员：所有角色管理器都必须实现[ RoleManager ](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java)接口。 [默认角色管理器](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) 可以用作参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 角色管理器                                                                                                               | 作者     | 描述                                |
+| ------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------------- |
+| [Default Role Manager (built-in)](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) | Casbin | 支持存储在Casbin策略中的角色层次结构             |
+| [Session Role Manager](https://github.com/node-casbin/session-role-manager)                                         | Casbin | 支持存储在Casbin策略中的角色层次结构，以及基于时间范围的会话 |
+
+对于开发人员：所有角色管理器都必须实现[ RoleManager ](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts)接口。 [默认角色管理器](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) 可以用作参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| 角色管理器                                                                                                                               | 作者     | 描述                    |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------- |
+| [Default Role Manager (built-in)](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) | Casbin | 支持存储在Casbin策略中的角色层次结构 |
+
+对于开发人员：所有角色管理器都必须实现[ RoleManager ](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php)接口。 [默认角色管理器](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) 可以用作参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 角色管理器                                                                                                                              | 作者     | 描述                    |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------- |
+| [Default Role Manager (built-in)](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) | Casbin | 支持存储在Casbin策略中的角色层次结构 |
+
+对于开发人员：所有角色管理器都必须实现[ RoleManager ](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py)接口。 [默认角色管理器](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) 可以用作参考实现。
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+详情请参阅 [API](/docs/rolemanager-api) 部分。

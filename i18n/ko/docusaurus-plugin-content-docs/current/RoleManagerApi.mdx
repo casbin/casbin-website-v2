@@ -1,0 +1,558 @@
+---
+id: rolemanager-api
+title: RoleManager API
+description: RoleManager provides interface to define the operations for managing roles. Adding matching function to rolemanager allows using wildcards in role name and domain
+keywords:
+  - rolemanager
+  - API
+authors:
+  - closetool
+  - kiloson-c
+---
+
+
+
+## RoleManager
+
+RoleManager provides interface to define the operations for managing roles. Adding matching function to rolemanager allows using wildcards in role name and domain.
+
+### `AddNamedMatchingFunc()`
+
+AddNamedMatchingFunc add MatchingFunc by ptype to RoleManager. MatchingFunc will work when operating role matching.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e.AddNamedMatchingFunc("g", "", util.KeyMatch)
+    _, _ = e.AddGroupingPolicies([][]string{{"*", "admin", "domain1"}})
+    _, _ = e.GetRoleManager().HasLink("bob", "admin", "domain1") // -> true, nil
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await e.addNamedMatchingFunc('g', Util.keyMatchFunc);
+    await e.addGroupingPolicies([['*', 'admin', 'domain1']]);
+    await e.getRoleManager().hasLink('bob', 'admin', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewEnforcer("path/to/model", "path/to/policy")
+    e.AddNamedMatchingFunc("g", "", util.MatchKey)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const e = await newEnforcer('path/to/model', 'path/to/policy');
+    await e.addNamedMatchingFunc('g', Util.keyMatchFunc);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedDomainMatchingFunc()`
+
+AddNamedDomainMatchingFunc add MatchingFunc by ptype to RoleManager. `DomainMatchingFunc` is similar to `MatchingFunc` listed above.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewEnforcer("path/to/model", "path/to/policy")
+    e.AddNamedDomainMatchingFunc("g", "", util.MatchKey)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const e = await newEnforcer('path/to/model', 'path/to/policy');
+    await e.addNamedDomainMatchingFunc('g', Util.keyMatchFunc);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRoleManager()`
+
+GetRoleManager gets the current role manager for `g`.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.GetRoleManager()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const rm = await e.getRoleManager();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.get_role_manager()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedRoleManager()`
+
+GetNamedRoleManager gets the role manager by named ptype.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.GetNamedRoleManager("g2")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const rm = await e.getNamedRoleManager("g2");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.get_named_role_manager("g2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetRoleManager()`
+
+SetRoleManager sets the current role manager for `g`.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e.SetRoleManager(rm)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    e.setRoleManager(rm);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.set_role_manager(rm)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetNamedRoleManager()`
+
+SetNamedRoleManager sets the role manager by named ptype.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.SetNamedRoleManager("g2", rm)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.set_role_manager("g2", rm)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `Clear()`
+
+Clear clears all stored data and resets the role manager to the initial state.
+
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.Clear()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.clear();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.clear()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddLink()`
+
+AddLink adds the inheritance link between two roles. role: name1 and role: name2. Domain is a prefix to the roles (can be used for other purposes).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.AddLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.addLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.add_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteLink()`
+
+DeleteLink deletes the inheritance link between two roles. role: name1 and role: name2. Domain is a prefix to the roles (can be used for other purposes).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.DeleteLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.deleteLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.delete_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasLink()`
+
+HasLink determines whether a link exists between two roles. role: name1 inherits role: name2. Domain is a prefix to the roles (can be used for other purposes).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.HasLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.hasLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.has_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRoles()`
+
+GetRoles gets the roles that a user inherits. Domain is a prefix to the roles (can be used for other purposes).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.GetRoles("u1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.getRoles('u1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.get_roles("u1", "domain")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsers()`
+
+GetUsers gets the users that inherits a role. Domain is a prefix to the users (can be used for other purposes).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.GetUsers("g1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.getUsers('g1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.get_users("g1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `PrintRoles()`
+
+PrintRoles prints all the roles to log.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.PrintRoles()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.printRoles();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.print_roles()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetLogger()`
+
+SetLogger sets role manager's logger.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    logger := log.DefaultLogger{}
+    logger.EnableLog(true)
+    rm.SetLogger(&logger)
+    _ = rm.PrintRoles()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetDomains()`
+GetDomains gets domains that a user has
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    result, err := rm.GetDomains(name)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

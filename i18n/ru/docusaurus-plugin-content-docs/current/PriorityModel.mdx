@@ -1,0 +1,164 @@
+---
+id: priority-model
+title: Приоритетная модель
+description: Priority Model
+keywords:
+  - priority model
+authors:
+  - hsluoyz
+---
+
+Касбин поддерживает загрузку политики с приоритетом.
+
+## Загрузить политику с приоритетным неявкой
+
+Это довольно просто, порядок определяет приоритет, политика появилась раньше, имеет более высокий приоритет.
+
+модель.conf:
+```ini
+[policy_effect]
+e = priority(p.eft) || Отклонить
+```
+
+## Загрузить политику с приоритетом
+
+> Также посмотрите: [casbin#550](https://github.com/casbin/casbin/issues/550)
+
+The smaller priority value will have a higher priority. If there's a non-numerical character in priority, it will be in the last, rather than throw an error.
+
+:::info Token name convention
+
+The priority token name in policy definition is  "priority" conventionally. A customized one requires invoking `e.SetFieldIndex()` and reload policies (full example on [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044) ).
+
+модель.conf:
+```ini
+[policy_definition]
+p = customized_priority, sub, obj, act, eft
+```
+
+Golang code example:
+```go
+e, _ := NewEnforcer("./example/priority_model_explicit_customized.conf",
+                    "./example/priority_policy_explicit_customized.csv")
+// Due to the customized priority token, the enforcer failed to handle the priority.
+ok, err := e.Enforce("bob", "data2", "read") // the result will be `true, nil`
+// set PriorityIndex and reload
+e.SetFieldIndex("p", constant.PriorityIndex, 0)
+err := e.LoadPolicy()
+if err != nil {
+    log.Fatalf("LoadPolicy: %v", err)
+}
+ok, err := e.Enforce("bob", "data2", "read") // the result will be `false, nil`
+```
+
+:::
+
+Теперь явный приоритет только поддерживает `AddPolicy` & `AddPolicies`, если было вызвано `UpdatePolicy` , вы не должны изменять атрибут приоритета.
+
+модель.conf:
+```ini
+[request_definition]
+r = под, obj, действовать
+
+[policy_definition]
+p = приоритет, sub, obj, act, eft
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = priority(стр. ft) || Отрицать
+
+[matchers]
+м = g(r.sub, p. ub) && r.obj == p.obj && r.act == p.act
+```
+
+политика.csv
+```csv
+p, 10, data1_deny_group, data1, read, deny
+p, 10, data1_deny_group, data1, write, deny
+p, 10, data2_allow_group, data2, read, allow
+p, 10, data2_allow_group, data2, write, allow
+
+
+p, 1, alice, data1, write, allow
+p, 1, alice, data1, read, allow
+p, 1, bob, data2, read, deny
+
+g, bob, data2_allow_group
+g, alice, data1_deny_group
+```
+
+запрос:
+```
+alice, data1, write --> true // for `p, 1, alice, data1, write, allow` имеет приоритет
+bob, data2, read --> false
+bob, data2, напишите --> true // для bob имеет роль `data2_allow_group`, который имеет право записать data2, и не существует политики отрицания с более высоким приоритетом 
+```
+## Загрузить политику с приоритетом на основе роли и иерархии пользователей
+
+Унаследованная структура ролей и пользователей может быть только несколькими деревьями, а не графиками. Если у одного пользователя несколько ролей, вы должны убедиться, что у пользователя одинаковый уровень в разных деревьях. Если две роли имеют один и тот же уровень, то политика (соответствующая роль) появилась раньше, имеет более высокий приоритет. more details also see [casbin#833](https://github.com/casbin/casbin/pull/833)、[casbin#831](https://github.com/casbin/casbin/issues/831)
+
+model.conf:
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act, eft
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = subjectPriority(p.eft) || deny
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act 
+```
+
+политика.csv
+```csv
+p, root, data1, read, deny
+p, admin, data1, read, deny
+
+p, editor, data1, read, deny
+p, subscriber, data1, read, deny
+
+p, jane, data1, read, allow
+p, alice, data1, read, allow
+
+g, admin, root
+
+g, editor, admin
+g, subscriber, admin
+
+g, jane, editor
+g, alice, subscriber 
+```
+
+Запрос:
+```
+jane, data1, read --> true // jane is at the bottom,so priority is higher than editor, admin and root
+alice, data1, read --> true
+```
+
+ Роль иерархии вроде этого:
+```
+role: root
+ └─ role: admin
+    ├─ role editor
+    │  └─ user: jane
+    │
+    └─ role: subscriber
+       └─ user: alice
+```
+
+Приоритет автоматически выглядит так:
+
+```
+role: root                 # auto priority: 30
+ └─ role: admin            # auto priority: 20
+     ├─ role: editor       # auto priority: 10
+     └─ role: subscriber   # auto priority: 10
+```

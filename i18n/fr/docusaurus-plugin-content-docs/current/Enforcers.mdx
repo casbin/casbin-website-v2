@@ -1,0 +1,34 @@
+---
+id: enforcers
+title: Enforcers
+description: Enforcer is the main structure in Casbin, It acts as an interface for users to make operations on policy rules and models
+keywords:
+  - enforcer
+  - supported enforcers
+authors:
+  - Abingcbc
+---
+
+
+
+`Enforcer` est la structure principale de Casbin. Il sert d'interface pour permettre aux utilisateurs de faire des opérations sur des règles et des modèles de politique.
+
+## Formateurs supportés
+Une liste complète des forçateurs Casbin est fournie ci-dessous. Any 3rd-party contribution on a new enforcer is welcomed, please inform us and we will put it in this list:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Enforcer                                                                                       | Auteur | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go)                           | Casbin | `Enforcer` est la structure de base pour que les utilisateurs interagissent avec les politiques et modèles de Casbin. Vous pouvez trouver plus de détails sur l'API de `Enforcer`sur [ici](/docs/management-api).                                                                                                                                                                                                                                                  |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)              | Casbin | `CachedEnforcer` est basé sur `Enforcer`. Il permet de mettre en cache le résultat de l'évaluation d'une requête en mémoire par une carte et d'effacer les caches dans un temps d'expiration spécifié. De plus, il est garanti d'être sans fil par un verrou en lecture et écriture. Vous pouvez utiliser `EnableCache` pour activer la mise en cache des résultats d'évaluation (par défaut activé). L'autre API de `CachedEnforcer`est la même que `Enforcer`'s. |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go)    | Casbin | `DistributedEnforcer` supporte plusieurs instances dans des instances distribuées. Il enveloppe `SyncedEnforcer` pour le répartiteur. Vous pouvez trouver plus de détails sur la dispather à [ici](/docs/dispatchers#distributedenforcer).                                                                                                                                                                                                                         |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)              | Casbin | `SyncedEnforer` est basé sur `Enforcer` et fournit un accès synchronisé. Il est sécuritaire pour les fils.                                                                                                                                                                                                                                                                                                                                                         |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go) | Casbin | `SyncedCachedEnforcer` wraps `Enforcer` and provides decision sync cache.                                                                                                                                                                                                                                                                                                                                                                                          |
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

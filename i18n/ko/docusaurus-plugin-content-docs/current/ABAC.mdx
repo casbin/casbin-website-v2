@@ -1,0 +1,95 @@
+---
+id: abac
+title: ABAC
+description: ABAC based on Casbin
+keywords:
+  - ABAC
+  - ABAC model
+authors:
+  - hsluoyz
+---
+
+## ABAC 모델이란?
+
+ABAC는 `속성-기반 접근 제어(Attribute-Based Access Control)`입니다. 이것은 보안 주체(Subject), 대상(Object) 혹은 액션(Action) 의 속성(Attribute) 을 사용해서 접근 제어를 설정 할 수 있다는 뜻입니다. XACML이라는 복잡한 ABAC 접근 제어 언어에 대해 아마 들어본 적이 있을 것입니다. XACML과 비교하면, Casbin의 ABAC는 매우 단순합니다. ABAC 모델에서는 문자열 대신, 구조체(혹은 클래스, 프로그래밍 언어에 따라 다름) 인스턴스를 사용해서 모델을 구성할 수 있습니다.
+
+ABAC 작성 예제:
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == r.obj.Owner
+```
+
+Matcher 조건식에서 `r.obj` 대신 `r.obj.Owner`를 사용하였습니다. `Enforce()` 함수에 전달된 `r.obj`에는 문자열 대신 구조체(혹은 클래스) 인스턴스가 들어갈 수 있습니다. Casbin은 리플렉션을 사용해서 `obj` 구조체(혹은 클래스) 인스턴스에서 멤버 변수를 추출합니다.
+
+여기서 `r.obj`의 구조체(혹은 클래스) 선언은 다음과 같습니다.
+
+```go
+type testResource struct {
+    Name  string
+    Owner string
+}
+```
+
+## ABAC 사용법
+
+간단히, ABAC를 사용하기 위해서는 다음 2가지가 필요합니다.
+
+1. 조건식에 속성을 사용합니다.
+2. Casbin의 `Enforce()` 함수에 구조체(혹은 클래스) 인스턴스를 인자로 전달합니다.
+
+:::warning
+
+Currently, only request elements like `r.sub`, `r.obj`, `r.act` and so on support ABAC. You cannot use it on policy elements like `p.sub` 같이 policy 란에는 사용할 수 없습니다. 왜냐하면, Casbin의 정책(Policy)애느 구조체(혹은 클래스)를 선언할 수 없기 때문입니다.
+
+:::
+
+:::tip
+
+You can use multiple ABAC attributes in a matcher, for example: `m = r.sub.Domain == r.obj.Domain`.
+
+:::
+
+:::tip
+
+If you need to use comma in policy which conflicts with csv's separator and we need to escape it. Casbin parses policy file through [csv library](https://pkg.go.dev/encoding/csv), you could surround statement with quotation marks. For example, `"keyMatch("bob", r.sub.Role)"` will not be split.
+
+:::
+
+## Scaling the model for complex and large number of ABAC rules.
+
+The above instance of ABAC implementation is at its core very simple, but oftentimes the authorization system needs a very complex and large number of ABAC rules. To fit this necessity the above implementation will increase the verbosity of the model to a large extent. So, it’s wise to add the rules in the policy instead of in the model. This is done by introducing a `eval()` functional construct. Below is the example instance to manage such ABAC models.
+
+This is the definition of the `CONF` file used for defining the ABAC model.
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
+```
+
+Here, `p.sub_rule` is of type struct or class(user-defined type) which consists of necessary attributes to be used in the policy.
+
+This is the policy that is used against the model for `Enforcement`. Now, you can use the object instance which is passed to `eval()` as a parameter to define certain ABAC constraints.
+
+```csv
+p, r.sub.Age > 18, /data1, read
+p, r.sub.Age < 60, /data2, write
+```

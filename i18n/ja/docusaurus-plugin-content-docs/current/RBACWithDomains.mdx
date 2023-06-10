@@ -1,0 +1,58 @@
+---
+id: rbac-with-domains
+title: ドメイン付きRBAC
+description: RBAC with domains usage
+keywords:
+  - RBAC with domains
+authors:
+  - hsluoyz
+---
+
+## ドメインテナントとロール定義
+
+CasbinのRBACロールはグローバルまたはドメイン固有のものです。 Domain-specify rolesは、ユーザーが異なるドメイン/テナントにいる場合、ユーザーのroleが異なることを意味します。 これは、ユーザーが通常、異なるテナントにいるため、クラウドのような大規模なシステムに非常に便利です。
+
+ドメイン/テナントを持つロール定義は以下のようにする必要があります。
+
+```ini
+[role_definition]
+g = _, _, _
+```
+
+3 番目の `_` はドメイン/テナントの名前を意味します。この部分は変更すべきではありません。 その後、ポリシーは次のようになります。
+
+```
+p, admin, tenant1, data1, read
+p, admin, tenant2, data2, read
+
+g, alice, admin, tenant1
+g, alice, user, tenant2
+```
+
+これは、 `tenant1` の `管理者` ロールが `data1` を読み取ることができることを意味します。 `alice` は `管理者` の役割 `テナント1`を持ち、 `ユーザー` の役割 `テナント2` を持ちます。 だから彼女は `data1` を読むことができる。 ただし、 `alice` は `tenant2` の `admin`ではないため、 `data2` を読み取ることはできません。
+
+次に、マッチャーでは、次のように役割を確認する必要があります。
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+例については [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf) を参照してください。
+
+:::info Token name convention
+
+Note: Conventionally domain token name in policy definition is `dom` and placed as the second token(`sub, dom, obj, act`). Now Golang Casbin supports customized token name & place. If the domain token name is `dom`, the domain token can be placed at an arbitrary place and no extra action needs.  If the domain token name is not `dom` , `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized regardless of its position.
+
+```ini
+# `domain` here for `dom`
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // index start from 0
+users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, it will raise an error
+```
+
+:::

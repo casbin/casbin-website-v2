@@ -1,0 +1,26 @@
+---
+id: superadmin
+title: 超级管理员
+description: 超级管理员是整个系统的管理员。我们可以在RBAC，ABAC以及带域的RBAC等模型中使用它
+keywords:
+  - 超级管理员
+authors:
+  - ErikQQY
+---
+
+超级管理员是整个系统的管理员。我们可以在RBAC，ABAC以及带域的RBAC等模型中使用它 具体例子如下：
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act || r.sub == "root"
+```
+它说明了对于定义的 `request_definition`, `policy_definition`, `policy_effect` 和 `matcher`, Casbin 判断如果请求可以匹配的上策略，或者更重要的，如果 `sub` 是超级用户的话。 一旦判决正确，就允许授权，而且用户有权做一切。  
+就像Linux系统的root一样，用户被授权为 root, 我们就有访问所有文件和设置的权限。 因此，如果我们想要 `sub` 能够完全访问整个系统。 我们可以让它成为超级管理员，然后 `sub` 才有权做一切。 

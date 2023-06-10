@@ -1,0 +1,41 @@
+---
+id: performance
+title: Optimisation des performances
+description: Casbin performance optimization
+keywords:
+  - optimization
+authors:
+  - hsluoyz
+---
+
+Lorsqu'il est appliqué dans un environnement de production avec des millions d'utilisateurs ou des autorisations, vous pouvez rencontrer un downgrade de performance dans l'application de Casbin, il y a généralement deux causes:
+
+#### Trafic de volume élevé
+
+Le nombre de requêtes à venir par seconde est trop important, par exemple 10 000 requêtes/s pour une seule instance Casbin. Dans ce cas, une seule instance Casbin ne suffit généralement pas à gérer toutes les requêtes. Il y a 2 solutions possibles:
+
+1. Utilisez plusieurs threads pour activer plusieurs instances Casbin, afin que vous puissiez pleinement utiliser tous les cœurs de la machine. Voir les détails à : [Multi-threads](/docs/multi-threading).
+
+2. Déployer des instances Casbin sur un cluster (machines multiples). Utilisez Watcher pour garantir la cohérence de toutes les instances Casbin. Voir les détails sur: [Observateurs](/docs/watchers).
+
+:::note
+
+Vous pouvez utiliser les deux méthodes ci-dessus en même temps, par exemple, déployer Casbin sur une grappe de 10 machines. Chaque machine a 5 fils de discussion simultanément pour traiter les demandes d'exécution de Casbin.
+
+:::
+
+#### Nombre élevé de règles de politique
+
+Des millions de règles politiques peuvent être requises dans un environnement nuageux ou multi-locataire. Chaque appel de mise en application ou même le chargement des règles de police au moment initial est très lent. Ces cas peuvent généralement être atténués de plusieurs manières:
+
+1. Votre modèle ou votre politique Casbin n'est pas bien conçu. Un modèle et une politique bien rédigés résumeront la logique dupliquée pour chaque utilisateur/locataire et réduiront le nombre de règles à un très petit niveau (< 100): e. ., vous pouvez partager certaines règles par défaut entre tous les locataires et permettre aux utilisateurs de personnaliser leurs règles plus tard. Les règles personnalisées peuvent remplacer les règles par défaut. Si vous avez encore des questions, veuillez envoyer un problème GitHub aux dépôts Casbin.
+
+2. Le déchirage pour laisser un agent de police casbin charger seulement un petit ensemble de règles de politique (p. ex. enforcer_0 ne sert que pour le locant_0 au locant_99, enforcer_1 ne sert que pour le locant_100 au locant_199. Pour charger seulement un sous-ensemble de toutes les règles de règles, voir les détails sur: [chargement de sous-ensemble de la politique](/docs/policy-subset-loading).
+
+3. Accorder les permissions aux rôles RBAC au lieu des utilisateurs directement. Le RBAC de Casbin's est implémenté par une arborescence d'héritage de rôles (en tant que cache). Ainsi, étant donné un utilisateur comme Alice, Casbin n'utilise que O(1) temps pour interroger l'arborescence RBAC pour les relations entre les utilisateurs et faire exécution. Si vos règles g ne changent pas souvent, l'arborescence RBAC ne devra pas être mise à jour. Voir les détails de ce dicus: https://github.com/casbin/casbin/issues/681#issuecomment-763801583
+
+:::note
+
+Vous pouvez essayer les méthodes ci-dessus en même temps.
+
+:::

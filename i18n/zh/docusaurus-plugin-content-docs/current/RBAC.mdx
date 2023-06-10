@@ -1,0 +1,106 @@
+---
+id: rbac
+title: RBAC
+description: Casbin RBAC的使用
+keywords:
+  - RBAC
+  - 角色定义
+  - 角色层次
+authors:
+  - hsluoyz
+---
+
+## Role定义
+
+`[role_definition]`原语定义了RBAC中的角色继承关系。 Casbin支持RBAC系统的多个实例，例如，用户可以有角色和继承关系，而资源也可以有角色和继承关系。 这两个RBAC系统不会干扰。
+
+此部分是可选的。 如果在模型中不使用 RBAC 角色, 则省略此部分。
+
+```ini
+[role_definition]
+g = _, _
+g2 = _, _
+```
+
+上述角色定义表明, `g` 是一个 RBAC系统, `g2` 是另一个 RBAC 系统。 `_, _`表示角色继承关系的前项和后项，即前项继承后项角色的权限。 一般来讲，如果您需要进行角色和用户的绑定，直接使用`g` 即可。  当您需要表示角色（或者组）与用户和资源的绑定关系时，可以使用`g` 和 `g2` 这样的表现形式。 请参见 [rbac_model](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) 和 [rbac_model_with_resource_roles](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) 的示例。
+
+在Casbin里，我们以policy表示中实际的用户角色映射关系 (或是资源-角色映射关系)，例如:
+
+```
+p, data2_admin, data2, read
+g, alice, data2_admin
+```
+
+这意味着 `alice` 是角色 `data2_admin`的一个成员。 `alice` 在这里可以是用户、资源或角色。 Cabin 只是将其识别为一个字符串。
+
+接下来在matcher中，应该像下面的例子一样检查角色信息：
+
+```ini
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+这意味着在请求中应该在policy中包含`sub`角色。
+
+:::note
+
+1. Casbin 只存储用户角色的映射关系。
+2. Cabin 没有验证用户是否是有效的用户，或者角色是一个有效的角色。 这应该通过认证来解决。
+3. RBAC 系统中的用户名称和角色名称不应相同。因为Casbin将用户名和角色识别为字符串， 所以当前语境下Casbin无法得出这个字面量到底指代用户 `alice` 还是角色 `alice`。 这时，使用明确的 `role_alice` ，问题便可迎刃而解。
+4. 假设`A`具有角色 `B`，`B` 具有角色 `C`，并且 `A` 有角色 `C`。 这种传递性在当前版本会造成死循环。
+
+:::
+
+:::info Token名称协议
+
+通常主题令牌名称在策略定义中是 `sub` 并置于开头。 现在Golang Casbin 支持定制令牌名称 & 位置。 如果主题令牌名称是 `sub`, 主题令牌可以放置在任意位置, 不需要额外的操作。  如果域令牌名称不是 `sub` , 应在启动执行者后调用 `e.SetFieldIndex()` 用于 `constant.SubjectIndex` 不论其地位如何。
+```ini
+# `subject` 这里指 sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+.SetFieldIndex("p", constant.SubjectIndex, 2) // 索引从0开始
+ok, err := e.DeleteUser("alice") // 没有 SetFieldIndex, 它会引起一个错误
+```
+
+:::
+
+## 角色层次
+
+Casbin 的 RBAC 支持 RBAC1 的角色层次结构功能，如果 `alice`具有`role1`, `role1`具有`role2`，则 `alice` 也将拥有 `role2` 并继承其权限。
+
+下面是一个称为层次结构级别的概念。 因此, 此示例的层次结构级别为2。 对于Casbin中的内置角色管理器, 可以指定最大层次结构级别。 默认值为10。 这意味着终端用户 `alice` 只能继承10个级别的角色。
+
+```go
+// NewRoleManager is the constructor for creating an instance of the
+// default RoleManager implementation.
+func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
+    rm := RoleManager{}
+    rm.allRoles = &sync.Map{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm.hasPattern = false
+
+    return &rm
+}
+```
+
+## 如何区分用户和角色？
+
+在RBAC中，Casbin不对用户和角色进行区分。 它们都被视为字符串。 如果你只使用单层的RBAC模型（角色不会成为另一个角色的成员）。 可以使用 `e.GetAllSubjects()` 获取所有用户，`e.GetAllRoles()` 获取所有角色。 它们会为规则 `g, u, r` 分别列出所有的 `u` 和 `r`。
+
+但如果你在使用多层RBAC（带有角色继承），并且你的应用没有记录下一个名字（字符串）对应的是用户还是角色，或者你将用户和角色用相同的名字命名。 那么你可以可以给角色加上像 `role::admin` 的前缀再传递到Casbin中。 由此可以通过查看前缀来区分用户和角色。
+
+## 如何查询隐性角色或权限？
+
+当用户通过RBAC层次结构继承角色或权限，而不是直接在策略规则中分配它们时，我们将这种类型的分配称为 `implicit`。 要查询这种隐式关系，需要使用以下两个api： `GetImplicitRolesForUser()`以及 `GetImplicitPermissionsForUser()` 替代`GetRolesForUser()` 以及 `GetPermissionsForUser()`. 有关详情，请参阅 [this GitHub issue](https://github.com/casbin/casbin/issues/137)。
+
+## 在 RBAC 中使用模式匹配
+
+详情请参阅 [RBAC with Pattern](/docs/rbac-with-pattern)
+
+## 角色管理器
+
+详情见 [角色管理器](/docs/role-managers) 部分。
+

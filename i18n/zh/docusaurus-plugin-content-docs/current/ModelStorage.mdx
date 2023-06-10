@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: Model 的存储
+description: Model 的存储
+keywords:
+  - model 的存储
+authors:
+  - hsluoyz
+---
+
+与 policy 不同，model 只能加载，不能保存。 因为我们认为 model 不是动态组件，不应该在运行时进行修改，所以我们没有实现一个 API 来将 model 保存到存储中。
+
+但是，好消息是，我们提供了三种等效的方法来静态或动态地加载模型：
+
+## 从 .CONF 文件中加载 model
+
+这是使用Casbin的最常见方式。 当您请求Casbin团队帮助时，对初学者很容易理解，并且方便分享。
+
+`.CONF`文件的内容 [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+接着你可以加载模型文件如下：
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## 从代码加载 model
+
+模型可以从代码中动态初始化，而不是使用 `.CONF` 文件。 以下是RBAC模式的一个示例：
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+// 从Go代码初始化模型
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "some(where (p.eft == allow))")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+
+// 从CSV文件adapter加载策略规则
+// 使用自己的 adapter 替换。
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 创建enforcer
+e := casbin.NewEnforcer(m, a)
+```
+
+## 从字符串加载的 model
+
+或者您可以从多行字符串中加载整个模型文本。 这种方式的好点是你不需要维护模型文件。
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+)
+
+// 从字符串初始化模型
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+m, _ := model.NewModelFromString(text)
+
+// 从CSV文件adapter加载策略规则
+// 使用自己的 adapter 替换
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 创建enforcer
+e := casbin.NewEnforcer(m, a)
+```

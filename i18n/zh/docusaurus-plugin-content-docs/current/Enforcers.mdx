@@ -1,0 +1,34 @@
+---
+id: enforcers
+title: 执行器
+description: 执行器是Casbin的主要结构。它作为用户在规则和模式上开展业务的一个接口
+keywords:
+  - 执行器
+  - 支持的执行器
+authors:
+  - Abingcbc
+---
+
+
+
+`Enforcer` 是Casbin的主要结构。 它是用户就规则和模式开展业务的一个接口。
+
+## 支持的执行器
+Casbin的适配器完整列表如下。 我们欢迎来自第三方的适配器，请通知我们，以将您的适配器加入列表:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 执行器                                                                                            | 作者     | 说明                                                                                                                                                                                   |
+| ---------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [执行器](https://github.com/casbin/casbin/blob/master/enforcer.go)                                | Casbin | `Enforcer` 是用户与Casbin 策略和模型交互的基本结构。 您可以在这里 [找到与`Enforcer`相关 API 的更多详细信息](/docs/management-api)。                                                                                      |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)              | Casbin | `CachedEnforcer` 基于 `Enforcer`. 他支持将请求的执行结果缓存在内存中(通过使用map), 并且在预定的过期时间后清除缓它 此外, 它通过Read-Write锁来保证线程安全 您可以使用 `EnableCache` 来启用执行结果缓存(默认启用)。 `CachedEnforcer`的其他 API 与 `Enforcer`' 相同。 |
+| [分布式执行](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go)                  | Casbin | `DistributedEnforcer` 支持分布式集群中的多个实例。 它为调度器包装了 `SyncedEnforcer` 您可以在 [这里找到更多关于调度器的详细信息](/docs/dispatchers#distributedenforcer)。                                                       |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)              | Casbin | `SyncedEnforer` 基于 `Enforcer` 并提供同步访问。 它是线程安全的。                                                                                                                                      |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go) | Casbin | `SyncedCachedEnforcer` wraps `Enforcer` and provides decision sync cache.                                                                                                            |
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

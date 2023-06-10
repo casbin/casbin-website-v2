@@ -1,0 +1,164 @@
+---
+id: priority-model
+title: 优先级模型
+description: 优先级模型
+keywords:
+  - 优先级模型
+authors:
+  - hsluoyz
+---
+
+Casbin支持参考优先级加载策略。
+
+## 通过隐式优先级加载策略
+
+这非常简单，顺序决定了策略的优先级，策略出现的越早优先级就越高。
+
+model.conf：
+```ini
+[policy_effect]
+e = priority(p.eft) || deny
+```
+
+## 通过显式优先级加载策略
+
+> 另见: [casbin#550](https://github.com/casbin/casbin/issues/550)
+
+较小的优先值将具有较高的优先级。 如果在优先级中有一个非数字字符，它将是最后的，而不是出现错误。
+
+:::info Token名称协议
+
+策略定义中的优先级令牌名称通常是“优先级”。 一个定制的需要调用 `e.SetFieldIndex()` 和重新加载策略(详情见 [TestCustomedFieldIndex](https://github.com/casbin/casbin/pull/1044))。
+
+model.conf：
+```ini
+[policy_definition]
+p = customized_priority, sub, obj, act, eft
+```
+
+Golang代码示例：
+```go
+e, _ := NewEnforcer("./example/priority_model_explicit_customized.conf",
+                    "./example/priority_policy_explicit_customized.csv")
+//由于自定义优先级令牌，执行者未能处理优先级。
+ok, err := e.Enforce("bob", "data2", "read") // 结果将是“ture，nil”
+// 设置 PriorityIndex 并重新加载
+e.SetFieldIndex("p", constant.PriorityIndex, 0)
+err := e.LoadPolicy()
+if err != nil {
+    log.Fatalf("LoadPolicy: %v", err)
+}
+ok, err := e.Enforce("bob", "data2", "read") // 结果将是`false, nil`
+```
+
+:::
+
+现在，明确的优先级仅支持 `AddPolicy` & `AddPolicies`，如果 `UpdatePolicy` 被调用，那么您不应该改变优先级属性。
+
+model.conf：
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = priority, sub, obj, act, eft
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = priority(p.eft) || deny
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+policy.csv
+```csv
+p, 10, data1_deny_group, data1, read, deny
+p, 10, data1_deny_group, data1, write, deny
+p, 10, data2_allow_group, data2, read, allow
+p, 10, data2_allow_group, data2, write, allow
+
+
+p, 1, alice, data1, write, allow
+p, 1, alice, data1, read, allow
+p, 1, bob, data2, read, deny
+
+g, bob, data2_allow_group
+g, alice, data1_deny_group
+```
+
+请求：
+```
+alice, data1, write --> true // `p, 1, alice, data1, write, allow` 拥有最高级的优先权
+bob, data2, read --> false
+bob, data2, write --> true // 对于bob是 `data2_allow_group` 的角色可以写入data2，而且没有具有更高优先级的否认策略 
+```
+## 基于角色和用户层次结构以优先级加载策略
+
+角色和用户的继承结构只能是多棵树，而不是图。 如果一个用户有多个角色，您必须确保用户在不同树上有相同的等级。 如果两种角色具有相同的等级，那么出现早的策略（相应的角色）就显得更加优先。 更多详情请看 [casbin#833](https://github.com/casbin/casbin/pull/833)、[casbin#831](https://github.com/casbin/casbin/issues/831)
+
+model.conf：
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act, eft
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = subjectPriority(p.eft) || deny
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act 
+```
+
+policy.csv
+```csv
+p, root, data1, read, deny
+p, admin, data1, read, deny
+
+p, editor, data1, read, deny
+p, subscriber, data1, read, deny
+
+p, jane, data1, read, allow
+p, alice, data1, read, allow
+
+g, admin, root
+
+g, editor, admin
+g, subscriber, admin
+
+g, jane, editor
+g, alice, subscriber 
+```
+
+请求：
+```
+jane, data1, read --> true //jane在最底部,所以优先级高于editor, admin 和 root
+alice, data1, read --> true
+```
+
+ 像这样的角色层次结构：
+```
+角色：根
+  └─ 角色：管理员
+     ├─ 角色编辑器
+     │ └─ 用户：简
+     │
+     └─ 角色：订阅者
+        └─ 用户：爱丽丝
+```
+
+优先级类似于：
+
+```
+role: root # 自动优先级: 30
+ --role: admin# 自动优先级: 20
+     --role: editor # 自动优先级: 10
+     --role: subscriber # 自动优先级: 10
+```

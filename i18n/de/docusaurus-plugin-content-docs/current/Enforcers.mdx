@@ -1,0 +1,34 @@
+---
+id: enforcers
+title: Enforcers
+description: Enforcer is the main structure in Casbin, It acts as an interface for users to make operations on policy rules and models
+keywords:
+  - enforcer
+  - supported enforcers
+authors:
+  - Abingcbc
+---
+
+
+
+`Enforcer` ist die Hauptstruktur in Casbin. Es fungiert als Schnittstelle für Benutzer, um Operationen an Richtlinien-Regeln und -modellen durchzuführen.
+
+## Unterstützte Vollstrecker
+Eine vollständige Liste der Vollstrecker von Casbin wird wie unten angegeben. Any 3rd-party contribution on a new enforcer is welcomed, please inform us and we will put it in this list:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Enforcer                                                                                       | Autor  | Beschreibung                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go)                           | Casbin | `Enforcer` ist die grundlegende Struktur, die Benutzer mit Casbin-Richtlinien und -Modellen interagieren können. Weitere Details der `Enforcer`API finden Sie unter [hier](/docs/management-api).                                                                                                                                                                                                                                     |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)              | Casbin | `CachedEnforcer` basiert auf `Enforcer`. Es unterstützt das Auswerteergebnis einer Anfrage im Speicher durch eine Karte und leere Caches in einer bestimmten Ablaufzeit. Darüber hinaus wird gewährleistet, dass es Thread-sicher durch ein Read-Write-Schloss ist. Du kannst `EnableCache` verwenden, um Auswerteergebnisse zu cachen (Standard ist aktiviert). `Die andere API von CachedEnforcer`ist die gleiche wie `Enforcer`'s. |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go)    | Casbin | `DistributedEnforcer` unterstützt mehrere Instanzen in verteilten Clustern. Es verpackt `SyncedEnforcer` für den Dispatcher. Weitere Details zum Dispather finden Sie unter [hier](/docs/dispatchers#distributedenforcer).                                                                                                                                                                                                            |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)              | Casbin | `SyncedEnforer` basiert auf `Enforcer` und bietet synchronisierten Zugriff. Es ist Thread-sicher.                                                                                                                                                                                                                                                                                                                                     |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go) | Casbin | `SyncedCachedEnforcer` wraps `Enforcer` and provides decision sync cache.                                                                                                                                                                                                                                                                                                                                                             |
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

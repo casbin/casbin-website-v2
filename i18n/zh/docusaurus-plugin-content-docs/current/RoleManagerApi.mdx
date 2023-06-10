@@ -1,0 +1,558 @@
+---
+id: rolemanager-api
+title: 角色管理器API
+description: RoleManager提供接口来定义管理角色的操作。 将匹配函数添加到角色名称和域名中使用通配符
+keywords:
+  - 角色管理器
+  - API
+authors:
+  - closetool
+  - kiloson-c
+---
+
+
+
+## 角色管理器
+
+RoleManager提供接口来定义管理角色的操作。 添加匹配函数到角色管理器允许在角色名称和域中使用通配符。
+
+### `AddNamedMatchingFunc()`
+
+AddNamedMatchingFunc 通过 ptype 角色管理器添加MatchingFunc MatchingFunc将在操作角色匹配时工作。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e.AddNamedMatchingFunc("g", "", util.KeyMatch)
+    _, _ = e.AddGroupingPolicies([][]string{{"*", "admin", "domain1"}})
+    _, _ = e.GetRoleManager().HasLink("bob", "admin", "domain1") // -> true, nil
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await e.addNamedMatchingFunc('g', Util.keyMatchFunc);
+    await e.addGroupingPolicies([['*', 'admin', 'domain1']]);
+    await e.getRoleManager().hasLink('bob', 'admin', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewEnforcer("path/to/model", "path/to/policy")
+    e.AddNamedMatchingFunc("g", "", util.MatchKey)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const e = await newEnforcer('path/to/model', 'path/to/policy');
+    await e.addNamedMatchingFunc('g', Util.keyMatchFunc);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedDomainMatchingFunc()`
+
+AddNamedDomainMatchingFunc 通过 ptype 把MatchingFunc 添加到 RoleManager中。 `DomainMatchingFunc` 类似于上面列出的 `MatchingFunc`
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewEnforcer("path/to/model", "path/to/policy")
+    e.AddNamedDomainMatchingFunc("g", "", util.MatchKey)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const e = await newEnforcer('path/to/model', 'path/to/policy');
+    await e.addNamedDomainMatchingFunc('g', Util.keyMatchFunc);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRoleManager()`
+
+GetRoleManager 获取现存的 `g` 的role manager。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.GetRoleManager()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const rm = await e.getRoleManager();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.get_role_manager()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedRoleManager()`
+
+GetNamedRoleManager通过命名的ptype 获取角色管理器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.GetNamedRoleManager("g2")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    const rm = await e.getNamedRoleManager("g2");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.get_named_role_manager("g2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetRoleManager()`
+
+GetRoleManager 获取现存的 `g` 的role manager。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e.SetRoleManager(rm)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    e.setRoleManager(rm);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.set_role_manager(rm)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetNamedRoleManager()`
+
+SetNamedRoleManager 将角色管理员设置为命名的ptype
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm := e.SetNamedRoleManager("g2", rm)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm = e.set_role_manager("g2", rm)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `Clear()`
+
+Clear清除所有存储的数据并将角色管理器重置到初始状态。
+
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.Clear()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.clear();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.clear()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddLink()`
+
+AddLink添加了两个角色之间的继承链接。 角色： 名称1 和 角色： 名称2 域是角色的前缀(可以用于其他目的)。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.AddLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.addLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.add_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteLink()`
+
+DeleteLink 删除两个角色之间的继承链接。 角色： 名称1 和 角色： 名称2 域是角色的前缀(可以用于其他目的)。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.DeleteLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.deleteLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.delete_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasLink()`
+
+HasLink 决定两种角色之间是否存在联系。 role: name1 继承自 role: name2. 域是角色的前缀(可以用于其他目的)。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.HasLink("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.hasLink('u1', 'g1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.has_link("u1", "g1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRoles()`
+
+GetRoles 获取一个用户所继承的角色 域是角色的前缀(可以用于其他目的)。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.GetRoles("u1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.getRoles('u1', 'domain1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.get_roles("u1", "domain")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsers()`
+
+GetUsers 获取继承自一个角色的用户 域是用户的前缀(可以用于其他目的)。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.GetUsers("g1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.getUsers('g1');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.get_users("g1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `PrintRoles()`
+
+PrintRoles 打印所有的角色到日志。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    rm.PrintRoles()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+    await rm.printRoles();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+    rm.print_roles()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetLogger()`
+
+SetLogger设置角色管理器的日志。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    logger := log.DefaultLogger{}
+    logger.EnableLog(true)
+    rm.SetLogger(&logger)
+    _ = rm.PrintRoles()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetDomains()`
+GetDomains 获取用户拥有的域
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    result, err := rm.GetDomains(name)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

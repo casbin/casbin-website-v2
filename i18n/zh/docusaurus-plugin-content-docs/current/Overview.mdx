@@ -1,0 +1,71 @@
+---
+id: overview
+title: 概述
+description: Casbin 概述
+keywords:
+  - 概述
+  - 支持的语言
+authors:
+  - hsluoyz
+---
+
+Casbin 是一个强大和高效的开放源码访问控制库，它支持各种 [访问控制模型](https://en.wikipedia.org/wiki/Access_control#Access_control_models) 以强制全面执行授权。
+
+执行一套规则与列出下述问题一样简单。 对象和所需的 在 **_策略_** 文件中允许的动作(或根据您的需要提供任何其他格式)。 这是Casbin使用的所有流的同义词。 开发者/管理员有 完全控制布局， 通过 **_模型_** 文件设置的执行和授权条件 。 Casbin提供了一个**_执行者_** 根据提供给执行者的策略和模型文件验证传入的请求。
+
+## Casbin 支持以下编程语言：
+
+Casbin 为各种编程语言提供支持，随时准备将 纳入任何项目和工作流：
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| 可用于生产环境                                                              | 可用于生产环境                                                           | 可用于生产环境                                                                   | 可用于生产环境                                                                |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-C++](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
+| 可用于生产环境                                                                | 可用于生产环境                                                                  | 可用于生产环境                                                            | 可用于生产环境                                                             |
+
+### 在不同语言中支持的特性
+
+We are always working our best to make Casbin have the same set of features for all languages. 但是现实总是不完美的。
+
+| 特性                      | Go | Java | Node.js | PHP | Python | C# | Delphi | Rust | C++ | Lua | Dart | Elixir |
+|:----------------------- |:--:|:----:|:-------:|:---:|:------:|:--:|:------:|:----:|:---:|:---:|:----:|:------:|
+| 具体实施                    | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| RBAC                    | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| ABAC                    | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| Scaling ABAC (`eval()`) | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ❌    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| 适配器                     | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ❌    |
+| 管理接口                    | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| RBAC API                | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ✅   |   ✅    |
+| Batch API               | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ❌    |  ✅   |  ✅  |  ✅  |  ❌   |   ❌    |
+| Filtered Adapter        | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ❌    |  ✅   |  ✅  |  ✅  |  ❌   |   ❌    |
+| Watcher                 | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ✅    |  ✅   |  ✅  |  ✅  |  ❌   |   ❌    |
+| Role Manager            | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ✅  |   ❌    |  ✅   |  ✅  |  ✅  |  ✅   |   ❌    |
+| Multi-Threading         | ✅  |  ✅   |    ✅    |  ❌  |   ✅    | ❌  |   ❌    |  ✅   |  ❌  |  ❌  |  ❌   |   ❌    |
+| matcher中的‘in‘语法         | ✅  |  ✅   |    ✅    |  ✅  |   ✅    | ❌  |   ✅    |  ❌   |  ❌  |  ❌  |  ✅   |   ✅    |
+
+**Note**- ✅ for Watcher or Role Manager only means having the interface in the core library. It is not indicative of whether there is a watcher or role manager implementation available.
+
+## Casbin 是什么？
+
+Casbin 是一个授权库，在我们希望特定用户访问特定的 `对象` 或实体的流程中可以使用 `主题` 访问类型，例如 `动作` 可以是 _读取_, _写入_, _删除_ 或开发者设置的任何其他动作。 这是Casbin最广泛的使用，它叫做"标准" 或经典 `{ subject, object, action }` 流程。
+
+Casbin能够处理除标准流量以外的许多复杂的许可使用者。 可以添加 [角色 (RBAC)](/docs/rbac), [属性 (ABAC)](/docs/abac) 等。
+
+### Casbin 可以：
+
+1. Enforce the policy in the classic `{ subject, object, action }` form or a customized form as you defined. 支持允许和拒绝授权。
+2. 具有访问控制模型model和策略policy两个核心概念。
+3. 支持RBAC中的多层角色继承，不止主体可以有角色，资源也可以具有角色。
+4. 支持内置超级用户，如 `root` 或 `administrator`。 超级用户可以在没有明确权限的情况下做任何事情。
+5. 支持多个规则匹配运算符。 For example, `keyMatch` can map a resource key `/foo/bar` to the pattern `/foo*`.
+
+### Casbin**不**可以做什么
+
+1. 身份认证 authentication（即验证用户的用户名和密码），Casbin 只负责访问控制。应该有其他专门的组件负责身份认证，然后由 Casbin 进行访问控制，二者是相互配合的关系。
+2. 管理用户列表或角色列表。
+
+该项目更容易管理他们的用户、角色或密码列表。 用户通常有他们的密码，但是 Casbin 的设计思想并不是把它作为一个存储密码的容器。 而是存储RBAC方案中用户和角色之间的映射关系。

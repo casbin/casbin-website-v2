@@ -1,0 +1,62 @@
+---
+id: envoy
+title: Genehmigung des Service-Mesh durch den Gesandten
+description: Authorization of Service Mesh through Envoy
+keywords:
+  - Envoy
+  - Envoy-authz
+  - Istio
+authors:
+  - ashish493
+---
+
+
+
+[Envoy-authz](https://github.com/casbin/envoy-authz) ist eine Middleware von Envoy, die externe RBAC & ABAC-Autorisierung durch Kasbin durchführt. Diese Middleware verwendet [die externe Autorisierungs-API des Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) über einen gRPC-Server. Dieser Proxy würde in jeder Art von Gesandtennetzen wie Istio eingesetzt werden.
+
+## Anforderungen
+
+- Gesandte 1.17+
+- Istio oder jede Art von Service-Netz
+- grpc Abhängigkeiten
+
+Abhängigkeiten werden durch `go.mod` verwaltet.
+
+## Arbeiten von Middleware
+
+- Ein Client würde eine http-Anfrage stellen.
+- Envoy-Proxy würde diese Anfrage an den grpc-Server senden.
+- Der grpc Server autorisiert dann die Anfrage basierend auf Casbin-Richtlinien.
+- Wenn die Anfrage autorisiert wird, wird sie durch oder anderweitig versandt, sie wird abgelehnt.
+
+Der grpc Server basiert auf Protokollpuffer von [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) von Envoy.
+
+```
+// Eine generische Schnittstelle, um Autorisierungsprüfung bei eingehenden
+// Anfragen an einen vernetzten Dienst durchzuführen.
+service Authorization {
+  // Autorisierungsprüfung basierend auf den Attributen der
+  // eingehenden Anfrage durchführen und gibt den Status `OK` oder nicht `OK` zurück.
+  rpc Check(v2.CheckRequest) liefert (v2.CheckResponse);
+}
+```
+Aus der obigen Proto-Datei müssen wir `Check()` Dienst im Autorisierungsserver verwenden.
+
+## Auslastung
+- Definieren Sie die Casbin-Richtlinien unter Konfigurationsdateien, indem Sie diesem [Leitfaden](/docs/how-it-works) folgen.
+
+You can verify/test your policies on online [casbin-editor](/editor).
+
+- Starte den Autorisierungsserver indem du läuft:-
+```
+$ go build .
+$ ./authz 
+```
+- Lade die Gesandte Konfiguration:-
+```
+$  envoy -c authz.yaml -l info
+```
+Sobald der Gesandte beginnt, fängt er an, Anfragen für den Genehmigungsprozess abzufangen.
+
+## Integration in Istio
+Sie müssen benutzerdefinierte Kopfzeilen senden, die Benutzernamen in den JWT Token OF Headern enthalten, damit diese Middleware funktioniert. Sie können die offiziellen [Istio Docs](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) überprüfen, um weitere Informationen über die Änderung `Anfrage-Header` zu erhalten.

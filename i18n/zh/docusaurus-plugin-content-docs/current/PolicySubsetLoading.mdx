@@ -1,0 +1,39 @@
+---
+id: policy-subset-loading
+title: 策略子集加载
+description: 加载过滤策略
+keywords:
+  - 过滤策略
+  - 策略子集
+  - 性能优化
+authors:
+  - hsluoyz
+---
+
+一些adapter支持过滤策略管理。 这意味着Casbin加载的策略是基于给定过滤器的存储策略的子集。 当解析整个策略成为性能瓶颈时，这将会允许在大型多租户环境中有效地执行策略。
+
+要使用支持的adapter处理过滤后的策略，只需调用 `LoadFilteredPolicy` 方法。 过滤器参数的有效格式取决于所用的适配器。 为了防止意外数据丢失，当策略已经加载， `SavePolicy` 方法会被禁用。
+
+例如，下面的代码片段使用内置的过滤文件adapter和带有域的RBAC模型。 在本例中，过滤器将策略限制为单个域。 除 `"domain1"` 以外的任何域策略行被忽略：
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+//加载策略现在只包含与“domain1”相关的条目。
+```
+
+还有另一种方法支持子集加载功能： `LoadIncrementalFilteredPolicy`。 `负载增量过滤策略` 类似于LoadFilteredPolicy，但它没有清除之前加载的策略，只是附加到了策略里

@@ -1,0 +1,86 @@
+---
+id: admin-portal
+title: 管理者ポータル
+description: Admin portal for Casbin
+keywords:
+  - Admin portal
+  - casdoor
+authors:
+  - hsluoyz
+---
+
+
+
+モデル管理とポリシー管理のための [ウェブベースのポータル Casdoor](https://casdoor.org) を提供します。
+
+![モデル エディタ](https://hsluoyz.github.io/casbin/ui_model_editor.png)
+
+![ポリシーエディタ](https://hsluoyz.github.io/casbin/ui_policy_editor.png)
+
+Casbinを認可エンジンとして使用するサードパーティの管理者ポータルプロジェクトもあります。 これらのプロジェクトに基づいて独自のCasbinサービスを構築することができます。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| プロジェクト                                                                                                                    | 作成者                                                | Frontend           | バックエンド   | 説明                                                          |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------ | -------- | ----------------------------------------------------------- |
+| [Casdoor](https://casdoor.org)                                                                                            | Casbin                                             | React + Ant Design | Beego    | Beego + XORM + React に基づいています                               |
+| [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)                                                       | [@go-admin-team](https://github.com/go-admi-team)  | Vue + 要素 UI        | Gin      | go-admin Gin + Casbin + GORMに基づいています。                       |
+| [gin-vue-admin](https://github.com/piexlmax/gin-vue-admin)                                                                | [@piexlmax](https://github.com/piexlmax)           | Vue + 要素 UI        | Gin      | Gin + GORM + Vue に基づいています                                   |
+| [gin-admin](https://github.com/LyricTian/gin-admin)                                                                       | [@LyricTian](https://github.com/LyricTian)         | React + Ant Design | Gin      | Gin + GORM + Casbin + Ant Design React に基づくRBAC scaffolding |
+| [go-admin](https://github.com/hequan2017/go-admin)                                                                        | [@hequan2017](https://github.com/hequan2017)       | なし                 | Gin      | Gin + GORM + JWT + RBAC (Casbin) に基づいて RESTful API ゲートウェイ   |
+| [zeus-admin](https://github.com/bullteam/zeus-admin)                                                                      | [ブルチーム](https://github.com/bullteam)               | Vue + 要素 UI        | Gin      | JWT + Casbin に基づく統合パーミッション管理プラットフォーム                        |
+| [IrisAdminApi](https://github.com/snowlyg/IrisAdminApi)                                                                   | [@snowlyg](https://github.com/snowlyg)             | Vue + 要素 UI        | アイリス     | Iris + Casbin をベースにした Backend API                           |
+| [Gfast](https://github.com/tiger1103/gfast)                                                                               | [@tiger1103](https://github.com/tiger1103)         | Vue + 要素 UI        | Go Frame | GF（ゴーフレーム）に基づく管理者ポータル                                       |
+| echo-admin ([Frontend](https://github.com/RealLiuSha/echo-admin-ui), [Backend](https://github.com/RealLiuSha/echo-admin)) | [@RealLiuSha](https://github.com/RealLiuSha)       | Vue 2.x + 要素 UI    | Echo     | Echo + Gorm + Casbin + Uber-FX に基づく管理者ポータル                  |
+| [Spec-Center](https://github.com/atul-wankhade/Spec-Center)                                                               | [@atul-wankhade](https://github.com/atul-wankhade) | なし                 | Mux      | Casbin + MongoDB に基づくGolang RESTful プラットフォーム                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| プロジェクト                                                         | 作成者                                      | Frontend | バックエンド     | 説明                                                |
+| -------------------------------------------------------------- | ---------------------------------------- | -------- | ---------- | ------------------------------------------------- |
+| [spring-boot-web](https://github.com/BazookaW/spring-boot-web) | [@BazookaW](https://github.com/BazookaW) | なし       | SpringBoot | SpringBoot 2.0 + MyBatisPlus + Casbin に基づく管理者ポータル |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| プロジェクト                                                                                         | 作成者                                                | Frontend            | バックエンド | 説明                                                                                     |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------- | ------ | -------------------------------------------------------------------------------------- |
+| [node-mysql-rest-api](https://github.com/JoemaNequinto/node-mysql-rest-api)                    | [@JoemaNequinto](https://github.com/JoemaNequinto) | なし                  | エクスプレス | RESTful APIを構築するためのボイラープレートアプリケーション Express、Sequelize、JWT、Casbinを使用してNode.jsのマイクロサービス。 |
+| [Casbin-Role-Mgt-Dashboard-RBAC](https://github.com/alikhan866/Casbin-Role-Mgt-Dashboard-RBAC) | [@alikhan866](https://github.com/alikhan866)       | React + Material UI | エクスプレス | 外出先で執行結果を確認するためにEnforcer統合による初心者に優しいRBAC管理                                             |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| プロジェクト                                                                                            | 作成者                                                    | Frontend  | バックエンド  | 説明                                  |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------- | ------- | ----------------------------------- |
+| [fastapi-mysql-generator](https://github.com/CoderCharm/fastapi-mysql-generator)                  | [@CoderCharm](https://github.com/CoderCharm)           | なし        | FastAPI | FastAPI + MySQL + JWT + Casbin      |
+| [FastAPI-MySQL-Tortoise-Casbin](https://github.com/xingxingzaixian/FastAPI-MySQL-Tortoise-Casbin) | [@xingxingzaixian](https://github.com/xingxingzaixian) | なし        | FastAPI | FastAPI + MySQL + Tortoise + Casbin |
+| [openstack-policy-editor](https://github.com/casbin/openstack-policy-editor)                      | Casbin                                                 | Bootstrap | Django  | カスビン用のウェブ UI                        |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| プロジェクト                                                                                                                     | 作成者                                          | Frontend          | バックエンド    | 説明                                                        |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----------------- | --------- | --------------------------------------------------------- |
+| [タドミン](https://github.com/leeqvip/tadmin)                                                                                  | [@leeqvip](https://github.com/leeqvip)       | AmazeUI           | ThinkPHP  | Non-intrusive backend framework based on ThinkPHP         |
+| [video.tinywan.com](https://github.com/Tinywan/video.tinywan.com)                                                          | [@Tinywanner](https://github.com/Tinywan)    | LayUI             | ThinkPHP  | ThinkPHP5 + ORM+JWT + RBAC (Casbin) に基づくRESTful APIゲートウェイ |
+| [laravel-casbin-admin](https://github.com/pl1998/laravel-casbin-admin)                                                     | [@pl1998](https://github.com/pl1998)         | Vue + 要素 UI       | Laravel   | vue-element-admin と Laravel 権限管理システム                      |
+| larke-admin ([Frontend](https://github.com/deatil/larke-admin-frontend), [Backend](https://github.com/deatil/larke-admin)) | [@deatil](https://github.com/deatil)         | Vue 2 + エレメントUI   | Laravel 8 | Laravel8、JWT、RBACに基づく管理者ポータル                              |
+| [hyperf-vuetify-admin](https://github.com/TragicMale/hyperf-vuetify-admin)                                                 | [@TragicMale](https://github.com/TragicMale) | Vue + Vuetify 2.x | Hyperf    | Hyperf、Vuetify、Casbinに基づく管理者ポータル                          |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

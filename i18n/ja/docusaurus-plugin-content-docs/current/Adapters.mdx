@@ -1,0 +1,563 @@
+---
+id: adapters
+title: アダプター
+description: Supported adapters and usage
+keywords:
+  - adapters
+  - MySQL adapter
+  - storage adapter
+authors:
+  - hsluoyz
+---
+
+
+
+Casbinでは、ポリシーストレージはアダプタ(別名、Casbin用ミドルウェア)として実装されます。 A Casbin user can use an adapter to load policy rules from a storage (aka `LoadPolicy()`), or save policy rules to it (aka `SavePolicy()`). 重量を保つため、メインライブラリにアダプターコードは入れません。
+
+## サポートされているアダプター
+
+Casbinアダプタの完全なリストは以下のとおりです。 新しいアダプターに対するサードパーティの貢献を歓迎します。お知らせください。このリストに記載されています:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Adapter                                                                        | タイプ    | 作成者                                                      | AutoSave | 説明                                                                                                                                            |
+| ------------------------------------------------------------------------------ | ------ | -------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                          | ファイル   | Casbin                                                   | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                  |
+| [フィルタされたファイルアダプタ（内蔵）](/docs/policy-subset-loading)                             | ファイル   | [@faceless-saint](https://github.com/faceless-saint)     | ❌        | ポリシーサブセット読み込みサポートを持つ [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイルの場合                                           |
+| [SQL アダプター](https://github.com/Blank-Xu/sql-adapter)                           | SQL    | [@Blank-Xu](https://github.com/Blank-Xu)                 | ✅        | MySQL, PostgreSQL, SQL Server, SQLite3 は `master` ブランチでサポートされており、Oracle は `oracle` ブランチで `database/sql` でサポートされています。                          |
+| [Xormアダプター](https://github.com/casbin/xorm-adapter)                            | ORM    | Casbin                                                   | ✅        | MySQL、PostgreSQL、TiDB、SQLite、SQL Server、Oracle は [Xorm](https://github.com/go-xorm/xorm/) でサポートされています                                         |
+| [GORM Adapter](https://github.com/casbin/gorm-adapter)                         | ORM    | Casbin                                                   | ✅        | MySQL, PostgreSQL, Sqlite3, SQL Server are supported by [GORM](https://github.com/go-gorm/gorm)                                               |
+| [GORM Adapter Ex](https://github.com/casbin/gorm-adapter-ex)                   | ORM    | Casbin                                                   | ✅        | MySQL, PostgreSQL, Sqlite3, SQL Server are supported by [GORM](https://github.com/go-gorm/gorm)                                               |
+| [アダプターを接続](https://github.com/casbin/ent-adapter)                              | ORM    | Casbin                                                   | ✅        | MySQL, MariaDB, PostgreSQL, SQLite, Gremlinベースのグラフデータベースは [ent ORM](https://entgo.io/) でサポートされています                                            |
+| [Beego ORMアダプター](https://github.com/casbin/beego-orm-adapter)                  | ORM    | Casbin                                                   | ✅        | MySQL, PostgreSQL, Sqlite3は [Beego ORM](https://beego.me/docs/mvc/model/overview.md)でサポートされています                                               |
+| [SQLX アダプター](https://github.com/memwey/casbin-sqlx-adapter)                    | ORM    | [@memwey](https://github.com/memwey)                     | ✅        | MySQL, PostgreSQL, SQLite, Oracle は [SQLX](https://github.com/jmoiron/sqlx) でサポートされています                                                       |
+| [Sqlx アダプター](https://github.com/Blank-Xu/sqlx-adapter)                         | ORM    | [@Blank-Xu](https://github.com/Blank-Xu)                 | ✅        | MySQL, PostgreSQL, SQL Server, SQLite3 は `master` ブランチでサポートされており、Oracle は `oracle` ブランチで [sqlx](https://github.com/jmoiron/sqlx) でサポートされています。 |
+| [GFORMアダプター](https://github.com/vance-liu/gdb-adapter)                         | ORM    | [@vance-liu](https://github.com/vance-liu)               | ✅        | MySQL, SQLite, PostgreSQL, Oracle, SQL Server are supported by [GoFrame ORM](https://github.com/gogf/gf/tree/master/contrib/drivers)          |
+| [GoFrame ORMアダプター](https://github.com/kotlin2018/adapter)                      | ORM    | [@kotlin2018](https://github.com/kotlin2018)             | ✅        | MySQL, SQLite, PostgreSQL, Oracle, SQL Server are supported by [GoFrame ORM](https://github.com/gogf/gf/tree/master/contrib/drivers)          |
+| [gf-adapter](https://github.com/zcyc/gf-adapter)                               | ORM    | [@zcyc](https://github.com/zcyc)                         | ✅        | MySQL, SQLite, PostgreSQL, Oracle, SQL Server are supported by [GoFrame ORM](https://github.com/gogf/gf/tree/master/contrib/drivers)          |
+| [Gdb Adapter](https://github.com/jxo-me/gdb-adapter)                           | ORM    | [@jxo-me](https://github.com/jxo-me)                     | ✅        | MySQL, SQLite, PostgreSQL, Oracle, SQL Server are supported by [GoFrame ORM](https://github.com/gogf/gf/tree/master/contrib/drivers)          |
+| [GoFrame V2 Adapter](https://github.com/hailaz/gf-casbin-adapter)              | ORM    | [@hailaz](https://github.com/hailaz)                     | ✅        | MySQL, SQLite, PostgreSQL, Oracle, SQL Server are supported by [GoFrame ORM](https://goframe.org/pages/viewpage.action?pageId=1114686)        |
+| [フィルタされたPostgreSQLアダプター](https://github.com/casbin/casbin-pg-adapter)          | SQL    | Casbin                                                   | ✅        | [PostgreSQL](https://www.postgresql.org/) 用                                                                                                   |
+| [フィルタされた pgx アダプター](https://github.com/pckhoi/casbin-pgx-adapter)              | SQL    | [@pckhoi](https://github.com/pckhoi)                     | ✅        | PostgreSQL は [pgx](https://github.com/jackc/pgx) でサポートされています                                                                                  |
+| [PostgreSQL アダプター](https://github.com/cychiuae/casbin-pg-adapter)              | SQL    | [@cychiuae](https://github.com/cychiuae)                 | ✅        | [PostgreSQL](https://www.postgresql.org/) 用                                                                                                   |
+| [RQLite アダプター](https://github.com/edomosystems/rqlite-adapter)                 | SQL    | [EDOMO システム](https://github.com/edomosystems)            | ✅        | [RQLite](https://github.com/rqlite/rqlite/) 用                                                                                                 |
+| [MongoDB Adapter](https://github.com/casbin/mongodb-adapter)                   | NoSQL  | Casbin                                                   | ✅        | [MongoDB Go Driver](https://www.mongodb.com) に基づく [MongoDB](https://github.com/mongodb/mongo-go-driver) 用                                     |
+| [RethinkDB アダプター](https://github.com/adityapandey9/rethinkdb-adapter)          | NoSQL  | [@adityapandey9](https://github.com/adityapandey9)       | ✅        | [RethinkDB](https://rethinkdb.com/) 用                                                                                                         |
+| [Cassandra アダプター](https://github.com/casbin/cassandra-adapter)                 | NoSQL  | Casbin                                                   | ❌        | [Apache Cassandra DB](http://cassandra.apache.org) 用                                                                                          |
+| [DynamoDBアダプター](https://github.com/HOOQTV/dynacasbin)                          | NoSQL  | [HOOQ](https://github.com/HOOQTV)                        | ❌        | [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) 用                                                                                         |
+| [Dynacasbin](https://github.com/NewbMiao/dynacasbin)                           | NoSQL  | [NewbMiao](https://github.com/NewbMiao)                  | ✅        | [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) 用                                                                                         |
+| [ArangoDB アダプター](https://github.com/adamwasila/arangodb-adapter)               | NoSQL  | [@adamwasila](https://github.com/adamwasila)             | ✅        | [ArangoDB](https://www.arangodb.com/) 用                                                                                                       |
+| [Amazon S3 アダプター](https://github.com/Soluto/casbin-minio-adapter)              | クラウド   | [Soluto](https://github.com/Soluto)                      | ❌        | [Minio](https://github.com/minio/minio) と [Amazon S3](https://aws.amazon.com/s3/) 用                                                           |
+| [Azure Cosmos DB アダプター](https://github.com/spacycoder/cosmos-casbin-adapter)   | クラウド   | [@spacycoder](https://github.com/spacycoder)             | ✅        | [Microsoft Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction) 用                                                  |
+| [GCP Firestore Adapter](https://github.com/reedom/casbin-firestore-adapter)    | クラウド   | [@reedom](https://github.com/reedom)                     | ❌        | [Google Cloud Platform Firestore](https://cloud.google.com/firestore/)                                                                        |
+| [GCP クラウドストレージアダプター](https://github.com/qurami/casbin-cloud-storage-adapter)   | クラウド   | [qurami](https://github.com/qurami)                      | ❌        | [Google Cloud Platform Cloud Storage](https://cloud.google.com/storage/)                                                                      |
+| [GCP クラウドスパナアダプター](https://github.com/flowerinthenight/casbin-spanner-adapter) | クラウド   | [@flowerinthenight](https://github.com/flowerinthenight) | ✅        | [Google Cloud Platform Spanner](https://cloud.google.com/spanner/)                                                                            |
+| [領事アダプター](https://github.com/ankitm123/consul-adapter)                         | KV ストア | [@ankitm123](https://github.com/ankitm123)               | ❌        | [HashiCorp Consul](https://www.consul.io/)                                                                                                    |
+| [Redisアダプター (Redigo)](https://github.com/casbin/redis-adapter)                 | KV ストア | Casbin                                                   | ✅        | [Redis](https://redis.io/) 用                                                                                                                  |
+| [Redisアダプター (go-redis)](https://github.com/mlsen/casbin-redis-adapter)         | KV ストア | [@mlsen](https://github.com/mlsen)                       | ✅        | [Redis](https://redis.io/) 用                                                                                                                  |
+| [Etcd アダプター](https://github.com/sebastianliu/etcd-adapter)                     | KV ストア | [@sebastianliu](https://github.com/sebastianliu)         | ❌        | [etcd](https://github.com/coreos/etcd) 用                                                                                                      |
+| [BoltDB アダプター](https://github.com/speza/casbin-bolt-adapter)                   | KV ストア | [@speza](https://github.com/speza)                       | ✅        | [ボルト](https://github.com/boltdb/bolt)用                                                                                                        |
+| [ボルトアダプター](https://github.com/wirepair/bolt-adapter)                           | KV ストア | [@wirep](https://github.com/wirepair)                    | ❌        | [ボルト](https://github.com/boltdb/bolt)用                                                                                                        |
+| [BadgerDB アダプター](https://github.com/inits/casbin-badgerdb-adapter)             | KV ストア | [@inits](https://github.com/inits)                       | ✅        | [BadgerDB](https://github.com/dgraph-io/badger) 用                                                                                             |
+| [Protobuf アダプター](https://github.com/casbin/protobuf-adapter)                   | ストリーム  | Casbin                                                   | ❌        | [Googleプロトコルバッファー](https://developers.google.com/protocol-buffers/) 用                                                                         |
+| [JSONアダプター](https://github.com/casbin/json-adapter)                            | 文字列    | Casbin                                                   | ❌        | [JSON](https://www.json.org/) 用                                                                                                               |
+| [ストリングアダプター](https://github.com/qiangmzsx/string-adapter)                      | 文字列    | [@qiangmzsx](https://github.com/qiangmzsx)               | ❌        | For String                                                                                                                                    |
+| [HTTP ファイルアダプター](https://github.com/h4ckedneko/casbin-httpfs)                  | HTTP   | [@h4ckedneko](https://github.com/h4ckedneko)             | ❌        | [http.FileSystem](https://golang.org/src/net/http/fs.go) 用                                                                                    |
+| [FileSystem アダプター](https://github.com/naucon/casbin-fs-adapter)                | ファイル   | [@naucon](https://github.com/naucon)                     | ❌        | [fs.FS](https://pkg.go.dev/io/fs) と [embed.FS](https://pkg.go.dev/embed) の場合                                                                  |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Adapter                                                               | タイプ    | 作成者                                        | AutoSave | 説明                                                                                                                                         |
+| --------------------------------------------------------------------- | ------ | ------------------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                 | ファイル   | Casbin                                     | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                               |
+| [JDBC アダプター](https://github.com/jcasbin/jdbc-adapter)                 | JDBC   | Casbin                                     | ✅        | MySQL, Oracle, PostgreSQL, DB2, Sybase, SQL Server は [JDBC](https://docs.oracle.com/cd/E19226-01/820-7688/gawms/index.html) によってサポートされています |
+| [Hibernateアダプター](https://github.com/jcasbin/hibernate-adapter)        | ORM    | Casbin                                     | ✅        | Oracle, DB2, SQL Server, Sybase, MySQL, PostgreSQLは [Hibernate](http://www.hibernate.org/) でサポートされています                                     |
+| [MyBatisアダプター](https://github.com/jcasbin/mybatis-adapter)            | ORM    | Casbin                                     | ✅        | MySQL, Oracle, PostgreSQL, DB2, Sybase, SQL Server (JDBCと同じ) は [MyBatis 3](https://mybatis.org/mybatis-3/) でサポートされています                     |
+| [ヒューツールアダプター](https://github.com/mapleafgo/jcasbin-extra)             | ORM    | [@mapleafgo](https://github.com/mapleafgo) | ✅        | MySQL, Oracle, PostgreSQL, SQLite は [Hutool](https://github.com/looly/hutool) でサポートされています                                                  |
+| [MongoDB Adapter](https://github.com/zzl221000/jcasbin-mongo-adapter) | NoSQL  | Casbin                                     | ✅        | MongoDB は [mongodb-driver-sync](https://mongodb.github.io/mongo-java-driver/) でサポートされています                                                  |
+| [DynamoDBアダプター](https://github.com/jcasbin/dynamodb-adapter)          | NoSQL  | Casbin                                     | ❌        | [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) 用                                                                                      |
+| [Redisアダプター](https://github.com/jcasbin/redis-adapter)                | KV ストア | Casbin                                     | ✅        | [Redis](https://redis.io/) 用                                                                                                               |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Adapter                                                                                          | タイプ       | 作成者                                                                   | AutoSave | 説明                                                                                                                             |
+| ------------------------------------------------------------------------------------------------ | --------- | --------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                                            | ファイル      | Casbin                                                                | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                   |
+| [フィルタされたファイルアダプタ（内蔵）](/docs/policy-subset-loading)                                               | File      | Casbin                                                                | ❌        | ポリシーサブセット読み込みサポートを持つ [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイルの場合                            |
+| [ストリングアダプター（内蔵）](https://github.com/casbin/node-casbin/blob/master/src/persist/stringAdapter.ts) | 文字列       | [@calebfaruki](https://github.com/calebfaruki)                        | ❌        | For String                                                                                                                     |
+| [基本アダプター](https://github.com/node-casbin/basic-adapter)                                          | ネイティブ ORM | Casbin                                                                | ✅        | pg、mysql、mysql2、sqlite3、oracledb、mssqlはアダプタ自体でサポートされています                                                                       |
+| [シーケンスアダプター](https://github.com/node-casbin/sequelize-adapter)                                   | ORM       | Casbin                                                                | ✅        | MySQL, PostgreSQL, SQLite, Microsoft SQL Server は [Sequelize](https://github.com/sequelize/sequelize) でサポートされています              |
+| [TypeORMアダプター](https://github.com/node-casbin/typeorm-adapter)                                   | ORM       | Casbin                                                                | ✅        | MySQL、PostgreSQL、MariaDB、SQLite、MS SQL Server、Oracle、WebSQL、MongoDBは [TypeORM](https://github.com/typeorm/typeorm) でサポートされています |
+| [プリズマアダプター](https://github.com/node-casbin/prisma-adapter)                                       | ORM       | Casbin                                                                | ✅        | MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, AWS Aurora, Azure SQL は [Prisma](https://www.prisma.io/) でサポートされています        |
+| [Knex アダプター](https://github.com/knex/casbin-knex-adapter)                                        | ORM       | [@sarneeh](https://github.com/sarneeh) と [膝](https://github.com/knex) | ✅        | MSSQL, MySQL, PostgreSQL, SQLite3, Oracleは [Knex.js](https://knexjs.org/) でサポートされています                                          |
+| [Objection.js アダプター](https://github.com/willsoto/casbin-objection-adapter)                       | ORM       | [@willsoto](https://github.com/willsoto)                              | ✅        | MSSQL, MySQL, PostgreSQL, SQLite3, Oracleは [Objection.js](https://vincit.github.io/objection.js/) でサポートされています                  |
+| [MikroORM Adapter](https://github.com/baisheng/casbin-mikroorm-adapter)                          | ORM       | [@baisheng](https://github.com/baisheng)                              | ✅        | MongoDB, MySQL, MariaDB, PostgreSQL, SQLite are supported by [MikroORM](https://mikro-orm.io/)                                 |
+| [ノードPostgreSQLネイティブアダプター](https://github.com/touchifyapp/casbin-pg-adapter)                      | SQL       | [@touchifyapp](https://github.com/touchifyapp)                        | ✅        | 高度なポリシーサブセット読み込みサポートと [ノード-postgres](https://node-postgres.com/)で構築されたパフォーマンスの向上を備えたPostgreSQLアダプタ。                            |
+| [Mongoose アダプター](https://github.com/node-casbin/mongoose-adapter)                                | NoSQL     | [elastic.io](https://github.com/elasticio) と Casbin                   | ✅        | MongoDB は [Mongoose](https://mongoosejs.com/) でサポートされています                                                                      |
+| [Mongoose Adapter (No-Transaction)](https://github.com/minhducck/casbin-mongoose-adapter)        | NoSQL     | [minhducck](https://github.com/minhducck)                             | ✅        | MongoDB is supported by [Mongoose](https://mongoosejs.com/)                                                                    |
+| [ノードMongoDB ネイティブアダプター](https://github.com/juicycleff/casbin-mongodb-adapter)                    | NoSQL     | [@juicycleff](https://github.com/juicycleff)                          | ✅        | [Node MongoDB Native](https://mongodb.github.io/node-mongodb-native/)                                                          |
+| [DynamoDBアダプター](https://github.com/fospitia/casbin-dynamodb-adapter)                             | NoSQL     | [@fospitia](https://github.com/fospitia)                              | ✅        | [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) 用                                                                          |
+| [Couchbase アダプター](https://github.com/MarkMYoung/casbin-couchbase-adapter)                        | NoSQL     | [@MarkMYoung](https://github.com/MarkMYoung)                          | ✅        | [Couchbase](https://www.couchbase.com/) 用                                                                                      |
+| [Redisアダプター](https://github.com/node-casbin/redis-adapter)                                       | KV ストア    | Casbin                                                                | ❌        | [Redis](https://redis.io/) 用                                                                                                   |
+| [Redis Adapter](https://github.com/NandaKishorJeripothula/node-casbin-redis-adapter)             | KV store  | [@NandaKishorJeripothula](https://github.com/NandaKishorJeripothula)  | ❌        | For [Redis](https://redis.io/)                                                                                                 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Adapter                                                                  | タイプ    | 作成者                                  | AutoSave | 説明                                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------ | ------ | ------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                    | ファイル   | Casbin                               | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                                                                                                        |
+| [データベースアダプター](https://github.com/php-casbin/database-adapter)            | ORM    | Casbin                               | ✅        | MySQL, PostgreSQL, SQLite, Microsoft SQL Server は [techone/database](https://github.com/techoner/database) でサポートされています                                                                                                              |
+| [Zend Db アダプター](https://github.com/php-casbin/zend-db-adapter)           | ORM    | Casbin                               | ✅        | MySQL, PostgreSQL, SQLite, Oracle, IBM DB2, Microsoft SQL Server, その他のPDOドライバは [zend-db](https://docs.zendframework.com/zend-db/) でサポートされています                                                                                       |
+| [Doctrine DBAL アダプタ(推奨)](https://github.com/php-casbin/dbal-adapter)     | ORM    | Casbin                               | ✅        | データベーススキーマのイントロスペクションと管理のための多くの機能を備えた強力なPHPデータベース抽象レイヤー([DBAL](https://github.com/doctrine/dbal)) 。                                                                                                                                 |
+| [メドゥーアダプター](https://github.com/php-casbin/medoo-adapter)                 | ORM    | Casbin                               | ✅        | [Medoo](https://github.com/catfan/Medoo) is a lightweight PHP Database Framework to Accelerate Development, supports all SQL databases, including `MySQL`, `MSSQL`, `SQLite`, `MariaDB`, `PostgreSQL`, `Sybase`, `Oracle` and more. |
+| [Laminas-db アダプター](https://github.com/php-casbin/laminas-db-adapter)     | ORM    | Casbin                               | ✅        | MySQL, PostgreSQL, Oracle, IBM DB2, Microsoft SQL Server, PDO, etc. are supported by [laminas-db](https://github.com/laminas/laminas-db)                                                                                            |
+| [Zend-db アダプター](https://github.com/php-casbin/zend-db-adapter)           | ORM    | Casbin                               | ✅        | MySQL, PostgreSQL, Oracle, IBM DB2, Microsoft SQL Server, PDO, etc. are supported by [zend-db](https://github.com/zendframework/zend-db)                                                                                            |
+| [ThinkORM Adapter (ThinkPHP)](https://github.com/getandpost/tp3-adapter) | ORM    | Casbin                               | ✅        | MySQL, PostgreSQL, SQLite, Oracle, Microsoft SQL Server, MongoDB are supported by [ThinkORM](https://github.com/top-think/think-orm)                                                                                                |
+| [Redisアダプター](https://github.com/nsnake/CasbinAdapter-Redis-Adapter)      | KV ストア | [@nsnake](https://github.com/nsnake) | ❌        | [Redis](https://redis.io/) 用                                                                                                                                                                                                        |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Adapter                                                                                 | タイプ   | 作成者                                                          | AutoSave                           | 説明                                                                                                                                                                         |
+| --------------------------------------------------------------------------------------- | ----- | ------------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                                   | ファイル  | Casbin                                                       | ❌                                  | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                                               |
+| [Django ORMアダプター](https://github.com/pycasbin/django-orm-adapter)                       | ORM   | Casbin                                                       | ✅                                  | PostgreSQL, MariaDB, MySQL, Oracle, SQLite, IBM DB2, Microsoft SQL Server, Firebird, ODBC は [Django ORM](https://docs.djangoproject.com/en/3.0/ref/databases/) でサポートされています |
+| [SQLObject アダプター](https://github.com/pycasbin/sqlobject-adapter)                        | ORM   | Casbin                                                       | ✅                                  | PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Firebird, Sybase, MAX DB, pyfirebirdsql は [SQLObject](http://www.sqlobject.org/index.html) でサポートされています。                   |
+| [SQLAlchemy アダプター](https://github.com/pycasbin/sqlalchemy-adapter)                      | ORM   | Casbin                                                       | ✅                                  | PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase は [SQLAlchemy](https://www.sqlalchemy.org/) でサポートされています                                          |
+| [Async SQLAlchemy Adapter](https://github.com/pycasbin/async-sqlalchemy-adapter)        | ORM   | Casbin                                                       | ✅                                  | PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase are supported by [SQLAlchemy](https://www.sqlalchemy.org/)                                       |
+| [非同期データベースアダプター](https://github.com/sampingantech/databases-casbin-adapter)             | ORM   | [サンピンガンテック](https://github.com/sampingantech)                | ✅                                  | PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase は [データベース](https://www.encode.io/databases/) でサポートされています                                         |
+| [Peewee アダプター](https://github.com/shblhy/peewee-adapter)                                | ORM   | [@shblhy](https://github.com/shblhy)                         | ✅                                  | PostgreSQL, MySQL, SQLite は [Peewee](http://docs.peewee-orm.com/) でサポートされています                                                                                              |
+| [MongoEngine アダプター](https://github.com/zhangbailong945/mongoengine_adapter)             | ORM   | [@zhangbailong945](https://github.com/zhangbailong945)       | ❌                                  | MongoDB は [MongoEngine](http://mongoengine.org/) でサポートされています                                                                                                               |
+| [ポニーORMアダプター](https://github.com/drorvinkler/pycasbin-pony-adapter)                     | ORM   | [@drorvinkler](https://github.com/drorvinkler)               | ✅                                  | MySQL、PostgreSQL、SQLite、Oracle、CockroachDBは [ポニーORM](https://ponyorm.org/)でサポートされています                                                                                      |
+| [カメORMアダプター](https://github.com/thearchitector/casbin-tortoise-adapter)                 | ORM   | [@thearchitector](https://github.com/thearchitector)         | ✅                                  | PostgreSQL (>=9.4), MySQL, MariaDB, SQLite は [Tortoise ORM](https://tortoise.github.io/databases.html) でサポートされています                                                         |
+| [Async Ormar Adapter](https://github.com/shepilov-vladislav/ormar-casbin-adapter)       | ORM   | [@shepilov-vladislav](https://github.com/shepilov-vladislav) | ✅                                  | PostgreSQL, MySQL, SQLite are supported by [Ormar](https://github.com/collerek/ormar/)                                                                                     |
+| [SQLModel Adapter](https://github.com/shepilov-vladislav/async-casbin-sqlmodel-adapter) | ORM   | [@shepilov-vladislav](https://github.com/shepilov-vladislav) | ✅                                  | PostgreSQL, MySQL, SQLite are supported by [SQLModel](https://github.com/tiangolo/sqlmodel)                                                                                |
+| [Couchbase アダプター](https://github.com/ScienceLogic/casbin-couchbase-adapter)             | NoSQL | [ScienceLogic](https://github.com/ScienceLogic)              | ✅ ( `remove_filtered_policy()` なし) | [Couchbase](https://www.couchbase.com/) 用                                                                                                                                  |
+| [DynamoDBアダプター](https://github.com/abqadeer/python-dycasbin)                            | NoSQL | [@abqadeer](https://github.com/abqadeer/)                    | ✅                                  | [DynamoDB](https://aws.amazon.com/dynamodb/) 用                                                                                                                             |
+| [Pymongoアダプター](https://github.com/pycasbin/pymongo-adapter)                             | NoSQL | Casbin                                                       | ❌                                  | MongoDB は [Pymongo](https://pypi.org/project/pymongo/) でサポートされています                                                                                                         |
+| [Redis Adapter](https://github.com/pycasbin/redis-adapter)                              | NoSQL | Casbin                                                       | ✅                                  | For [Redis](https://redis.io/)                                                                                                                                             |
+| [GCP Firebase アダプター](https://github.com/devrushi41/pycasbin-firebase-adapter)           | クラウド  | [@devrushi41](https://github.com/devrushi41)                 | ✅                                  | [Google Cloud Platform Firebase](https://firebase.google.com/)                                                                                                             |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| Adapter                                                                           | タイプ   | 作成者                                                    | AutoSave | 説明                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------- | ----- | ------------------------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                             | ファイル  | Casbin                                                 | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                                                                                                        |
+| [EFアダプター](https://github.com/casbin-net/EF-Adapter)                               | ORM   | Casbin                                                 | ❌        | MySQL、PostgreSQL、SQLite、Microsoft SQL Server、Oracle、DB2などが [Entity Framework 6](https://docs.microsoft.com/en-us/ef/ef6/)                                                                                                           |
+| [EFCore アダプター](https://github.com/casbin-net/EFCore-Adapter)                      | ORM   | Casbin                                                 | ✅        | MySQL、PostgreSQL、SQLite、Microsoft SQL Server、Oracle、DB2などが [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) でサポートされています。                                                                                          |
+| [EFCore アダプター (.NET Core 5)](https://github.com/g4dvali/CasbinRBACAdapter)        | ORM   | [@g4dvali](https://github.com/g4dvali)                 | ✅        | MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, DB2, etc. are supported by [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)                                                                              |
+| [Linq2DB Adapter](https://github.com/Tirael/Linq2DB-Adapter)                      | ORM   | [@Tirael](https://github.com/Tirael)                   | ✅        | [MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, Access, Firebird, Sybase, etc.](https://github.com/linq2db/linq2db/blob/master/Tests/Base/TestProvName.cs) are supported by [linq2db](https://github.com/linq2db/linq2db) |
+| [Azure Cosmos DB Adapter](https://github.com/sagarkhandelwal/Casbin-Using-Cosmos) | Cloud | [@sagarkhandelwal](https://github.com/sagarkhandelwal) | ✅        | For [Microsoft Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction)                                                                                                                                      |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+| Adapter                                                              | タイプ     | 作成者                                                | AutoSave | 説明                                                                                                                                                         |
+| -------------------------------------------------------------------- | ------- | -------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                | ファイル    | Casbin                                             | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                               |
+| [ディーゼルアダプター](https://github.com/casbin-rs/diesel-adapter)            | ORM     | Casbin                                             | ✅        | [SQLite, PostgreSQL, MySQL](https://github.com/diesel-rs/diesel/blob/master/guide_drafts/backend_installation.md) は [ディーゼル](http://diesel.rs/) でサポートされています |
+| [Sqlx アダプター](https://github.com/casbin-rs/sqlx-adapter)              | ORM     | Casbin                                             | ✅        | PostgreSQL, MySQL は [Sqlx](https://github.com/launchbadge/sqlx) によってサポートされており、完全非同期操作が可能です。                                                                |
+| [SeaORMアダプター](https://github.com/lingdu1234/sea_orm_casbin_adapter)  | ORM     | [@lingdu1234](https://github.com/lingdu1234)       | ✅        | PostgreSQL, MySQL, SQLite are supported by [SeaORM](https://github.com/SeaQL/sea-orm) with fully asynchronous operation                                    |
+| [SeaORM Adapter](https://github.com/ZihanType/sea-orm-adapter)       | ORM     | [@ZihanType](https://github.com/ZihanType)         | ✅        | PostgreSQL, MySQL, SQLite are supported by [SeaORM](https://github.com/SeaQL/sea-orm) with fully asynchronous operation                                    |
+| [Rbatis Adapter](https://github.com/jiashiwen/casbin-rbatis-adapter) | ORM     | [rbatis](https://github.com/rbatis)                | ✅        | MySQL, PostgreSQL, SQLite, SQL Server, MariaDB, TiDB, CockroachDB, Oracle are supported by [Rbatis](https://github.com/rbatis/rbatis)                      |
+| [DynamodDB Adapter](https://github.com/fospitia/dynamodb-adapter)    | NoSQL   | [@fospitia](https://github.com/fospitia)           | ✅        | For [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)                                                                                                    |
+| [MongoDB Adapter](https://github.com/wangjun861205/nb-mongo-adapter) | MongoDB | [@wangjun861205](https://github.com/wangjun861205) | ✅        | For [MongoDB](https://www.mongodb.com)                                                                                                                     |
+| [JSONアダプター](http://github.com/casbin-rs/json-adapter)                | 文字列     | Casbin                                             | ✅        | [JSON](https://json.org/) 用                                                                                                                                |
+| [YAML アダプター](https://github.com/casbin-rs/yaml-adapter)              | String  | Casbin                                             | ✅        | [YAML](https://yaml.org/) 用                                                                                                                                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+```
+
+| Adapter                                                          | タイプ  | 作成者                                         | AutoSave | 説明                                                                                                                                                                                            |
+| ---------------------------------------------------------------- | ---- | ------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)            | ファイル | Casbin                                      | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                                                                  |
+| [連続アダプター](https://github.com/CasbinRuby/casbin-ruby-sql-adapter) | ORM  | [CasbinRuby](https://github.com/CasbinRuby) | ✅        | [ADO, Amagalite, IBM_DB, JDBC, MySQL, MySQL2, ODBC, Oracle, PostgreSQL, SQLAnywhere, SQLite3, および TinyTDS](http://sequel.jeremyevans.net/) がサポートしています [シーケンス](http://sequel.jeremyevans.net/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Swift" label="Swift">
+```
+
+| Adapter                                                                                                        | タイプ  | 作成者    | AutoSave | 説明                                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------- | ---- | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                                                          | ファイル | Casbin | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                                                                        |
+| [メモリー・アダプター（内蔵）](https://github.com/casbin/SwiftCasbin/blob/master/Sources/Casbin/Adapter/MemoryAdapter.swift) | メモリ  | Casbin | ❌        | メモリ用                                                                                                                                                |
+| [Fluent アダプター](https://github.com/SwiftCasbin/fluent-adapter)                                                  | ORM  | Casbin | ✅        | [PostgreSQL, SQLite, MySQL, MongoDB](https://docs.vapor.codes/4.0/fluent/overview/#drivers) は [Fluent](https://github.com/vapor/fluent) でサポートされています |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+| Adapter                                                                      | タイプ  | 作成者                                            | AutoSave | 説明                                                                                                  |
+| ---------------------------------------------------------------------------- | ---- | ---------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| [ファイルアダプター（内蔵）](/docs/adapters#file-adapter-built-in)                        | ファイル | Casbin                                         | ❌        | [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイル用                        |
+| [フィルタされたファイルアダプタ（内蔵）](/docs/policy-subset-loading)                           | File | Casbin                                         | ❌        | ポリシーサブセット読み込みサポートを持つ [.CSV (カンマ区切り値)](https://en.wikipedia.org/wiki/Comma-separated_values) ファイルの場合 |
+| [LuaSQLアダプター](https://github.com/casbin-lua/luasql-adapter)                  | ORM  | Casbin                                         | ✅        | MySQL, PostgreSQL, SQLite3 は [LuaSQL](https://keplerproject.github.io/luasql/) でサポートされています          |
+| [4DaysORMアダプター](https://github.com/casbin-lua/4daysorm-adapter)              | ORM  | Casbin                                         | ✅        | MySQL, SQLite3は [4DaysORM](https://github.com/itdxer/4DaysORM)でサポートされています                           |
+| [OpenResty Adapter](https://github.com/tom2nonames/lua-resty-casbin-adapter) | ORM  | [@tom2nonames](https://github.com/tom2nonames) | ✅        | MySQL, PostgreSQL are supported by it                                                               |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+1. `casbin.NewEnforcer()` が明示的または暗黙的なアダプタで呼び出された場合、ポリシーは自動的に読み込まれます。
+2. `e.LoadPolicy()` を呼び出して、ポリシーのルールをストレージから再読み込みできます。
+3. アダプターが `自動保存` 機能をサポートしていない場合。 ポリシーを追加または削除すると、ポリシールールはストレージに自動的に保存されません。 すべてのポリシールールを保存するには、 `SavePolicy()` を手動で呼び出す必要があります。
+
+:::
+
+## 例
+
+ここではいくつかの例を示します:
+
+### ファイルアダプター（内蔵）
+
+以下は、組み込みのファイルアダプターからエンフォーサーを初期化する方法です。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import "github.com/casbin/casbin"
+
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+use Casbin\Enforcer;
+
+$e = new Enforcer('examples/basic_model.conf', 'examples/basic_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+use casbin::prelude::*;
+
+let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+これは以下と同じです。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "github.com/casbin/casbin"
+    "github.com/casbin/casbin/file-adapter"
+)
+
+a := fileadapter.NewAdapter("examples/basic_policy.csv")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+use Casbin\Enforcer;
+use Casbin\Persist\Adapters\FileAdapter;
+
+$a = new FileAdapter('examples/basic_policy.csv');
+$e = new Enforcer('examples/basic_model.conf', $a);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+use casbin::prelude::*;
+
+let a = FileAdapter::new("examples/basic_policy.csv");
+let e = Enforcer::new("examples/basic_model.conf", a).await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### [MySQL adapter](https://github.com/casbin/mysql-adapter)
+
+以下に、MySQL データベースからエンフォーサーを初期化する方法を示します。 127.0.0.1:3306のMySQL DBにrootと空白のパスワードで接続します。
+
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "github.com/casbin/casbin"
+    "github.com/casbin/mysql-adapter"
+)
+
+a := mysqladapter.NewAdapter("mysql", "root:@tcp(127.0.0.1:3306)/")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+// https://github.com/casbin-rs/diesel-adapter
+// make sure you activate feature `mysql`
+
+use casbin::prelude::*;
+use diesel_adapter::{ConnOptions, DieselAdapter};
+
+let mut conn_opts = ConnOptions::default();
+conn_opts
+    .set_hostname("127.0.0.1")
+    .set_port(3306)
+    .set_host("127.0.0.1:3306") // overwrite hostname, port config
+    .set_database("casbin")
+    .set_auth("casbin_rs", "casbin_rs");
+
+let a = DieselAdapter::new(conn_opts)?;
+let mut e = Enforcer::new("examples/basic_model.conf", a).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+// https://github.com/php-casbin/dbal-adapter
+
+use Casbin\Enforcer;
+use CasbinAdapter\DBAL\Adapter as DatabaseAdapter;
+
+$config = [
+    // Either 'driver' with one of the following values:
+    // pdo_mysql,pdo_sqlite,pdo_pgsql,pdo_oci (unstable),pdo_sqlsrv,pdo_sqlsrv,
+    // mysqli,sqlanywhere,sqlsrv,ibm_db2 (unstable),drizzle_pdo_mysql
+    'driver'     => 'pdo_mysql',
+    'host' => '127.0.0.1',
+    'dbname' => 'test',
+    'user' => 'root',
+    'password' => '',
+    'port' => '3306',
+];
+
+$a = DatabaseAdapter::newAdapter($config);
+$e = new Enforcer('examples/basic_model.conf', $a);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## 独自のストレージアダプターを使用する
+
+以下のような独自のアダプターを使用できます。
+
+```go
+import (
+    "github.com/casbin/casbin"
+    "github.com/your-username/your-repo"
+)
+
+a := yourpackage.NewAdapter(params)
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+## 異なるアダプター間で移行/変換
+
+アダプターを `A` から `B`に変換したい場合は、次のようにします。
+
+1. A からメモリへのポリシーの読み込み
+
+   ```go
+   e, _ := NewEnforcer(m, A)
+   ```
+   または
+   ```go
+   e.SetAdapter(A)
+   e.LoadPolicy()
+   ```
+
+2. アダプターをAからBに変換する
+
+   ```
+   e.SetAdapter(B)
+   ```
+
+3. ポリシーをメモリからBに保存
+
+   ```
+   e.LoadPolicy()
+   ```
+
+## 実行時に読み込み/保存
+
+モデルを再読み込みしたり、ポリシーを再読み込みしたり、初期化後にポリシーを保存したりすることもできます。
+
+```go
+// CONFファイルからモデルをリロードします。
+e.LoadModel()
+
+// ファイル/データベースからポリシーを再読み込みします。
+e.LoadPolicy()
+
+// 現在のポリシー(通常はCasbin APIで変更後)をファイル/データベースに保存します。
+e.SavePolicy()
+```
+
+## AutoSave
+
+アダプターには `自動保存` という機能があります。 アダプターが `自動保存`をサポートしている場合 ストレージに単一のポリシールールを追加したり、ストレージから単一のポリシールールを削除したりすることができます。 これは `SavePolicy()`とは違います 後者は、ストレージ内のすべてのポリシールールを削除し、Casbinエンフォーサーからストレージにすべてのポリシールールを保存するためです。 したがって、ポリシールールの数が多い場合、パフォーマンスの問題が発生する可能性があります。
+
+アダプターが `Auto-Save`をサポートしている場合、 `Enforcer.EnableAutoSave()` 関数を使用してこのオプションを切り替えることができます。 このオプションはデフォルトで有効になっています(アダプターがサポートしている場合)。
+
+:::note
+
+1. `自動保存` 機能は任意です。 アダプターは実装するかどうかを選択できます。
+2. `自動保存` は、エンフォーサーが使用するアダプターがサポートしている場合にのみ動作します。
+3. `自動保存` がアダプターによってサポートされているかどうかについては、上のアダプターリストの `自動保存` 列を参照してください。
+
+:::
+
+`自動保存` の使い方の例を以下に示します。
+
+```go
+import (
+    "github.com/casbin/casbin"
+    "github.com/casbin/xorm-adapter"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+// デフォルトでは、AutoSave オプションがエンフォーサーに対して有効になっています。
+a := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+
+// 自動保存オプションを無効にします。
+e.EnableAutoSave(false)
+
+// Because AutoSave is disabled, the policy change only affects the policy in Casbin enforcer,
+// it doesn't affect the policy in the storage.
+e.AddPolicy(...)
+e.RemovePolicy(...)
+
+// Enable the AutoSave option.
+e.EnableAutoSave(true)
+
+// Because AutoSave is enabled, the policy change not only affects the policy in Casbin enforcer,
+// but also affects the policy in the storage.
+e.AddPolicy(...)
+e.RemovePolicy(...)
+```
+
+詳細については、以下を参照してください: https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go
+
+### アダプターの書き込み方法
+
+All adapters should implement the [Adapter](https://github.com/casbin/casbin/blob/master/persist/adapter.go) interface by providing at least two mandatory methods:`LoadPolicy(model model.Model) error` and `SavePolicy(model model.Model) error`.
+
+他の3つの関数は任意です。 アダプターが `Auto-Save` 機能をサポートしている場合は、実装する必要があります。
+
+| 方法                   | タイプ       | 説明                         |
+| -------------------- | --------- | -------------------------- |
+| LoadPolicy()         | mandatory | ストレージからすべてのポリシールールを読み込む    |
+| SavePolicy()         | mandatory | すべてのポリシールールをストレージに保存       |
+| AddPolicy()          | 省略可能      | ストレージにポリシールールを追加           |
+| 削除ポリシー()             | optional  | ストレージからポリシールールを削除          |
+| RemoveFilterPolicy() | optional  | ストレージからフィルタに一致するポリシールールを削除 |
+
+:::note
+
+アダプターが `Auto-Save`をサポートしていない場合は、3 つのオプション関数について空の実装を提供する必要があります。 以下はGolangの例です。
+
+:::
+
+```go
+// AddPolicy がストレージにポリシールールを追加します。
+func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
+    return errors.New("not implemented")
+}
+
+// RemovePolicy removes a policy rule from the storage.
+func (a *Adapter) RemovePolicy(sec string, ptype string, rule []string) error {
+    return errors.New("not implemented")
+}
+
+// RemoveFilteredPolicy removes policy rules that match the filter from the storage.
+func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
+    return errors.New("not implemented")
+}
+```
+
+Casbin エンフォーサーは、これらの 3 つのオプション関数を呼び出すときに、 `実装されていない` エラーを無視します。
+
+アダプターの書き方についての詳細があります。
+
+* データ構造 アダプターは、 ****** 6列以上の読み取りをサポートする必要があります。
+* データベース名 デフォルトのデータベース名は `casbin` でなければなりません。
+* テーブル名 デフォルトのテーブル名は `casbin_rule` でなければなりません。
+* 型の列。 この列の名前は `p_type` または `P_type` の代わりに `ptype` でなければなりません。
+* テーブル定義は `(id int primary key, ptype varchar, v0 varchar, v1 varchar, v2 varchar, v3 varchar, v4 varchar, v5 varchar)` でなければなりません。
+* ユニークなキーインデックスは、列 `ptype,v0,v1,v2,v3,v4,v5` 上に構築する必要があります。
+* `LoadFilteredPolicy` はパラメータとして `フィルター` を必要とします。 フィルタは次のようなものでなければなりません。
+    ```json
+    {
+        "p":[ [ "alice" ], [ "bob" ] ],
+        "g":[ [ "", "book_group" ], [ "", "pen_group" ] ],
+        "g2":[ [ "alice" ] ]
+    }
+    ```
+
+### 誰がDBを作成する責任がありますか?
+
+慣例として、 アダプターが存在しない場合は、自動的に `カビン`  という名前のデータベースを作成し、ポリシーストレージに使用する必要があります。 参照実装として Xorm アダプターを使用してください: https://github.com/casbin/xorm-adapter

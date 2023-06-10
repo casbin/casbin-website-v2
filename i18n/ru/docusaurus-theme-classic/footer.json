@@ -1,0 +1,54 @@
+{
+  "link.title.Docs": {
+    "message": "Документ",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Community": {
+    "message": "Сообщество",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.More": {
+    "message": "Ещё",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.Getting Started": {
+    "message": "Начало работы",
+    "description": "The label of footer link with label=Getting Started linking to /docs/get-started"
+  },
+  "link.item.label.Management API": {
+    "message": "API управления",
+    "description": "The label of footer link with label=Management API linking to /docs/management-api"
+  },
+  "link.item.label.RBAC API": {
+    "message": "RBAC API",
+    "description": "The label of footer link with label=RBAC API linking to /docs/rbac-api"
+  },
+  "link.item.label.Middlewares": {
+    "message": "Посредники",
+    "description": "The label of footer link with label=Middlewares linking to /docs/middlewares"
+  },
+  "link.item.label.Forum": {
+    "message": "Форум",
+    "description": "The label of footer link with label=Forum linking to https://forum.casbin.com/"
+  },
+  "link.item.label.Stack Overflow": {
+    "message": "Переполнение стека",
+    "description": "The label of footer link with label=Stack Overflow linking to https://stackoverflow.com/search?q=casbin"
+  },
+  "link.item.label.Discord": {
+    "message": "Discord",
+    "description": "The label of footer link with label=Discord linking to https://discord.com/invite/qteNGWt8UY"
+  },
+  "link.item.label.QQ Group": {
+    "message": "QQ Group",
+    "description": "The label of footer link with label=QQ Group linking to https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885"
+  },
+  "copyright": {
+    "message": "Copyright © 2023 Casbin Organization",
+    "description": "The footer copyright"
+  },
+  "logo.alt": {
+    "message": "Casbin Logo",
+    "description": "The alt text of footer logo"
+  }
+}

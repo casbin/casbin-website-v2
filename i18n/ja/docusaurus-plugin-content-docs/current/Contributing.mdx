@@ -1,0 +1,83 @@
+---
+id: contributing
+title: コントリビューション
+description: Contributing to casbin
+keywords:
+  - Contributing
+authors:
+  - Selflocking
+  - EmperorYP7
+---
+
+Casbinは強力な認可ライブラリで、多くの言語を実装したアクセス制御モデルをサポートしています。 ある言語が得意であれば、Casbinの開発に参加できます。 新しい貢献者はいつでも歓迎されます。
+
+現在、主に2種類のプロジェクトがあります。
+
+* **アルゴリズム指向**— 最初の種類のプロジェクトは、異なる言語実装のためのアルゴリズム関連のプロジェクトです。 Golang、Java、C++からElixir、Dart、Rustなどの主流のプログラミング言語、周辺製品などが含まれます。
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| production-ready                                                     | production-ready                                                  | production-ready                                                          | production-ready                                                       |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
+| production-ready                                                       | production-ready                                                         | production-ready                                                   | production-ready                                                    |
+
+* **アプリケーション指向**——2つ目のプロジェクトはアプリケーション関連のプロジェクトです。
+
+| プロジェクト                                                   | デモ                                         | 詳細                                                            | スキルスタック                                     |
+| -------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------- |
+| [Casdoor](https://github.com/casdoor/casdoor)            | [Casdoor](https://casdoor.org/)            | Casdoorは、OAuth 2.0/OIDCに基づくUI初の集中認証/シングルサインオン(SSO)プラットフォームです。 | JavaScript + React + Golang + Beego + SQL   |
+| [Casnode](https://github.com/casbin/casnode)             | [Casbin フォーラム](https://forum.casbin.com)   | Casnodeは次世代のフォーラムソフトウェアです                                     | JavaScript + React + Golang + Beego + SQL   |
+| [Casbin OA](https://github.com/casbin/casbin-oa)         | [OA system](https://oa.casbin.com)         | Casbin-OA(カスビンOA)は、カスビンのテクニカルライターのための公式の写本処理、評価および表示システムです。   | JavaScript + React + Golang + Beego + MySQL |
+| [Casbin Editor](https://github.com/casbin/casbin-editor) | [Casbin Editor](https://editor.casbin.org) | Casbin-editorはウェブベースのCasbinモデルとポリシーエディタです                     | TypeScript + React                          |
+
+## 参加する
+
+Casbinに貢献する多くの方法があります。始めるためにいくつかのアイデアがあります。
+
+* **Casbin を使用して問題を報告してください!** Casbin を使用する場合は、バグや提案に関係なく、Casbin の開発を促進するための問題を報告してください。 Before file an issue on GitHub, it would be better to discuss first on [Discord](https://discord.com/invite/qteNGWt8UY) or [GitHub Discussions](https://github.com/casbin/casbin/discussions)
+
+  > 注意: 問題を報告する場合は、問題の詳細を説明するために英語を使用してください。
+
+* **ドキュメントでヘルプ！** ドキュメントから始めることは、あなたの貢献を始めるには良い選択です。
+
+* **Help solve issues!** We prepare a table containing easy tasks suitable for beginner, with different level of challenges labeled with different tags, check the table [here](https://github.com/orgs/casbin/projects/2).
+
+## 取得リクエスト
+
+CasbinはGitHubを開発プラットフォームとして使用しています。 したがって、プルリクエストは貢献の主な源です。
+
+プルリクエストを開く前に知っておくべきことがあります。
+
+* なぜこのPRを送るのか、そしてこのPRがレポに何をするのかを説明してください。
+
+* PRが唯一のものを行うことを確認してください, そうでなければ、それを分割してください.
+
+* 新しく追加されたファイルがある場合は、新しいファイルの先頭にCasbinライセンスを含めてください。
+
+  ```
+  // Copyright 2021 The casbin Authors. All Rights Reserved.
+  //
+  // Licensed under the Apache License, Version 2.0 (the "License");
+  // you may not use this file except in compliance with the License.
+  // You may obtain a copy of the License at
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  // Unless required by applicable law or agreed to in writing, software
+  // distributed under the License is distributed on an "AS IS" BASIS,
+  // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  // 特定の言語の管理権限と
+  // ライセンスの下での制限についてはライセンスを参照してください。
+  ```
+
+* [Casdoor](https://github.com/casdoor/casdoor), [Casnode](https://github.com/casbin/casnode) と [Casbin OA](https://github.com/casbin/casbin-oa), 管理者にプルリクエストを見せるためにデモをセットアップする必要があるかもしれません。
+
+* PRを開いて貢献をコミットする場合は、意味論的なコミットを使用する方が良いでしょう。 `<type>(<scope>): <subject>`, `<scope>` は任意です。 より詳細な使用方法については、 [従来のコミット](https://www.conventionalcommits.org/en/v1.0.0/)を参照してください。
+
+## ライセンス
+
+Casbinに貢献することにより、あなたはその貢献がApache Licenseの下でライセンスされることに同意するものとします。

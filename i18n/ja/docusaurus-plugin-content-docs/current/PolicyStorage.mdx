@@ -1,0 +1,84 @@
+---
+id: policy-storage
+title: ポリシーストレージ
+description: Policy Storage
+keywords:
+  - policy storage
+authors:
+  - hsluoyz
+---
+
+Casbin では、ポリシーストレージは [アダプター](/docs/adapters) として実装されています。
+
+## .CSVファイルからポリシーを読み込む
+
+これはCasbinを使用する最も一般的な方法です。 初心者には理解しやすく、Casbinチームに助けを求めるときに共有するのに便利です。
+
+`.CSV` ファイル [の内容例/rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv):
+
+```
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+:::note
+
+ファイルにカンマ`、` が含まれている場合は、ダブルクォートで囲む必要があります。例:
+
+```
+p, alice, "data1,data2", read --correct
+p, alice, data1,data2, read --incorrect ("data1,data2" should be a whole)
+```
+
+ファイルにカンマ`、` 、二重引用符`"`が含まれている場合。 二重引用符と二重引用符で囲むべきです
+
+```
+p, alice, data, "r.act in (""getchar@@1, char@@2post"")" --correct
+p, alice, data, "r.act in ("get", "post")" --incorrect (should use "" to escape... ) char@@1
+```
+
+関連する問題: [casbin#886](https://github.com/casbin/casbin/issues/886)
+
+:::
+
+## アダプター API
+
+| 方法                   | タイプ  | 説明                         |
+| -------------------- | ---- | -------------------------- |
+| LoadPolicy()         | 基本   | ストレージからすべてのポリシールールを読み込む    |
+| SavePolicy()         | 基本   | すべてのポリシールールをストレージに保存       |
+| AddPolicy()          | 省略可能 | ストレージにポリシールールを追加           |
+| 削除ポリシー()             | 省略可能 | ストレージからポリシールールを削除          |
+| RemoveFilterPolicy() | 省略可能 | ストレージからフィルタに一致するポリシールールを削除 |
+
+## データベースストレージフォーマット
+
+**ポリシーファイル**
+
+```
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, admin
+```
+
+**対応するデータベース構造 (MySQLなど)**
+
+| id | ptype | v0          | v1    | v2    | v3 | v4 | v5 |
+| -- | ----- | ----------- | ----- | ----- | -- | -- | -- |
+| 1  | p     | data2_admin | data2 | 既読にする |    |    |    |
+| 2  | p     | data2_admin | data2 | 書き込み  |    |    |    |
+| 3  | g     | alice       | 管理者   |       |    |    |    |
+
+**各列の意味**
+
+- `id`: 主キーとしてデータベースにのみ存在する。 `カスビンポリシー` の一部ではありません。 生成方法は、特定のアダプターによって異なります。
+
+- `ptype`: `p`, `g`, `g2`等に対応する。
+- `v0-v5`: The column names have no specific meaning, and correspond to the values in the `policy csv` from left to right. 列の数は、自分で定義する数によって決まります。 理論的には、列の数が無限にある場合があります。 しかし、一般的にアダプターに実装されているのは **6** 列だけです。 不十分な場合は、対応するアダプター・リポジトリに問題を提出してください。
+
+## アダプターの詳細
+
+アダプター API とデータベース テーブル 構造設計の使用の詳細については、以下を参照してください:  [/docs/adapters](/docs/adapters)

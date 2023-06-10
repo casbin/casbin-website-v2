@@ -1,0 +1,39 @@
+---
+id: policy-subset-loading
+title: Загрузка подмножества политик
+description: Loading filtered policy
+keywords:
+  - filtered policy
+  - policy subset
+  - performance optimization
+authors:
+  - hsluoyz
+---
+
+Некоторые адаптеры поддерживают управление отфильтрованной политикой. Это означает, что политика, загруженная Casbin, является подмножеством политики хранения на основе данного фильтра. Это позволяет эффективно осуществлять политику в крупных многоквартирных условиях при анализе всей политики становится узким препятствием на пути к ее осуществлению.
+
+Чтобы использовать фильтрованные политики с поддерживаемым адаптером, просто вызовите метод `LoadFilteredPolicy`. Допустимый формат для параметра фильтра зависит от используемого адаптера. Для предотвращения случайных потерь данных метод `SavePolicy` отключен при загрузке фильтрованной политики.
+
+Например, следующий фрагмент кода использует встроенный фильтрованный файловый адаптер и модель RBAC с доменами. В этом случае фильтр ограничивает политику одним доменом. Любые строки политики для доменов, отличных от `«домена1»` исключены из загруженной политики:
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+// The loaded policy now only contains the entries pertaining to "domain1".
+```
+
+Существует еще один метод поддержки загрузки подмножеств: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` похож на LoadFilteredPolicy, но он не очищает предыдущую загруженную политику, только добавляет.

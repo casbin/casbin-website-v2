@@ -1,0 +1,13 @@
+---
+id: multi-threading
+title: Mehrfachfachen
+description: Using Casbin in a multi-threading manner
+keywords:
+  - multi-threading
+authors:
+  - hsluoyz
+---
+
+Wenn Sie Casbin in mehrfacher Weise verwenden, können Sie den synchronisierten Wrapper des Casbin enforcer: https://github.com/casbin/casbin/blob/master/enforcer_synced.go (GoLang) und https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp (C++).
+
+Es unterstützt auch die `AutoLoad` Funktion, was bedeutet, dass die Casbin-Vollstreckung automatisch die neuesten Richtlinien-Regeln von der DB lädt, wenn sie sich geändert hat. Rufen Sie `StartAutoLoadPolicy()` auf, um die Richtlinie regelmäßig zu laden und `StopAutoLoadPolicy()` aufzurufen, um sie zu beenden.

@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: モデル ストレージ
+description: Model storage
+keywords:
+  - model storage
+authors:
+  - hsluoyz
+---
+
+ポリシーとは異なり、モデルはロードすることができますので、保存することはできません。 モデルは動的なコンポーネントではなく、実行時に変更すべきではないからです。 そのため、モデルをストレージに保存するための API は実装していません。
+
+しかし、良いニュースは、静的または動的にモデルをロードする3つの同等の方法を提供していることです。
+
+## .CONFファイルからモデルを読み込む
+
+これはCasbinを使用する最も一般的な方法です。 初心者には理解しやすく、Casbinチームに助けを求めるときに共有するのに便利です。
+
+`CONF` ファイル [の内容例/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+次に、次のようにモデルファイルを読み込むことができます。
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## コードからモデルを読み込む
+
+モデルは、 `.CONF` ファイルを使用する代わりにコードから動的に初期化することができます。 以下はRBACモデルの例です。
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/v2/persist/file-adapter"
+)
+
+// Goコードからモデルを初期化する
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "some(where (p.eft == allow))")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+
+// Load the policy rules from the .CSV file adapter.
+// ファイルを避けるためにアダプターに交換してください。
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 執行者を作成します。
+e := casbin.NewEnforcer(m, a)
+```
+
+## 文字列からモデルを読み込む
+
+または、マルチライン文字列からモデルテキスト全体を読み込むこともできます。 この方法のための良い点は、モデルファイルを維持する必要がないということです。
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/v2/model"
+)
+
+// Initialize the model from a string
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+m, _ := model.NewModelFromString(text)
+
+// Load the policy rules from the .CSV file adapter.
+// ファイルを避けるためにアダプターに交換してください。
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 執行者を作成します。
+e := casbin.NewEnforcer(m, a)
+```

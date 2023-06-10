@@ -1,0 +1,46 @@
+{
+  "version.label": {
+    "message": "다음",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.The basics": {
+    "message": "The basics",
+    "description": "The label for category The basics in sidebar docs"
+  },
+  "sidebar.docs.category.Model": {
+    "message": "모델",
+    "description": "The label for category Model in sidebar docs"
+  },
+  "sidebar.docs.category.Storage": {
+    "message": "저장소",
+    "description": "The label for category Storage in sidebar docs"
+  },
+  "sidebar.docs.category.Extensions": {
+    "message": "확장 기능",
+    "description": "The label for category Extensions in sidebar docs"
+  },
+  "sidebar.docs.category.API": {
+    "message": "API",
+    "description": "The label for category API in sidebar docs"
+  },
+  "sidebar.docs.category.Advanced usage": {
+    "message": "Advanced usage",
+    "description": "The label for category Advanced usage in sidebar docs"
+  },
+  "sidebar.docs.category.Management": {
+    "message": "관리",
+    "description": "The label for category Management in sidebar docs"
+  },
+  "sidebar.docs.category.Editor": {
+    "message": "편집기",
+    "description": "The label for category Editor in sidebar docs"
+  },
+  "sidebar.docs.category.More": {
+    "message": "자세히",
+    "description": "The label for category More in sidebar docs"
+  },
+  "sidebar.docs.link.PDF Download": {
+    "message": "PDF Download",
+    "description": "The label for link PDF Download in sidebar docs, linking to /pdf"
+  }
+}

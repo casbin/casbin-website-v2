@@ -1,0 +1,124 @@
+---
+id: watchers
+title: Observateurs
+description: Keeping consistence between multiple Casbin enforcer instances
+keywords:
+  - watcher
+  - multiple Casbin enforcer
+  - WatcherEx
+authors:
+  - hsluoyz
+---
+
+
+
+Nous prenons en charge l'utilisation de systèmes de messagerie distribués comme [etcd](https://github.com/coreos/etcd) pour garder la cohérence entre plusieurs instances de contrôle de Casbin. Ainsi, nos utilisateurs peuvent utiliser simultanément plusieurs exécuteurs Casbin pour gérer un grand nombre de demandes de vérification des permissions.
+
+Similaire aux adaptateurs de stockage stratégiques, nous ne plaçons pas de code de surveillance dans la bibliothèque principale. Tout support pour un nouveau système de messagerie devrait être mis en œuvre en tant que observateur. Une liste complète des observateurs de Casbin est fournie ci-dessous. Toute contribution de tierce partie sur un nouvel observateur est la bienvenue, s'il vous plaît nous en informer et je vais le mettre dans cette liste:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Observateur                                                                                                        | Type de texte         | Auteur                                         | Description                                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------ | --------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [PostgreSQL WatcherEx](https://github.com/IguteChung/casbin-psql-watcher)                                          | Database              | [@IguteChung](https://github.com/IguteChung)   | WatcherEx for [PostgreSQL](https://www.postgresql.org/)                                                                                                  |
+| [Redis WatcherEx](https://github.com/casbin/redis-watcher)                                                         | Magasin KV            | Casbin                                         | WatcherEx for [Redis](http://redis.io/)                                                                                                                  |
+| [Guetteur Redis](https://github.com/billcobbler/casbin-redis-watcher)                                              | Magasin KV            | [@billcobbler](https://github.com/billcobbler) | Observateur pour [Redis](http://redis.io/)                                                                                                               |
+| [Observateur Etcd](https://github.com/casbin/etcd-watcher)                                                         | Magasin KV            | Casbin                                         | Observateur pour [etcd](https://github.com/coreos/etcd)                                                                                                  |
+| [Guetteur TiKV](https://github.com/casbin/tikv-watcher)                                                            | Magasin KV            | Casbin                                         | Observateur pour [TiKV](https://github.com/tikv/tikv)                                                                                                    |
+| [Guet de Kafka](https://github.com/wgarunap/casbin-kafka-watcher)                                                  | Système de messagerie | [@wgarunap](https://github.com/wgarunap)       | Observateur pour [Apache Kafka](https://kafka.apache.org/)                                                                                               |
+| [Observateur NATS](https://github.com/Soluto/casbin-nats-watcher)                                                  | Système de messagerie | [Solution](https://github.com/Soluto)          | Observateur pour [NATS](https://nats.io/)                                                                                                                |
+| [Guetteur ZooKeeper](https://github.com/grepsr/casbin-zk-watcher)                                                  | Système de messagerie | [Grepsr](https://github.com/grepsr)            | Observateur pour [Apache ZooKeeper](https://zookeeper.apache.org/)                                                                                       |
+| [NATS, RabbitMQ, GCP Pub/Sub, AWS SNS & SQS, Kafka, InMemory](https://github.com/rusenask/casbin-go-cloud-watcher) | Système de messagerie | [@rusenask](https://github.com/rusenask/)      | Watcher basé sur [Go Cloud Dev Kit](https://gocloud.dev/) qui fonctionne avec les principaux fournisseurs de cloud et les infrastructures auto-hébergées |
+| [Observateur de RocketMQ](https://github.com/fmyxyz/casbin-rocketmq-watcher)                                       | Système de messagerie | [@fmyxyz](https://github.com/fmyxyz)           | Observateur pour [Apache RocketMQ](https://rocketmq.apache.org/)                                                                                         |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Observateur                                                   | Type de texte         | Auteur                                     | Description                                                |
+| ------------------------------------------------------------- | --------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| [Adaptateur Etcd](https://github.com/mapleafgo/jcasbin-extra) | Magasin KV            | [@mapleafgo](https://github.com/mapleafgo) | Observateur pour [etcd](https://github.com/coreos/etcd)    |
+| [Guetteur Redis](https://github.com/jcasbin/redis-watcher)    | Magasin KV            | Casbin                                     | Observateur pour [Redis](http://redis.io/)                 |
+| [Guet de Kafka](https://github.com/jcasbin/kafka-watcher)     | Système de messagerie | Casbin                                     | Observateur pour [Apache Kafka](https://kafka.apache.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Observateur                                                                                 | Type de texte         | Auteur                                         | Description                                                                              |
+| ------------------------------------------------------------------------------------------- | --------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [Observateur Etcd](https://github.com/node-casbin/etcd-watcher)                             | Magasin KV            | Casbin                                         | Observateur pour [etcd](https://github.com/coreos/etcd)                                  |
+| [Guetteur Redis](https://github.com/node-casbin/redis-watcher)                              | Magasin KV            | Casbin                                         | Observateur pour [Redis](http://redis.io/)                                               |
+| [Pub/sous-observateur](https://github.com/node-casbin/pubsub-watcher)                       | Système de messagerie | Casbin                                         | Observateur pour [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)            |
+| [MongoDB Change Streams Watcher](https://github.com/node-casbin/mongo-changestream-watcher) | Base de données       | Casbin                                         | Watcher for [MongoDB Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) |
+| [Observateur de Postgres](https://github.com/mcollina/casbin-pg-watcher)                    | Base de données       | [Matteo Collina](https://github.com/mcollina/) | Observateur pour [PostgreSQL](https://www.postgresql.org/)                               |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Observateur                                                                 | Type de texte | Auteur                                            | Description                                                |
+| --------------------------------------------------------------------------- | ------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| [Observateur Etcd](https://github.com/pycasbin/etcd-watcher)                | Magasin KV    | Casbin                                            | Observateur pour [etcd](https://github.com/coreos/etcd)    |
+| [Guetteur Redis](https://github.com/pycasbin/redis-watcher)                 | Magasin KV    | Casbin                                            | Observateur pour [Redis](http://redis.io/)                 |
+| [Redis Watcher](https://github.com/ScienceLogic/flask-casbin-redis-watcher) | KV store      | [ScienceLogique](https://github.com/ScienceLogic) | Watcher for [Redis](http://redis.io/)                      |
+| [Observateur PostgreSQL](https://github.com/pycasbin/postgresql-watcher)    | Database      | Casbin                                            | Observateur pour [PostgreSQL](https://www.postgresql.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| Observateur                                                        | Type de texte | Auteur                           | Description                                |
+| ------------------------------------------------------------------ | ------------- | -------------------------------- | ------------------------------------------ |
+| [Guetteur Redis](https://github.com/Sbou/Casbin.NET-Redis-Watcher) | Magasin KV    | [@Sbou](https://github.com/Sbou) | Observateur pour [Redis](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+```
+
+| Observateur                                                                        | Type de texte         | Auteur                                      | Description                                            |
+| ---------------------------------------------------------------------------------- | --------------------- | ------------------------------------------- | ------------------------------------------------------ |
+| [Guetteur Redis](https://github.com/CasbinRuby/casbin-ruby-redis-watcher)          | Magasin KV            | [CasbinRuby](https://github.com/CasbinRuby) | Observateur pour [Redis](http://redis.io/)             |
+| [Observateur Lapin MQ](https://github.com/CasbinRuby/casbin-ruby-rabbitmq-watcher) | Système de messagerie | [CasbinRuby](https://github.com/CasbinRuby) | Observateur pour [LapinsMQ](https://www.rabbitmq.com/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Observateur                                                       | Type de texte | Auteur                                 | Description                                |
+| ----------------------------------------------------------------- | ------------- | -------------------------------------- | ------------------------------------------ |
+| [Guetteur Redis](https://github.com/php-casbin/webman-permission) | Magasin KV    | [@Tinywan](https://github.com/Tinywan) | Observateur pour [Redis](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## format@@0 WatcherEx
+
+Afin de prendre en charge la synchronisation incrémentale entre plusieurs instances, nous fournissons l'interface `WatcherEx`. Nous espérons qu'il pourra notifier d'autres instances lorsque la politique changera, mais il n'y a actuellement aucune implémentation de `WatcherEx`. Nous vous recommandons d'utiliser le répartiteur pour y parvenir.
+
+Comparé à l'interface `Watcher` , `WatcherEx` peut distinguer quel type d'action de mise à jour est reçu, e. ., `AddPolicy` et `RemovePolicy`.
+
+Application WatcherEx :
+
+| API                                                                                           | Description                                                                                                                                                                                                                                                                              |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SetUpdateCallback(func(string)) error                                                         | SetUpdateCallback sets the callback function that the watcher will call, when the policy in DB has been changed by other instances. Un callback classique est Enforcer.LoadPolicy().                                                                                                     |
+| Update() error                                                                                | Update calls the update callback of other instances to synchronize their policy. Il est généralement appelé après avoir changé la politique dans DB, comme Enforcer.SavePolicy(), Enforcer.AddPolicy(), Enforcer.RemovePolicy(), etc.                                                    |
+| Close()                                                                                       | Close stops and releases the watcher, the callback function will not be called any more.                                                                                                                                                                                                 |
+| UpdateForAddPolicy(sec, ptype string, params ...string) error                                 | UpdateForAddPolicy calls the update callback of other instances to synchronize their policy. Il est appelé après qu'une politique est ajoutée via Enforcer.AddPolicy(), Enforcer.AddNamedPolicy(), Enforcer.AddGroupingPolicy() et Enforcer.AddNamedGroupingPolicy().                    |
+| UpdateForRemovePolicy(sec, ptype string, params ...string) error                              | UPdateForRemovePolicy calls the update callback of other instances to synchronize their policy. Il est appelé après qu'une politique est supprimée par Enforcer.RemovePolicy(), Enforcer.RemoveNamedPolicy(), Enforcer.RemoveGroupingPolicy() et Enforcer.RemoveNamedGroupingPolicy().   |
+| UpdateForRemoveFilteredPolicy(sec, ptype string, fieldIndex int, fieldValues ...string) error | UpdateForRemoveFilteredPolicy calls the update callback of other instances to synchronize their policy. Il est appelé après Enforcer.RemoveFilteredPolicy(), Enforcer.RemoveFilteredNamedPolicy(), Enforcer.RemoveFilteredGroupingPolicy() et Enforcer.RemoveFilteredNamedNamedPolicy(). |
+| UpdateForSavePolicy(model model.Model) error                                                  | UpdateForSavePolicy calls the update callback of other instances to synchronize their policy. Il est appelé après Enforcer.SavePolicy()                                                                                                                                                  |
+| UpdateForAddPolicies(sec string, ptype string, rules ...[]string) error                       | UpdateForAddPolicies calls the update callback of other instances to synchronize their policy. Il est appelé après Enforcer.AddPolicies(), Enforcer.AddNamedPolicies(), Enforcer.AddGroupingPolicies() et Enforcer.AddNamedGroupingPolicies().                                           |
+| UpdateForRemovePolicies(sec string, ptype string, rules ...[]string) error                    | UpdateForRemovePolicies calls the update callback of other instances to synchronize their policy. Il est appelé après Enforcer.RemovePolicies(), Enforcer.RemoveNamedPolicies(), Enforcer.RemoveGroupingPolicies() et Enforcer.RemoveNamedGroupingPolicies().                            |

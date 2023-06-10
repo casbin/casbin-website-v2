@@ -1,0 +1,74 @@
+---
+id: rbac-96
+title: Casbin RBAC和RBAC96
+description: Casbin RBAC和RBAC96之间的差异
+keywords:
+  - RBAC96
+  - Casbin RBAC
+authors:
+  - kininaru
+---
+
+
+
+## Casbin RBAC和RBAC96
+
+在这个文档中，我们会比较Casbin RBAC与 [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf)的区别。
+
+Casbin RBAC支持RBA96的几乎所有特点，并在此基础上增加了新的特点。
+
+| RBAC版本 | 支持级别                                                          | 说明                                                                                                    |
+| ------ | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| RBAC0  | 完全支持                                                          | RBAC0是RBAC96的基本版本。 它澄清了使用者、角色和权限之间的关系。                                                                |
+| RBAC1  | 完全支持                                                          | Casbin 的 RBAC 支持 RBAC1 的角色层次结构功能，如果 `alice`具有`role1`, `role1`具有`role2`，则 `alice` 也将拥有 `role2` 并继承其权限。 |
+| RBAC2  | 支持相互专用处理([示例](/docs/syntax-for-models#policy-effect))，但量化限制不是 | RBAC2在RBAC0的基础上添加了约束 因此，RBAC2可以处理政策中相互排斥的问题。                                                          |
+| RBAC3  | 支持相互专用处理([示例](/docs/syntax-for-models#policy-effect))，但量化限制不是 | RBAC3是RBAC1和RBAC2的组合。 RBAC3支持RBAC1和RBAC2中的角色等级和制约因素。                                                  |
+## Casbin RBAC和RBAC96之间的差异
+
+1. 在Casbin，用户和角色之间的区分不明确。
+
+   在Casbin中，用户和角色都被视为字符串。 如果您写了类似于以下的策略文件：
+
+   ```
+   p, admin, book, read
+   p, alice, book, read
+   g, amber, admin
+   ```
+
+   并调用方法 `GetAllSubjects()` 就像这样(`e` 是一个Casbin Enforcer的实例)：
+
+   ```go
+   e.GetAllSubjects()
+   ```
+
+   然后您将得到下面的返回值：
+
+   ``` go
+   [admin alice bob]
+   ```
+
+   因为在Casbin，主体包括用户和角色。
+
+   然而，如果你调用方法 `GetAlloles()` 就像这样：
+
+   ``` go
+   e.GetAllRoles()
+   ```
+
+   然后您将得到下面的返回值：
+
+   ```go
+   [admin]
+   ```
+
+   现在你知道卡斯宾的用户和角色之间有区别，但并不像RBAC96那样尖锐。 当然，您可以为您的政策添加一些前缀，如 `user::alice`, `role::admin` 以澄清他们之间的关系。
+
+2. Casbin RBAC比RBAC96提供了更多的权限
+
+   RBAC96中只定义了7个权限：读、写、添加、执行、信贷、借记、查询。
+
+   然而，在Casbin中，我们将权限视为字符串。 这种方式，您可以创建一些更适合您的权限。
+
+3. Casbin RBAC支持域
+
+   在 Casbin 中，您可以通过域名进行授权。 此功能使您的访问控制模型更加灵活。

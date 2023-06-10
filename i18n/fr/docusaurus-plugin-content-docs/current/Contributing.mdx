@@ -1,0 +1,83 @@
+---
+id: contributing
+title: Contribuer
+description: Contributing to casbin
+keywords:
+  - Contributing
+authors:
+  - Selflocking
+  - EmperorYP7
+---
+
+Casbin est une bibliothèque d'autorisation puissante supporte les modèles de contrôle d'accès avec de nombreuses implémentations de langues, aussi longtemps que vous êtes bon dans une langue, vous pouvez participer au développement de Casbin. Les nouveaux contributeurs sont toujours les bienvenus.
+
+À l'heure actuelle, il existe principalement deux types de projets.
+
+* **Algorithmes orientés**— Premier type de projets sont des projets liés à des algorithmes pour différentes implémentations de langage, inclut la plupart des langages de programmation courants allant de Golang, Java, C++ à Elixir, Dart et Rust, et leurs produits périphériques.
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| prêt à la production                                                 | prêt à la production                                              | prêt à la production                                                      | prêt à la production                                                   |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rouille](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                       |
+| prêt à la production                                                   | prêt à la production                                                     | prêt à la production                                               | prêt à la production                                                   |
+
+* **Application orientée**— Deuxième type de projets sont des projets liés à des applications.
+
+| Projet                                                   | Démo                                        | Détails du produit                                                                                                                   | Pile de compétences                          |
+| -------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| [Porte de caisse](https://github.com/casdoor/casdoor)    | [Porte de caisse](https://casdoor.org/)     | Casdoor est la première plateforme centralisée d'authentification UI/Single Sign-On (SSO) basée sur OAuth 2.0 / OIDC                 | JavaScript + React et Golang + Beego + SQL   |
+| [Casnode](https://github.com/casbin/casnode)             | [Forum de Casbin](https://forum.casbin.com) | Casnode est la prochaine génération de logiciels de forum                                                                            | JavaScript + React et Golang + Beego + SQL   |
+| [Casbin OA](https://github.com/casbin/casbin-oa)         | [OA system](https://oa.casbin.com)          | Casbin-OA est un système officiel de traitement, d'évaluation et d'affichage des manuscrits pour les rédacteurs techniques de Casbin | JavaScript + React et Golang + Beego + MySQL |
+| [Casbin Editor](https://github.com/casbin/casbin-editor) | [Casbin Editor](https://editor.casbin.org)  | L'éditeur Casbin est un modèle et un éditeur de politique Casbin basé sur le Web                                                     | TypeScript + React                           |
+
+## Impliquez-vous
+
+Il y a plusieurs façons de contribuer à Casbin, voici quelques idées pour commencer:
+
+* **Utilisez Casbin et signalez des problèmes !** Lorsque vous utilisez Casbin, rapportez des problèmes pour promouvoir le développement de Casbin, peu importe les bugs ou les propositions. Before file an issue on GitHub, it would be better to discuss first on [Discord](https://discord.com/invite/qteNGWt8UY) or [GitHub Discussions](https://github.com/casbin/casbin/discussions)
+
+  > Remarque : Lorsque vous signalez un problème, veuillez utiliser l'anglais pour décrire les détails de votre problème.
+
+* **Aide avec la documentation !** Contribuer à partir de la documentation est un bon choix pour commencer votre contribution.
+
+* **Aidez à résoudre les problèmes !** Nous préparons une table contenant des tâches faciles pour les débutants, avec différents niveaux de défis étiquetés avec différentes balises, consultez la table [ici](https://github.com/orgs/casbin/projects/2).
+
+## Demandes de tirage
+
+Casbin utilise GitHub comme plate-forme de développement. Les pull requests sont donc la principale source de contributions.
+
+Il y a quelque chose que vous devez savoir avant d'ouvrir une pull request :
+
+* Expliquez pourquoi vous envoyez cette RP et ce que cette RP ferait au dépôt.
+
+* Assurez-vous que le RP ne fait qu'une chose, sinon s'il vous plaît le diviser.
+
+* S'il y a des fichiers nouvellement ajoutés, veuillez inclure la licence Casbin en haut du ou des nouveaux fichiers.
+
+  ```
+  // Copyright 2021 The casbin Auteurs. Tous droits réservés.
+  //
+  // Sous licence Apache, Version 2. (la "Licence");
+  // vous ne pouvez pas utiliser ce fichier sauf en conformité avec la Licence.
+  // Vous pouvez obtenir une copie de la licence à
+  //
+  // http://www.apache.org/licenses/LICENSE-2.
+  //
+  // Sauf disposition de la loi applicable ou convenue par écrit, le logiciel
+  // distribué sous la Licence est distribué sur une base "TEL QUEL",
+  // SANS GARANTIE NI CONDITIONS DE QUELQUE NATURE QUE CE SOIT, explicite ou implicite.
+  // Voir la licence pour la langue spécifique régissant les permissions et les limitations
+  // sous la licence.
+  ```
+
+* Dans [Casdoor](https://github.com/casdoor/casdoor), [Casnode](https://github.com/casbin/casnode) et [Casbin OA](https://github.com/casbin/casbin-oa), vous pourriez avoir besoin de configurer la démo pour montrer au mainteneur que votre pull request aide au développement du projet.
+
+* Lorsque vous ouvrez des relations publiques et engagez votre contribution, il serait préférable d'utiliser les engagements sémantiques, format : `<type>(<scope>): <subject>`, `<scope>` est facultatif. Pour une utilisation plus détaillée, veuillez consulter [commit conventionnel](https://www.conventionalcommits.org/en/v1.0.0/)
+
+## Licence
+
+En contribuant à Casbin, vous acceptez que vos contributions soient sous licence Apache.

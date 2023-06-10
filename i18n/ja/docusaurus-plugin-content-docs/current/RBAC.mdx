@@ -1,0 +1,106 @@
+---
+id: rbac
+title: RBAC
+description: Casbin RBAC usage
+keywords:
+  - RBAC
+  - role definition
+  - role hierarchy
+authors:
+  - hsluoyz
+---
+
+## 役割の定義
+
+`[role_definition]` は、RBAC ロール継承関係の定義です。 Casbinは複数のRBACシステムをサポートしています。例えば、 ユーザーはロールと継承関係を持つことができ、リソースにはロールと継承関係も持つことができます。 この2つのRBACシステムは干渉しません。
+
+このセクションは任意です。 モデルでRBACロールを使用しない場合は、このセクションを省略してください。
+
+```ini
+[role_definition]
+g = _, _
+g2 = _, _
+```
+
+上記のロール定義は、 `g` が RBAC システムであり、 `g2` が RBAC システムであることを示しています。 `_, _` は継承関係の中に二つの関係があることを意味します。 一般的なケースとして、ユーザーにロールが必要な場合は `g` だけを使用します。  ユーザとリソースの両方でロール(またはグループ)が必要な場合は、 `g` と `g2` を使用することもできます。 例については [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) および [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) を参照してください。
+
+Casbin は、実際のユーザーロールマッピング(または、リソースにロールを使用している場合はリソースロールマッピング)をポリシー内に格納します。例:
+
+```
+p, data2_admin, data2, read
+g, alice, data2_admin
+```
+
+これは、 `alice` を継承する/ロール `data2_admin` のメンバーであることを意味します。 `alice` はユーザー、リソース、またはロールであることができます。 Casbinは文字列としてのみ認識します。
+
+次に、マッチャーでは、次のように役割を確認する必要があります。
+
+```ini
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+これは、リクエスト内の `サブ` を意味し、ポリシー内でロール `サブ` を持つ必要があります。
+
+:::note
+
+1. Casbin にはユーザーのロールマッピングのみが保存されます。
+2. Casbin は、ユーザーが有効なユーザーであるか、またはロールが有効なロールであるかどうかを検証しません。 それは認証によって処理されるべきである。
+3. Casbinはユーザーとロールを文字列として認識しているため、RBACシステム内で同じ名前とロールを使用しないでください そして、Casbinがユーザー `アリス` かロール `アリス`を指定しているかどうかを知る方法はありません。 `role_alice` を使用するだけで解決できます。
+4. If `A` has role `B`, `B` has role `C`, then `A` has role `C`. この遷移は今のところ無限です。
+
+:::
+
+:::info Token name convention
+
+Conventionally subject token name in policy definition is `sub` and placed in the beginning. Now Golang Casbin supports customized token name & place. If the subject token name is `sub`, the subject token can be placed at an arbitrary place and no extra action needs.  If the subject token name is not `sub` , `e.SetFieldIndex()` for `constant.SubjectIndex` should be called after the enforcer is initialized regardless of its position.
+```ini
+# `subject` here for sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+e.SetFieldIndex("p", constant.SubjectIndex, 2) // index start from 0
+ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an error
+```
+
+:::
+
+## ロール階層型
+
+Casbin's RBAC supports RBAC1's role hierarchy feature, meaning if `alice` has `role1`, `role1` has `role2`, then `alice` will also have `role2` and inherit its permissions.
+
+階層レベルという概念があります つまり、この例の階層レベルは2です。 Casbinのビルトインロールマネージャでは、最大階層レベルを指定できます。 デフォルト値は 10 です。 これは、 `alice` のようなエンドユーザーが、10レベルのロールしか継承できないことを意味します。
+
+```go
+// NewRoleManager is the constructor for creating an instance of the
+// default RoleManager 実装.
+func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
+    rm := RoleManager{}
+    rm.allRoles = &sync.Map{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm.hasPattern = false
+
+    return &rm
+}
+```
+
+## ユーザーと役割を区別する方法は？
+
+CasbinはRBACのロールとユーザーを区別しません。 これらはすべて文字列として扱われます。 単一レベルのRBACのみを使用する場合(ロールは別のロールのメンバーになることはありません)。 `e.GetAllSubjects()` を使用してすべてのユーザーを取得し、 `e.GetAllRoles()` を使用してすべてのロールを取得することができます。 これらは `u` と `r` のすべてを、それぞれ `g, u, r` のすべてのルールにリストします。
+
+ただし、マルチレベルRBAC(ロール階層付き)を使用している場合。 また、アプリケーションでは、名前(文字列)がユーザーかロールか、同じ名前のユーザーとロールがあるかどうかは記録されません。 Casbin に渡す前に、 `role::admin` のようなロールにプレフィックスを追加することができます。 このプレフィックスをチェックすることで、役割があるかどうかを知ることができます。
+
+## 暗黙のロールまたは権限を問い合わせる方法は?
+
+ユーザーがRBAC階層を介してロールまたは権限を継承した場合、ポリシールールに直接割り当てるのではありません。 このような課題を `暗黙的`と呼びます。 そのような暗黙の関係を照会するには `GetImplicitRolesForUser()` と `GetImplicitPermissionsForUser()` の代わりに `GetRolesForUser()` と `GetPermissionsForUser()` を使用する必要があります。 詳細については、 [この GitHub Issue](https://github.com/casbin/casbin/issues/137) を参照してください。
+
+## RBACでパターンマッチングを使用
+
+[パターン付きRBAC](/docs/rbac-with-pattern) を参照
+
+## ロールマネージャー
+
+詳細は [ロール マネージャー](/docs/role-managers) のセクションを参照してください。
+

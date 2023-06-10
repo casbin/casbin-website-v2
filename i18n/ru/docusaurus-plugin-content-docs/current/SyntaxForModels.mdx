@@ -1,0 +1,387 @@
+---
+id: syntax-for-models
+title: Синтаксис для моделей
+description: Syntax for Models
+keywords:
+  - syntax
+authors:
+  - nodece
+---
+
+
+
+- Модель CONF должна иметь по крайней мере четыре раздела: `[request_definition], [policy_definition], [policy_effect], [matchers]`.
+
+- Если модель использует RBAC, следует добавить раздел `[role_definition]`.
+
+- Модель CONF может содержать комментарии. Комментарии начинаются с `#`, и `#` будет комментировать остальную строку.
+
+## Определение запроса
+
+`[request_definition]` это определение для запроса доступа. Она определяет аргументы в функции `e.Enforce(...)`.
+
+```ini
+[request_definition]
+r = sub, obj, акт
+```
+
+`sub, obj, act` представляет классический тройник: доступ к сущности (Subject), доступным ресурсу (Object) и методу доступа (Action). Однако вы можете настроить свою собственную форму запроса, например `sub, действовать` , если вам не нужно указывать конкретный ресурс, или `sub, sub2, obj, поступать` если у вас есть два доступных объекта.
+
+## Определение политики
+
+`[policy_definition]` является определением политики. В нем дается определение значения политики. Например, у нас есть следующая модель:
+
+```ini
+[policy_definition]
+p = sub, obj, act
+p2 = sub, act
+```
+
+И у нас есть следующая политика (если в файле политики)
+
+```
+p, alice, data1, read
+p2, bob, write-all-objects
+```
+
+Каждая строка в политике называется правилом политики. Каждое правило политики начинается с типа ``, например `p`, `p2`. Он используется для соответствия политическому определению при наличии нескольких определений. Вышеуказанная политика свидетельствует о нижеследующих обязательствах. Привязка может быть использована в матче.
+
+```
+(alice, data1, read) -> (p.sub, p.obj, p.act)
+(bob, write-all-objects) -> (p2.sub, p2.act)
+```
+
+:::tip
+
+Элементы правила политики всегда рассматриваются как`строка`. Если у вас есть какие-либо вопросы по этому вопросу, пожалуйста, смотрите обсуждение по адресу https://github.com/casbin/casbin/issues/113
+
+:::
+
+## Стратегический эффект
+
+`[policy_effect]` это определение для политического эффекта. Она определяет, должен ли запрос на доступ быть одобрен, если несколько правил политики соответствуют запросу. Например, одно правило разрешает и другое отрицает.
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow))
+```
+
+Вышеприведенный политический эффект означает, если существует какое-либо соответствующее правило политики `позволяющее`, окончательный эффект `разрешить` (aka allow-override). `p.eft` является эффектом для политики, он может быть `разрешить` или `отрицать`. Это необязательно, и значение по умолчанию `разрешить`. Так как мы не указали выше, он использует значение по умолчанию.
+
+Другим примером политического эффекта является:
+
+```ini
+[policy_effect]
+e = !some(where (p.eft == deny))
+```
+
+Это означает, что если не соответствует правилам`отрицать`, окончательный эффект `позволяет` (aka deny-override). `некоторые` означают: если существует одно соответствующее правило политики. `любые` означают: все соответствующие правила политики (не используются здесь). Эффект политики может быть даже связан с логическими выражениями:
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+```
+
+Это означает, что по крайней мере одно соответствующее правило`разрешает`, и не существует соответствующее правило политики`отрицает`. Так что таким образом поддерживаются как разрешение, так и отказ в разрешениях, и отказ от разрешений.
+
+::note
+
+Хотя мы разработали синтаксис эффекта политики, как и выше, нынешние разработки используют только жесткий код политики воздействия, Поскольку мы обнаружили, что такой гибкости нет необходимости. Так что на данный момент вы должны использовать один из встроенных эффектов политики, а не настраивать свой собственный эффект.
+
+:::
+
+К числу поддерживаемых встроенных политических последствий относятся:
+
+| Стратегический эффект                                        | Значение                 | Пример                                                       |
+| ------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------ |
+| some(where (p.eft == allow))                                 | переопределить           | [ACL, RBAC, и т.д.](/docs/supported-models#examples)         |
+| !some(where (p.eft == deny))                                 | запретить                | [Запретить переопределение](/docs/supported-models#examples) |
+| some(where (p.eft == allow)) && !some(where (p.eft == deny)) | разрешить и запретить    | [Замедлить и запретить](/docs/supported-models#examples)     |
+| priority(p.eft) &#124;&#124; deny                            | приоритет                | [Приоритет](/docs/supported-models#examples)                 |
+| subjectPriority(p.eft)                                       | приоритет на основе роли | [Предмет - Приоритет](/docs/supported-models#examples)       |
+
+## Матчеры
+
+`[matchers]` является определением для политических соответствий. Матчеры - это выражения. Она определяет, как оцениваются правила политики по отношению к запросу.
+
+```ini
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+Вышеупомянутый матч прост, это означает, что тема, объект и действие в запросе должны соответствовать правилам политики.
+
+Вы можете использовать арифметические `+, -, *, /` и логические операторы, такие как `&&, |, !` в вычислениях.
+
+### Orders of expressions in matchers
+The order of expressions can greatly affect performance. Look at the following example for details:
+
+```go
+const rbac_models = `
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+
+func TestManyRoles(t *testing.T) {
+
+    m, _ := model.NewModelFromString(rbac_models)
+    e, _ := NewEnforcer(m, false)
+
+    roles := []string{"admin", "manager", "developer", "tester"}
+
+    // 2500 projects
+    for nbPrj := 1; nbPrj < 2500; nbPrj++ {
+        // 4 objects and 1 role per object (so 4 roles)
+        for _, role := range roles {
+            roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
+            objectDB := fmt.Sprintf("/projects/%d", nbPrj)
+            e.AddPolicy(roleDB, objectDB, "GET")
+        }
+        jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
+        e.AddGroupingPolicy("jasmine", jasmineRole)
+    }
+
+    e.AddGroupingPolicy("abu", "manager_project:1")
+    e.AddGroupingPolicy("abu", "manager_project:2499")
+
+    // With same number of policies
+    //  User 'abu' has only two roles
+    //  User 'jasmine' has many roles (1 role per policy, here 2500 roles)
+
+    request := func(subject, object, action string) {
+        t0 := time.Now()
+        resp, _ := e.Enforce(subject, object, action)
+        tElapse := time.Since(t0)
+        t.Logf("RESPONSE %-10s %s\t %s : %5v IN: %+v", subject, object, action, resp, tElapse)
+        if tElapse > time.Millisecond*100 {
+            t.Errorf("More than 100 milliseconds for %s %s %s : %+v", subject, object, action, tElapse)
+        }
+    }
+
+    request("abu", "/projects/1", "GET")        // really fast because only 2 roles in all policies and at the beginning of the casbin_rule table
+    request("abu", "/projects/2499", "GET")     // fast because only 2 roles in all policies
+    request("jasmine", "/projects/1", "GET")    // really fast at the beginning of the casbin_rule table
+
+    request("jasmine", "/projects/2499", "GET") // slow and fail the only 1st time   <<<< pb here
+    request("jasmine", "/projects/2499", "GET") // fast maybe due to internal cache mechanism
+
+    // same issue with non-existing roles
+    // request("jasmine", "/projects/999999", "GET") // slow fail the only 1st time   <<<< pb here
+    // request("jasmine", "/projects/999999", "GET") // fast maybe due to internal cache mechanism
+}
+```
+The enforce time may be very very long, up to 6 seconds
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+
+=== RUN   TestManyRoles
+    rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
+    rbac_api_test.go:598: RESPONSE abu        /projects/2499     GET :  true IN: 39.005173ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/1        GET :  true IN: 1.774319ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.164071648s
+    rbac_api_test.go:600: More than 100 milliseconds for jasmine /projects/2499 GET : 6.164071648s
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
+--- FAIL: TestManyRoles (6.24s)
+FAIL
+FAIL    github.com/casbin/casbin/v2     6.244s
+FAIL
+```
+
+However, if we can adjust the order of the expressions in matchers, and put more time-consuming expressions like functions behind, the execution time will be very short. Changing the order of expressions in matchers in the above example to
+```ini
+[matchers]
+m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
+```
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+=== RUN   TestManyRoles
+    rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
+    rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/1        GET :  true IN: 2.908534ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 7.292963ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
+--- PASS: TestManyRoles (0.05s)
+PASS
+ok      github.com/casbin/casbin/v2     0.053s
+```
+## Несколько разделов типа
+
+Если вам нужны несколько определений политики или несколько матчей, вы можете использовать такие определения, как `p2`, `m2`. Фактически, все из вышеперечисленных четырех разделов могут использовать несколько типов, а синтаксис `r`+number, такие как `r2`, `e2`. По умолчанию эти четыре секции должны соответствовать одному из них. Например, ваш `r2` будет использовать только матч `m2` для соответствия политикам `p2`.
+
+Вы можете передать в `EnforceContext` в качестве первого параметра `принудительного применения` метода для указания типов, `EnforceContext` это как
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+EnforceContext{"r2","p2","e2","m2"}
+type EnforceContext struct {
+    RType string
+    PType string
+    EType string
+    MType string
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const enforceContext = new EnforceContext('r2', 'p2', 'e2', 'm2');
+class EnforceContext {
+  constructor(rType, pType, eType, mType) {
+    this.pType = pType;
+    this.eType = eType;
+    this.mType = mType;
+    this.rType = rType;
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+EnforceContext enforceContext = new EnforceContext("2");
+public class EnforceContext {
+    private String pType;
+    private String eType;
+    private String mType;
+    private String rType;
+    public EnforceContext(String suffix) {
+      this.pType = "p" + suffix;
+      this.eType = "e" + suffix;
+      this.mType = "m" + suffix;
+      this.rType = "r" + suffix;
+    }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Пример использования, см. [модель](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) и [политика](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv), запрос приводится следующим образом
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+// Передача в суффикс параметра NewEnforceContext,such as 2 or 3 и создаёт r2,p2,p2,etc..
+enforceContext := NewEnforceContext("2")
+// You can also specify a certain type individually
+enforceContext.EType = "e"
+// Don't pass in EnforceContext,the default is r,p,e,m
+e.Enforce("alice", "data2", "read")     // true
+// pass in EnforceContext
+e.Enforce(enforceContext, struct{ Age int }{Age: 70}, "/data1", "read")     //false
+e.Enforce(enforceContext, struct{ Age int }{Age: 30}, "/data1", "read")     //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+
+// Передача в суффикс параметра NewEnforceContext,such as 2 or 3 и создаёт r2,p2,p2,etc..
+const enforceContext = new NewEnforceContext('2');
+
+// You can also specify a certain type individually
+enforceContext.eType = "e"
+
+// Don't pass in EnforceContext,the default is r,p,e,m
+e.Enforce("alice", "data2", "read")     // true
+
+// pass in EnforceContext
+e.Enforce(enforceContext, {Age: 70}, "/data1", "read")      //false
+e.Enforce(enforceContext, {Age: 30}, "/data1", "read")      //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+// Передайте в суффикс параметр NewEnforceContext,such as 2 or 3 и он создаст r2, p2 и т.д..
+EnforceContext enforceContext = new EnforceContext("2");
+// Вы также можете указать определенный тип
+принудительного контекста. eteType("e");
+// Don't pass in EnforceContext, the default is r, p, e, m
+e. nforce("alice", "data2", "read"); // true
+// Pass in EnforceContext
+// TestEvalRule находится в https://github. om/casbin/jcasbin/blob/master/src/test/java/org/casbin/jcasbin/main/AbacAPIUnitTest.java#L56
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 70), "/data1", "read"); // false
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1", "read"); // true // true // true
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Special Grammer
+
+Вы также можете использовать `в`, единственный оператор с текстовым именем. Этот оператор проверяет правый массив на наличие значения, равного значению левой стороны. Равенство определяется использованием == оператора, и эта библиотека не проверяет типы между значениями. Любые два значения при передаче на интерфейс{}, и все равно могут быть проверены на равенство с == будет действовать как ожидалось. Обратите внимание, что вы можете использовать параметр массива, но он должен быть `[]интерфейсом{}`.
+
+Также ссылаются на [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf) и [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf)
+
+Например:
+```ini
+[request_definition]
+r = sub, obj
+...
+[matchers]
+m = r.sub.Name in (r.obj.Admins)
+```
+
+```go
+e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice", "bob"}})
+```
+
+## Исполнитель выражения
+
+Оценка совпадений в Casbin осуществляется оценщиками выражений на каждом языке. Касбин объединяет свои возможности для обеспечения единого PERM языка. Кроме того, предложенный здесь синтаксис модели эти выражения могут обеспечить дополнительную функциональность, которая может не поддерживаться другим языком или реализацией. Используйте его на свой страх и риск.
+
+Оценщики выражений, используемые каждой реализацией Casbin являются:
+
+| Осуществление | Язык    | Expression evaluator                                                                               |
+| ------------- | ------- | -------------------------------------------------------------------------------------------------- |
+| Casbin        | Golang  | https://github.com/Knetic/govaluate                                                                |
+| jCasbin       | Java    | https://github.com/killme2008/aviator                                                              |
+| Node-Casbin   | Node.js | https://github.com/donmccurdy/expression-eval                                                      |
+| PHP-Casbin    | PHP     | https://github.com/symfony/expression-language                                                     |
+| PyCasbin      | Python  | https://github.com/danthedeckie/simpleeval                                                         |
+| Casbin.NET    | C#      | https://github.com/davideicardi/DynamicExpresso                                                    |
+| Casbin4D      | Дельфи  | https://github.com/casbin4d/Casbin4D/tree/master/SourceCode/Common/Third%20Party/TExpressionParser |
+| casbin-rs     | Ржава   | https://github.com/jonathandturner/rhai                                                            |
+| casbin-cpp    | К++     | https://github.com/ArashPartow/exprtk                                                              |
+
+::note
+
+Если вы столкнетесь с проблемой производительности Касбина, это, вероятно, вызвано низкой эффективностью оценщика выражений. Вы можете послать запрос Касбину или вычислитель выражений непосредственно для советов по ускорению. Подробности смотрите в разделе [Бенчмаркеты](/docs/benchmark).
+
+:::

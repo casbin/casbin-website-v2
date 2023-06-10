@@ -1,0 +1,227 @@
+---
+id: log-error
+title: Log- & Fehlerbehandlung
+description: Casbin log & error handling
+keywords:
+  - log
+  - error
+  - error handling
+authors:
+  - hsluoyz
+---
+
+
+
+## Protokollierung
+
+Kasbin verwendet das eingebaute `Log` um Logs standardmäßig auf die Konsole zu drucken, wie:
+
+```log
+2017/07/15 19:43:56 [Anfrage: alice, data1, lesen Sie ---> true]
+```
+
+Die Protokollierung ist standardmäßig nicht aktiviert. Sie können es über `Enforcer.EnableLog()` oder den letzten Parameter von `NewEnforcer()` umschalten.
+
+:::note
+
+Wir unterstützen bereits die Protokollierung des Modells, Forderung, Rolle, Politik in Golang. Sie können Ihr eigenes Log für die Protokollierung von Casbin festlegen. Wenn du Python verwendest, nutzt Pycasbin den standardmäßigen Python-Logging-Mechanismus. Das pycasbin-Paket ruft auf logging.getLogger() auf, um den Logger zu setzen. Eine spezielle Protokollkonfiguration wird außer der Initialisierung des Loggers in der übergeordneten Anwendung benötigt. Wenn keine Protokollierung innerhalb der übergeordneten Anwendung intiliziert ist, werden keine Logmeldungen von pycasbin angezeigt.
+
+:::
+
+### Verwende verschiedene Protokolle für unterschiedliche Durchsetzer
+
+Jeder Vollstrecker kann seinen eigenen Logger haben, der Informationen protokolliert und zur Laufzeit geändert werden kann.
+
+Und Sie können einen richtigen Logger über den letzten Parameter von `NewEnforcer()`verwenden, wenn Sie auf diese Weise Ihre Durchsetzung initialisieren, Sie müssen den aktivierten Parameter nicht verwenden, da die Priorität des aktivierten Feldes im Logger höher ist.
+
+```go
+// Standardlogger als Enforcer e1 Logger festlegen.
+// Dieser Vorgang kann auch als Änderung des Loggers von e1 zur Laufzeit angesehen werden.
+e1.SetLogger(&Log.DefaultLogger{})
+
+// Einen anderen Logger als Enforcer e2's Logger setzen.
+e2.SetLogger(&YouOwnLogger)
+
+// Legen Sie Ihren Logger fest, wenn Sie den Durchsetzer e3 initialisieren.
+e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
+```
+
+#### Unterstützte Logger
+
+Wir stellen Ihnen einige Logger zur Verfügung, die Ihnen beim Loggen helfen.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Logger                                                                                            | Autor  | Beschreibung                                                                                                                         |
+| ------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| [Standard Logger (eingebaut)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | Der Standard-Logger mit golang-Log.                                                                                                  |
+| [Zap logger](https://github.com/casbin/zap-logger)                                                | Casbin | Verwende [zap](https://github.com/uber-go/zap), gib json kodiertes Log an und du kannst mehr mit deinem eigenen zap-logger anpassen. |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Logger                                                          | Autor  | Beschreibung                                                             |
+| --------------------------------------------------------------- | ------ | ------------------------------------------------------------------------ |
+| [psr3-bridge Logger](https://github.com/php-casbin/psr3-bridge) | Casbin | Bietet eine [PSR-3](https://www.php-fig.org/psr/psr-3/) konforme Brücke. |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### Wie man einen Logger schreibt
+
+Ihr Logger sollte die [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20) Schnittstelle implementieren.
+
+| Methode       | Typ       | Beschreibung                                              |
+| ------------- | --------- | --------------------------------------------------------- |
+| EnableLog()   | mandatory | Legen Sie fest, ob die Nachricht gedruckt wird.           |
+| Isaktiviert() | mandatory | Zeigt den aktuellen Status des Loggers an.                |
+| LogModel()    | mandatory | Login-Informationen zum Modell.                           |
+| LogEnforce()  | mandatory | Login-Informationen im Zusammenhang mit der Durchsetzung. |
+| LogRole()     | mandatory | Log-Info in Bezug auf die Rolle.                          |
+| LogPolicy()   | mandatory | Log-Informationen in Bezug auf Richtlinien.               |
+
+
+Sie können Ihren benutzerdefinierten `-Logger` an `Enforcer.SetLogger()` übergeben.
+
+Hier ist ein Beispiel dafür, wie man einen Logger für Golang anpassen kann:
+
+```go
+import (
+    "fmt"
+    "log"
+    "strings"
+)
+
+// DefaultLogger ist die Implementierung für einen Logger mit golang-Protokoll.
+type DefaultLogger struct {
+    enabled bool
+}
+
+func (l *DefaultLogger) EnableLog(enable bool) {
+    l. nabled = enable
+}
+
+func (l *StandardLogger) IsEnabled() bool {
+    return l.enabled
+}
+
+func (l *Standardlogger) LogModel(model [][]string) {
+    if !l. nabled {
+        return
+    }
+    var str strings.Builder
+    str. riteString("Model: ")
+    für _, v := range model {
+        str. riteString(fmt.Sprintf("%v\n", v))
+    }
+
+    log.Println(str. tring())
+}
+
+func (l *StandardLogger) LogEnforce(Matcher string, request []interface{}, result bool, erklärt [][][]string) {
+    if !l. nabled {
+        return
+    }
+
+    var reqStr strings.Builder
+    reqStr. riteString("Anfrage: ")
+    für i, rval := range request {
+        if i ! len(request)-1 {
+            reqStr. riteString(fmt. printf("%v, ", rval))
+        } else {
+            reqStr. riteString(fmt. printf("%v", rval))
+        }
+    }
+    reqStr. riteString(fmt.Sprintf(" ---> %t\n", result))
+
+    reqStr. riteString("Trefferrichtlinie: ")
+    für i, pval := range erklärt {
+        if i ! len(explains)-1 {
+            reqStr. riteString(fmt. printf("%v, ", pval))
+        } else {
+            reqStr. riteString(fmt. printf("%v \n", pval))
+        }
+    }
+
+    Log. rintln(reqStr. tring())
+}
+
+func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
+    if !l. nabled {
+        return
+    }
+
+    var str strings. uilder
+    str. riteString("Policy: ")
+    für k, v := range policy {
+        str.WriteString(fmt. printf("%s : %v\n", k, v))
+    }
+
+    log.Println(str. tring())
+}
+
+func (l *DefaultLogger) LogRole(roles []string) {
+    if !l. nabled {
+        return
+    }
+
+    log.Println("Rolen: ", Rollen)
+}
+
+```
+
+## Fehlerbehandlung
+
+Fehler oder Panik können auftreten, wenn Sie Casbin aus Gründen wie z. B.:
+
+1. Ungültige Syntax in der Modelldatei (.conf).
+2. Ungültige Syntax in Richtlinien-Datei (.csv).
+3. Benutzerdefinierter Fehler von Speicheradaptern, z. B. MySQL kann sich nicht verbinden.
+4. Casbin's bug.
+
+Es gibt fünf Hauptfunktionen, die Sie für Fehler oder Panik sorgen können:
+
+| Funktion                                                                       | Verhalten bei Fehler |
+| ------------------------------------------------------------------------------ | -------------------- |
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer)        | Retourenfehler       |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel)   | Retourenfehler       |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | Retourenfehler       |
+| [SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | Retourenfehler       |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce)       | Retourenfehler       |
+
+:::note
+
+`NewEnforcer()` ruft `LoadModel()` und `LoadPolicy()` in auf. Sie müssen also die beiden letzten Aufrufe nicht aufrufen, wenn Sie `NewEnforcer()` verwenden.
+
+:::
+
+## & deaktivieren
+
+Der Vollstrecker kann über die Funktion `Enforcer.EnableEnforce()` deaktiviert werden. `Enforcer.Enforce()` wird immer `true` zurückgeben. Andere Operationen wie das Hinzufügen oder Entfernen von Richtlinien sind nicht betroffen. Hier ist ein Beispiel:
+
+```go
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+
+// Gibt Falsch zurück.
+// Standardmäßig ist der Vollstrecker aktiviert.
+e.Enforce("non-authorized-user", "data1", "read")
+
+// // Enforcer zur Laufzeit deaktivieren.
+e.EnableEnforce(false)
+
+// Gibt true für jede Anfrage zurück.
+e.Enforce("non-authorized-user", "data1", "read")
+
+// Aktivieren Sie den Vollstrecker erneut.
+e.EnableEnforce(true)
+
+// Gibt Falsch zurück.
+e.Enforce("non-authorized-user", "data1", "read")
+```

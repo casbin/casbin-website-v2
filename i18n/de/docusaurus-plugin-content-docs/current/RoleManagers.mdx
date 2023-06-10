@@ -1,0 +1,82 @@
+---
+id: role-managers
+title: Rollen-Manager
+description: The role manager is used to manage the RBAC role hierarchy in Casbin
+keywords:
+  - rolemanager
+  - role manager
+authors:
+  - hsluoyz
+---
+
+
+
+Der Rollenmanager wird verwendet, um die RBAC Rollenhierarchie (Benutzerrollenzuordnung) in Casbin zu verwalten. Ein Rollenmanager kann die Rollendaten aus den Regeln der Casbin-Richtlinien oder externen Quellen wie LDAP, Okta, Auth0, Azure AD usw. abrufen. Wir unterstützen verschiedene Implementierungen eines Rollenmanagers. Um das Gewicht gering zu halten, setzen wir den Rollenmanager Code nicht in die Hauptbibliothek (außer den Standard-Rollenmanager). Eine vollständige Liste der Casbin Rollenmanager finden Sie wie unten. Jeder Beitrag von Drittanbietern zu einem neuen Rollenmanager ist willkommen, bitte informieren Sie uns und ich werde ihn in diese Liste setzen:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Rollen-Manager                                                                                                               | Autor                                            | Beschreibung                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Standard Rollenmanager (eingebaut)](https://github.com/casbin/casbin/blob/master/rbac/default-role-manager/role_manager.go) | Casbin                                           | Unterstützt Rollenhierarchie in Casbin-Richtlinien                                                                                                       |
+| [Session-Rollen-Manager](https://github.com/casbin/session-role-manager)                                                     | [EDOMO-Systeme](https://github.com/edomosystems) | Unterstützt Rollenhierarchie in Casbin-Richtlinien mit zeitgesteuerten Sessions                                                                          |
+| [Okta Rollen-Manager](https://github.com/casbin/okta-role-manager)                                                           | Casbin                                           | Unterstützt Rollenhierarchie in [Okta](https://www.okta.com/)                                                                                            |
+| [Auth0 Rollen-Manager](https://github.com/casbin/auth0-role-manager)                                                         | Casbin                                           | Unterstützt Rollenhierarchie in [Auth0](https://auth0.com/)'s [Autorisierungs-Erweiterung](https://auth0.com/docs/extensions/authorization-extension/v2) |
+
+Für Entwickler: Alle Rollenmanager müssen die [RoleManager](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go) Schnittstelle implementieren. [Der Session-Rollen-Manager](https://github.com/casbin/session-role-manager) kann als Referenz-Implementierung verwendet werden.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Rollen-Manager                                                                                                                                    | Autor  | Beschreibung                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------- |
+| [Standard Rollenmanager (eingebaut)](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) | Casbin | Unterstützt Rollenhierarchie in Casbin-Richtlinien |
+
+Für Entwickler: Alle Rollenmanager müssen die [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java) Schnittstelle implementieren. [Standard-Rollenmanager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) kann als Referenzimplementierung verwendet werden.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Rollen-Manager                                                                                                         | Autor  | Beschreibung                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------- |
+| [Standard Rollenmanager (eingebaut)](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) | Casbin | Unterstützt Rollenhierarchie in Casbin-Richtlinien                              |
+| [Session-Rollen-Manager](https://github.com/node-casbin/session-role-manager)                                          | Casbin | Unterstützt Rollenhierarchie in Casbin-Richtlinien mit zeitgesteuerten Sessions |
+
+Für Entwickler: Alle Rollenmanager müssen die [RoleManager](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts) Schnittstelle implementieren. [Standard-Rollenmanager](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) kann als Referenzimplementierung verwendet werden.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Rollen-Manager                                                                                                                         | Autor  | Beschreibung                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------- |
+| [Standard Rollenmanager (eingebaut)](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) | Casbin | Unterstützt Rollenhierarchie in Casbin-Richtlinien |
+
+Für Entwickler: Alle Rollenmanager müssen die [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php) Schnittstelle implementieren. [Standard-Rollenmanager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) kann als Referenzimplementierung verwendet werden.
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Rollen-Manager                                                                                                                        | Autor  | Beschreibung                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------- |
+| [Standard Rollenmanager (eingebaut)](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) | Casbin | Unterstützt Rollenhierarchie in Casbin-Richtlinien |
+
+Für Entwickler: Alle Rollenmanager müssen die [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py) Schnittstelle implementieren. [Standard-Rollenmanager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) kann als Referenzimplementierung verwendet werden.
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+Siehe [API](/docs/rolemanager-api) Abschnitt für Details.

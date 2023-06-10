@@ -1,0 +1,130 @@
+---
+id: rbac-with-pattern
+title: RBAC mit Muster
+description: RBAC with Pattern
+keywords:
+  - RBAC with pattern
+  - pattern matching
+authors:
+  - hsluoyz
+---
+
+
+
+## Schnellstart
+
+- verwende Muster in `g(_,_)`
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+
+- benutze Muster mit Domäne
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+- benutze alle Muster
+
+  nur kombinierte Verwendung von zwei APIs
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` API,  which determine how the pattern matches.
+
+:::note
+
+Wenn Sie den Online-Editor verwenden, gibt er die Funktion Muster übereinstimmend in der unteren linken Ecke an. ![editor-tips](/img/editor-tips.png)
+
+:::
+
+## Verwende Musterpassung in RBAC
+
+Manchmal möchten Sie, dass bestimmte Subjekte, Objekte oder Domänen/Mieter mit dem spezifischen Muster automatisch einer Rolle zugewiesen werden. Dabei helfen Ihnen die Funktionen zum Musterabgleich in RBAC. Eine Funktion teilt die gleichen Parameter und den Rückgabewert wie die vorherige [Trefferfunktion](/docs/syntax-for-models#functions-in-matchers).
+
+Die Pattern-Matching-Funktion unterstützt jeden Parameter von g.
+
+Wir wissen, dass RBAC normalerweise als `g(r.sub, p.sub)` im Matcher ausgedrückt wird. Dann werden wir Richtlinien wie folgt anwenden:
+
+```
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+`Alice` kann also alle Bücher lesen, einschließlich `Buch 1` und `Buch 2`. Aber es kann Tausende von Büchern geben und es ist sehr langweilig, jedes Buch zur Buchrolle (oder zur Gruppe) mit einer `g` Richtlinieregel hinzuzufügen.
+
+Aber mit den Pattern-passenden Funktionen können Sie die Richtlinie mit nur einer Zeile schreiben:
+
+```
+g, /book/:id, book_group
+```
+
+Kasbin passt automatisch `/book/1` und `/book/2` in Muster `/book/:id` für Sie. Sie müssen die Funktion nur beim Vollstrecker registrieren, wie:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Wenn Sie eine Pattern-Matching-Funktion in Domänen/Mietern verwenden, müssen Sie die Funktion registrieren, um das Modell durchzusetzen.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Wenn Sie nicht verstehen, was `g(r.sub, p.sub, r.dom)` bedeutet, lesen Sie bitte [rbac-with-domains](/docs/rbac-with-domains). Kurzum, `g(r.sub, p.sub, r.dom)` wird prüfen, ob der Benutzer `r. ub` hat eine Rolle `p.sub` in der Domäne `r.dom`. So funktioniert der Matcher. Sie können das komplette Beispiel [hier sehen](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
+
+Neben der obigen Pattern-Matching-Syntax können wir auch reine Domain-Muster verwenden.
+
+Zum Beispiel, wenn wir wollen, dass `sub` Zugang in verschiedenen Domänen hat, `domain1` und `domain2`, wir können das reine Domainmuster verwenden:
+
+```
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+In this example, we want `alice` to read and write `data` in domain1 and domain2, pattern matching `*` in `g` makes `alice` have the access to two domains.
+
+Durch Verwendung von Muster-Übereinstimmung, vor allem in den Szenarien, die komplizierter sind und es gibt viele Domänen oder Objekte, die wir berücksichtigen müssen, wir können die `policy_definition` eleganter und effektiver umsetzen.

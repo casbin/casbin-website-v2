@@ -1,0 +1,198 @@
+---
+id: tutorials
+title: Tutoriels
+description: Casbin Tutorials
+keywords:
+  - tutorials
+authors:
+  - hsluoyz
+---
+
+
+
+Avant de lire, veuillez noter que certains tutoriels sont pour le modèle de Casbin et fonctionnent pour toutes les implémentations de Casbin dans différentes langues. D'autres tutoriels sont spécifiques à la langue.
+
+### Nos papiers
+
+- [PML: Un langage de politique de contrôle d'accès par interprétation pour les services Web](https://arxiv.org/abs/1903.09756)
+
+Ce papier creuse profondément dans les détails du design sur Casbin. Veuillez citer le BibTex suivant si vous utilisez Casbin/PML comme référence dans votre article :
+
+```bibtex
+@article{luo2019pml,
+  title={PML: An Interpreter-Based Access Control Policy Language for Web Services},
+  author={Luo, Yang et Shen, Qingni et Wu, Zhonghai},
+  journal={arXiv preprint arXiv:1903.09756},
+  year={2019}
+}
+```
+
+- [Langue de spécification de la politique de contrôle d'accès basée sur Metamodel (en chinois)](http://www.jos.org.cn/1000-9825/5624.htm)
+
+Il s'agit d'un autre document de version plus longue publié dans Journal of Software. La citation pour différents formats (Refworks, EndNote, etc.). peut être trouvé à : [(autre version) Langue de spécification de la politique de contrôle d'accès basée sur Metamodel (en chinois)](https://kns.cnki.net/kcms/detail/Detail.aspx?dbname=CJFDLAST2020&filename=RJXB202002012&v=)
+
+### Vidéos
+
+- [Un coffre sécurisé - implémentant un middleware d'autorisation avec Casbin - JuniorDevSG](https://www.youtube.com/watch?v=OTT84oplR9o)
+- [Partage des permissions utilisateur dans une architecture micro-service basée sur Casbin (en russe)](https://www.youtube.com/watch?v=Z5dUxH4PqYM)
+- [Nest.js - Casbin RESTful autorisation RBAC midleware](https://www.youtube.com/watch?v=mWlPNrCgVdE)
+- [Tutoriel sur le Gin Chapitre 10 : Apprenez les modèles de base Casbin en 30 minutes](https://www.bilibili.com/video/BV1qz4y167XP)
+- [Tutoriel sur le Gin Chapitre 11: Codage, API et fonction personnalisée dans Casbin](https://www.bilibili.com/video/BV13r4y1M7AC)
+- [Gin + Casbin: Permissions d'apprentissage en action (en chinois)](https://www.jtthink.com/course/132)
+- [JCasbin Basics: Un exemple simple de RBAC (en chinois)](https://www.jtthink.com/course/play/2706)
+- [RBAC de Golang basé sur Casbin (en chinois)](https://www.bilibili.com/video/BV1Kf4y1U7iJ)
+- [Gin d'apprentissage + Casbin (1): Ouverture & Aperçu (en chinois)](https://www.bilibili.com/video/BV1bp4y1a7je)
+- [ThinkPHP 5.1 + Casbin: Introduction (en chinois)](https://www.bilibili.com/video/BV1kz4y1Z7vd)
+- [ThinkPHP 5.1 + Casbin: Autorisation RBAC (en chinois)](https://www.bilibili.com/video/BV1A541187M4)
+- [ThinkPHP 5.1 + Casbin: RESTful & Middleware (en chinois)](https://www.bilibili.com/video/BV1uk4y117up)
+- [Démarrage rapide pour PHP-Casbin (en chinois)](https://www.bilibili.com/video/BV1dK4y1L7xy)
+- [ThinkPHP 5.1 + Casbin:Comment utiliser des fonctions personnalisées (en chinois)](https://www.bilibili.com/video/BV1dq4y1Z78g)
+- [Webman + Casbin: Comment utiliser le plugin Webman Casbin (en chinois)](https://www.bilibili.com/video/BV1X34y1Q7ZH)
+
+### Méta-modèle PERM (politique, effets, requête, correspondants)
+
+- [Comprendre Casbin avec différentes configurations de modèles de contrôle d'accès](https://medium.com/wesionary-team/understanding-casbin-with-different-access-control-model-configurations-faebc60f6da5)
+- [Modeling Authorization with PERM in Casbin](https://www.narendraj9.dev/posts/generalized-authz.html)
+- [Concevoir un système de permissions flexible avec Casbin](https://medium.com/silo-blog/designing-a-flexible-permissions-system-with-casbin-f5d97fef17b8)
+- [Autoriser avec les listes de contrôle d'accès](https://medium.com/pragmatic-programmers/authorize-with-access-control-lists-92fbec57a920)
+- [Contrôle d'accès avec PERM et Casbin (en persan)](https://vrgl.ir/npwoy)
+- [RBAC? ABAC? .. PERM! Nouvelle façon d'autoriser les applications et les services Web basés sur le cloud (en russe)](https://habr.com/ru/post/539778/)
+- [Pratiquez & Exemples d'Autorisation Flexible utilisant Casbin & PERM (en russe)](https://habr.com/ru/post/540454/)
+- [Gestion des autorisations avec Casbin (en chinois)](http://www.cnblogs.com/wang_yb/archive/2018/11/20/9987397.html)
+- [Analyse de Casbin (en chinois)](https://www.cnblogs.com/xiaohunshi/p/10372881.html)
+- [Conception des permissions système (en chinois)](https://github.com/xizhibei/blog/issues/101)
+- [Casbin: Un moteur d'autorisation (en chinois)](https://github.com/xizhibei/blog/issues/102)
+- [Mise en œuvre de l'ABAC avec Casbin (en chinois)](https://www.cnblogs.com/studyzy/p/11380736.html)
+- [Analyse du code source de Casbin (en chinois)](https://www.cnblogs.com/yjf512/p/12200206.html)
+- [Évaluation des autorisations avec Casbin (en chinois)](https://cloud.tencent.com/developer/article/1534674)
+- [Casbin: Bibliothèque du jour (en chinois)](https://juejin.im/post/5ee6c93ce51d45787d3484a1)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+### HTTP & RESTful
+
+- [Autorisation HTTP basique basée sur les rôles dans Go with Casbin](https://zupzup.org/casbin-http-role-auth) (ou [traduction chinoise](https://studygolang.com/articles/12323))
+
+### Observateur
+
+- [RBAC Distributed Synchronization via Casbin Watcher (en chinois)](https://hongker.github.io/2021/02/19/golang-rbac-watcher/)
+
+### Beego
+
+- [Utilisation de Casbin avec Beego: 1. Commencer et tester (en chinois)](https://blog.csdn.net/hotqin888/article/details/78460385)
+- [Utilisation de Casbin avec Beego: 2. Stockage des politiques (en chinois)](https://blog.csdn.net/hotqin888/article/details/78571240)
+- [Utilisation de Casbin avec Beego: 3. Requête de politique (en chinois)](https://blog.csdn.net/hotqin888/article/details/78992250)
+- [Utilisation de Casbin avec Beego: 4. Mise à jour de la politique (en chinois)](https://blog.csdn.net/hotqin888/article/details/80032538)
+- [Utilisation de Casbin avec Beego: 5. Mise à jour de la politique (en chinois)](https://blog.csdn.net/hotqin888/article/details/80092285)
+
+### Gin
+
+- [Autorisation dans les projets Golang en utilisant Casbin](https://medium.com/wesionary-team/authorization-in-golang-projects-using-casbin-f8fad744dae5)
+- [Tutorial: Integrate Gin with Casbin](https://dev.to/maxwellhertz/tutorial-integrate-gin-with-cabsin-56m0)
+- [Application des politiques pour les K8s avec pipeline](https://banzaicloud.com/blog/policy-enforcement-k8s/)
+- [Authentification et autorisation dans l'application Gin avec JWT et Casbin](https://medium.com/@tienbm90/authentication-and-authorization-in-gin-application-with-jwt-and-casbin-a56bbbdec90b)
+- [API Backend avec Go: 1. Authentification basée sur JWT (en chinois)](https://studygolang.com/topics/6998)
+- [API Backend avec Go: 2. Autorisation basée sur Casbin (en chinois)](https://studygolang.com/topics/6999)
+- [Utilisation de la bibliothèque d'autorisation de Go Casbin avec Gin et GORM (en japonais)](https://www.zaneli.com/blog/20181203)
+
+### Écho
+
+- [Autorisation Web avec Casbin](http://klotzandrew.com/blog/authorization-with-casbin)
+
+### Iris
+
+- [Iris + Casbin: Pratique pour la gestion des autorisations (en chinois)](https://zxc0328.github.io/2018/05/14/casbin-iris/)
+- [Contrôle d'accès basé sur les rôles pour HTTP basé sur Casbin (en chinois)](https://studyiris.com/example/exper/casbin.html)
+- [Apprendre iris + Casbin à partir de zéro](https://learnku.com/articles/41416)
+
+### Port VMware
+
+- [Casbin: framework de contrôle d'accès Golang (en chinois)](http://www.growingdev.com/articles/2020/01/12/1578838858526.html)
+- [Contrôle d'accès dans le port (en chinois)](http://www.growingdev.com/articles/2020/01/10/1578670203670.html)
+
+### CD Argo
+
+- [RBAC organisationnel à Argo CD avec Casbin](https://argoproj.github.io/argo-cd/operator-manual/rbac/)
+
+### Requin
+
+- [GShark : Analyser facilement et efficacement les informations sensibles dans Github (en chinois)](https://mp.weixin.qq.com/s?__biz=MzI3MjA3MTY3Mw==&mid=2247483770&idx=1&sn=9f02c2803e1c946e8c23b16ff3eba757&chksm=eb396fecdc4ee6fa2f378e846f354f45acf6e6f540cfd54190e9353df47c7707e3a2aadf714f&token=115330850&lang=zh_CN#rd)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+### SpringBoot
+
+- [jCasbin: une solution de gestion des autorisations plus légère (en chinois)](https://blog.csdn.net/waynelee0809/article/details/85702551)
+- [Intégration de jCasbin avec JFinal (en chinois)](http://www.jfinal.com/share/842)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+### Exprimé
+
+- [Comment ajouter un contrôle d'accès basé sur des rôles à votre API HTTP sans serveur sur AWS](https://dev.to/matttyler/how-to-add-role-based-access-control-to-your-serverless-http-api-on-aws-17bk)
+
+### Koa
+
+- [Autorisation avec Casbin et Koa Partie 1](https://dev.to/gerybbg/authorisation-with-casbin-and-koa-part-1-2gh)
+- [Autorisation avec Casbin et Koa partie 2](https://dev.to/gerybbg/authorisation-with-casbin-and-koa-part-2-2io5)
+
+### Nid
+
+- [Comment créer un Middleware d'autorisation basé sur un rôle avec Casbin et Nest.js](https://dev.to/dwipr/how-to-create-role-based-authorization-middleware-with-casbin-and-nest-js-52gm)
+- [nest.js : Casbin RESTful autorisation middleware RBAC (Video)](https://www.youtube.com/watch?v=mWlPNrCgVdE)
+- [Une application de démonstration de contrôle d'accès basé sur des attributs dans Node.js basée sur Casbin](https://github.com/Jarvie8176/casbin-example)
+- [Kit de démarrage multi-locataires SaaS avec architecture microservice graphql cqrs](https://github.com/juicycleff/ultimate-backend)
+
+### Rapidité
+
+- [Contrôle d'accès dans Node.js avec Fastify et Casbin](https://www.nearform.com/blog/access-control-node-js-fastify-and-casbin/)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+- [Casbin, ACL puissante et efficace pour vos projets](http://phpmagazine.net/2018/11/casbin-powerful-and-efficient-acl-for-your-projects.html)
+
+### Laravel
+
+- [Autorisation de Laravel : bibliothèque d'autorisation soutenant l'ACL, RBAC, ABAC et d'autres modèles](https://developpaper.com/laravel-authorization-authorization-library-supporting-acl-rbac-abac-and-other-models/)
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+- [Utiliser Casbin pour l'autorisation dans dotnet](https://krishnamohan.dev/blog/using-casbin-for-authorization-in-dotnet)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+- [Autorisation HTTP basique basée sur des rôles dans Rust avec Casbin](https://www.zupzup.org/rust-casbin-example/)
+- [Comment utiliser l'autorisation casbin dans votre application web rouille [Partie - 1]](https://dev.to/smrpn/how-to-use-casbin-authorization-in-your-rust-web-app-part-1-4f8f)
+- [Comment utiliser l'autorisation casbin dans votre application web rouille [Partie - 2]](https://dev.to/smrpn/how-to-use-casbin-authorization-in-your-rust-web-app-part-2-1bnm)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+### APISIX
+
+- [Autorisation dans APISIX à l'aide de Casbin](https://medium.com/@rushitote/authorization-in-apisix-using-casbin-59b693669d6d)
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

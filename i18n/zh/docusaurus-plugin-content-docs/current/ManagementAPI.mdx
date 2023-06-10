@@ -1,0 +1,3891 @@
+---
+id: management-api
+title: 管理 API
+description: 原始的 API 为Casbin 策略管理提供了充分支持
+keywords:
+  - 管理
+  - 筛选的 API
+authors:
+  - nodece
+---
+
+
+
+提供对Casbin策略管理完全支持的基本API。
+
+## 筛选的 API
+
+几乎所有的带有过滤器的api有着相同的参数 `(fieldIndex int, fieldValues ...string)`. `field index` 是匹配起始点的索引。 `field Value` 表示结果应该有的值。 请注意字段值中的空字符串可以是任意单词。
+
+示例:
+
+```csv
+p, alice, book, read
+p, bob, book, read
+p, bob, book, write
+p, alice, pen, get
+p, bob, pen ,get
+```
+
+```go
+e.GetFilteredPolicy(1, "book") // 将返回：[Alice book read] [bob book read] [bob book write]]
+
+e.GetFilteredPolicy(1, "book", "read") // 将返回: [[Alice book read] [bob book read]]
+
+e.GetFilteredPolicy(0, "Alice", "", "read") // 将返回: [[Alice book read]]
+
+e.GetFilteredPolicy(0, "Alice") // 将返回: [Alice book read] [Alice penge]]
+```
+
+## 参考
+
+全局变量 `e` 是 Enforcer 实例。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforce::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `Enforce()`
+
+Enforce决定“主体”是否能够用“动作”操作访问“对象”，输入参数通常是: (sub, obj, act)。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.Enforce(request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const ok = await e.enforce(request);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$ok = $e->enforcer($request);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok = e.enforcer(request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.enforce(request);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `EnforceWithMatcher()`
+
+EnforceWithMatcher使用自定义匹配器来决定“subject”是否可以通过"action"操作访问“object”， 输入参数通常为：(matcher, sub, obj, act)，在匹配器为""时默认使用模型匹配器。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.EnforceWithMatcher(matcher, request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$ok = $e->enforceWithMatcher($matcher, $request);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok = e.enforce_with_matcher(matcher, request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.enforceWithMatcher(matcher, request);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `EnforceEx()`
+
+EnforceEx 通过通知匹配的规则来解释执行
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, reason, err := e.EnforceEx(request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const ok = await e.enforceEx(request);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+list($ok, $reason) = $e->enforceEx($request);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok, reason = e.enforce_ex(request)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `EnforceExWithMatcher()`
+
+EnforceExWEMatcher 使用自定义匹配器并通过通知匹配的规则来解释强制执行。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, reason, err := e.EnforceExWithMatcher(matcher, request)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `BatchEnforce()`
+
+BatchEnforce 强制执行每个请求并返回一个布尔数组的结果
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllSubjects()`
+
+GetAllSubjects 获取当前策略中显示的主题列表。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allSubjects := e.GetAllSubjects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allSubjects = await e.getAllSubjects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allSubjects = $e->getAllSubjects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_subjects = e.get_all_subjects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allSubjects = e.GetAllSubjects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_subjects = e.get_all_subjects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allSubjects = e.getAllSubjects();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllNamedSubjects()`
+
+GetAllNamedSubjects 获取当前命名策略中显示的主题列表。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allNamedSubjects := e.GetAllNamedSubjects("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allNamedSubjects = await e.getAllNamedSubjects('p')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allNamedSubjects = $e->getAllNamedSubjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_named_subjects = e.get_all_named_subjects("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allNamedSubjects = e.GetAllNamedSubjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_named_subjects = e.get_all_named_subjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allNamedSubjects = e.getAllNamedSubjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllObjects()`
+
+GetAllObjects 获取当前策略中显示的对象列表。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allObjects := e.GetAllObjects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allObjects = await e.getAllObjects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allObjects = $e->getAllObjects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_objects = e.get_all_objects()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allObjects = e.GetAllObjects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_objects = e.get_all_objects();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allObjects = e.getAllObjects();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllNamedObjects()`
+
+GetAllNamedObjects 获取当前命名策略中显示的对象列表。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allNamedObjects := e.GetAllNamedObjects("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allNamedObjects = await e.getAllNamedObjects('p')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allNamedObjects = $e->getAllNamedObjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_named_objects = e.get_all_named_objects("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allNamedObjects = e.GetAllNamedObjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_named_objects = e.get_all_named_objects("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allNamedObjects = e.getAllNamedObjects("p");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllActions()`
+
+GetAllActions 获取当前策略中显示的操作列表。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allActions := e.GetAllActions()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allActions = await e.getAllActions()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allActions = $e->getAllActions();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_actions = e.get_all_actions()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allActions = e.GetAllActions();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_actions = e.get_all_actions();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allActions = e.getAllActions();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllNamedActions()`
+
+GetAllNamedActions 获取当前命名策略中显示的操作列表。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allNamedActions := e.GetAllNamedActions("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allNamedActions = await e.getAllNamedActions('p')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allNamedActions = $e->getAllNamedActions("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_named_actions = e.get_all_named_actions("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allNamedActions = e.GetAllNamedActions("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_named_actions = e.get_all_named_actions("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allNamedActions = e.getAllNamedActions("p");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllRoles()`
+
+GetAllRoles获取当前策略中显示的角色列表。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```
+allRoles = e.GetAllRoles()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allRoles = await e.getAllRoles()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allRoles = $e->getAllRoles();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_roles = e.get_all_roles()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allRoles = e.GetAllRoles();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_roles = e.get_all_roles();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allRoles = e.getAllRoles();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllNamedRoles()`
+
+GetAllNamedRoles 获取当前命名策略中显示的角色列表。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+allNamedRoles := e.GetAllNamedRoles("g")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const allNamedRoles = await e.getAllNamedRoles('g')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$allNamedRoles = $e->getAllNamedRoles('g');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+all_named_roles = e.get_all_named_roles("g")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var allNamedRoles = e.GetAllNamedRoles("g");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let all_named_roles = e.get_all_named_roles("g");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> allNamedRoles = e.getAllNamedRoles("g");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetPolicy()`
+
+GetPolicy 获取策略中的所有授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+policy = e.GetPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const policy = await e.getPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$policy = $e->getPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+policy = e.get_policy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var policy = e.GetPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let policy = e.get_policy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> policy = e.getPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `GetFilteredPolicy()`
+
+GetFilteredPolicy 获取策略中的所有授权规则，可以指定字段筛选器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+filteredPolicy := e.GetFilteredPolicy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const filteredPolicy = await e.getFilteredPolicy(0, 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$filteredPolicy = $e->getFilteredPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+filtered_policy = e.get_filtered_policy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var filteredPolicy = e.GetFilteredPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let filtered_policy = e.get_filtered_policy(0, vec!["alice".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> filteredPolicy = e.getFilteredPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedPolicy()`
+
+GetNamedPolicy 获取命名策略中的所有授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+namedPolicy := e.GetNamedPolicy("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const namedPolicy = await e.getNamedPolicy('p')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$namedPolicy = $e->getNamedPolicy("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+named_policy = e.get_named_policy("p")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var namedPolicy = e.GetNamedPolicy("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let named_policy = e.get_named_policy("p");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> namedPolicy = e.getNamedPolicy("p");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### `GetFilteredNamedPolicy()`
+
+GetFilteredNamedPolicy 获取命名策略中的所有授权规则，可以指定字段过滤器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const filteredNamedPolicy = await e.getFilteredNamedPolicy('p', 0, 'bob')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$filteredNamedPolicy = $e->getFilteredNamedPolicy("p", 0, "bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+filtered_named_policy = e.get_filtered_named_policy("p", 0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let filtered_named_policy = e.get_filtered_named_policy("p", 0, vec!["bob".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> filteredNamedPolicy = e.getFilteredNamedPolicy("p", 0, "bob");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetGroupingPolicy()`
+
+GetGroupingPolicy 获取策略中的所有角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+groupingPolicy := e.GetGroupingPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const groupingPolicy = await e.getGroupingPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$groupingPolicy = $e->getGroupingPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+grouping_policy = e.get_grouping_policy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var groupingPolicy = e.GetGroupingPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let grouping_policy = e.get_grouping_policy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> groupingPolicy = e.getGroupingPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetFilteredGroupingPolicy()`
+
+GetFilteredGroupingPolicy 获取策略中的所有角色继承规则，可以指定字段筛选器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const filteredGroupingPolicy = await e.getFilteredGroupingPolicy(0, 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$filteredGroupingPolicy = $e->getFilteredGroupingPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+filtered_grouping_policy = e.get_filtered_grouping_policy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var filteredGroupingPolicy = e.GetFilteredGroupingPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let filtered_grouping_policy = e.get_filtered_grouping_policy(0, vec!["alice".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> filteredGroupingPolicy = e.getFilteredGroupingPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedGroupingPolicy()`
+
+GetNamedGroupingPolicy 获取策略中的所有角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+namedGroupingPolicy := e.GetNamedGroupingPolicy("g")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const namedGroupingPolicy = await e.getNamedGroupingPolicy('g')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$namedGroupingPolicy = $e->getNamedGroupingPolicy("g");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+named_grouping_policy = e.get_named_grouping_policy("g")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var namedGroupingPolicy = e.GetNamedGroupingPolicy("g");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let named_grouping_policy = e.get_named_grouping_policy("g");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> namedGroupingPolicy = e.getNamedGroupingPolicy("g");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetFilteredNamedGroupingPolicy()`
+
+GetFilteredNamedGroupingPolicy 获取策略中的所有角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const namedGroupingPolicy = await e.getFilteredNamedGroupingPolicy('g', 0, 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$namedGroupingPolicy = $e->getFilteredNamedGroupingPolicy("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+named_grouping_policy = e.get_filtered_named_grouping_policy("g", 0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var namedGroupingPolicy = e.GetFilteredNamedGroupingPolicy("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let named_grouping_policy = e.get_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> filteredNamedGroupingPolicy = e.getFilteredNamedGroupingPolicy("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasPolicy()`
+
+HasPolicy 确定是否存在授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+hasPolicy := e.HasPolicy("data2_admin", "data2", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const hasPolicy = await e.hasPolicy('data2_admin', 'data2', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$hasPolicy = $e->hasPolicy('data2_admin', 'data2', 'read');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has_policy = e.has_policy("data2_admin", "data2", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var hasPolicy = e.HasPolicy("data2_admin", "data2", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has_policy = e.has_policy(vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean hasPolicy = e.hasPolicy("data2_admin", "data2", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasNamedPolicy()`
+
+HasNamedPolicy 确定是否存在命名授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+hasNamedPolicy := e.HasNamedPolicy("p", "data2_admin", "data2", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const hasNamedPolicy = await e.hasNamedPolicy('p', 'data2_admin', 'data2', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$hasNamedPolicy = $e->hasNamedPolicy("p", "data2_admin", "data2", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has_named_policy = e.has_named_policy("p", "data2_admin", "data2", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var hasNamedPolicy = e.HasNamedPolicy("p", "data2_admin", "data2", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has_named_policy = e.has_named_policy("p", vec!["data2_admin".to_owned(), "data2".to_owned(), "read".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean hasNamedPolicy = e.hasNamedPolicy("p", "data2_admin", "data2", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPolicy()`
+
+AddPolicy 向当前策略添加授权规则。 如果规则已经存在，函数返回false，并且不会添加规则。 否则，函数通过添加新规则并返回true。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+added := e.AddPolicy('eve', 'data3', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['eve', 'data3', 'read']
+const added = await e.addPolicy(...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$added = $e->addPolicy('eve', 'data3', 'read');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+added = e.add_policy("eve", "data3", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddPolicy("eve", "data3", "read");
+or
+var added = await e.AddPolicyAsync("eve", "data3", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_policy(vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addPolicy("eve", "data3", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPolicies()`
+
+AddPolicy 向当前策略添加授权许多规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回false，当前政策中没有添加任何政策规则。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都被添加到目前的政策中。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
+}
+
+areRulesAdded := e.AddPolicies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const rules = [
+    ['jack', 'data4', 'read'],
+    ['katy', 'data4', 'write'],
+    ['leyo', 'data4', 'read'],
+    ['ham', 'data4', 'write']
+];
+
+const areRulesAdded = await e.addPolicies(rules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_added = e.add_policies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_added = e.add_policies(rules).await?
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] rules = {
+    {"jack", "data4", "read"},
+    {"katy", "data4", "write"},
+    {"leyo", "data4", "read"},
+    {"ham", "data4", "write"},
+};
+
+boolean areRulesAdded = e.addPolicies(rules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPoliciesEx()`
+
+AddPoliciesEx adds authorization rules to the current policy. If the rule already exists, the rule will not be added. But unlike AddPolicies, other non-existent rules are added instead of returning false directly
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedPolicy()`
+
+AddNamedPolicy 向当前命名策略添加授权规则。 如果规则已经存在，函数返回false，并且不会添加规则。 否则，函数通过添加新规则并返回true。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+added := e.AddNamedPolicy("p", "eve", "data3", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['eve', 'data3', 'read']
+const added = await e.addNamedPolicy('p', ...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$added = $e->addNamedPolicy("p", "eve", "data3", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+added = e.add_named_policy("p", "eve", "data3", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddNamedPolicy("p", "eve", "data3", "read");
+or
+var added = await e.AddNamedPolicyAsync("p", "eve", "data3", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_named_policy("p", vec!["eve".to_owned(), "data3".to_owned(), "read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addNamedPolicy("p", "eve", "data3", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedPolicies()`
+
+AddNamedPolicies 向当前命名策略中添加授权规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回false，当前政策中没有添加任何政策规则。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都被添加到目前的政策中。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
+}
+
+areRulesAdded := e.AddNamedPolicies("p", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const rules = [
+    ['jack', 'data4', 'read'],
+    ['katy', 'data4', 'write'],
+    ['leyo', 'data4', 'read'],
+    ['ham', 'data4', 'write']
+];
+
+const areRulesAdded = await e.addNamedPolicies('p', rules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_added = e.add_named_policies("p", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_added := e.add_named_policies("p", rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> rules = Arrays.asList(
+    Arrays.asList("jack", "data4", "read"),
+    Arrays.asList("katy", "data4", "write"),
+    Arrays.asList("leyo", "data4", "read"),
+    Arrays.asList("ham", "data4", "write")
+);
+boolean areRulesAdded = e.addNamedPolicies("p", rules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedPoliciesEx()`
+
+AddNamedPoliciesEx adds authorization rules to the current named policy. If the rule already exists, the rule will not be added. But unlike AddNamedPolicies, other non-existent rules are added instead of returning false directly
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddNamedPoliciesEx("p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SelfAddPoliciesEx()`
+
+SelfAddPoliciesEx adds authorization rules to the current named policy with autoNotifyWatcher disabled. If the rule already exists, the rule will not be added. But unlike SelfAddPolicies, other non-existent rules are added instead of returning false directly
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.SelfAddPoliciesEx("p", "p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemovePolicy()`
+
+RemovePolicy 从当前策略中删除授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemovePolicy("alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['alice', 'data1', 'read']
+const removed = await e.removePolicy(...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removePolicy("alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_policy("alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemovePolicy("alice", "data1", "read");
+or
+var removed = await e.RemovePolicyAsync("alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_policy(vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removePolicy("alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemovePolicies()`
+
+RemovePolicies 从当前策略中删除授权规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回 false ，当前政策中没有任何政策规则被删除。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都从现行政策中删除。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
+}
+
+areRulesRemoved := e.RemovePolicies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const rules = [
+    ['jack', 'data4', 'read'],
+    ['katy', 'data4', 'write'],
+    ['leyo', 'data4', 'read'],
+    ['ham', 'data4', 'write']
+];
+
+const areRulesRemoved = await e.removePolicies(rules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_removed = e.remove_policies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let are_rules_removed = e.remove_policies(rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] rules = {
+    {"jack", "data4", "read"},
+    {"katy", "data4", "write"},
+    {"leyo", "data4", "read"},
+    {"ham", "data4", "write"},
+};
+boolean areRulesRemoved = e.removePolicies(rules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveFilteredPolicy()`
+
+RemoveFilteredPolicy 移除当前策略中的授权规则，可以指定字段筛选器。 RemovePolicy 从当前策略中删除授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveFilteredPolicy(0, "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['alice', 'data1', 'read']
+const removed = await e.removeFilteredPolicy(0, ...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeFilteredPolicy(0, "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_filtered_policy(0, "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveFilteredPolicy("alice", "data1", "read");
+or
+var removed = await e.RemoveFilteredPolicyAsync("alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_filtered_policy(0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeFilteredPolicy(0, "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveNamedPolicy()`
+
+RemoveNamedPolicy 从当前命名策略中删除授权规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveNamedPolicy("p", "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['alice', 'data1', 'read']
+const removed = await e.removeNamedPolicy('p', ...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeNamedPolicy("p", "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_named_policy("p", "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveNamedPolicy("p", "alice", "data1", "read");
+or
+var removed = await e.RemoveNamedPolicyAsync("p", "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_named_policy("p", vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeNamedPolicy("p", "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveNamedPolicies()`
+
+RemoveNamedPolicies 从当前命名策略中删除授权规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回 false ，当前政策中没有任何政策规则被删除。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都从现行政策中删除。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
+}
+
+areRulesRemoved := e.RemoveNamedPolicies("p", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const rules = [
+    ['jack', 'data4', 'read'],
+    ['katy', 'data4', 'write'],
+    ['leyo', 'data4', 'read'],
+    ['ham', 'data4', 'write']
+];
+
+const areRulesRemoved = await e.removeNamedPolicies('p', rules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["jack", "data4", "read"],
+    ["katy", "data4", "write"],
+    ["leyo", "data4", "read"],
+    ["ham", "data4", "write"]
+]
+are_rules_removed = e.remove_named_policies("p", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+];
+
+let areRulesRemoved = e.remove_named_policies("p", rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> rules = Arrays.asList(
+    Arrays.asList("jack", "data4", "read"),
+    Arrays.asList("katy", "data4", "write"),
+    Arrays.asList("leyo", "data4", "read"),
+    Arrays.asList("ham", "data4", "write")
+);
+boolean areRulesRemoved = e.removeNamedPolicies("p", rules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveFilteredNamedPolicy()`
+
+RemoveFilteredNamedPolicy 从当前命名策略中移除授权规则，可以指定字段筛选器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const p = ['alice', 'data1', 'read']
+const removed = await e.removeFilteredNamedPolicy('p', 0, ...p)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_filtered_named_policy("p", 0, "alice", "data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveFilteredNamedPolicy("p", 0, "alice", "data1", "read");
+or
+var removed = e.RemoveFilteredNamedPolicyAync("p", 0, "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_filtered_named_policy("p", 0, vec!["alice".to_owned(), "data1".to_owned(), "read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeFilteredNamedPolicy("p", 0, "alice", "data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasGroupingPolicy()`
+
+HasGroupingPolicy 确定是否存在角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+has := e.HasGroupingPolicy("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const has = await e.hasGroupingPolicy('alice', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$has = $e->hasGroupingPolicy("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_grouping_policy("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var has = e.HasGroupingPolicy("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean has = e.hasGroupingPolicy("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasNamedGroupingPolicy()`
+
+HasNamedGroupingPolicy 确定是否存在命名角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+has := e.HasNamedGroupingPolicy("g", "alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const has = await e.hasNamedGroupingPolicy('g', 'alice', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$has = $e->hasNamedGroupingPolicy("g", "alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_named_grouping_policy("g", "alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var has = e.HasNamedGroupingPolicy("g", "alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_named_grouping_policy("g", vec!["alice".to_owned(), "data2_admin".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean has = e.hasNamedGroupingPolicy("g", "alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddGroupingPolicy()`
+
+AddGroupingPolicy 向当前策略添加角色继承规则。 如果规则已经存在，函数返回false，并且不会添加规则。 否则，函数通过添加新规则并返回true。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+added := e.AddGroupingPolicy("group1", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const added = await e.addGroupingPolicy('group1', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$added = $e->addGroupingPolicy("group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+added = e.add_grouping_policy("group1", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddGroupingPolicy("group1", "data2_admin");
+or
+var added = await e.AddGroupingPolicyAsync("group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_grouping_policy(vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addGroupingPolicy("group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddGroupingPolicies()`
+
+AddGroupingPolicy 向当前策略添加角色继承规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回false，当前政策中没有添加任何政策规则。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都被添加到目前的政策中。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
+}
+
+areRulesAdded := e.AddGroupingPolicies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const groupingRules = [
+    ['ham', 'data4_admin'],
+    ['jack', 'data5_admin']
+  ];
+
+const areRulesAdded = await e.addGroupingPolicies(groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_added = e.add_grouping_policies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let areRulesAdded = e.add_grouping_policies(rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] groupingRules = {
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
+};
+boolean areRulesAdded = e.addGroupingPolicies(groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddGroupingPoliciesEx()`
+
+AddGroupingPoliciesEx adds role inheritance rules to the current policy. If the rule already exists, the rule will not be added. But unlike AddGroupingPolicies, other non-existent rules are added instead of returning false directly
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddGroupingPoliciesEx([][]string{{"user1", "member"}, {"user2", "member"}})
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+### `AddNamedGroupingPolicy()`
+
+AddNamedGroupingPolicy 将命名角色继承规则添加到当前策略。 如果规则已经存在，函数返回false，并且不会添加规则。 否则，函数通过添加新规则并返回true。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+added := e.AddNamedGroupingPolicy("g", "group1", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const added = await e.addNamedGroupingPolicy('g', 'group1', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$added = $e->addNamedGroupingPolicy("g", "group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+added = e.add_named_grouping_policy("g", "group1", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddNamedGroupingPolicy("g", "group1", "data2_admin");
+or
+var added = await e.AddNamedGroupingPolicyAsync("g", "group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_named_grouping_policy("g", vec!["group1".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addNamedGroupingPolicy("g", "group1", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddNamedGroupingPolicies()`
+
+AddNamedGroupingPolicies 将命名角色继承规则添加到当前策略。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回false，当前政策中没有添加任何政策规则。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都被添加到目前的政策中。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
+}
+
+areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const groupingRules = [
+    ['ham', 'data4_admin'],
+    ['jack', 'data5_admin']
+  ];
+
+const areRulesAdded = await e.addNamedGroupingPolicies('g', groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_added = e.add_named_grouping_policies("g", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] groupingRules = {
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
+};
+boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+### `AddNamedGroupingPoliciesEx()`
+
+AddNamedGroupingPoliciesEx adds named role inheritance rules to the current policy. If the rule already exists, the rule will not be added. But unlike AddNamedGroupingPolicies, other non-existent rules are added instead of returning false directly
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddNamedGroupingPoliciesEx("g", [][]string{{"user1", "member"}, {"user2", "member"}})
+```
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveGroupingPolicy()`
+
+RemoveGroupingPolicy 从当前策略中删除角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveGroupingPolicy("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const removed = await e.removeGroupingPolicy('alice', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeGroupingPolicy("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_grouping_policy("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveGroupingPolicy("alice", "data2_admin");
+or
+var removed = await e.RemoveGroupingPolicyAsync("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_grouping_policy(vec!["alice".to_owned(), "data2_admin".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeGroupingPolicy("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveGroupingPolicies()`
+
+RemoveGroupingPolicy 从当前策略中删除角色继承规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回 false ，当前政策中没有任何政策规则被删除。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都从现行政策中删除。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+                []string {"ham", "data4_admin"},
+                []string {"jack", "data5_admin"},
+        }
+
+areRulesRemoved := e.RemoveGroupingPolicies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const groupingRules = [
+    ['ham', 'data4_admin'],
+    ['jack', 'data5_admin']
+  ];
+
+const areRulesRemoved = await e.removeGroupingPolicies(groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_removed = e.remove_grouping_policies(rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+
+are_rules_removed = e.remove_grouping_policies(rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] groupingRules = {
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
+};
+boolean areRulesRemoved = e.removeGroupingPolicies(groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveFilteredGroupingPolicy()`
+
+RemoveFilteredGroupingPolicy 从当前策略中移除角色继承规则，可以指定字段筛选器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveFilteredGroupingPolicy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const removed = await e.removeFilteredGroupingPolicy(0, 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeFilteredGroupingPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_filtered_grouping_policy(0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveFilteredGroupingPolicy(0, "alice");
+or
+var removed = await e.RemoveFilteredGroupingPolicyAsync(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_filtered_grouping_policy(0, vec!["alice".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeFilteredGroupingPolicy(0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveNamedGroupingPolicy()`
+
+RemoveNamedGroupingPolicy 从当前命名策略中移除角色继承规则。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveNamedGroupingPolicy("g", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const removed = await e.removeNamedGroupingPolicy('g', 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeNamedGroupingPolicy("g", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_named_grouping_policy("g", "alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveNamedGroupingPolicy("g", "alice");
+or 
+var removed = await e.RemoveNamedGroupingPolicyAsync("g", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_named_grouping_policy("g", vec!["alice".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeNamedGroupingPolicy("g", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveNamedGroupingPolicies()`
+
+RemoveNamedGroupingPolicies 从当前策略中删除角色继承规则。 该操作本质上是原子的 因此，如果授权规则由不符合现行政策的规则组成， 函数返回 false ，当前政策中没有任何政策规则被删除。 如果所有授权规则都符合政策规则，则函数返回true，每项政策规则都从现行政策中删除。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+rules := [][] string {
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
+}
+
+areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const groupingRules = [
+    ['ham', 'data4_admin'],
+    ['jack', 'data5_admin']
+  ];
+
+const areRulesRemoved = await e.removeNamedGroupingPolicies('g', groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+rules = [
+    ["ham", "data4_admin"],
+    ["jack", "data5_admin"]
+]
+are_rules_removed = e.remove_named_grouping_policies("g", rules)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let rules = vec![
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
+];
+
+let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String[][] groupingRules = {
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
+};
+boolean areRulesRemoved = e.removeNamedGroupingPolicies("g", groupingRules);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `RemoveFilteredNamedGroupingPolicy()`
+
+RemoveFilteredNamedGroupingPolicy 从当前命名策略中移除角色继承规则，可以指定字段筛选器。
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+removed := e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const removed = await e.removeFilteredNamedGroupingPolicy('g', 0, 'alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$removed = $e->removeFilteredNamedGroupingPolicy("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+removed = e.remove_filtered_named_grouping_policy("g", 0, "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var removed = e.RemoveFilteredNamedGroupingPolicy("g", 0, "alice");
+or
+var removed = await e.RemoveFilteredNamedGroupingPolicyAsync("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let removed = e.remove_filtered_named_groupingPolicy("g", 0, vec!["alice".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean removed = e.removeFilteredNamedGroupingPolicy("g", 0, "alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `UpdatePolicy()`
+
+UpdatePolicy 把旧的政策更新到新的政策
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+updated, err := e.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const update = await e.updatePolicy(["eve", "data3", "read"], ["eve", "data3", "write"]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+updated = e.update_policy(["eve", "data3", "read"], ["eve", "data3", "write"])
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean updated = e.updatePolicy(Arrays.asList("eve", "data3", "read"), Arrays.asList("eve", "data3", "write"));
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `UpdatePolicies()`
+
+UpdatePolicies 将所有的旧政策更新到新政策
+
+例如：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+updated, err := e.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+old_rules = [["eve", "data3", "read"], ["jack", "data3", "read"]]
+new_rules = [["eve", "data3", "write"], ["jack", "data3", "write"]]
+
+updated = e.update_policies(old_rules, new_rules)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddFunction()`
+
+AddFunction 添加自定义函数。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+func CustomFunction(key1 string, key2 string) bool {
+    if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" {
+        return true
+    } else if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId" {
+        return true
+    } else {
+        return false
+    }
+}
+
+func CustomFunctionWrapper(args ...interface{}) (interface{}, error) {
+    key1 := args[0].(string)
+    key2 := args[1].(string)
+
+    return bool(CustomFunction(key1, key2)), nil
+}
+
+e.AddFunction("keyMatchCustom", CustomFunctionWrapper)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+function customFunction(key1, key2){
+    if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource") {
+        return true
+    } else if(key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId") {
+        return true
+    } else {
+        return false
+    }
+}
+
+e.addFunction("keyMatchCustom", customFunction);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+func customFunction($key1, $key2) {
+    if ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data/:resource") {
+        return true;
+    } elseif ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data2/:id/using/:resId") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+func customFunctionWrapper(...$args){
+    $key1 := $args[0];
+    $key2 := $args[1];
+
+    return customFunction($key1, $key2);
+}
+
+$e->addFunction("keyMatchCustom", customFunctionWrapper);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+def custom_function(key1, key2):
+    return ((key1 == "/alice_data2/myid/using/res_id" and key2 == "/alice_data/:resource") or (key1 == "/alice_data2/myid/using/res_id" and key2 == "/alice_data2/:id/using/:resId"))
+
+
+e.add_function("keyMatchCustom", custom_function)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+fn custom_function(key1: STring, key2: String) {
+    key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" || key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId"
+}
+
+
+e.add_function("keyMatchCustom", custom_function);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+public static class CustomFunc extends CustomFunction {
+    @Override
+    public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
+        String key1 = FunctionUtils.getStringValue(arg1, env);
+        String key2 = FunctionUtils.getStringValue(arg2, env);
+        if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data/:resource")) {
+            return AviatorBoolean.valueOf(true);
+        } else if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data2/:id/using/:resId")) {
+            return AviatorBoolean.valueOf(true);
+        } else {
+            return AviatorBoolean.valueOf(false);
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "keyMatchCustom";
+    }
+}
+
+FunctionTest.CustomFunc customFunc = new FunctionTest.CustomFunc();
+e.addFunction(customFunc.getName(), customFunc);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `LoadFilteredPolicy()`
+
+LoadFilteredPolicy从文件/数据库加载过滤完成的政策
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+err := e.LoadFilteredPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const ok = await e.loadFilteredPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+class Filter:
+    P = []
+    G = []
+
+adapter = casbin.persist.adapters.FilteredAdapter("rbac_with_domains_policy.csv")
+e = casbin.Enforcer("rbac_with_domains_model.conf", adapter)
+filter = Filter()
+filter.P = ["", "domain1"]
+filter.G = ["", "", "domain1"]
+e.load_filtered_policy(filter)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+e.loadFilteredPolicy(new String[] { "", "domain1" });
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `LoadIncrementalFilteredPolicy()`
+
+LoadFilteredPolicy从文件/数据库添加过滤完成的政策
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+err := e.LoadIncrementalFilteredPolicy()
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const ok = await e.loadIncrementalFilteredPolicy();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+adapter = casbin.persist.adapters.FilteredAdapter("rbac_with_domains_policy.csv")
+e = casbin.Enforcer("rbac_with_domains_model.conf", adapter)
+filter = Filter()
+filter.P = ["", "domain1"]
+filter.G = ["", "", "domain1"]
+e.load_increment_filtered_policy(filter)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `UpdateGroupingPolicy()`
+
+UpdateGroupingPolicy 在 `g`段更新oldRule到newRule
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+succeed, err : = e.UpdateGroupingPolicy([]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```Java
+boolean succeed = e.updateGroupingPolicy(Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `UpdateNamedGroupingPolicy()`
+
+UpdateNamedGroupingPolicy 在`g` 部分将名为 `ptype` 的旧策略更新为新策略
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+succeed, err : = e.UpdateGroupingPolicy("g1",[]string{"data3_admin", "data4_admin"}, []string{"admin", "data4_admin"})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```Java
+boolean succeed = e.updateNamedGroupingPolicy("g1", Arrays.asList("data3_admin", "data4_admin"), Arrays.asList("admin", "data4_admin"));
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `SetFieldIndex()`
+
+设置FieldIndex 子端口自定义常规名称和位置 `子类`, `obj`, `域` 和 `优先级`.
+
+```ini
+[policy_definition]
+p = customized_priority, obj, act, eft, subject
+```
+
+For example:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.SetFieldIndex("p", constant.PriorityIndex, 0)
+e.SetFieldIndex("p", constant.SubjectIndex, 4)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

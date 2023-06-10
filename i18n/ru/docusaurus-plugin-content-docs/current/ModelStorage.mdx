@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: Модель хранилища
+description: Model storage
+keywords:
+  - model storage
+authors:
+  - hsluoyz
+---
+
+В отличие от политики, модель может быть загружена только тогда, когда она не может быть сохранена. Поскольку мы считаем, что модель не является динамическим компонентом и не должна быть изменена при запуске, так что мы не реализуем API, чтобы сохранить модель в хранилище.
+
+Однако хорошая новость заключается в том, что мы предлагаем три эквивалентных способа либо статической, либо динамической загрузки:
+
+## Загрузить модель из .CONF файла
+
+Это самый распространенный способ использования Касбина. Это легко понять для начинающих и удобно для совместного пользования, когда вы спрашиваете команду Casbin за помощью.
+
+Содержимое файла `.CONF` [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+Затем вы можете загрузить файл модели как:
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## Загрузить модель из кода
+
+Модель может быть инициализирована динамически из кода вместо использования файла `.CONF`. Вот пример модели RBAC:
+
+```go
+import (
+    "github.com/casbin/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+// Инициализация модели из кода Go.
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "_, _")
+m.Def("e", "e", "где" (p. ft == allow))")
+m.AddDef("m", "g(r.sub, p.sub) && r.obj == p. bj && r.act == p.act")
+
+// Загрузить правила с адаптера файлов .CSV.
+// Замените его на адаптер, чтобы избежать файлов.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Создание ссылки.
+e := casbin.NewEnforcer(m, a)
+```
+
+## Загрузить модель из строки
+
+Или вы можете просто загрузить весь текст модели из многострочной строки. Хорошей точкой для этого является то, что вам не нужно поддерживать модель файла.
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+)
+
+// Инициализация модели из строки.
+текст :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = как-то (стр. ft == допустить))
+
+[matchers]
+м = g(r.sub, p. ub) && r.obj == p.obj && r.act == p. ct
+`
+m, _ := model.NewModelFromString(text)
+
+// Загрузить правила политики из CSV файла.
+// Замените его на адаптер, чтобы избежать файлов.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Создание ссылки.
+e := casbin.NewEnforcer(m, a)
+```

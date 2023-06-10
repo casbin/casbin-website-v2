@@ -1,0 +1,25 @@
+---
+id: online-editor
+title: Online Editor
+description: 在 web 浏览器中写入 Casbin 模型和策略
+keywords:
+  - 在线编辑器
+  - Casbin Editor
+authors:
+  - hsluoyz
+---
+
+You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. 它提供了一些比如 `语法高亮` 以及`代码补全`这样的功能，就像编程语言的IDE一样。
+
+## 使用模式
+如果您使用 `RBAC与模式` 或 `RBAC与所有模式`, 它指定了左下角的匹配函数。
+
+![编辑器提示](/img/editor-tips.png).
+
+如果您想编写等效代码，您需要通过相关api指定模式匹配函数。 使用模式查看 [RBAC](/docs/rbac-with-pattern)
+
+:::note
+
+编辑器基于 [node-casbin](https://github.com/casbin/node-casbin)。 由于casbin不同语言之间的同步延迟，`编辑器`的身份验证结果可能与您正在使用的casbin的身份验证结果不同。 如果是，请将问题提交给您正在使用的casbin仓库。
+
+:::
