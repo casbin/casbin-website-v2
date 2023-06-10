@@ -1,0 +1,106 @@
+---
+id: rbac
+title: RBAC
+description: Casbin RBAC usage
+keywords:
+  - RBAC
+  - role definition
+  - role hierarchy
+authors:
+  - hsluoyz
+---
+
+## Définition du rôle
+
+`[role_definition]` est la définition des relations d'héritage de rôle RBAC. Casbin prend en charge plusieurs instances de systèmes RBAC, par ex. les utilisateurs peuvent avoir des rôles et leurs relations d'héritage, et les ressources peuvent également avoir des rôles et des relations d'héritage. Ces deux systèmes RBAC n'interféreront pas.
+
+Cette section est facultative. Si vous n'utilisez pas les rôles RBAC dans le modèle, alors omettez cette section.
+
+```ini
+[role_definition]
+g = _, _
+g2 = _, _
+```
+
+La définition de rôle ci-dessus montre que `g` est un système RBAC, et que `g2` est un autre système RBAC. `_, _` signifie qu'il y a deux parties à l'intérieur d'une relation d'héritage. Comme cas courant, vous utilisez généralement `g` seul si vous avez seulement besoin de rôles sur les utilisateurs.  Vous pouvez également utiliser `g` et `g2` lorsque vous avez besoin de rôles (ou de groupes) pour les utilisateurs et les ressources. Veuillez consulter les [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) et [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) pour des exemples.
+
+Casbin stocke la véritable cartographie des rôles utilisateur (ou la cartographie des rôles des ressources si vous utilisez des rôles sur les ressources) dans la politique, par exemple :
+
+```
+p, data2_admin, data2, read
+g, alice, data2_admin
+```
+
+Cela signifie que `alice` hérite/est un membre du rôle `data2_admin`. `alice` ici peut être un utilisateur, une ressource ou un rôle. Casbin ne le reconnaît que comme une chaîne.
+
+Ensuite, dans un matcher, vous devriez vérifier le rôle comme ci-dessous:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+Cela signifie que `sub` dans la requête devrait avoir le rôle `sub` dans la politique.
+
+:::note
+
+1. Casbin stocke uniquement la cartographie des rôles utilisateur.
+2. Casbin ne vérifie pas si un utilisateur est un utilisateur valide, ou un rôle est un rôle valide. Cela devrait être réglé par l'authentification.
+3. N'utilisez pas le même nom pour un utilisateur et un rôle dans un système RBAC, car Casbin reconnaît les utilisateurs et les rôles comme des chaînes, et il n'y a aucun moyen pour Casbin de savoir si vous spécifiez l'utilisateur `alice` ou le rôle `alice`. Vous pouvez simplement le résoudre en utilisant `role_alice`.
+4. Si `A` a le rôle `B`, `B` a le rôle `C`, puis `A` a le rôle `C`. Cette transitivité est infinie pour l'instant.
+
+:::
+
+:::info Token name convention
+
+Conventionally subject token name in policy definition is `sub` and placed in the beginning. Now Golang Casbin supports customized token name & place. If the subject token name is `sub`, the subject token can be placed at an arbitrary place and no extra action needs.  If the subject token name is not `sub` , `e.SetFieldIndex()` for `constant.SubjectIndex` should be called after the enforcer is initialized regardless of its position.
+```ini
+# `subject` here for sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+e.SetFieldIndex("p", constant.SubjectIndex, 2) // index start from 0
+ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an error
+```
+
+:::
+
+## Hiérarchie des rôles
+
+Le RBAC de Casbin prend en charge la fonction de hiérarchie des rôles RBAC1, c'est-à-dire si `alice` a `rôle1`, `rôle1` a `rôle2`, puis `alice` aura également `rôle2` et héritera de ses permissions.
+
+Voici un concept appelé niveau hiérarchique. Le niveau de hiérarchie pour cet exemple est donc 2. Pour le gestionnaire de rôle intégré dans Casbin, vous pouvez spécifier le niveau max de la hiérarchie. La valeur par défaut est 10. Cela signifie qu'un utilisateur final comme `alice` ne peut hériter que de 10 niveaux de rôles.
+
+```go
+// NewRoleManager est le constructeur pour créer une instance de l'implémentation
+// RoleManager par défaut.
+func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
+    rm := RoleManager{}
+    rm.allRoles = &sync. ap{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm. asPattern = faux
+
+    retour &rm
+}
+```
+
+## Comment distinguer le rôle de l'utilisateur ?
+
+Casbin ne distingue pas le rôle de l'utilisateur dans son RBAC. Ils sont tous traités comme des cordes. Si vous n'utilisez qu'un seul niveau RBAC (un rôle ne sera jamais membre d'un autre rôle). Vous pouvez utiliser `e.GetAllSubjects()` pour obtenir tous les utilisateurs et `e.GetAllRoles()` pour obtenir tous les rôles. Ils listent seulement tous les `u` et tous les `r` respectivement dans toutes les règles `g, u, r`.
+
+Mais si vous utilisez RBAC à plusieurs niveaux (avec hiérarchie de rôles), et votre application n'enregistre pas si un nom (chaîne) est un utilisateur ou un rôle, ou si vous avez un utilisateur et un rôle avec le même nom. Vous pouvez ajouter un préfixe au rôle comme `role::admin` avant de le passer à Casbin. Vous saurez donc si c'est un rôle en vérifiant ce préfixe.
+
+## Comment interroger des rôles ou des permissions implicites ?
+
+Lorsqu'un utilisateur hérite d'un rôle ou d'une permission via la hiérarchie RBAC au lieu de les assigner directement dans une règle de règle, nous appelons un tel type d'affectation comme `implicite`. Interroger de telles relations implicites, vous devez utiliser ces 2 API : `GetImplicitRolesForUser()` et `GetImplicitPermissionsForUser()` au lieu de `GetRolesForUser()` et `GetPermissionsForUser()`. Pour plus de détails, veuillez consulter [ce problème GitHub](https://github.com/casbin/casbin/issues/137).
+
+## Utiliser la correspondance de motif dans RBAC
+
+Voir [RBAC avec le modèle](/docs/rbac-with-pattern)
+
+## Responsable du rôle
+
+Voir la section [Responsables de rôle](/docs/role-managers) pour plus de détails.
+

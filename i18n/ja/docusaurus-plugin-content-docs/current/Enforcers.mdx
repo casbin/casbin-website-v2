@@ -1,0 +1,34 @@
+---
+id: enforcers
+title: Enforcers
+description: Enforcer is the main structure in Casbin, It acts as an interface for users to make operations on policy rules and models
+keywords:
+  - enforcer
+  - supported enforcers
+authors:
+  - Abingcbc
+---
+
+
+
+`エンフォーサー` がCasbinの主な構造です。 ユーザーがポリシールールやモデルに関する操作を行うためのインターフェイスとして機能します。
+
+## サポートされているエンフォーサー
+Casbinの執行者の完全なリストは以下のように提供されています。 Any 3rd-party contribution on a new enforcer is welcomed, please inform us and we will put it in this list:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Enforcer                                                                                       | 作成者    | 説明                                                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go)                           | Casbin | `エンフォーサー` は、ユーザが Casbin ポリシーおよびモデルと対話するための基本構造です。 `Enforcer`の API の詳細は [こちら](/docs/management-api) をご覧ください。                                                                                                                                         |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)              | Casbin | `CachedEnforcer` は `Enforcer` に基づいています。 指定された期限内にキャッシュをクリアし、mapによってメモリ内のリクエストの評価結果をキャッシュすることをサポートします。 さらに、Read-Writeロックによってスレッドセーフであることが保証されています。 評価結果のキャッシュを有効にするには `EnableCache` を使用できます (デフォルトは有効です)。 `CachedEnforcer`の他の API は `Enforcer`と同じです。 |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go)    | Casbin | `Distributed Enforcer` は分散クラスタ内の複数のインスタンスをサポートしています。 ディスパッチャ用に `SyncedEnforcer` をラップします。 dispather についての詳細は [こちら](/docs/dispatchers#distributedenforcer) をご覧ください。                                                                                   |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)              | Casbin | `SyncedEnforur` は `Enforger` に基づいており、同期アクセスを提供します。 これはスレッドセーフです。                                                                                                                                                                                    |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go) | Casbin | `SyncedCachedEnforcer` wraps `Enforcer` and provides decision sync cache.                                                                                                                                                                           |
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

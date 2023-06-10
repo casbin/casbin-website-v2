@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: Stockage du modèle
+description: Model storage
+keywords:
+  - model storage
+authors:
+  - hsluoyz
+---
+
+Contrairement à la politique, le modèle peut être chargé seulement, il ne peut pas être sauvegardé. Parce que nous pensons que le modèle n'est pas un composant dynamique et ne devrait pas être modifié à l'exécution, donc nous n'implémentons pas une API pour sauvegarder le modèle dans un stockage.
+
+Cependant, la bonne nouvelle est que nous fournissons trois moyens équivalents pour charger un modèle, soit statiquement ou dynamiquement :
+
+## Charger le modèle depuis un fichier .CONF
+
+C'est la façon la plus courante d'utiliser Casbin. Il est facile à comprendre pour les débutants et pratique à partager lorsque vous demandez de l'aide à l'équipe de Casbin.
+
+Le contenu du fichier `.CONF` [exemples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+Ensuite, vous pouvez charger le fichier modèle en tant que :
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## Charger le modèle à partir du code
+
+Le modèle peut être initialisé dynamiquement à partir du code au lieu d'utiliser le fichier `.CONF`. Voici un exemple pour le modèle RBAC :
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+// Initialise le modèle à partir du code Go.
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "e", "some(où (p. ft == allow)")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p. bj && r.act == p.act")
+
+// Charge les règles de régulation depuis l'adaptateur de fichier .CSV.
+// Remplacez-le par votre adaptateur pour éviter les fichiers.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Créer le responsable.
+e := casbin.NewEnforcer(m, a)
+```
+
+## Charger le modèle depuis une chaîne de caractères
+
+Ou vous pouvez simplement charger tout le texte du modèle à partir d'une chaîne de caractères multi-lignes. Le point positif de cette façon est que vous n'avez pas besoin de maintenir un fichier modèle.
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+)
+
+// Initialise le modèle à partir d'une chaîne de caractères.
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = quelque part (où (p. ft == allow))
+
+[matchers]
+m = g(r.sub, p. ub) && r.obj == p.obj && r.act == p. ct
+`
+m, _ := model.NewModelFromString(text)
+
+// Charge les règles de régulation depuis l'adaptateur de fichier .CSV.
+// Remplacez-le par votre adaptateur pour éviter les fichiers.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Créer le responsable.
+e := casbin.NewEnforcer(m, a)
+```

@@ -1,0 +1,84 @@
+---
+id: policy-storage
+title: Stockage de la politique
+description: Policy Storage
+keywords:
+  - policy storage
+authors:
+  - hsluoyz
+---
+
+En Casbin, le stockage des politiques est implémenté comme un [adaptateur](/docs/adapters).
+
+## Charger la politique à partir du fichier .CSV
+
+C'est la façon la plus courante d'utiliser Casbin. Il est facile à comprendre pour les débutants et pratique à partager lorsque vous demandez de l'aide à l'équipe de Casbin.
+
+Le contenu du fichier `.CSV` [exemples/rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv):
+
+```
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+:::note
+
+Si votre fichier contient des virgules`,` , vous devriez l'envelopper entre guillemets, par exemple :
+
+```
+p, alice, "data1,data2", read --correct
+p, alice, data1,data2, read --incorrect ("data1,data2" devrait être un entier)
+```
+
+Si votre fichier contient des virgules`,` et des guillemets doubles`"`, vous devriez inclure le champ entre guillemets doubles et doubler les guillemets doubles intégrés.
+
+```
+p, alice, data, "r.act in (""get"", ""post"")" --correct
+p, alice, data, "r.act in ("get", "post")" --incorrect (devrait utiliser "" pour échapper "")
+```
+
+Problème lié : [casbin#886](https://github.com/casbin/casbin/issues/886)
+
+:::
+
+## API de la carte
+
+| Méthode                | Type de texte | Description                                                               |
+| ---------------------- | ------------- | ------------------------------------------------------------------------- |
+| format@@0 LoadPolicy() | basique       | Charger toutes les règles de politique du stockage                        |
+| EnregistrerPolicy()    | basique       | Enregistrer toutes les règles de politique sur le stockage                |
+| AddPolicy()            | optionnel     | Ajouter une règle de politique au stockage                                |
+| RemovePolicy()         | optionnel     | Supprimer une règle de politique du stockage                              |
+| RemoveFilteredPolicy() | optionnel     | Supprimer les règles de politique qui correspondent au filtre du stockage |
+
+## Format de stockage de la base de données
+
+**votre fichier politique**
+
+```
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, admin
+```
+
+**structure de base de données correspondante (Such comme MySQL)**
+
+| id | ptype | V0                 | V1             | V2     | V3 | V4 | contre 5 |
+| -- | ----- | ------------------ | -------------- | ------ | -- | -- | -------- |
+| 1  | p     | administre_données | données2       | Lu     |    |    |          |
+| 2  | p     | administre_données | données2       | écrire |    |    |          |
+| 3  | g     | alice              | Administrateur |        |    |    |          |
+
+**La signification de chaque colonne**
+
+- `id`: N'existe que dans la base de données comme clé primaire. Pas dans le cadre de la politique `casbin`. La manière dont elle est générée dépend de l'adaptateur spécifique
+
+- `ptype`: Il correspond à `p`, `g`, `g2`, etc.
+- `v0-v5`: Les noms de colonnes n'ont pas de sens spécifique, et correspondent aux valeurs de la politique `csv` de gauche à droite. Le nombre de colonnes dépend du nombre que vous définissez vous-même. En théorie, il peut y avoir un nombre infini de colonnes. Mais généralement seulement **6 colonnes** sont implémentées dans l'adaptateur. Si cela ne vous suffit pas, veuillez soumettre un problème dans le référentiel de l'adaptateur correspondant.
+
+## Détails de l'adaptateur
+
+Plus de détails sur l'utilisation de l'api adaptateur et la conception de la structure des tables de base de données, veuillez aller à:  [/docs/adapters](/docs/adapters)

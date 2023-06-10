@@ -1,0 +1,58 @@
+---
+id: rbac-with-domains
+title: RBAC avec domaines
+description: RBAC with domains usage
+keywords:
+  - RBAC with domains
+authors:
+  - hsluoyz
+---
+
+## Définition du rôle avec les locataires de domaines
+
+Les rôles RBAC dans Casbin peuvent être globaux ou spécifiques à un domaine. Les rôles spécifiant le domaine signifient que les rôles pour un utilisateur peuvent être différents lorsque l'utilisateur est dans différents domaines/locataires. C'est très utile pour les grands systèmes comme un cloud, car les utilisateurs sont généralement dans différents locataires.
+
+La définition de rôle avec les domaines/locataires devrait être quelque chose comme :
+
+```ini
+[role_definition]
+g = _, _, _
+```
+
+Le 3ème `_` signifie le nom du domaine/locataire, cette partie ne doit pas être modifiée. Alors la politique peut être:
+
+```
+p, admin, tenant1, data1, read
+p, admin, tenant2, data2, read
+
+g, alice, admin, tenant1
+g, alice, user, tenant2
+```
+
+Cela signifie que le rôle `admin` dans `tenant1` peut lire `data1`. Et `alice` a `le rôle d'administrateur` dans `tenant1`, et a `le rôle de l'utilisateur` dans `tenant2`. Elle peut donc lire `data1`. Cependant, comme `alice` n'est pas un `admin` dans `tenant2`, elle ne peut pas lire `données 2`.
+
+Ensuite, dans un matcher, vous devriez vérifier le rôle comme ci-dessous:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+Veuillez consulter le [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf) pour des exemples.
+
+:::info Token name convention
+
+Note: Conventionally domain token name in policy definition is `dom` and placed as the second token(`sub, dom, obj, act`). Now Golang Casbin supports customized token name & place. If the domain token name is `dom`, the domain token can be placed at an arbitrary place and no extra action needs.  If the domain token name is not `dom` , `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized regardless of its position.
+
+```ini
+# `domain` here for `dom`
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // index start from 0
+users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, it will raise an error
+```
+
+:::

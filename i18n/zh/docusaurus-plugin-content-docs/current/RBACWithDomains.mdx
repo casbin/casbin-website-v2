@@ -1,0 +1,58 @@
+---
+id: rbac-with-domains
+title: 域内基于角色的访问控制
+description: 域内基于角色的访问控制
+keywords:
+  - 域内基于角色的访问控制
+authors:
+  - hsluoyz
+---
+
+## 域租户的角色定义
+
+在Casbin中的RBAC角色可以是全局或是基于特定于域的。 特定域的角色意味着当用户处于不同的域/租户群体时，用户所表现的角色也不尽相同。 这对于像云服务这样的大型系统非常有用，因为用户通常分属于不同的租户群体。
+
+域/租户的角色定义应该类似于:
+
+```ini
+[role_definition]
+g = _, _, _
+```
+
+第三个 `_` 表示域/租户的名称, 此部分不应更改。 然后，政策可以是：
+
+```
+p, admin, tenant1, data1, read
+p, admin, tenant2, data2, read
+
+g, alice, admin, tenant1
+g, alice, user, tenant2
+```
+
+该实例表示`tenant1`的域内角色`admin` 可以读取`data1`， `alice`在`tenant1`域中具有`admin`角色，但在`tenant2`域中具有`user`角色， 所以alice可以有读取`data1`的权限。 同理，因为`alice`不是`tenant2`的`admin`，所以她访问不了`data2`。
+
+接下来在matcher中，应该像下面的例子一样检查角色信息：
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+更多示例参见: [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)。
+
+:::info Token名称协议
+
+注意：政策定义中的常规域令牌名称是 `dom` 并被放置为第二个令牌(`sub、 dom、 obj、 act`)。 现在Golang Casbin 支持定制令牌名称 & 位置。 如果域令牌名称是 `dom`, 域令牌可以放置在任意位置, 不需要额外的操作。  如果域令牌名称不是 `dom` , 应在启动执行者后调用 `eSetFieldIndex()` 用于 `constant.DomainIndex` 不论执行者的地位如何。
+
+```ini
+# "domain" 在这里为 "dom"
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // 索引从 0开始
+users := e,GetAllUsersByDomain("domain1") // 没有SetFieldIndex, 它会引起一个错误
+```
+
+:::

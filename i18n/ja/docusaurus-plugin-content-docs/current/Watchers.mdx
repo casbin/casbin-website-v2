@@ -1,0 +1,124 @@
+---
+id: watchers
+title: Watchers
+description: Keeping consistence between multiple Casbin enforcer instances
+keywords:
+  - watcher
+  - multiple Casbin enforcer
+  - WatcherEx
+authors:
+  - hsluoyz
+---
+
+
+
+[etcd](https://github.com/coreos/etcd) のような分散型メッセージングシステムを使用して、複数のCasbin エンフォーサーインスタンス間で一貫性を保つことができます。 したがって、ユーザーは複数のCasbinエンフォーサーを同時に使用して、大量の権限チェックリクエストを処理できます。
+
+ポリシーストレージアダプタと同様に、私たちはメインライブラリにウォッチャーコードを入れません。 新しいメッセージングシステムのサポートは、ウォッチャーとして実装する必要があります。 Casbinウォッチャーの完全なリストは以下のように提供されています。 新しいウォッチャーに対するサードパーティの貢献を歓迎します。お知らせください。このリストに記載します:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Watcher                                                                                                            | タイプ      | 作成者                                            | 説明                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------ | -------- | ---------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [PostgreSQL WatcherEx](https://github.com/IguteChung/casbin-psql-watcher)                                          | Database | [@IguteChung](https://github.com/IguteChung)   | WatcherEx for [PostgreSQL](https://www.postgresql.org/)                                |
+| [Redis WatcherEx](https://github.com/casbin/redis-watcher)                                                         | KV ストア   | Casbin                                         | WatcherEx for [Redis](http://redis.io/)                                                |
+| [Redis Watcher](https://github.com/billcobbler/casbin-redis-watcher)                                               | KV ストア   | [@billcobbler](https://github.com/billcobbler) | Redis [のウォッチャー](http://redis.io/)                                                      |
+| [Etcd Watcher](https://github.com/casbin/etcd-watcher)                                                             | KV ストア   | Casbin                                         | [etcd](https://github.com/coreos/etcd) の監視者                                            |
+| [TiKVウォッチャー](https://github.com/casbin/tikv-watcher)                                                               | KV ストア   | Casbin                                         | [TiKV](https://github.com/tikv/tikv) の監視人                                              |
+| [Kafka Watcher](https://github.com/wgarunap/casbin-kafka-watcher)                                                  | SMSシステム  | [@wgarunap](https://github.com/wgarunap)       | Apache Kafka [の腕時計](https://kafka.apache.org/)                                         |
+| [NATS Watcher](https://github.com/Soluto/casbin-nats-watcher)                                                      | SMSシステム  | [Soluto](https://github.com/Soluto)            | NATS [](https://nats.io/) の監視人                                                         |
+| [ZooKeeperウォッチャー](https://github.com/grepsr/casbin-zk-watcher)                                                     | SMSシステム  | [Grepsr](https://github.com/grepsr)            | Apache ZooKeeper [の](https://zookeeper.apache.org/) の腕時計                               |
+| [NATS, RabbitMQ, GCP Pub/Sub, AWS SNS & SQS, Kafka, InMemory](https://github.com/rusenask/casbin-go-cloud-watcher) | SMSシステム  | [@rusenask](https://github.com/rusenask/)      | 主要なクラウドプロバイダーと自己ホストインフラストラクチャで動作する [Go Cloud Dev Kit](https://gocloud.dev/) に基づくウォッチャー |
+| [RocketMQウォッチャー](https://github.com/fmyxyz/casbin-rocketmq-watcher)                                                | SMSシステム  | [@fmyxyz](https://github.com/fmyxyz)           | Apache RocketMQ [の腕時計](https://rocketmq.apache.org/)                                   |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Watcher                                                   | タイプ     | 作成者                                        | 説明                                             |
+| --------------------------------------------------------- | ------- | ------------------------------------------ | ---------------------------------------------- |
+| [Etcd アダプター](https://github.com/mapleafgo/jcasbin-extra)  | KV ストア  | [@mapleafgo](https://github.com/mapleafgo) | [etcd](https://github.com/coreos/etcd) の監視者    |
+| [Redis Watcher](https://github.com/jcasbin/redis-watcher) | KV ストア  | Casbin                                     | Redis [のウォッチャー](http://redis.io/)              |
+| [Kafka Watcher](https://github.com/jcasbin/kafka-watcher) | SMSシステム | Casbin                                     | Apache Kafka [の腕時計](https://kafka.apache.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Watcher                                                                                     | タイプ     | 作成者                                            | 説明                                                                                       |
+| ------------------------------------------------------------------------------------------- | ------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [Etcd Watcher](https://github.com/node-casbin/etcd-watcher)                                 | KV ストア  | Casbin                                         | [etcd](https://github.com/coreos/etcd) の監視者                                              |
+| [Redis Watcher](https://github.com/node-casbin/redis-watcher)                               | KV ストア  | Casbin                                         | Redis [のウォッチャー](http://redis.io/)                                                        |
+| [Pub/Sub Watcher](https://github.com/node-casbin/pubsub-watcher)                            | SMSシステム | Casbin                                         | Google Cloud Pub/Sub [のウッチャー](https://cloud.google.com/pubsub/docs)                      |
+| [MongoDB Change Streams Watcher](https://github.com/node-casbin/mongo-changestream-watcher) | データベース  | Casbin                                         | Watcher for [MongoDB Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) |
+| [Postgres Watcher](https://github.com/mcollina/casbin-pg-watcher)                           | データベース  | [Matteo Collina](https://github.com/mcollina/) | PostgreSQL [のウォッチャー](https://www.postgresql.org/)                                        |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Watcher                                                                     | タイプ      | 作成者                                             | 説明                                                |
+| --------------------------------------------------------------------------- | -------- | ----------------------------------------------- | ------------------------------------------------- |
+| [Etcd Watcher](https://github.com/pycasbin/etcd-watcher)                    | KV ストア   | Casbin                                          | [etcd](https://github.com/coreos/etcd) の監視者       |
+| [Redis Watcher](https://github.com/pycasbin/redis-watcher)                  | KV ストア   | Casbin                                          | Redis [のウォッチャー](http://redis.io/)                 |
+| [Redis Watcher](https://github.com/ScienceLogic/flask-casbin-redis-watcher) | KV store | [ScienceLogic](https://github.com/ScienceLogic) | Watcher for [Redis](http://redis.io/)             |
+| [PostgreSQLウォッチャー](https://github.com/pycasbin/postgresql-watcher)          | Database | Casbin                                          | PostgreSQL [のウォッチャー](https://www.postgresql.org/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| Watcher                                                           | タイプ    | 作成者                              | 説明                                |
+| ----------------------------------------------------------------- | ------ | -------------------------------- | --------------------------------- |
+| [Redis Watcher](https://github.com/Sbou/Casbin.NET-Redis-Watcher) | KV ストア | [@Sbou](https://github.com/Sbou) | Redis [のウォッチャー](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+```
+
+| Watcher                                                                       | タイプ     | 作成者                                         | 説明                                         |
+| ----------------------------------------------------------------------------- | ------- | ------------------------------------------- | ------------------------------------------ |
+| [Redis Watcher](https://github.com/CasbinRuby/casbin-ruby-redis-watcher)      | KV ストア  | [CasbinRuby](https://github.com/CasbinRuby) | Redis [のウォッチャー](http://redis.io/)          |
+| [RabbitMQ ウォッチャー](https://github.com/CasbinRuby/casbin-ruby-rabbitmq-watcher) | SMSシステム | [CasbinRuby](https://github.com/CasbinRuby) | [RabbitMQ](https://www.rabbitmq.com/) の監視人 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Watcher                                                          | タイプ    | 作成者                                    | 説明                                |
+| ---------------------------------------------------------------- | ------ | -------------------------------------- | --------------------------------- |
+| [Redis Watcher](https://github.com/php-casbin/webman-permission) | KV ストア | [@Tinywan](https://github.com/Tinywan) | Redis [のウォッチャー](http://redis.io/) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## WatcherEx
+
+複数のインスタンス間の増分同期をサポートするために、 `WatcherEx` インターフェイスを提供します。 ポリシーが変更されたときに他のインスタンスに通知できることを願っていますが、 `WatcherEx` の実装は現在ありません。 これを達成するためにディスパッチャを使用することをお勧めします。
+
+Compared with `Watcher` interface, `WatcherEx` can distinguish what type of update action is received, e.g., `AddPolicy` and `RemovePolicy`.
+
+WatcherEx Apis:
+
+| API                                                                                           | 説明                                                                                                                                                                                                                                                                                               |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| SetUpdateCallback(func(string)) error                                                         | SetUpdateCallback sets the callback function that the watcher will call, when the policy in DB has been changed by other instances. 古典的なコールバックは Enforcer.LoadPolicy() です。                                                                                                                        |
+| Update() error                                                                                | Update calls the update callback of other instances to synchronize their policy. これは通常、DB 内のポリシーを変更した後に呼び出されます。例えば Enforcer.SavePolicy() や Enforcer.AddPolicy() や Enforcer.RemovePolicy() など。                                                                                                    |
+| Close()                                                                                       | Close stops and releases the watcher, the callback function will not be called any more.                                                                                                                                                                                                         |
+| UpdateForAddPolicy(sec, ptype string, params ...string) error                                 | UpdateForAddPolicy calls the update callback of other instances to synchronize their policy. これは、ポリシーがEnforcer.AddPolicy(), Enforcer.AddNamedPolicy(), Enforcer.AddGroupingPolicy(), Enforcer.AddNamedGroupingPolicy(), Enforcer.AddNamedGroupingPolicy() および Enforcer.AddNamedGroupingPolicy(). |
+| UpdateForRemovePolicy(sec, ptype string, params ...string) error                              | UPdateForRemovePolicy calls the update callback of other instances to synchronize their policy. ポリシーがEnforcer.RemovePolicy(), Enforcer.RemoveNamedPolicy(), Enforcer.RemoveGroupingPolicy() および Enforcer.RemoveNamedGroupingPolicy() によって削除された後に呼び出されます。                                         |
+| UpdateForRemoveFilteredPolicy(sec, ptype string, fieldIndex int, fieldValues ...string) error | UpdateForRemoveFilteredPolicy calls the update callback of other instances to synchronize their policy. これは、Enforcer.RemoveFilteredPolicy(), Enforcer.RemoveFilteredNamedPolicy(), Enforcer.RemoveFilteredGroupingPolicy() および Enforcer.RemoveFilteredNamedGroupingPolicy() の後に呼び出されます。          |
+| UpdateForSavePolicy(model model.Model) error                                                  | UpdateForSavePolicy calls the update callback of other instances to synchronize their policy. Enforcer.SavePolicy() の後に呼び出されます。                                                                                                                                                                  |
+| UpdateForAddPolicies(sec string, ptype string, rules ...[]string) error                       | UpdateForAddPolicies calls the update callback of other instances to synchronize their policy. これは、Enforcer.AddPolicies(), Enforcer.AddNamedPolicies(), Enforcer.AddGroupingPolicies() および Enforcer.AddNamedGroupingPolicies() の後に呼び出されます。                                                       |
+| UpdateForRemovePolicies(sec string, ptype string, rules ...[]string) error                    | UpdateForRemovePolicies calls the update callback of other instances to synchronize their policy. これは、Enforcer.RemovePolicies(), Enforcer.RemoveNamedPolicies(), Enforcer.RemoveGroupingPolicies() および Enforcer.RemoveNamedGroupingPolicies() の後に呼び出されます。                                        |

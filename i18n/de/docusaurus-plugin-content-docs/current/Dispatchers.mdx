@@ -1,0 +1,60 @@
+---
+id: dispatchers
+title: Dispatcher
+description: Dispatcher provide a way to synchronize incremental changes of policy
+keywords:
+  - dispatcher
+authors:
+  - dovics
+---
+
+
+
+Dispatcher bietet eine Möglichkeit, schrittweise Änderungen der Politik zu synchronisieren. Es sollte auf Konsistenzalgorithmen wie Floß basieren, um die Konsistenz aller Durchsetzungsinstanzen zu gewährleisten. Durch Dispatcher können Anwender leicht verteilte Cluster aufbauen.
+
+Die Versandmethode ist in zwei Teile aufgeteilt. Die erste ist die Methode, die mit Kasbin kombiniert wird. Diese Methoden sollten innerhalb von Kasbin genannt werden. Benutzer können die vollständigeren Api von Casbin selbst verwenden.
+
+Der andere Teil ist die vom Dispatcher selbst definierte Methode, einschließlich der Dispatcher-Initialisierungsmethode, und verschiedene Funktionen, die von verschiedenen Algorithmen zur Verfügung gestellt werden, wie dynamische Mitgliedschaft, Konfigurationsänderungen usw.
+
+:::note
+
+wir hoffen, dass Dispatcher nur die Konsistenz von Casbin Durchsetzer zur Laufzeit zu gewährleisten. Wenn also die Politik bei der Initialisierung inkonsistent ist, wird der Dispatcher nicht richtig funktionieren. Die Benutzer müssen sicherstellen, dass der Status aller Instanzen konsistent ist, bevor sie den Dispatcher verwenden.
+
+:::
+
+Eine vollständige Liste der Casbin-Dispatcher wird wie folgt bereitgestellt. Jeder Beitrag von Drittanbietern zu einem neuen Dispatcher ist willkommen, bitte informieren Sie uns und wir werden ihn in diese Liste setzen:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Dispatcher                                                              | Typ  | Autor                              | Beschreibung                                                            |
+| ----------------------------------------------------------------------- | ---- | ---------------------------------- | ----------------------------------------------------------------------- |
+| [Hashicorp Raft Dispatcher](https://github.com/casbin/hraft-dispatcher) | raft | Casbin                             | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+| [KDKYG/casbin-dispatcher](https://github.com/KDKYG/casbin-dispatcher)   | raft | [@KDKYG](https://github.com/KDKYG) | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DistributedEnforcer
+
+DistributedEnforcer verpackt SyncedEnforcer für Dispatcher.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+

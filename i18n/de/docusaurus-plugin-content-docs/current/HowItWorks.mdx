@@ -1,0 +1,100 @@
+---
+id: how-it-works
+title: So funktioniert es
+description: How Casbin works
+keywords:
+  - PERM
+  - request
+  - policy
+  - matcher
+  - effect
+authors:
+  - nodece
+---
+
+In Casbin wird ein Zugriffskontrollmodell in eine CONF-Datei abstrahiert, basierend auf der **PERM-Metamodel (Policy, Effect, Request, Matchers)**. Das Umschalten oder Aktualisieren des Autorisierungsmechanismus für ein Projekt ist daher genauso einfach wie das Ändern einer Konfiguration. Sie können Ihr eigenes Zugangskontrollmodell anpassen, indem Sie die verfügbaren Modelle kombinieren. Zum Beispiel können RBAC-Rollen und ABAC-Attribute in einem Modell kombiniert werden und eine Reihe von Richtlinien-Regeln gemeinsam genutzt werden.
+
+Das PERM-Modell besteht aus vier Stiftungen (Policy, Effect, Request, Matchers), die die Beziehung zwischen Ressourcen und Nutzern beschreiben.
+
+### Anfrage
+Definieren Sie die Abfrageparameter. Eine grundlegende Anfrage ist ein Tuple-Objekt, das mindestens einen Betreff (zugegriffene Entität), Objekt (aufgerufene Ressource) und Aktion (Zugriffsmethode) benötigt
+
+Zum Beispiel kann eine Anfragedefinition so aussehen: `r={sub,obj,act}`
+
+Er definiert den Namen und die Reihenfolge der Parameter, die wir für die Zugriffskontrolle zur Verfügung stellen sollten.
+
+### Richtlinien
+Definieren Sie das Modell der Zugriffsstrategie. Tatsächlich definiert er den Namen und die Reihenfolge der Felder im Richtlinien-Regeldokument.
+
+Zum Beispiel: `p={sub, obj, act}` oder `p={sub, obj, act, eft}`
+
+Hinweis: Wenn eft (Richtlinienergebnis) nicht definiert ist, wird das Ergebnisfeld in der Richtlinien-Datei nicht gelesen, und das übereinstimmende Ergebnis wird standardmäßig erlaubt.
+
+### Matcher
+Passende Regeln für Anfrage und Richtlinie.
+
+Beispiel: `m = r.sub == p.sub && r.act == p.act && r.obj == p. bj` Diese einfache und gemeinsame Regel bedeutet, dass wenn die angeforderten Parameter (Entitäten, -Resourcen und -Methoden) sind gleich, das heißt, wenn sie in der Richtlinie gefunden werden können, dann das Endergebnis (`p. ft`) wird zurückgegeben. Das Ergebnis der Strategie wird in `p.eft` gespeichert.
+
+### Effekt
+Es kann als Modell verstanden werden, in dem ein logisches Kombinationsurteil erneut über die übereinstimmenden Ergebnisse von Matchern durchgeführt wird.
+
+Zum Beispiel: `e = irgendwe(wo(p.eft == erlaubt))`
+
+Dieser Satz bedeutet, dass, wenn das übereinstimmende Strategieergebnis p.eft das Ergebnis von (einige) erlaubt, das Endergebnis wahr ist
+
+Werfen wir einen Blick auf ein anderes Beispiel: `e = some(where (p.eft == allow)) && !some(where (p. ft == deny))` Die logische Bedeutung dieser Beispiel-Kombination ist: Wenn es eine Strategie gibt, die mit dem Ergebnis der Erlaubnis übereinstimmt, und keine Strategie, die mit dem Ergebnis der Ablehnung übereinstimmt, das Ergebnis ist wahr. Mit anderen Worten, es ist wahr, wenn alle übereinstimmenden Strategien erlaubt sind, wenn es leugnet wird. beide sind falsch (einfacher, wenn gleichzeitig erlaubt und verweigert wird, wird verweigert)
+
+Das einfachste und einfachste Modell in Casbin ist ACL. ACL's Modell CONF ist:
+
+```ini
+# Anforderungsdefinition
+[request_definition]
+r = sub, obj, act
+
+# Richtlinien-Definition
+[policy_definition]
+p = sub, obj, act
+
+# Policy-Effekt
+[policy_effect]
+e = some(where (p. ft == allow))
+
+# Matcher
+[matchers]
+m = r. ub == p.sub && r.obj == p.obj && r.act == p.act
+
+```
+
+Eine Beispielrichtlinie für das ACL-Modell ist wie folgt:
+
+```
+p, alice, data1, lesen
+p, bob, data2, schreiben
+```
+
+Es bedeutet:
+
+- alice kann Daten 1 lesen
+- bob kann Daten 2 schreiben
+
+Wir unterstützen auch den Mehrzeiligen-Modus durch Anhängen von '\\' am Ende:
+
+```ini
+# Matcher
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj \ 
+  && r.act == p.act
+```
+
+Außerdem, wenn Sie ABAC verwenden, Sie können Operator `in` probieren, wie folgt in Casbin **golang** Edition (jCasbin und Node-Casbin werden noch nicht unterstützt):
+
+```ini
+# Matcher
+[matchers]
+m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
+```
+
+Aber Sie **SHOULD** stellen sicher, dass die Länge des Arrays **MEHR** als **1**ist, andernfalls wird es zu Panik führen.
+
+Für mehr Operatoren können Sie einen Blick auf [werfen](https://github.com/Knetic/govaluate)
+

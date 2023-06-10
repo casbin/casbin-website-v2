@@ -1,0 +1,48 @@
+---
+id: k8s
+title: Kubernetes の承認
+description: Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin
+keywords:
+  - K8s-authz
+  - Kubernetes
+  - k8s
+authors:
+  - hsluoyz
+---
+
+[K8s-authz](https://github.com/casbin/k8s-authz) は Kubernetes (k8s) RBAC & Casbinに基づくABAC認証ミドルウェアです。 このミドルウェアは、K8s検証アドミッションのWebhookを使用して、k8sリソースのリクエストごとにcasbinによって定義されたポリシーをチェックします。 これらのカスタムアドミッションコントローラは、API サーバーによって転送されロジックに基づいてリクエストオブジェクトに対して何らかの検証を実行します。 要求を許可するか拒否するかの情報を含むAPIサーバーに応答を送り返します これらのコントローラは、 `ValidatingAdmissionWebhook` を使用して Kubernetes に登録されています。
+
+K8s APIサーバーは、アドミッションコントローラに受信リクエストを送信するタイミングを知る必要があります。 このパートについて 我々は、K8sリソース/サブリソースのあらゆる種類のリクエストをプロキシし、その上でポリシー検証を行うバリデーションWebhookを定義しました。 ユーザは、これらのリソースに対する操作を実行することが許可されます。 [enforcers](/docs/get-started#new-a-casbin-enforcer) は、ポリシーで定義されたユーザーのロールをチェックします。 このミドルウェアはK8sクラスタにデプロイされます。
+
+## 要件
+
+続行する前に、以下を必ずご確認ください。
+- 実行中の k8s クラスタ。 Dockerデスクトップ上でクラスタを有効にするか、ローカルまたはサーバー上で完全なK8sエコシステムをセットアップすることができます。 この詳細な [ガイド](https://rominirani.com/tutorial-getting-started-with-kubernetes-on-your-windows-laptop-with-minikube-3269b54a226) に従って、Windows上でk8sクラスタをローカルにセットアップできます。Linux用にセットアップしたい場合は、この [ガイド](https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04)。
+- Kubectl CLI これは [ガイド](https://master--kubernetes-io-master-staging.netlify.app/docs/tasks/tools/install-kubectl-windows/) で Windows にセットアップし、この [ガイド](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) で Linux にセットアップします。
+- OpenSSL
+
+## 使用法
+- openssl を使用して、次のスクリプトを実行することで、すべてのユーザーの証明書と鍵を生成します。
+```
+./gen_cert.sh
+```
+- 次のコマンドを実行して、 [Dockerfile](https://github.com/casbin/k8s-authz/blob/master/Dockerfile) からdocker イメージを手動でビルドし、こことデプロイメント [ファイル](https://github.com/casbin/k8s-authz/blob/718f58c46e3dbf79063b5b1c18348c2fee5de9e9/manifests/deployment.yaml#L18)でビルドバージョンを変更します。 建物によれば
+```
+ docker build -t casbin/k8s_authz:0.1 .
+```
+- [model.conf](https://github.com/casbin/k8s-authz/blob/master/config/model.conf) と [policy.csv](https://github.com/casbin/k8s-authz/blob/master/config/policy.csv) でカスビンポリシーを定義します。 これらのポリシーの動作について詳しく知るには、 [ドキュメント](/docs/how-it-works) を参照してください。
+
+- デプロイする前に、 [main.go](https://github.com/casbin/k8s-authz/blob/master/main.go) でポートを変更し、使用状況に応じて検証の webhook 設定 [ファイル](https://github.com/casbin/k8s-authz/blob/master/manifests/deployment.yaml) で変更することができます。
+- 実行することで、検証コントローラと k8s クラスタの webhook をデプロイします。
+```
+kubectl apply -f deployment.yaml
+```
+- 本番サーバーについては、セキュリティ目的で証明書を配置するために、k8s `secret` を作成する必要があります。
+```
+kubectl create secret generic casbin -n default \
+  --from-file=key.pem=certs/casbin-key.pem \
+  --from-file=cert.pem=certs/casbin-crt.pem
+```
+- Once, this part is done we need to change the directory of the certs in [main.go](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) and then in [manifests](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) with that of the `secret`.
+
+これで、サーバは実行中で、k8s リソースに対する操作のリクエストを検証する準備が整いました。

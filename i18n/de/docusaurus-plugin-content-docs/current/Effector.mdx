@@ -1,0 +1,73 @@
+---
+id: effector
+title: Effektor
+description: Effector is the interface for Casbin effectors
+keywords:
+  - effector
+  - Effect
+  - MergeEffects
+authors:
+  - ErikQQY
+---
+
+
+
+Der Effekt ist das Ergebnis einer politischen Regel. Und der `Effector` ist die Schnittstelle für Casbin Effekte.
+
+### `MergeEffects()`
+
+MergeEffects vereint alle vom Durchsetzer gesammelten übereinstimmenden Ergebnisse in einer einzigen Entscheidung.
+
+Zum Beispiel:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+In diesem Beispiel:
+
+* `Effekt` ist die endgültige Entscheidung, die von dieser Funktion zusammengeführt wird (Initialisiert als `Undeterminate`).
+* `explainIndex` ist der Index von `eft` , der `Erlaubt` oder `Ablehnen`.(Initialisiert als `-1`)
+* `Fr.` wird verwendet um zu überprüfen, ob der Effekt unterstützt wird.
+* `expr` ist der Richtlinieneffekt, der als `String gespeichert wird`
+* `Effekte` ist das Array des Effekts, das `Erlaube`, `Unbestimmt` oder `Ablehnen`
+* `entspricht` dem Array, das zeigt, dass wenn das Ergebnis mit der Richtlinie übereinstimmt.
+* `policyIndex` ist der Index der Richtlinien im Modell.
+* `PolicyLength` ist die Länge der Richtlinie.
+
+Der obige Code zeigt, wie wir die Parameter an die `MergeEffects` Funktion übergeben können und die Funktion verarbeitet die Effekte und Übereinstimmungen basierend auf dem `expr`
+
+Um einen Effekt zu installieren, können wir dies tun:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Die Grundidee der `MergeEffects` zeigt an, dass, wenn die `expr` die Ergebnisse übereinstimmen kann, das bedeutet, dass `p_eft` `erlaubt ist`, dann können wir endlich alle Effekte zusammenführen. Und wenn es keine Abrede gibt, dann lassen wir es zu.
+
+:::note
+
+Wenn der `expr` nicht übereinstimmen kann `"priority(p_eft) || deny"` und auch der `policyIndex` ist kürzer als `policyLength-1`, es wird **Kurzschluss** einige Effekte in der Mitte.
+
+:::

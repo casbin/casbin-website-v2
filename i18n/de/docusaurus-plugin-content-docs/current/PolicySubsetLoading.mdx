@@ -1,0 +1,39 @@
+---
+id: policy-subset-loading
+title: Richtlinien-Untermengenladen
+description: Loading filtered policy
+keywords:
+  - filtered policy
+  - policy subset
+  - performance optimization
+authors:
+  - hsluoyz
+---
+
+Einige Adapter unterstützen gefiltertes Richtlinien-Management. Dies bedeutet, dass die von Casbin geladene Richtlinie eine Teilmenge der Richtlinie im Speicher ist, die auf einem bestimmten Filter basiert. Dies ermöglicht eine effiziente Durchsetzung der Richtlinien in großen, mehrköpfigen Umgebungen, wenn das Parsen der gesamten Politik zu einem Leistungsengpäck wird.
+
+Um gefilterte Richtlinien mit einem unterstützten Adapter zu verwenden, rufen Sie einfach die `LoadFilteredPolicy` Methode auf. Das gültige Format für den Filterparameter hängt vom verwendeten Adapter ab. Um unbeabsichtigten Datenverlust zu verhindern, ist die Methode `SavePolicy` deaktiviert, wenn eine gefilterte Richtlinie geladen wird.
+
+Zum Beispiel verwendet das folgende Code-Snippet den eingebauten gefilterten Datei-Adapter und das RBAC-Modell mit Domänen. In diesem Fall beschränkt der Filter die Richtlinie auf eine einzige Domäne. Alle Richtlinien-Zeilen für andere Domains als `"domain1"` werden in der geladenen Richtlinie weggelassen:
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+// The loaded policy now only contains the entries pertaining to "domain1".
+```
+
+Es gibt eine andere Methode, die das Laden von Untermenüs unterstützt: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` ist ähnlich wie LoadFilteredPolicy, aber es löscht keine vorherige geladene Richtlinie, sondern nur angehängt.

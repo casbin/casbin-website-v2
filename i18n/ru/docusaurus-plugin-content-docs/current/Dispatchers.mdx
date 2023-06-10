@@ -1,0 +1,60 @@
+---
+id: dispatchers
+title: Диспетчеры
+description: Dispatcher provide a way to synchronize incremental changes of policy
+keywords:
+  - dispatcher
+authors:
+  - dovics
+---
+
+
+
+Диспетчер обеспечивает способ синхронизации инкрементальных изменений политики. Он должен быть основан на алгоритмах согласованности, таких как рафт, чтобы обеспечить согласованность всех силовых инстанций. С помощью диспетчера пользователи могут легко устанавливать распределенные кластеры.
+
+Метод диспетчера разделен на две части. Первый метод сочетается с casbin. Эти методы следует называть внутри казино. Пользователи могут использовать более полный api, предоставляемый самим казино.
+
+Другая часть - метод, определяемый самим диспетчером, включая метод инициализации диспетчера, и различные функции, предоставляемые различными алгоритмами, такими как динамическое членство, изменения конфигурации и т.д.
+
+::note
+
+Надеемся, что диспетчер обеспечит последовательность силовых структур Касбина во время работы. Так что если политика несовместима при инициализации, диспетчер не будет работать должным образом. Пользователи должны убедиться, что состояние всех экземпляров является последовательным перед использованием диспетчера.
+
+:::
+
+Полный список диспетчеров Casbin приводится ниже. Любой вклад сторонних разработчиков в новый диспетчер приветствуется, пожалуйста, сообщите нам и мы поместим его в этот список:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Диспетчер                                                               | Тип  | Автор                              | Описание                                                                |
+| ----------------------------------------------------------------------- | ---- | ---------------------------------- | ----------------------------------------------------------------------- |
+| [Hashicorp Raft Dispatcher](https://github.com/casbin/hraft-dispatcher) | raft | Casbin                             | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+| [KDKYG/casbin-dispatcher](https://github.com/KDKYG/casbin-dispatcher)   | raft | [@KDKYG](https://github.com/KDKYG) | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DistributedEnforcer
+
+DistributedEnforcer обертывает SyncedEnforcer для диспетчера.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+

@@ -1,0 +1,56 @@
+---
+id: data-permissions
+title: 数据权限
+description: 数据权限解决方案
+keywords:
+  - 数据权限
+  - 隐式
+authors:
+  - ErikQQY
+---
+
+
+
+我们有两个解决方案用于数据权限 (过滤)。 使用隐式作业 API。 或者只使用BatchEnforce() API.
+
+### 1. 查询隐含角色或权限
+
+当用户通过RBAC层次结构继承角色或权限，而不是直接在策略规则中分配它们时，我们将这种类型的分配称为 `implicit`。 要查询这种隐式关系，需要使用以下两个api： `GetImplicitRolesForUser()`以及 `GetImplicitPermissionsForUser` 替代`GetRolesForUser()` 以及 `GetPermissionsForUser`. 有关详情，请参阅 [this GitHub issue](https://github.com/casbin/casbin/issues/137)。
+
+### 2. 使用 `BatchEnforce()`
+
+BatchEnforce 强制执行每个请求并返回一个布尔数组的结果
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

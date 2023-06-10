@@ -1,0 +1,41 @@
+---
+id: supported-models
+title: 지원하는 접근 제어 모델
+description: Supported models of Casbin
+keywords:
+  - supported models
+authors:
+  - nodece
+---
+
+1. [**ACL (Access Control List)**](https://en.wikipedia.org/wiki/Access_control_list)
+2. **ACL + [슈퍼유저](https://en.wikipedia.org/wiki/Superuser)**
+3. **사용자 없는 ACL**: 인증이나 사용자 로그인이 없는 시스템에 유용
+3. **리소스 없는 ACL**: 개별 리소스 보다는 리소스 타입을 통틀어 권한 관리를 원할 때 (예: `write-article`, `read-log`) 특정 article이나 log가 아닌 전체에 대해서 통제할 때
+4. **[RBAC (Role-Based Access Control, 역할-기반 접근 제어)](https://en.wikipedia.org/wiki/Role-based_access_control)**
+5. **RBAC + 리소스 역할**: 사용자와 리소스 모두 역할(혹은 그룹) 에 연결될 수 있음.
+6. **RBAC + 도메인/테넌트**: 사용자가 도메인/테넌트에 따라 다른 역할 집합에 연결됨.
+7. **[ABAC (Attribute-Based Access Control, 속성-기반 접근 제어)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: 리소스의 속성을 사용해서 접근 제어 구성 가능 (예: `resource.Owner`)
+8. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: `/res/*`, `/res/:id` 등의 경로 및 `GET`, `POST`, `PUT`, `DELETE` 같은 HTTP Method 사용 가능.
+9. **거부(Deny) 우선**: 권한 부여에 허용(allow) 및 거부(deny) 사용 가능하며, 거부가 허용에 우선함.
+10. **우선순위**: 정책(Policy) 규칙은 네트워크 방화벽 규칙처럼 우선순위 지정 가능.
+
+## 예시
+
+| 모델                | 모델 설정 파일                                                                                                                             | 정책 설정 파일                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| ACL               | [basic_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_model.conf)                                           | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| ACL + 슈퍼유저        | [basic_with_root_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_with_root_model.conf)                     | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                           |
+| 사용자 없는 ACL        | [basic_without_users_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_model.conf)             | [basic_without_users_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_policy.csv)             |
+| 리소스 없는 ACL        | [basic_without_resources_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_model.conf)     | [basic_without_resources_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_policy.csv)     |
+| RBAC              | [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)                                             | [rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)                                             |
+| RBAC + 리소스 역할     | [rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) | [rbac_with_resource_roles_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_policy.csv) |
+| RBAC + 도메인/테넌트    | [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)                 | [rbac_with_domains_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_policy.csv)                 |
+| ABAC              | [abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                             | N/A                                                                                                                                  |
+| RESTful           | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                                     | [keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                     |
+| 거부(Deny) 우선       | [rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)             | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| 허용/거부             | [rbac_with_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_model.conf)                       | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                       |
+| 우선순위              | [priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/priority_model.conf)                                     | [priority_policy.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy.csv)                                     |
+| Explicit Priority | [priority_model_explicit](https://github.com/casbin/casbin/blob/master/examples/priority_model_explicit.conf)                      | [priority_policy_explicit.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy_explicit.csv)                 |
+| Subject-Priority  | [subject_priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/subject_priority_model.conf)                   | [subject_priority_policyl.csv](https://github.com/casbin/casbin/blob/master/examples/subject_priority_policy.csv)                  |
+

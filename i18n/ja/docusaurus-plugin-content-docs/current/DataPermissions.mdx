@@ -1,0 +1,56 @@
+---
+id: data-permissions
+title: データ権限
+description: Solutions for data permissions
+keywords:
+  - Data Permissions
+  - implicit
+authors:
+  - ErikQQY
+---
+
+
+
+データパーミッション(フィルタリング)には2つのソリューションがあります。 暗黙の代入APIを使用する。 または、BatchEnforce() APIを使用してください。
+
+### 1. 暗黙のロールまたは権限を問い合わせます
+
+ユーザーがRBAC階層を介してロールまたは権限を継承した場合、ポリシールールに直接割り当てるのではありません。 このような課題を `暗黙的`と呼びます。 そのような暗黙の関係を照会するには `GetImplicitRolesForUser()` と `GetImplicitPermissionsForUser` の代わりに `GetRolesForUser()` と `GetPermissionsForUser` を使用する必要があります。 詳細については、 [この GitHub Issue](https://github.com/casbin/casbin/issues/137) を参照してください。
+
+### 2. `BatchEnforce()` を使用する
+
+BatchEnforce は、リクエストごとに強制的に bool 配列を返します。
+
+例:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

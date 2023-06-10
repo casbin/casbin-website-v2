@@ -1,0 +1,73 @@
+---
+id: effector
+title: エフェクト
+description: Effector is the interface for Casbin effectors
+keywords:
+  - effector
+  - Effect
+  - MergeEffects
+authors:
+  - ErikQQY
+---
+
+
+
+効果はポリシールールの結果です。 そして、 `エフェクター` はCasbinエフェクターのインターフェースです。
+
+### `MergeEffects()`
+
+MergeEffectsは、執行者によって収集されたすべての一致結果を1つの決定にマージします。
+
+例:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+この例では:
+
+* `エフェクト` は、この関数によってマージされる最終決定です( `Indeterminate` として初期化されます)。
+* `explanation Index` は `eft` のインデックスで、 `Allow` または `Deny`(Initialized as `-1`)
+* `err` は効果がサポートされているかどうかを確認するために使用されます。
+* `expr` は `文字列` として格納されたポリシー効果です
+* `エフェクト` は、 `許可`、 `不確定` または `拒否` のような効果の配列です。
+* `matches` は、結果がポリシーと一致することを示す配列です。
+* `policyIndex` はモデルのポリシー指数です。
+* `ポリシー長さ` はポリシーの長さです。
+
+上のコードは、パラメータを `MergeEffects` 関数に渡す方法を示しており、関数は `expr` に基づいてエフェクトを処理し一致します。
+
+エフェクターを展開するには、以下を実行します。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+`MergeEffects` の基本的な考え方は、 `expr` が `p_eft` が `許可`であることを意味する結果と一致する場合を示します。 やっとすべての効果を融合させることができます。 否定ルールが一致しない場合は、我々は許可します。
+
+:::note
+
+If the `expr` can not match `"priority(p_eft) || deny"` and also the `policyIndex` is shorter than `policyLength-1`, it will **short-circuit** some effects in the middle.
+
+:::

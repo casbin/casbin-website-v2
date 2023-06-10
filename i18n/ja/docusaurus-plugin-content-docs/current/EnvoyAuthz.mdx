@@ -1,0 +1,62 @@
+---
+id: envoy
+title: Envoyによるサービスメッシュの承認
+description: Authorization of Service Mesh through Envoy
+keywords:
+  - Envoy
+  - Envoy-authz
+  - Istio
+authors:
+  - ashish493
+---
+
+
+
+[Envoy-authz](https://github.com/casbin/envoy-authz) はEnvoyのミドルウェアで、カシンを介して外部RBAC & ABAC認証を実行します。 このミドルウェアは、gRPCサーバーを介して [Envoyの外部認証 API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) を使用します。 このプロキシは、Istio のような任意のタイプのenvey ベースのサービス メッシュにデプロイされます。
+
+## 要件
+
+- 特使1.17+
+- Istioまたは任意のタイプのサービスメッシュ
+- grpc依存関係
+
+依存関係は `go.mod` を通じて管理されます。
+
+## ミドルウェアの作業
+
+- クライアントはhttpリクエストを行います。
+- Envoyプロキシはそのリクエストをgrpcサーバーに送信します。
+- grpcサーバーはカスビンポリシーに基づいてリクエストを承認します。
+- 承認されると、リクエストは通過または他の方法で送信されますが、拒否されます。
+
+grpcサーバはEnvoyの [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) からのプロトコルバッファに基づいています。
+
+```
+// A generic interface for perform authorization check on incoming
+// requests to a networked service.
+service Authorization {
+  // Performs authorization check based on the attributes associated with the
+  // incoming request. を選択すると、状態を`OK` かどうかを返します。
+  rpc Check(v2.CheckRequest) returns (v2.CheckResponse);
+}
+```
+上記のprotoファイルから、認証サーバーで `Check()` サービスを使用する必要があります。
+
+## 使用法
+- この [ガイド](/docs/how-it-works) に従って、設定ファイルの下にあるCasbin ポリシーを定義します。
+
+You can verify/test your policies on online [casbin-editor](/editor).
+
+- 実行して認証サーバーを起動します:-
+```
+$ go build .
+$ ./authz 
+```
+- 利用者の構成を読み込む:-
+```
+$  envoy -c authz.yaml -l info
+```
+使節が開始されると、許可プロセスの要求が傍受され始めます。
+
+## Istioとの統合
+このミドルウェアを動作させるには、JWT トークン OF ヘッダーにユーザー名を含むカスタムヘッダーを送信する必要があります。 公式の [Istio ドキュメント](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) を確認して、 `リクエストヘッダー` の変更に関する詳細情報を得ることができます。

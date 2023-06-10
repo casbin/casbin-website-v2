@@ -1,0 +1,25 @@
+---
+id: online-editor
+title: オンラインエディター
+description: Writing Casbin model and policy in web browser
+keywords:
+  - online editor
+  - Casbin editor
+authors:
+  - hsluoyz
+---
+
+You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. プログラミング言語の IDE と同様に、 `構文の強調表示` や `コード補完`などの機能を提供します。
+
+## パターンを使用
+`RBAC をパターン` または `すべてのパターン`で 使用している場合 左下隅のパターンマッチング機能を指定します。
+
+![editor-tips](/img/editor-tips.png).
+
+同等のコードを記述したい場合は、該当する api でパターンマッチング関数を指定する必要があります。 [パターン付きRBAC](/docs/rbac-with-pattern) を参照
+
+:::note
+
+エディタは [node-casbin](https://github.com/casbin/node-casbin) に基づいています。 カスビンの異なる言語間の同期遅延のために。 `エディター` の認証結果は、使用しているカシュビンの認証結果と異なる場合があります。 その場合は、使用しているカスビンリポジトリに問題を提出してください。
+
+:::

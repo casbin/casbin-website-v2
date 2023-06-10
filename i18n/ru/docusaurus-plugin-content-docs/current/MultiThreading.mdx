@@ -1,0 +1,13 @@
+---
+id: multi-threading
+title: Многопоточность
+description: Using Casbin in a multi-threading manner
+keywords:
+  - multi-threading
+authors:
+  - hsluoyz
+---
+
+Если вы используете Касбин в многопоточной манере, то вы можете использовать синхронизированную оболочку Касбина enforcer: https://github.com/casbin/casbin/blob/master/enforcer_synced.go (GoLang) и https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp (C++).
+
+Он также поддерживает функцию `AutoLoad` , , это означает, что Силор Касбин автоматически загрузит последние правила политики из БД при их изменении. Вызовите `StartAutoLoadPolicy()` для периодической загрузки политики и вызовите `StopAutoLoadPolicy()` для остановки.

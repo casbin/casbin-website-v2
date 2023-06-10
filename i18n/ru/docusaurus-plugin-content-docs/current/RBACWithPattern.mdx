@@ -1,0 +1,130 @@
+---
+id: rbac-with-pattern
+title: RBAC с узором
+description: RBAC with Pattern
+keywords:
+  - RBAC with pattern
+  - pattern matching
+authors:
+  - hsluoyz
+---
+
+
+
+## Быстрый старт
+
+- использовать шаблон в `g(_,_)`
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+
+- использовать шаблон с доменом
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+- использовать все шаблоны
+
+  просто комбинированное использование двух API
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` API,  which determine how the pattern matches.
+
+::note
+
+Если вы используете онлайн редактор, в левом нижнем углу задается функция соответствия шаблона. ![editor-tips](/img/editor-tips.png)
+
+:::
+
+## Использовать подходящий шаблон в RBAC
+
+Иногда вы хотите, чтобы некоторые темы, объекты или домены/арендаторы с определенным шаблоном автоматически передавались роли. Функции сопоставления шаблонов в RBAC могут помочь вам в этом. Шаблон совпадающий с функцией разделяет те же параметры и возвращает значение, что и предыдущая [функция](/docs/syntax-for-models#functions-in-matchers).
+
+Функция соответствия шаблона поддерживает каждый параметр g.
+
+Мы знаем, что обычно RBAC выражается как `g(r.sub, p.sub)` в матче. Тогда мы будем использовать такую политику:
+
+```
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+Поэтому `alice` может читать все книги, в том числе `книга 1` и `книга 2`. Но могут быть тысячи книг, и очень утомительно добавить каждую книгу в роль (или группу) с правилом `г`.
+
+Но с помощью функций соответствия шаблонов, вы можете написать политику только одной строкой:
+
+```
+g, /book/:id, book_group
+```
+
+Касбин будет автоматически соответствовать `/book/1` и `/book/2` в шаблоне `/book/:id` для вас. Вам нужно только зарегистрировать функцию с силом:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+При использовании функции сопоставления шаблонов в доменах/арендаторах, Вам нужно зарегистрировать функцию для усиления и модели.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Если вы не понимаете, что означает `g(r.sub, p.sub, r.dom)` , пожалуйста, прочитайте [rbac-with-domains](/docs/rbac-with-domains). Короче говоря, `g(r.sub, p.sub, r.dom)` проверит ли пользователь `r. ub` имеет роль `p.sub` в домене `r.dom`. Так что именно так и работает. Полный пример [можно посмотреть здесь](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
+
+Кроме синтаксиса совпадения шаблона, мы также можем использовать шаблон чистого домена.
+
+Например, если мы хотим, чтобы `под` имели доступ к различным доменам, `домена1` и `домена2`, мы можем использовать шаблон чистого домена:
+
+```
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+В этом примере мы хотим, чтобы `улыбались` для чтения и записи `данных` в домена1 и домена2, шаблон, совпадающий `*` в `g` делает `alice` имеет доступ к двум доменам.
+
+С помощью шаблона сопоставления, особенно в сценариях, которые сложнее и Есть много доменов или объектов, которые нам нужно учитывать, мы можем реализовать `policy_definition` более элегантным и эффективным.

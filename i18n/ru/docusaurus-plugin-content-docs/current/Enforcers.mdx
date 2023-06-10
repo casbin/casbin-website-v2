@@ -1,0 +1,34 @@
+---
+id: enforcers
+title: Enforcers
+description: Enforcer is the main structure in Casbin, It acts as an interface for users to make operations on policy rules and models
+keywords:
+  - enforcer
+  - supported enforcers
+authors:
+  - Abingcbc
+---
+
+
+
+`Enforcer` является основной структурой в Касбине. Он выступает в качестве интерфейса для пользователей для проведения операций по правилам политики и моделям.
+
+## Поддерживаемые силовики
+Полный список силовых структур Касбина приводится ниже. Any 3rd-party contribution on a new enforcer is welcomed, please inform us and we will put it in this list:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Enforcer                                                                                       | Автор  | Описание                                                                                                                                                                                                                                                                                                                                                                                              |
+| ---------------------------------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go)                           | Casbin | `Enforcer` является базовой структурой взаимодействия пользователей с политикой Casbin и моделями. Вы можете найти более подробную информацию о `Enforcer`'s API на [здесь](/docs/management-api).                                                                                                                                                                                                    |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)              | Casbin | `CachedEnforcer` основан на `Enforcer`. Поддерживается кэширование результатов оценки запроса в памяти картой и очистки тайников в указанное время истекает. Кроме того, блокировка чтения и пишущей почты гарантирует безопасность потоков. Вы можете использовать `EnableCache` для кэширования результатов оценки (по умолчанию включено). `CachedEnforcer`API это то же самое, что и `Enforcer`s. |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go)    | Casbin | `DistributedEnforcer` поддерживает несколько экземпляров в распределенных кластерах. Оно обертывает `SyncedEnforcer` для диспетчера. Более подробную информацию о распаде вы можете найти на [здесь](/docs/dispatchers#distributedenforcer).                                                                                                                                                          |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)              | Casbin | `SyncedEnforer` основан на `Enforcer` и обеспечивает синхронизированный доступ. Это безопасная нить.                                                                                                                                                                                                                                                                                                  |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go) | Casbin | `SyncedCachedEnforcer` wraps `Enforcer` and provides decision sync cache.                                                                                                                                                                                                                                                                                                                             |
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

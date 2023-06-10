@@ -1,0 +1,227 @@
+---
+id: log-error
+title: 日志 & 错误处理
+description: Casbin 日志 & 错误处理
+keywords:
+  - 日志
+  - 错误
+  - 错误处理
+authors:
+  - hsluoyz
+---
+
+
+
+## 日志
+
+Cabin默认使用内置的 `log` 来将日志输出到控制台，如：
+
+```log
+2017/07/15 19:43:56 [Request: alice, data1, read ---> true]
+```
+
+日志记录不是默认启用的。 您可以通过调用 `Enforcer.EnableLog()` 或 `NewEnforcer()`函数中的最后一个参数来切换它。
+
+:::note
+
+我们已经支持日志模型、强制请求、角色、Golang策略。 您可以定义您自己的日志来记录Casbin。 如果您正在使用 Python, pycasbin 会影响默认的 Python 日志机制。 Pycasbin 软件包调用logging.getLogger()来设置日志。 除了初始化父应用程序中的日志记录器外，不需要特殊配置的日志。 如果父应用程序内没有输入日志，您将不会看到来自pycasbin的日志消息。
+
+:::
+
+### 对不同的执行器使用不同的记录器
+
+每个执行器都可以有自己的记录器来记录信息，并且可以在运行时进行更改。
+
+而且你可以通过 `NewEnterer()`的最后一个参数使用一个适当的日志。 如果您使用这种方式来初始化您的执行器，由于日志中启用的字段的优先级更高，您不需要使用启用参数。
+
+```go
+// 设置默认记录器作为执行器e1的记录器。
+//此操作也可以被视为在运行时更改e1的记录器。
+e1.SetLogger(&Log.DefaultLogger{})
+
+// 设置另一个记录器作为执行器e2的日志记录器。
+e2.SetLogger(&YouOwnLogger)
+
+// 初始化执行器e3时设置您的记录器。
+e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
+```
+
+#### 支持的记录器
+
+我们提供了一些记录器来帮助您记录信息。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 记录器                                                                                        | 作者     | 描述                                                                                |
+| ------------------------------------------------------------------------------------------ | ------ | --------------------------------------------------------------------------------- |
+| [Defatule logger (内置)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | 默认使用golang日志。                                                                     |
+| [Zap logger](https://github.com/casbin/zap-logger)                                         | Casbin | 使用 [zap](https://github.com/uber-go/zap)，提供json 编码日志，您可以使用自己的 zap-logger 自定义更多信息。 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| 记录器                                                          | 作者     | 描述                                                    |
+| ------------------------------------------------------------ | ------ | ----------------------------------------------------- |
+| [psr3-bridge 记录器](https://github.com/php-casbin/psr3-bridge) | Casbin | 提供一个 [PSR-3](https://www.php-fig.org/psr/psr-3/) 兼容桥。 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### 如何编写一个记录器
+
+您的记录器应该实现 [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20) 接口。
+
+| 接口名          | 实现要素 | 描述           |
+| ------------ | ---- | ------------ |
+| EnableLog()  | 必须   | 控制是否打印消息。    |
+| IsEnabled()  | 必须   | 显示当前日志启用的状态。 |
+| LogModel()   | 必须   | 与模型相关的日志信息。  |
+| LogEnforce() | 必须   | 与执行器相关的日志信息。 |
+| LogRole()    | 必须   | 与角色相关的日志信息。  |
+| LogPolicy()  | 必须   | 与策略相关的日志信息。  |
+
+
+您可以将您的自定义 `记录器` 传给 `Enforcer.SetLogger()`函数。
+
+这是一个关于如何自定义Golang日志的示例：
+
+```go
+import (
+    "fmt"
+    "log"
+    "strings"
+)
+
+// 默认日志是使用golang日志的日志实现的。
+type DefaultLogger struct {
+    enabled bool
+}
+
+func (l *DefaultLogger) EnableLog(enable bool) {
+    l.enabled = enable
+}
+
+func (l *DefaultLogger) IsEnabled() bool {
+    return l.enabled
+}
+
+func (l *DefaultLogger) LogModel(model [][]string) {
+    if !l.enabled {
+        return
+    }
+    var str strings.Builder
+    str.WriteString("Model: ")
+    for _, v := range model {
+        str.WriteString(fmt.Sprintf("%v\n", v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogEnforce(matcher string, request []interface{}, result bool, explains [][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var reqStr strings.Builder
+    reqStr.WriteString("Request: ")
+    for i, rval := range request {
+        if i != len(request)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", rval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v", rval))
+        }
+    }
+    reqStr.WriteString(fmt.Sprintf(" ---> %t\n", result))
+
+    reqStr.WriteString("Hit Policy: ")
+    for i, pval := range explains {
+        if i != len(explains)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", pval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v \n", pval))
+        }
+    }
+
+    log.Println(reqStr.String())
+}
+
+func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var str strings.Builder
+    str.WriteString("Policy: ")
+    for k, v := range policy {
+        str.WriteString(fmt.Sprintf("%s : %v\n", k, v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogRole(roles []string) {
+    if !l.enabled {
+        return
+    }
+
+    log.Println("Roles: ", roles)
+}
+
+```
+
+## 错误处理
+
+当您使用Casbin时可能会由于以下原因发生错误或恐慌：
+
+1. Model文件 (. conf) 中的语法有误。
+2. 策略文件(.csv)中语法有误。
+3. 来adapter的自定义错误信息（譬如连接MySQL失败）。
+4. Casbin的bug。
+
+您可能需要五个主要功能来处理错误或恐慌：
+
+| Function                                                                       | 异常时表现   |
+| ------------------------------------------------------------------------------ | ------- |
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer)        | 返回error |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel)   | 返回error |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | 返回error |
+| [SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | 返回error |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce)       | 返回error |
+
+:::note
+
+`NewEnforcer()`通过内部调用`LoadModel()` 和`LoadPolicy()`。 所以当您使用`NewEnforcer()`函数时不需要再去调用这两个函数。
+
+:::
+
+## 启用 & 禁用
+
+可以通过 `Encer.EnableEnforcece()` 函数禁用执行器。 当它被禁用时， `Enforcer.Enforce()` 将总是返回 `true`。 诸如添加或删除政策之类的其他操作将不受影响。 下面是一个示例：
+
+```go
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+
+// 将会返回false
+// 默认情况下enforcer是启用的
+e.Enforce("non-authorized-user", "data1", "read")
+
+// 在运行时禁用enforcer
+e.EnableEnforce(false)
+
+// 对任何请求都返回true
+e.Enforce("non-authorized-user", "data1", "read")
+
+// 打开enforcer
+e.EnableEnforce(true)
+
+// 将会返回false
+e.Enforce("non-authorized-user", "data1", "read")
+```

@@ -1,0 +1,13 @@
+---
+id: multi-threading
+title: 多线程
+description: 以多线程方式使用 Casbin
+keywords:
+  - multi-threading
+authors:
+  - hsluoyz
+---
+
+如果您想以多线程方式使用 Casbin，您可以使用 Casbin enforcer 提供的同步包装器：https://github.com/casbin/casbin/blob/master/enforcer_synced.go (GoLang) 和 https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp (C++)。
+
+它还支持 `AutoLoad` 特性，这意味着如果最新的策略规则发生了更改，Casbin enforcer 将自动从DB加载这些规则。 调用 `StartAutoLoadPolicy()` 启动定期自动加载策略，调用`StopAutoLoadPolicy()` 停止策略。

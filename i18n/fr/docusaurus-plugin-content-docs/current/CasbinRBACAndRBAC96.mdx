@@ -1,0 +1,74 @@
+---
+id: rbac-96
+title: Casbin RBAC vs. RBAC96
+description: Difference between Casbin RBAC and RBAC96
+keywords:
+  - RBAC96
+  - Casbin RBAC
+authors:
+  - kininaru
+---
+
+
+
+## Casbin RBAC et RBAC96
+
+Dans ce document, nous comparerons Casbin RBAC avec [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf).
+
+Casbin RBAC prend en charge presque toutes les fonctionnalités de RBAC96, et a ajouté de nouvelles fonctionnalités au-dessus.
+
+| Version RBAC | Niveau de support                                                                                                                                       | Description                                                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RBAC0        | entièrement pris en charge                                                                                                                              | RBAC0 est la version de base de RBAC96. Il a clarifié la relation entre les utilisateurs, les rôles et les permissions.                                                             |
+| RBAC1        | entièrement pris en charge                                                                                                                              | RBAC1 a ajouté des hiérarchies de rôle sur RBAC0, ce qui signifie que si `alice` a `rôle 1`, `rôle1` a `rôle2`, puis `alice` aura également `rôle2` et héritera de ses permissions. |
+| RBAC2        | la gestion mutuellement exclusive est prise en charge ([comme ceci](/docs/syntax-for-models#policy-effect)), mais les limites quantitatives ne sont pas | RBAC2 ajoute des contraintes à RBAC0. Ainsi, RBAC2 peut gérer les exclusions mutuelles contenues dans les politiques.                                                               |
+| RBAC3        | la gestion mutuellement exclusive est prise en charge ([comme ceci](/docs/syntax-for-models#policy-effect)), mais les limites quantitatives ne sont pas | RBAC3 est une combinaison de RBAC1 et RBAC2. RBAC3 supporte les hiérarchies de rôles et les contraintes dans RBAC1 et RBAC2.                                                        |
+## Différence entre Casbin RBAC et RBAC96
+
+1. En casbin, la distinction entre l'utilisateur et le rôle n'est pas claire
+
+   En Casbin, l'Utilisateur et le rôle sont traités comme des chaînes. Si vous avez écrit un fichier de régulation comme ceci :
+
+   ```
+   p, admin, book, read
+   p, alice, book, read
+   g, amber, admin
+   ```
+
+   et appeler la méthode `GetAllSubjects()` comme ça (`e` est une instance de Casbin Enforcer) :
+
+   ```go
+   e.GetAllSubjects()
+   ```
+
+   vous obtiendrez la valeur de retour ci-dessous:
+
+   ``` go
+   [admin alice]
+   ```
+
+   Parce qu'en Casbin, les sujets comprenaient des utilisateurs et des rôles.
+
+   Cependant, si vous appelez la méthode `GetAllRoles()` comme ceci:
+
+   ``` go
+   e.GetAllRoles()
+   ```
+
+   vous obtiendrez la valeur de retour ci-dessous:
+
+   ```go
+   [admin]
+   ```
+
+   Et maintenant vous savez qu'il ya une distinction entre les utilisateurs et les rôles dans le Casbin, mais n'est pas aussi nette que dans RBAC96. Bien sûr, vous pouvez ajouter un préfixe à vos politiques comme `user::alice`, `role::admin` pour clarifier leurs relations.
+
+2. Casbin RBAC fournit plus d'autorisations que RBAC96
+
+   Seules 7 autorisations sont définies dans RBAC96: lecture, écriture, ajout, exécution, crédit, débit, requête.
+
+   Cependant, dans Casbin, nous traitons les permissions comme des chaînes. De cette façon, vous pouvez créer des permissions qui vous conviennent mieux.
+
+3. Casbin RBAC prend en charge les domaines
+
+   En Casbin, vous pouvez faire des autorisations par domaines. Cette fonction rend votre modèle de contrôle d'accès plus flexible.

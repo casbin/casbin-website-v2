@@ -1,0 +1,41 @@
+---
+id: supported-models
+title: Modèles pris en charge
+description: Supported models of Casbin
+keywords:
+  - supported models
+authors:
+  - nodece
+---
+
+1. [**ACL (liste de contrôle d'accès)**](https://en.wikipedia.org/wiki/Access_control_list)
+2. **ACL avec [superutilisateur](https://en.wikipedia.org/wiki/Superuser)**
+3. **ACL sans utilisateurs**: particulièrement utile pour les systèmes qui n'ont pas d'authentification ou de connexion utilisateur.
+3. **ACL sans ressources**: certains scénarios peuvent cibler un type de ressources au lieu d'une ressource individuelle en utilisant des permissions comme `écrit-article`, `read-log`. Il ne contrôle pas l'accès à un article ou à un journal spécifique.
+4. **[RBAC (contrôle d'accès par rôle)](https://en.wikipedia.org/wiki/Role-based_access_control)**
+5. **RBAC avec les rôles de ressource**: les utilisateurs et les ressources peuvent avoir des rôles (ou des groupes) en même temps.
+6. **RBAC avec domaines/locataires**: les utilisateurs peuvent avoir différents jeux de rôles pour différents domaines/locataires.
+7. **[ABAC (Contrôle d'accès basé sur les attributs)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: sucre syntaxique comme `ressource.Propriétaire` peut être utilisé pour obtenir l'attribut d'une ressource.
+8. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: supporte les chemins comme `/res/*`, `/res/:id` et les méthodes HTTP comme `GET`, `POST`, `PUT`, `SUPPRIMER`.
+9. **Refuser de remplacer**: les autorisations autorisées et refusées sont prises en charge, le refus remplace l'autorisation.
+10. **Priorité**: les règles de politique peuvent être priorisées comme des règles de pare-feu.
+
+## Exemples
+
+| Modélisation                     | Fichier modèle                                                                                                                         | Fichier de régulation                                                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| ACL                              | [Conf de base](https://github.com/casbin/casbin/blob/master/examples/basic_model.conf)                                                 | [Csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                                              |
+| ACL avec super-utilisateur       | [Basique avec le modèle racine.conf](https://github.com/casbin/casbin/blob/master/examples/basic_with_root_model.conf)                 | [Csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                                              |
+| ACL sans utilisateurs            | [Basic_without_users_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_model.conf)               | [format@@0 Basic_without_users_policy](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_policy.csv)             |
+| ACL sans ressources              | [Modèle de base sans ressource](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_model.conf)              | [format@@0 Basic_without_resources_policy](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_policy.csv)     |
+| RBAC                             | [format@@0 rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)                                     | [format@@0 rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)                                         |
+| RBAC avec les rôles de ressource | [format@@0 rbac_with_resource_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) | [format@@0 rbac_with_resource_roles_policy](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_policy.csv) |
+| RBAC avec domaines/locataires    | [format@@0 rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)         | [format@@0 rbac_with_domains_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_policy.csv)             |
+| ABAC                             | [format@@0 abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                     | N/A                                                                                                                                        |
+| RESTANT                          | [format@@0 keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                             | [Csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                                           |
+| Refuser la substitution          | [format@@0 rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)     | [format@@0 rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                   |
+| Allumer et refuser               | [format@@0 rbac_with_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_model.conf)               | [format@@0 rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                   |
+| Priorité                         | [modèle_priorité](https://github.com/casbin/casbin/blob/master/examples/priority_model.conf)                                           | [csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy.csv)                                                           |
+| Priorité explicite               | [modèle de priorité explicite](https://github.com/casbin/casbin/blob/master/examples/priority_model_explicit.conf)                     | [csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy_explicit.csv)                                                  |
+| Sujet-Priorité                   | [modèle_priorité_objet](https://github.com/casbin/casbin/blob/master/examples/subject_priority_model.conf)                           | [Priorité_objet_politique.csv](https://github.com/casbin/casbin/blob/master/examples/subject_priority_policy.csv)                        |
+

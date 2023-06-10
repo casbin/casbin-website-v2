@@ -1,0 +1,386 @@
+---
+id: k8s-gatekeeper
+title: Admission Webhook For K8s
+description: Kubernetes (k8s) RBAC & 基于Casbin的ABAC授权中间件
+keywords:
+  - k8s-gatekeeper
+  - Kubernetes
+  - k8s
+authors:
+  - ComradeProgrammer
+---
+
+# Kubernetes + Casbin 插件：K8s-Gatekeeper
+
+## 1. 概述 Casbin K8s-Gatekeeper
+
+Casbin K8s-GateKeeper 是 Kubernetes 的一个接入webhook ，该接口将Casbin 作为访问控制工具。 通过使用Casbin K8s- gatekeeper，您可以建立灵活的规则来授权或拦截K8s资源上的任何操作，而无需编写任何代码，只需编写几行关于Casbin模型和策略的声明性配置(它们是Casbin ACL(访问控制列表)语言的一部分)。
+
+Casbin K8s-GateKeeper由Casbin社区开发、维护。 该项目仓库如下： <https://github.com/casbin/k8s-gatekeeper>
+
+### 0.1 简单的例子
+
+例如，你无需写任何代码，只需使用以下配置即可实现此功能:“禁止在任何部署中使用带有特定标签的图像”:
+
+模型:
+```ini
+[request_definition]
+r =  obj
+
+[policy_definition]
+p =  obj,eft
+
+[policy_effect]
+e = !some(where (p.eft == deny))
+
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+contain(split(accessWithWildcard(${OBJECT}.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)
+```
+
+策略：
+```csv
+p,“1.14.1”,否认
+```
+
+这些都是用常见的Casbin ACL语言编写的。 如若你已阅读过相关章节，那就很容易理解。
+
+
+Casbin K8s-Gatekeeper具有以下优势：
+
+- 它简单易用。 写几行ACL比写大量代码要好得多。
+- 它允许快速更新配置。 您无需关闭整个插件来修改配置。
+- 它是新兴工具。 您可以在任何k8s资源上制定任意规则，它都可以探索到。
+- 它对k8s接入webhook进行了复杂检查。 你无需了解“K8s admission webhook ”是什么，也无需知道如何为它编写代码。 您需要做的是了解您想要设置约束的资源，然后写入Casbin ACL。 大家都知道K8s十分复杂，但使用Casbin K8s-Gatekeeper可以节省您的时间。
+- 它由Casbin 社区管理。 如果此插件有任何内容使您感到困惑，或者您在尝试此插件时遇到任何问题，请随时联系我们。
+
+
+### 1.1 Casbin K8s-gatekeepe是如何运作的？
+K8s-gatekeeper 是 k8s的许可webhook， 使用 [Casbin](/docs/overview) 可应用任意用户定义的访问控制规则，来帮助管理员阻止 k8 上的任何不当操作。
+
+Casbin是一个强大、高效的开放源码访问控制库。 它支持根据各种出入控制模式执行授权。 关于Casbin的更多详情，请参阅 [概述](/docs/overview)。
+
+K8 中的许可webhooks 是 HTTP 回调，负责接收“许可请求”并执行相关程序。 K8s-gatekeeper 是一种特殊类型的 webhook: '验证准入Webhook' ，它可以决定是否接受准入请求。 准入请求，是指特定的 K8 资源操作的 HTTP 请求(例如，创建/删除一个部署)。 更多关于接入webhooks的信息，请参阅  [K8s官方的联系方式](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#what-are-admission-webhooks)
+
+### 1.2 说明其运作方式的一个例子。
+
+
+例如，如果想要创建一个包含正在运行nginx 的pod 的部署(使用 kubectl 或 k8 s 客户端)， K8s将生成一个许可请求，这个请求(如果翻译成yaml格式)可能是这样的。
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.1
+        ports:
+        - containerPort: 80
+```
+
+此请求将经过图片中显示的所有中间件审核，包括我们的K8s-gatekeeper。 K8s-gatekeeper可以检测到 K8s中存储的 Casbin 执行器，这些执行器由用户创建和维护(通过我们提供的 kubectl 或 go-client )。 每个执行器都有Casbin模型和Casbin政策。 许可请求将由执行器一一处理，只有通过所有执行器，k8 -gatekeeper才会接受该请求。
+
+(如果您不理解Casbin 执行器、模型或政策，见本文档： [开始](/docs/get-started))
+
+例如，由于某些原因，管理员想禁止图像“nginx:1.14.1”，同时允许“nginx:1.3”。那么可以创建一个执行器，其中包括以下规则和政策：（我们将解释如何创建一个执行器， 这些模式和政策是什么以及如何将其写入以下章节。)
+
+模型:
+```ini
+[request_definition]
+r =  obj
+
+[policy_definition]
+p =  obj,eft
+
+[policy_effect]
+e = !some(where (p.eft == deny))
+
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image") == p.obj
+
+```
+
+策略:
+```csv
+p, "nginx:1.13.1",allow
+p, "nginx:1.14.1",deny
+```
+
+通过创建一个包含上述模型和策略的执行器， 此执行程序将拒绝先前的许可申请，这意味着K8s不会创建此部署。
+
+
+## 2 安装 K8s-gatekeeper
+
+有三种方法安装 K8s-gateeper：外部webhook、内部webhook 和helm。
+
+:::note
+
+注意：这些方法只适用于用户体验K8s-gateeper，并不安全。 如果您想在生产环境中使用，请务必阅读  [第五章。 高级设置](#5-advanced-settings) 并在安装前根据需要做相应修改。
+
+:::
+
+### 2.1 内部webhook
+#### 2.1.1 第1步：构建图像
+Internal webhook 意味着webhook 本身将会作为 k8 s内的服务运行。 创建服务和部署需要K8s-gatekeeper的图像。 您可以建立自己的图像。
+
+运行
+```shell
+docker build --target webhook -t k8s-gatekeeper .
+```
+然后将会有一个本地图像叫做“k8s-gateper:latest”。
+
+:::note
+
+注意：如果您正在使用 minikube，请在运行 docker 构建之前执行 `val $(minikube -p minikube docker-env)`
+
+:::
+
+#### 2.1.2 第2步：为K8s-gatekeeper设置服务和部署
+执行以下命令：
+```shell
+kubectl apply -f config/rbac.yaml
+kubectl apply -f config/webhook_deployment.yaml 
+kubectl apply -f config/webhook_internal.yaml 
+```
+即将运行 K8s-gatekeeper，您可以使用 `kubectl 获取` 来确认。
+
+#### 2.1.3 第三步: 为K8s-gatekeeper 安装Crd 资源
+执行以下命令：
+```shell
+kubectl apply -f config/auth.casbin.org_casbinmodels.yaml 
+kubectl apply -f config/auth.casbin.org_casbinpolicies.yaml
+```
+
+### 2.2 内部webhook
+外部Webhook 意味着K8s-gatekeeper 将在 K8 s之外运行，K8s 将访问 K8s-gatekeeper ，像访问普通网站一样。 K8s要求webhook必须是HTTPS。 为了让您体验K8s-gatekeeper，我们已经为您提供了一套证书以及私钥(尽管它安全系数不高)。 如果您想用自己的证书，请参阅 [第五章。 高级设置](#5-advanced-settings) 以调整证书和私钥。
+
+我们提供的证书是为 'webhook.domain.local' 颁发的，所以请修改主机 (例如/etc/hosts)，point webhook。 K8sgatekeeper 正在运行的 omain.local 到 IP 地址。
+
+然后执行
+```shell
+go mod tidy
+go mod vendor
+go run cmd/webhook/main.go
+kubectl apply -f config/auth.casbin.org_casbinmodels.yaml 
+kubectl apply -f config/auth.casbin.org_casbinpolicies.yaml
+kubectl apply -f config/webhook_external.yaml 
+```
+
+### 2.3 通过 helm 安装 K8s-gatekeeper
+
+#### 2.3.1 第1步：构建图像
+请参阅 [第 2.1.1 章](#211-step-1-build-image)
+#### 2.3.2 helm 安装
+运行 `helm install k8sgatekeepeer ./k8sgatekeepeer`
+
+## 3. 试用K8s-gatekeeper
+
+### 3.1 创建Casbin 模型和策略
+您有两种方法来创建模型和策略：通过我们提供的kubectl 或go-client 。
+
+#### 3.1.1 通过 kubectl 创建/更新Casbin 模型和策略
+在K8s-gatekeper，Casbin模型储存在“CasbinModel”的CRD资源中。 其定义可参见`config/auth.casbin.org_casbinmodels.yaml`
+
+`example/allowed_repo/model.yaml` 中有示例。 您应该注意以下几点：
+- metadata.name: 模型名称 该名称与此模型相关的CasbinPolicy objectives名称相同，这样K8s-gatekeeper 就可以将它们进行匹配并创建一个执行器。
+- 启用：如果此字段设置为“false”，将忽略此模型(以及与此模型相关的 CasbinPolicy 对象)。
+- 样式文本：一个包含contains模型文本的字符串。
+
+Casbin 策略存储在另一种'CasbinPolicy' 的CRD 资源中，其定义可参见`config/auth.casbin.org_casbinpolicies.yaml` 。
+
+`example/allowed_repo/policy.yaml` 中有示例。 您应该注意以下几点：
+- metadata.name: 策略名称 该名称与此模型相关的CassbinModel object r名称相同，这样K8s-gatekeeper 就可以将它们进行匹配并创建一个执行器
+- spec.policyitem：一个包含casbin模型策略文本的字符串。
+
+创建您自己的 Casbin模型和 政策文件后，使用
+```shell
+kubectl apply -f <filename>
+```
+使其生效。
+
+Casbin模型和策略一旦创建，最多5秒钟内K8s-gatekeeper便能检测到。
+
+#### 3.1.2 通过我们提供的 go-client 创建/更新 Casbin 模型和策略
+我们考虑到可能有这样的情况，用 shell直接在 K8 s群组的节点上执行命令并不方便。 例如，当您正在为公司建立自动云平台时。 因此，我们已经开发了go-client来创建Casbin模型和策略。
+
+go-client 库可参见pkg/client。
+
+在 client.go 中，我们提供了创建客户端的功能。
+```go
+func NewK8sGateKeeperClient(externalClient bool) (*K8sGateKeeperClient, error) 
+```
+外部客户端参数决定K8s-gatekeeper 是否在 K8s 集群中运行。
+
+
+在 model.go 中，我们提供了各种功能以创建/删除/修改Casbin模型。 您可以在model_test.go中找到接口的使用方式。
+
+在 policy.go 中，我们提供了各种功能以创建/删除/修改Casbin模型。 您可以在policy_test.go中找到这些接口的使用方式。
+
+### 3.1.2 试用K8s-gatekeeper是否运作
+
+假定您已经在example/allowed_repo中创建了完整的模型和策略，便可输入：
+```shell
+kubectl apply -f example/allowed_repo/testcase/reject_1.yaml
+```
+
+你会发现k8s会拒绝这个请求，并提到webhook是拒绝此请求的原因。 然而，当您尝试输入example/allowed_repo/testcase/approve_2.yaml时，k8s将会接受该请求。
+
+## 4. 如何写K8s-gatekeeper模型和策略
+首先，您应该知道Casbin模型和策略的基本语法。 如果您还未曾了解，请先阅读 [开始](/docs/get-started)。 在本章中，我们将假定您已知Casbin模型和策略。
+
+### 4.1 模型的请求定义
+当K8s-gatekeeper 授权请求时，总是输入：the go object of the Admission Request。 这意味着执行器总是这样运作。
+```go
+  ok, err := enforcer.Enforce(admission)
+```
+admission是一个由K8s官方go api“K8s .io/api/admission/v1”定义的AdmissionReview对象。 您可以在这个资源库看到这个结构的定义：<https://github.com/kubernetes/api/blob/master/admission/v1/types.go>。 或查看 [https://kubernetes.io/docs/reference/access-authz/extensible-admission-controllers/#webhook-request-and-response](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response) 获取更多信息
+
+因此，对于K8s-gatekeeper使用的任何模型，请求的定义应该始终是这样的：
+```ini
+    [request_definition]
+    r =  obj
+```
+
+名称“obj”不是强制性的，只要名称与 `[matchers]` 中使用的名称一致即可。
+
+### 4.2 模型匹配器
+您应该使用 Casbin 的 ABAC 特性写下您的规则。 然而，Casbin集成的表达式评估工具既不支持在地图或阵列中进行索引，也不支持扩大阵列。 因此，K8s-gatekeeper 提供了各种的 “Casbin 功能”作为这些特性的延伸元素。 如果您发现这些扩展仍无法满足您的需求，欢迎您提出您的问题，或者直接创建pr。
+
+如果您不知道什么是casbin功能，请参阅 [Function](/docs/function) 以获取更多信息。
+
+以下是扩展功能。
+### 4.2.1 外部功能
+#### 4.2.1.1 访问
+访问主要是用来解决Casbin不支持在地图或数组中索引的问题。 `example/allowed_repo/model.yaml`是该功能的例子。
+```ini
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image") == p.obj
+```
+在这个匹配器中，access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image") 相当于 `r.obj.Request.Object.Object.Template.Spec.Containers[0].Image`, 其中 `r.obj.Request.Object.Object.Object.Spec.Template.Containers` 显然是一种slice。
+
+访问还可以调用没有参数和单个返回值的简单功能。 可参见例子：`example/container_resource_limit/model.yaml`
+
+```ini
+[matchers]
+  m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+  parseFloat(access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","cpu","Value")) >= parseFloat(p.cpu) && \
+  parseFloat(access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","memory","Value")) >= parseFloat(p.memory)
+```
+
+在这个匹配器中， `access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","cpu","value")` 相当于`r.obj.Request.Object.Object.Spec.Template.Spec.Containers[0].Resources.Limits["cpu"]。 alue()`, 其中 `r.obj.Request.Object.Object.Spec.Template.Spec.Containers[0].Resources。 imits` 是一个地图， `Value()` 是一个没有参数和返回值的简单功能。
+
+#### 4.2.1.2 访问Withildcard
+有时我们经常有像这样的需求：数组中的所有元素都必须有前缀“aaa”。 然而，Casbin 不支持。 但使用 `accessWithildcard` 和“map/slice extension” 功能，这样的需求可以很容易地实现。
+
+例如，假定 `a.b.` 是一个数组 `[aaa,bbbb,cccddd,eeee]`, 然后`accessWithwildcard(a, ) b","c","*")` 将成为sliice `[aa,bbb,ccc,dd,ee]` 我们可以看到， 使用通配符 `*` 这个切片便扩大了。
+
+
+同样，通配符可以多次使用。 例如， `用Withildcard输入(a,"b","c","*","*")` 将会得到这样的结果 `[a.b.[0][0], a.b.c[0][1]... a.b.c[1][0], a.b.c[1][1]...]`
+
+### 4.2.1.3 支持可变长度参数的功能
+在Casbin的表达式评估器中，当参数是一个数组时，它将自动扩展为变量长度参数。 利用此功能支持数组/切片/地图扩展，我们还整合了服务器功能，接受数组/切片作为参数。
+
+- 包含()，接受多个参数，并返回除了最后一个参数之外是还有参数等于最后一个参数。
+- 分割(a,b,c...,sep,index) 它返回一个切片包含`[分割(a,sep)[index], 分割(b,sep)[index], 分割(a,sep)[index]...)`
+- len() 返回变量长度参数的长度
+- matchRegex(a,b,c...regex) 返回是否匹配既定的regex
+
+下面是示例`example/disallowed_tag/model.yaml`
+```ini
+    [matchers]
+    m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+    contain(split(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)
+```
+
+假定 `访问Wildcard(r.obj.Request.Object.Object.Spec.Template.Spec. ontainers , "*", "Image")`返回 `["a:b", "c:d", "e:f", "g:h"]` 因为分割支持可变长度参数, 并拆分操作将应用于每个元素，最终索引为1的元素将被选中并返回，所以`分隔(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1)` 得到的是`["b","d","f","h"]`. 并且 contain(split(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)返回p.obj是否包含在"b","d","f","h"]中。
+
+#### 4.2.1.2 类型转换功能
+- ParseFloat()：解析一个整数为浮点数。 (因为在比较时的任何数字都必须转换成浮点数)。
+- ToString()：将对象转换为字符串。 此对象必须有基本类型的字符串。 例如，当语句类型为XXX字符串时，使用XXX型对象。
+- IsNil()：返回参数为nil
+
+## 5. 高级设置
+
+### 5.1 关于证书
+
+在 k8 s中，webhook 必须使用 HTTPS。 有两种办法：
+- 使用自签名证书(本版本中的示例使用此方法)
+- 使用普通证书
+
+#### 5.1.1 自签名证书
+使用自签名证书意味着签发证书的CA不是众所周知的CA， 因此，您必须让k8s知道此 CA。
+
+当前这个repo 中的示例使用自制CA，其私钥和证书储存在 `config/ca中。 rt` and `config/certificate/ca.key`。 webhook 的证书是 config/certificate/server.crt，由自制CA发出。 此证书的域名是 "webhook.domain.local"(用于外部 webhook) 和 "casbin-webhook-svc.default.svc"(内部Webhook)
+
+有关CA的信息通过 webhook 配置文件传递到 k8 s。 config/webhook_external.yaml和 config/webhook_internal.yaml都有名为"CABundle"的字段，包含 CA 证书的 base64 编码字符串。
+
+如果您需要更改证书/域 (例如也许您想要在使用内部Webhook时将此webhook放入另一个k8s的命名空间； 或者，您可能想要在使用外部Webhook时更改域名），应该采取以下程序：
+
+1. 生成新密钥
+
+为假 CA 生成私钥
+```shell
+openssl genrsa -des3 -out ca.key 2048
+```
+
+移除私钥的密码保护。
+``` shell
+openssl rsa -in ca.key -out ca.key
+```
+
+2. 为 webhook 服务器生成私钥
+
+```shell
+openssl genrsa -des3 -out server.key 2048
+openssl rsa -in server.key  -out server.key 
+```
+3. 使用自制的 CA来签署webhook证书
+
+
+复制您系统的 openssl 配置文件临时使用。 您可以使用 `openssl 版本 -a` 来查找配置文件的位置，您可以调用  `openssl.cnf`
+
+找到 \[req\] 段并添加以下行： `req_extension = v3_req`
+
+找到 \[req\] 段并添加以下行： `subjectAltName = @alt_names`
+
+在文件中附加以下行：
+```ini
+[alt_names]
+DNS.2=<The domain you want>
+```
+“casbin-webhook-svc.default.svc”应该替换为您自己服务的实际服务名称(如果您决定修改服务名称)
+
+使用修改后的配置文件生成证书请求文件
+
+```shell
+openssl req -new -nodes -keyout server.key -out server.csr -config openssl.cnf 
+```
+
+使用自制CA响应请求并签署证书
+```shell
+openssl x509 -req -days 3650 -in server.csr -out server.crt -CA ca.crt  -CAkey ca.key -CAcreateserial -extensions v3_req -extensions SAN  -extfile openssl.cnf 
+```
+
+3. 替换“CABundle”字段
+
+config/webhook_external.yaml和 config/webhook_internal.yaml都有名为"CABundle"的字段，包含 CA 证书的 base64 编码字符串。
+
+
+4. 如果您正在使用helm，需要对helm图进行类似的更改。
+
+#### 5.1.2 法律证书
+
+如果您使用合法证书，您就不需要这些程序。 删除 `config/webhook_external.yaml` 和 `config/webhook_internal.yaml`中的“CABundle”字段，并将这些文件中的域更改为您拥有的域。

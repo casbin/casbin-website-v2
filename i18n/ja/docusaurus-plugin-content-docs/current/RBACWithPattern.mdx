@@ -1,0 +1,130 @@
+---
+id: rbac-with-pattern
+title: パターン付きRBAC
+description: RBAC with Pattern
+keywords:
+  - RBAC with pattern
+  - pattern matching
+authors:
+  - hsluoyz
+---
+
+
+
+## クイックスタート
+
+- `g(_,_)` にパターンを使用
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+
+- ドメインでパターンを使用
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+- すべてのパターンを使用
+
+  2つのAPIを組み合わせるだけで
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` API,  which determine how the pattern matches.
+
+:::note
+
+オンラインエディタを使用する場合、左下隅のパターンマッチング機能を指定します。 ![editor-tips](/img/editor-tips.png)
+
+:::
+
+## RBACでパターンマッチングを使用
+
+場合によっては、特定のパターンを持つサブジェクト、オブジェクト、ドメイン/テナントがロールに自動的に付与されることがあります。 RBACのパターンマッチング機能はそれを助けることができます。 パターンマッチング関数は、以前の [マッチャ関数](/docs/syntax-for-models#functions-in-matchers)と同じパラメータと戻り値を共有します。
+
+パターンマッチング関数は g の各パラメータをサポートしています。
+
+通常RBACはマッチャで `g(r.sub, p.sub)` と表されていることを知っています。 次に、次のようなポリシーを使用します。
+
+```
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+`alice` は `book 1` や `book 2` を含むすべての本を読むことができます。 しかし、何千もの本があり、それぞれの本を1つの `グラム` のポリシールールで本の役割(またはグループ)に追加することは非常に退屈です。
+
+しかし、パターンマッチング関数では、ポリシーを1行だけで書くことができます。
+
+```
+g, /book/:id, book_group
+```
+
+カスビンは自動的に `/book/1` と `/book/2` をパターン `/book/:id` にマッチします。 この関数をエンフォーサーに登録する必要があるのは以下のようなものです:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+ドメイン/テナントでパターンマッチング機能を使用する場合、エンフォーサーやモデルに登録する必要があります。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+`g(r.sub, p.sub, r.dom)` の意味がわからない場合は、 [rbac-with-domains](/docs/rbac-with-domains) を読んでください。 In short, `g(r.sub, p.sub, r.dom)` will check whether the user `r.sub` has a role `p.sub` in the domain `r.dom`. これがマッチャーの仕組みです 完全な例 [はこちら](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307) をご覧ください。
+
+上記のパターンマッチング構文とは別に、純粋なドメインパターンを使用することもできます。
+
+For example,  if we want `sub` to have access in different domains, `domain1` and `domain2`, we can use the pure domain pattern:
+
+```
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+In this example, we want `alice` to read and write `data` in domain1 and domain2, pattern matching `*` in `g` makes `alice` have the access to two domains.
+
+パターンマッチングを使用する 特に複雑なシナリオでは多くの領域や物を考慮する必要があります `policy_definition` をよりエレガントで効果的に実装できます。

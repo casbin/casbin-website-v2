@@ -1,0 +1,26 @@
+---
+id: superadmin
+title: Супер админ
+description: Super Admin is the administrator of the whole system, we can use it in models like RBAC, ABAC and RBAC with domains etc
+keywords:
+  - Super Admin
+authors:
+  - ErikQQY
+---
+
+Супер Администратор является администратором всей системы, мы можем использовать ее в моделях, таких как RBAC, ABAC и RBAC с доменами и т.д. Подробный пример выглядит следующим образом:
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act || r.sub == "root"
+```
+Он иллюстрирует, что по определению `request_definition`, `policy_definition`, `policy_effect` и `партнеры`, Судьи касбина, если запрос может соответствовать политике, или, самое важное, если `дочерний` является корневым. Как только суждение верно, авторизация разрешается, и пользователь имеет право делать все.  
+Так же, как и корень систем Linux после того, как пользователи авторизованы как root, , то у нас есть права доступа ко всем файлам и настройкам. Таким образом, если мы хотим, чтобы `под` имел полный доступ ко всей системе, мы можем позволить ему стать супер-администратором, тогда `под` имеет разрешение на все делать. 

@@ -1,0 +1,13 @@
+---
+id: multi-threading
+title: マルチスレッド
+description: Using Casbin in a multi-threading manner
+keywords:
+  - multi-threading
+authors:
+  - hsluoyz
+---
+
+複数スレッド化方法で Casbin を使用する場合は、Casbin enforcerの同期ラッパーを使用できます。https://github.com/casbin/casbin/blob/master/enforcer_synced.go (GoLang) および https://github.com/casbin/casbin/blob/master/casbin/enforcer_synced.cpp (C++)
+
+`AutoLoad` 機能もサポートしています。 つまり、Casbinのエンフォーサーは、変更された場合、DBから最新のポリシールールを自動的にロードします。 `StartAutoLoadPolicy()` を呼び出して定期的にポリシーの読み込みを開始し、 `StopAutoLoadPolicy()` を呼び出して停止します。

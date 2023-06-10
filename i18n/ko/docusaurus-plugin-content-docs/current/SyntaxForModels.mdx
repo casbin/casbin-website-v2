@@ -1,0 +1,387 @@
+---
+id: syntax-for-models
+title: 모델(Model) 문법
+description: Syntax for Models
+keywords:
+  - syntax
+authors:
+  - nodece
+---
+
+
+
+- 모델 설정에서 다음 4가지 항목을 반드시 포함합니다: `[request_definition], [policy_definition], [policy_effect], [matchers]`.
+
+- RBAC를 사용할 때는 `[role_definition]` 항목이 추가됩니다.
+
+- A model CONF can contain comments. The comments start with `#`, and `#` will comment the rest of the line.
+
+## 요청(Request) 모델 정의
+
+`[request_definition]` is the definition for the access request. It defines the arguments in `e.Enforce(...)` function.
+
+```ini
+[request_definition]
+r = sub, obj, act
+```
+
+`sub, obj, act`는 각각 접근 주체(Subject), 접근 대상(Object), 그리고 접근 동작(Action) 을 나타냅니다. 요청 형식을 맞춤 정의할 수 있습니다. `sub, act`와 같이 특정 리소스를 지정하지 않아도 되거나, `sub, sub2, obj, act`와 같이 복수의 접근 주체를 정의할 수 있습니다.
+
+## 정책(Policy) 모델 정의
+
+`[policy_definition]` is the definition for the policy. It defines the meaning of the policy. For example, we have the following model:
+
+```ini
+[policy_definition]
+p = sub, obj, act
+p2 = sub, act
+```
+
+그리고 다음과 같은 정책 설정 파일이 있습니다.
+
+```
+p, alice, data1, read
+p2, bob, write-all-objects
+```
+
+정책 설정 파일의 각 줄을 정책 규칙이라고 합니다. 각 정책 규칙은 `정책 유형`으로 시작합니다. 예를 들어, `p`, `p2`입니다. 여러 종류의 정책 유형을 사용할 때, 어느 정책 유형에 해당하는 지를 가리킵니다. 위 정책은 아래와 같이 연결됩니다. 이 연결 관계는 [matchers] 항목에서 참조할 수 있습니다.
+
+```
+(alice, data1, read) -> (p.sub, p.obj, p.act)
+(bob, write-all-objects) -> (p2.sub, p2.act)
+```
+
+:::tip
+
+The elements in a policy rule are always regarded as`string`. If you have any question about this, please see the discussion at: https://github.com/casbin/casbin/issues/113
+
+:::
+
+## 정책 Effect
+
+`[policy_effect]`에서 정책 Effect(요청을 허용할지 거부할지 결정) 를 정의합니다. 여러 개의 정책 규칙이 있을 때 최종적으로 요청을 허용할 것인지, 거부할 것인지를 판단하는 규칙을 지정합니다. 예를 들어, 한 규칙은 허용하고 다른 규칙은 거부되는 경우가 있습니다.
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow))
+```
+
+이 정책 Effect의 의미는, allow 정책 규칙 중 하나라도 만족되면 최종적으로 `allow`가 된다는 뜻입니다. (허용 우선) `p.eft`는 정책의 Effect입니다. `allow` 혹은 `deny` 둘 중 하나입니다. 생략 가능한 값이며, 기본 값은 `allow`입니다. 특정 값을 입력하지 않았으므로 기본 값이 사용되었습니다.
+
+아래는 또 다른 예제입니다.
+
+```ini
+[policy_effect]
+e = !some(where (p.eft == deny))
+```
+
+명시적인 `거부` 규칙이 없다면 최종적으로 `허용`이 된다는 뜻입니다. (거부 우선) `some`은 적어도 하나 이상 만족하는 정책 규칙이 있을 때 참(true) 이 됩니다. `any`는 어떤 정책 규칙에도 부합할 때 참(true) 이 됩니다. (여기서는 사용되지 않았습니다.) 정책 Effect는 논리 연산 표현식과 함께 사용할 수 있습니다.
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+```
+
+이것은 적어도 하나 이상의 `허용` 규칙에 부합하고, `거부`가 되는 규칙이 하나도 없는 조건을 나타냅니다. 따라서 이와 같이, 권한 관리에서 허용과 거부를 모두 사용할 수 있습니다. 거부가 허용에 우선합니다.
+
+:::note
+
+Although we designed the syntax of policy effect as above, the current implementations only use hard-coded policy effect, as we found there's no much need for that sort of flexibility. 따라서 지금은 맞춤 설정 대신 아래의 빌트인 정책 Effect를 사용하시기 바랍니다.
+
+:::
+
+지원되는 빌트인 정책 Effect는 아래와 같습니다.
+
+| 정책 Effect                                                    | 의미                    | 사례                                                  |
+| ------------------------------------------------------------ | --------------------- | --------------------------------------------------- |
+| some(where (p.eft == allow))                                 | 허용 우선                 | [ACL, RBAC 등](/docs/supported-models#examples)      |
+| !some(where (p.eft == deny))                                 | 거부 우선                 | [거부(Deny) 우선](/docs/supported-models#examples)      |
+| some(where (p.eft == allow)) && !some(where (p.eft == deny)) | 명시적 허용 + 명시적 거부       | [허용/거부](/docs/supported-models#examples)            |
+| priority(p.eft) &#124;&#124; deny                            | 우선순위                  | [우선순위](/docs/supported-models#examples)             |
+| subjectPriority(p.eft)                                       | priority base on role | [Subject-Priority](/docs/supported-models#examples) |
+
+## 조건식
+
+`[matchers]` is the definition for policy matchers. The matchers are expressions. It defines how the policy rules are evaluated against the request.
+
+```ini
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+위 조건식은 간단합니다. 요청의 접근 주체(Subject), 접근 대상(Object) 및 동작(Action) 이 정책 규칙에 부합해야 한다는 것을 나타냅니다.
+
+`+, -, *, /`와 같은 수리 연산자와 `&&, ||, !` 같은 논리 연산자를 matchers에서 사용할 수 있습니다.
+
+### Orders of expressions in matchers
+The order of expressions can greatly affect performance. Look at the following example for details:
+
+```go
+const rbac_models = `
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+
+func TestManyRoles(t *testing.T) {
+
+    m, _ := model.NewModelFromString(rbac_models)
+    e, _ := NewEnforcer(m, false)
+
+    roles := []string{"admin", "manager", "developer", "tester"}
+
+    // 2500 projects
+    for nbPrj := 1; nbPrj < 2500; nbPrj++ {
+        // 4 objects and 1 role per object (so 4 roles)
+        for _, role := range roles {
+            roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
+            objectDB := fmt.Sprintf("/projects/%d", nbPrj)
+            e.AddPolicy(roleDB, objectDB, "GET")
+        }
+        jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
+        e.AddGroupingPolicy("jasmine", jasmineRole)
+    }
+
+    e.AddGroupingPolicy("abu", "manager_project:1")
+    e.AddGroupingPolicy("abu", "manager_project:2499")
+
+    // With same number of policies
+    //  User 'abu' has only two roles
+    //  User 'jasmine' has many roles (1 role per policy, here 2500 roles)
+
+    request := func(subject, object, action string) {
+        t0 := time.Now()
+        resp, _ := e.Enforce(subject, object, action)
+        tElapse := time.Since(t0)
+        t.Logf("RESPONSE %-10s %s\t %s : %5v IN: %+v", subject, object, action, resp, tElapse)
+        if tElapse > time.Millisecond*100 {
+            t.Errorf("More than 100 milliseconds for %s %s %s : %+v", subject, object, action, tElapse)
+        }
+    }
+
+    request("abu", "/projects/1", "GET")        // really fast because only 2 roles in all policies and at the beginning of the casbin_rule table
+    request("abu", "/projects/2499", "GET")     // fast because only 2 roles in all policies
+    request("jasmine", "/projects/1", "GET")    // really fast at the beginning of the casbin_rule table
+
+    request("jasmine", "/projects/2499", "GET") // slow and fail the only 1st time   <<<< pb here
+    request("jasmine", "/projects/2499", "GET") // fast maybe due to internal cache mechanism
+
+    // same issue with non-existing roles
+    // request("jasmine", "/projects/999999", "GET") // slow fail the only 1st time   <<<< pb here
+    // request("jasmine", "/projects/999999", "GET") // fast maybe due to internal cache mechanism
+}
+```
+The enforce time may be very very long, up to 6 seconds
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+
+=== RUN   TestManyRoles
+    rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
+    rbac_api_test.go:598: RESPONSE abu        /projects/2499     GET :  true IN: 39.005173ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/1        GET :  true IN: 1.774319ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.164071648s
+    rbac_api_test.go:600: More than 100 milliseconds for jasmine /projects/2499 GET : 6.164071648s
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
+--- FAIL: TestManyRoles (6.24s)
+FAIL
+FAIL    github.com/casbin/casbin/v2     6.244s
+FAIL
+```
+
+However, if we can adjust the order of the expressions in matchers, and put more time-consuming expressions like functions behind, the execution time will be very short. Changing the order of expressions in matchers in the above example to
+```ini
+[matchers]
+m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
+```
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+=== RUN   TestManyRoles
+    rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
+    rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/1        GET :  true IN: 2.908534ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 7.292963ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
+--- PASS: TestManyRoles (0.05s)
+PASS
+ok      github.com/casbin/casbin/v2     0.053s
+```
+## Multiple sections type
+
+If you need multiple policy definitions or multiple matcher, you can use like `p2`, `m2`. In fact, all of the above four sections can use multiple types and the syntax is `r`+number, such as `r2`, `e2`. By default these four sections should correspond one to one. Such as your `r2` will only use matcher `m2` to match policies `p2`.
+
+You can pass in `EnforceContext` as the first parameter of `enforce` method to specify the types, the `EnforceContext` is like this
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+EnforceContext{"r2","p2","e2","m2"}
+type EnforceContext struct {
+    RType string
+    PType string
+    EType string
+    MType string
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const enforceContext = new EnforceContext('r2', 'p2', 'e2', 'm2');
+class EnforceContext {
+  constructor(rType, pType, eType, mType) {
+    this.pType = pType;
+    this.eType = eType;
+    this.mType = mType;
+    this.rType = rType;
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+EnforceContext enforceContext = new EnforceContext("2");
+public class EnforceContext {
+    private String pType;
+    private String eType;
+    private String mType;
+    private String rType;
+    public EnforceContext(String suffix) {
+      this.pType = "p" + suffix;
+      this.eType = "e" + suffix;
+      this.mType = "m" + suffix;
+      this.rType = "r" + suffix;
+    }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Example usage, see [model](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) and [policy](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv), the request is as follows
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+// Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2,p2,etc..
+enforceContext := NewEnforceContext("2")
+// You can also specify a certain type individually
+enforceContext.EType = "e"
+// Don't pass in EnforceContext,the default is r,p,e,m
+e.Enforce("alice", "data2", "read")     // true
+// pass in EnforceContext
+e.Enforce(enforceContext, struct{ Age int }{Age: 70}, "/data1", "read")     //false
+e.Enforce(enforceContext, struct{ Age int }{Age: 30}, "/data1", "read")     //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+
+// Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2,p2,etc..
+const enforceContext = new NewEnforceContext('2');
+
+// You can also specify a certain type individually
+enforceContext.eType = "e"
+
+// Don't pass in EnforceContext,the default is r,p,e,m
+e.Enforce("alice", "data2", "read")     // true
+
+// pass in EnforceContext
+e.Enforce(enforceContext, {Age: 70}, "/data1", "read")      //false
+e.Enforce(enforceContext, {Age: 30}, "/data1", "read")      //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+// Pass in a suffix as parameter to NewEnforceContext,such as 2 or 3 and it will create r2, p2, etc..
+EnforceContext enforceContext = new EnforceContext("2");
+// You can also specify a certain type individually
+enforceContext.seteType("e");
+// Don't pass in EnforceContext, the default is r, p, e, m
+e.enforce("alice", "data2", "read");  // true
+// Pass in EnforceContext
+// TestEvalRule is located in https://github.com/casbin/jcasbin/blob/master/src/test/java/org/casbin/jcasbin/main/AbacAPIUnitTest.java#L56
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 70), "/data1", "read"); // false
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1", "read"); // true
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Special Grammer
+
+You could also use `in`, the only operator with a text name. This operator checks the right-hand side array to see if it contains a value that is equal to the left-side value. Equality is determined by the use of the == operator, and this library doesn't check types between the values. Any two values, when cast to interface{}, and can still be checked for equality with == will act as expected. Note that you can use a parameter for the array, but it must be an `[]interface{}`.
+
+Also refer to [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf) and [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf)
+
+Example:
+```ini
+[request_definition]
+r = sub, obj
+...
+[matchers]
+m = r.sub.Name in (r.obj.Admins)
+```
+
+```go
+e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice", "bob"}})
+```
+
+## 표현식 평가
+
+각 언어에 있는 조건식 평가기를 사용하여 조건식 평가를 구현되었습니다. 일관된 PERM 언어를 지원하기 위해 각 언어와 연동하도록 하였습니다. 기본적인 공통 모델 문법 외에도, 각 언어 마다 각각의 추가 기능이 있습니다. 알아서 적절히 사용하십시오.
+
+현재 구현된 Casbin 표현식 평가기 구현체 목록은 아래와 같습니다.
+
+| 구현체         | 언어      | Expression evaluator                                                                               |
+| ----------- | ------- | -------------------------------------------------------------------------------------------------- |
+| Casbin      | Golang  | https://github.com/Knetic/govaluate                                                                |
+| jCasbin     | Java    | https://github.com/killme2008/aviator                                                              |
+| Node-Casbin | Node.js | https://github.com/donmccurdy/expression-eval                                                      |
+| PHP-Casbin  | PHP     | https://github.com/symfony/expression-language                                                     |
+| PyCasbin    | Python  | https://github.com/danthedeckie/simpleeval                                                         |
+| Casbin.NET  | C#      | https://github.com/davideicardi/DynamicExpresso                                                    |
+| Casbin4D    | Delphi  | https://github.com/casbin4d/Casbin4D/tree/master/SourceCode/Common/Third%20Party/TExpressionParser |
+| casbin-rs   | Rust    | https://github.com/jonathandturner/rhai                                                            |
+| casbin-cpp  | C++     | https://github.com/ArashPartow/exprtk                                                              |
+
+:::note
+
+If you encounter performance issue about Casbin, it's probably caused by the low efficiency of the expression evaluator. Casbin이나 표현식 평가기의 개선을 위해 이슈를 등록해주십시오. See [Benchmarks](/docs/benchmark) section for details.
+
+:::

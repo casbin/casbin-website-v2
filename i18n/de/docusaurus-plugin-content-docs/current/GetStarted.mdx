@@ -1,0 +1,660 @@
+---
+id: get-started
+title: Los geht's
+description: Getting started with Casbin
+keywords:
+  - Casbin
+  - get started
+  - installation
+  - usage
+authors:
+  - nodece
+---
+
+
+
+## Installation
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```
+go get github.com/casbin/casbin/v2
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+Für Maven:
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.casbin/jcasbin -->
+<dependency>
+    <groupId>org.casbin</groupId>
+    <artifactId>jcasbin</artifactId>
+    <version>1.x.y</version>
+</dependency>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```bash
+# NPM
+npm install casbin --save
+
+# Yarn
+yarn add casbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+Erfordert dieses Paket im `composer.json` Ihres Projektes. Das Paket wird heruntergeladen:
+
+```bash
+Komponist benötigt Kasbin/Kasbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```bash
+pip install casbin
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+
+```bash
+dotnet add package Casbin.NET
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```bash
+# Download Quelle
+git clone https://github.com/casbin/casbin-cpp. es
+
+# generiert Projektdateien
+cd casbin-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
+
+# casbin
+cmake --build erstellen und installieren. --config Release --target casbin install -j 10
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```bash
+cargo install cargo-edit
+cargo add casbin
+
+// If you use async-std as async executor
+cargo add async-std
+
+// If you use tokio as async executor
+cargo add tokio // make sure you activate its `macros` feature
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+Casbin4D kommt in einem Paket (derzeit für Delphi 10.3 Rio) und Sie können es in der IDE installieren. Es gibt jedoch keine visuellen Komponenten, was bedeutet, dass Sie die Units unabhängig von den Paketen verwenden können. Importieren Sie einfach die Einheiten in Ihrem Projekt (vorausgesetzt Sie haben nichts dagegen).
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```bash
+luarocks casbin installieren  
+```
+
+Wenn Berichtfehler: Ihr Benutzer hat keine Schreibrechte in /usr/local/lib/luarocks/rocks -- Sie können als privilegierter Benutzer laufen lassen oder Ihren lokalen Baum mit --local verwenden. Sie können --local hinter Ihrem Befehl einfügen, um dies zu beheben:
+
+```bash
+luarocks install casbin --local
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Neuer Casbin-Vollstrecker
+
+Casbin verwendet Konfigurationsdateien, um das Zugriffskontrollmodell festzulegen.
+
+Es hat zwei Konfigurationsdateien, `model.conf` und `policy.csv`. Unter ihnen speichert `model.conf` unser Zugriffsmodell und `policy.csv` speichert unsere spezifische Benutzerberechtigungskonfiguration. Die Nutzung von Casbin ist sehr verfeinert. Im Grunde brauchen wir nur eine Hauptstruktur: **Durchsetzer**. Beim Bau dieser Struktur werden `model.conf` und `policy.csv` geladen.
+
+In einem anderen Wort, um einen Casbin-Vollstrecker neu zu machen, müssen Sie ein [-Modell](supported-models) und einen [Adapter](adapters) angeben.
+
+Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) for more information.
+
+- Verwende die Modelldatei und den Standard [FileAdapter](adapters#file-adapter-built-in):
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import "github.com/casbin/casbin/v2"
+
+e, err := casbin.NewEnforcer("path/to/model.conf", "path/to/policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+import org.casbin.jcasbin.main.Enforcer;
+
+Enforcer e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+import { newEnforcer } from 'casbin';
+
+const e = await newEnforcer('path/to/model.conf', 'path/to/policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+require_once './vendor/autoload.php';
+
+use Casbin\Enforcer;
+
+$e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+import casbin
+
+e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+using NetCasbin; 
+
+var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```cpp
+#include <iostream>
+#include <casbin/casbin.h>
+
+int main() {
+    // Enforcer erstellen
+    casbin::Enforcer e("path/to/model.conf", "path/to/policy.csv");
+
+    // Code ..
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+var
+  casbin: ICasbin;
+begin
+  casbin := TCasbin.Create('path/to/model.conf', 'path/to/policy.csv');
+  ...
+end
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+benutze Casbin::prelude::*;
+
+// Wenn Sie async_td als async executor verwenden
+#[cfg(feature = "runtime-async-std")]
+#[async_std::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model). onf", "path/to/policy.csv"). warten?;
+    Ok())
+}
+
+// Wenn Sie tokio als async executor verwenden
+#[cfg(feature = "runtime-tokio")]
+#[tokio::main]
+async fn main() -> Result<()> {
+    let mut e = Enforcer::new("path/to/model). onf", "path/to/policy.csv").await?;
+    Ok())
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+local Enforcer = require("casbin")
+local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- Der Casbin Enforcer
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+- Den Modelltext mit einem anderen Adapter verwenden:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "log"
+
+    "github.com/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    xormadapter "github.com/casbin/xorm-adapter/v2"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+// Xorm-Adapter mit MySQL-Datenbank initialisieren.
+a, err := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0. :3306)/casbin")
+if err != nil {
+    log.Fatalf("error: adapter: %s", err)
+}
+
+m, err := Modell. ewModelFromString(`
+[request_definition]
+r = sub, obj, handeln
+
+[policy_definition]
+p = sub, obj, handeln
+
+[policy_effect]
+e = irgendwann, wo (p. ft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p. bj && r.act == p.act
+`)
+if err != nil {
+    log. atalf("error: model: %s", err)
+}
+
+e, err := casbin. ewEnforcer(m, a)
+if err != nil {
+    log.Fatalf("error: enforcer: %s", err)
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+import casbin
+import casbin_sqlalchemy_adapter
+
+
+# SQLAlchemy Casbin Adapter mit SQLLite DB
+adapter = casbin_sqlalchemy_adapter. dapter('sqlite:///test.db')
+
+# Erstelle eine Konfigurationsmodellrichtlinie
+mit open("rbac_example_model.conf", "w") wie f:
+    f. rite("""
+    [request_definition]
+    r = sub, obj, handeln
+
+    [policy_definition]
+    p = sub, obj, act
+
+    [policy_effect]
+    e = some(where (p. ft == allow))
+
+    [matchers]
+    m = r. ub == p.sub && r.obj == p.obj && r.act == p. ct
+    """)
+
+# Erzwingen aus Adapter und Konfigurationsrichtlinie
+e = casbin.Enforcer('rbac_example_model.conf', Adapter)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Berechtigungen überprüfen
+
+Fügen Sie einen Strafverfolgungshaken direkt vor dem Zugriff in Ihren Code ein:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+sub := "alice" // der Benutzer, der auf eine Ressource zugreifen möchte.
+obj := "data1" // die Ressource, auf die zugegriffen werden soll.
+act := "read" // die Operation, die der Benutzer auf der Ressource ausführt.
+
+ok, err := e. nforce(sub, obj, act)
+
+wenn fehler! nil {
+    // err
+}
+
+if ok == true {
+    // Erlaube dem Alice das Lesen von data1
+} else {
+    // Anfrage verweigern zeigen einen Fehler
+}
+
+// Sie könnten BatchEnforce() verwenden, um einige Anfragen in Batches zu erzwingen.
+// Diese Methode gibt ein bool Slice zurück und der Slice-Index entspricht dem Datensatzindex des zweidimensionalen Arrays.
+// z.B. Ergebnis[0] ist das Ergebnis von {"alice", "data1", "read"}
+results, err := e.BatchEnforce([][][]interface{}{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"jack", "data3", "read"}})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+String sub = "alice"; // der Benutzer, der auf eine Ressource zugreifen möchte.
+String obj = "data1"; // die Ressource, auf die zugegriffen werden soll.
+String act = "read"; // die Operation, die der Benutzer auf der Ressource ausführt.
+
+wenn (e. nforce(unter, obj, act) == true) {
+    // Erlaubt dem Alice Daten 1
+} else {
+    // Anfrage ablehnen zeige einen Fehler
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```js
+const sub = 'alice'; // der Benutzer, der auf eine Ressource zugreifen möchte.
+const obj = 'data1'; // die Ressource, auf die zugegriffen werden soll.
+const act = 'read'; // die Operation, die der Benutzer auf der Ressource ausführt.
+
+if (warten e. nforce(unter, obj, act)) === true) {
+    // Erlaubt dem Alice Daten 1
+} else {
+    // Anfrage ablehnen zeige einen Fehler
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$sub = "alice"; // der Benutzer, der auf eine Ressource zugreifen möchte.
+$obj = "data1"; // die Ressource, auf die zugegriffen wird.
+$act = "lesen"; // die Operation, die der Benutzer auf der Ressource ausführt.
+
+if ($e->enforce($sub, $obj, $act) === true) {
+    // Erlaube dem Alice Daten 1
+} sonst {
+    // Anfrage ablehnen zeige einen Fehler
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+sub = "alice" # der Benutzer, der auf eine Ressource zugreifen möchte.
+obj = "data1" # die Ressource, auf die zugegriffen wird.
+act = "read" # die Operation, die der Benutzer auf der Ressource ausführt.
+
+if e.enforce(sub, obj, act):
+    # Erlaube dem Alice Daten 1
+    weitergeben
+else:
+    # die Anfrage verweigern, zeige einen Fehler
+    Weitergabe an
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var sub = "alice"; # der Benutzer, der auf eine Ressource zugreifen möchte.
+var obj = "data1"; # die Ressource, auf die zugegriffen wird.
+var act = "read"; # die Operation, die der Benutzer auf der Ressource ausführt.
+
+wenn (warten e. nforceAsync(Unter, obj, act)) 
+{
+    // Erlaubt dem Alice Daten 1
+}
+else
+{
+    // Anfrage ablehnen zeige einen Fehler
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="C++" label="C++">
+```
+
+```cpp
+    casbin::Enforcer e("../assets/model.conf", "../assets/policy.csv");
+
+    if (e. nforce({"alice", "/alice_data/hello", "GET"})) {
+        std::cout << "Erzwinge OK" << std::endl;
+    } else {
+        std::cout << "Erzwinge NICHT Good" << std::endl;
+    }
+
+    if (e. nforce({"alice", "/alice_data/hello", "POST"})) {
+        std::cout << "Erzwinge OK" << std::endl;
+    } else {
+        std::cout << "Erzwinge NICHT Good" << std::endl;
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+if casbin.enforce(['alice,data1,read']) then
+  // Alice ist super glücklich, da sie Daten lesen kann
+sonst
+  // Alice ist traurig
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+  let sub = "alice"; // der Benutzer, der auf eine Ressource zugreifen möchte.
+  let obj = "data1"; // die Ressource, auf die zugegriffen werden soll.
+  let act = "read"; // die Operation, die der Benutzer auf der Ressource ausführt.
+
+  if e.enforce(sub, obj, act)).warten Sie? {
+      // Erlaube dem Alice Daten 1
+  } sonst {
+      // Fehler auftreten
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+if e:enforce("alice", "data1", "read") then
+   -- allow alice to read data1
+else
+   -- deny the request, show an error
+end
+
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Casbin stellt auch die API für das Berechtigungsmanagement zur Laufzeit zur Verfügung. Zum Beispiel können Sie alle Rollen einem Benutzer zuweisen wie unten:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+roles, err := e.GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> roles = e.getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const roles = await e.getRolesForUser('alice');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$roles = $e->getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = e.GetRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delphi" label="Delphi">
+```
+
+```delphi
+roles = e.rolesForEntity("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let roles = e.get_roles_for_user("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+```lua
+local roles = e:GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Siehe [Management API](/docs/management-api) und [RBAC API](/docs/rbac-api) für mehr Nutzung.
+
+Bitte beachten Sie die Testfälle für mehr Verwendung.

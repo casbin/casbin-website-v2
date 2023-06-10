@@ -1,0 +1,56 @@
+---
+id: data-permissions
+title: Права доступа к данным
+description: Solutions for data permissions
+keywords:
+  - Data Permissions
+  - implicit
+authors:
+  - ErikQQY
+---
+
+
+
+У нас есть два решения для разрешения данных (фильтрация). Использование неявных API назначений. Или просто используйте BatchEnforce() API.
+
+### 1. Запрос неявных ролей или разрешений
+
+Когда пользователь наследует роль или разрешение через иерархию RBAC вместо прямого назначения их в правиле политики, мы называем такой тип задания `неявным`. Запрашивать неявные отношения, вам необходимо использовать эти 2 API: `GetImplicitRolesForUser()` и `GetImplicitPermissionsForUser` вместо `GetRolesForUser()` и `GetPermissionsForUser`. Для получения более подробной информации обратитесь к [этой проблеме GitHub](https://github.com/casbin/casbin/issues/137).
+
+### 2. Использовать `BatchEnforce()`
+
+BatchEnforce вводит каждый запрос и возвращает в результате массив bool
+
+Например:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

@@ -1,0 +1,73 @@
+---
+id: effector
+title: Effector
+description: Effector是用于Casbin effector的API。
+keywords:
+  - effector
+  - Effect
+  - MergeEffects
+authors:
+  - ErikQQY
+---
+
+
+
+Effect是一个policy rule的结果 `Effector` 是用于Casbin effector的API
+
+### `MergeEffects()`
+
+MergeEffects将 enforcer 收集的所有匹配结果合并为一项决定。
+
+例如:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+在本示例中：
+
+* `Effect` 是此函数合并的最后决定(初始参数为 `indeterminate`)。
+* `explainIndex` 是 `eft` 的索引，`eft` 的值可为 `Allow` 或者 `Deny`.(初始值是 `-1`)
+* `err` 用于检查`effect`是否受到支持。
+* `expr` 是被存储为 `string` 的`policy_effects`
+* `effects` 是 Effect 的数组，其中值可以为`Allow`, `Indeterminate` 或者 `Deny`
+* `matchers` 是显示结果是否符合策略的数组。
+* `policyIndex` 是模型中的策略索引。
+* `policyLength` 是策略的长度。
+
+上面的代码说明了我们如何将参数传递到 `MergeEffects` 函数，并且该函数将根据 `expr` 处理效果和匹配。
+
+要部署一个Effector，我们可以这样做：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+`MergeEffects` 表明如果 `expr` 可以匹配结果，也就是说 `p_eft` 是 `allow`，我们就可以合并所有效果。 如果没有符合拒绝的规则，我们就允许这样做。
+
+:::note
+
+如果 `expr` 不能匹配 `"priority(p_eft) || deny"` 以及 `policyIndex` 短于 `policyLength-1`, 它将 **短路** 中间的一些effect。
+
+:::

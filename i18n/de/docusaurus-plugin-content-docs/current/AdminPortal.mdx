@@ -1,0 +1,86 @@
+---
+id: admin-portal
+title: Admin-Portal
+description: Admin portal for Casbin
+keywords:
+  - Admin portal
+  - casdoor
+authors:
+  - hsluoyz
+---
+
+
+
+Wir bieten ein [-basiertes Portal namens Casdoor](https://casdoor.org) für Model-Management und Richtlinien-Management:
+
+![model-Editor](https://hsluoyz.github.io/casbin/ui_model_editor.png)
+
+![Richtlinien-Editor](https://hsluoyz.github.io/casbin/ui_policy_editor.png)
+
+Es gibt auch 3rd-party Admin-Portalprojekte, die Casbin als Autorisierungs-Engine verwenden. Sie können damit beginnen, Ihren eigenen Casbin-Service auf Basis dieser Projekte aufzubauen.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Projekt                                                                                                                   | Autor                                              | Frontend               | Backend  | Beschreibung                                                             |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ---------------------- | -------- | ------------------------------------------------------------------------ |
+| [Kasse](https://casdoor.org)                                                                                              | Casbin                                             | Reagieren + Ant Design | Beego    | Basierend auf Beego + XORM + React                                       |
+| [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)                                                       | [@go-admin-Team](https://github.com/go-admi-team)  | Vue + Element UI       | Gin      | go-admin basierend auf Gin + Casbin + GORM                               |
+| [gin-vue-admin](https://github.com/piexlmax/gin-vue-admin)                                                                | [@piexlmax](https://github.com/piexlmax)           | Vue + Element UI       | Gin      | Basierend auf Gin + GORM + Vue                                           |
+| [gin-admin](https://github.com/LyricTian/gin-admin)                                                                       | [@LyricTian](https://github.com/LyricTian)         | Reagieren + Ant Design | Gin      | RBAC Gerüst basierend auf Gin + GORM + Casbin + Ant Design React         |
+| [go-admin](https://github.com/hequan2017/go-admin)                                                                        | [@hequan2017](https://github.com/hequan2017)       | Keine                  | Gin      | RESTful API Gateway basierend auf Gin + GORM + JWT + RBAC (Casbin) gehen |
+| [zeus-admin](https://github.com/bullteam/zeus-admin)                                                                      | [bullteam](https://github.com/bullteam)            | Vue + Element UI       | Gin      | Unified Permission Management Plattform basierend auf JWT + Casbin       |
+| [IrisAdminApi](https://github.com/snowlyg/IrisAdminApi)                                                                   | [@snowlyg](https://github.com/snowlyg)             | Vue + Element UI       | Isis     | Backend-API basierend auf Iris + Casbin                                  |
+| [Glühen](https://github.com/tiger1103/gfast)                                                                              | [@tiger1103](https://github.com/tiger1103)         | Vue + Element UI       | Go Frame | Adminportal basierend auf GF (Go Frame)                                  |
+| echo-admin ([Frontend](https://github.com/RealLiuSha/echo-admin-ui), [Backend](https://github.com/RealLiuSha/echo-admin)) | [@RealLiuSha](https://github.com/RealLiuSha)       | Vue 2.x + Element-UI   | Echo     | Admin Portal basierend auf Echo + Gorm + Kasbin + Uber-FX                |
+| [Spec-Center](https://github.com/atul-wankhade/Spec-Center)                                                               | [@atul-wankhade](https://github.com/atul-wankhade) | Keine                  | Mux      | Golang RESTful Plattform basierend auf Casbin + MongoDB                  |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Projekt                                                        | Autor                                    | Frontend | Backend    | Beschreibung                                                     |
+| -------------------------------------------------------------- | ---------------------------------------- | -------- | ---------- | ---------------------------------------------------------------- |
+| [spring-Boot-Web](https://github.com/BazookaW/spring-boot-web) | [@BazookaW](https://github.com/BazookaW) | Keine    | SpringBoot | Admin Portal basierend auf SpringBoot 2.0 + MyBatisPlus + Casbin |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Projekt                                                                                          | Autor                                              | Frontend                          | Backend | Beschreibung                                                                                                          |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------- | --------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| [node-mysql-rest-api](https://github.com/JoemaNequinto/node-mysql-rest-api)                      | [@JoemaNequinto](https://github.com/JoemaNequinto) | Keine                             | Express | Eine Boilerplatten-Anwendung zum Bau von RESTful APIs Microservice in Node.js mit Express, Sequelize, JWT und Casbin. |
+| [Casbin-Rollen-Mgt-Dashboard-RBAC](https://github.com/alikhan866/Casbin-Role-Mgt-Dashboard-RBAC) | [@alikhan866](https://github.com/alikhan866)       | Reagieren + Materialschnittstelle | Express | Beginnende freundliche RBAC-Verwaltung mit Enforcer-Integration, um das Enforcer-Ergebnis unterwegs zu überprüfen     |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Projekt                                                                                           | Autor                                                  | Frontend  | Backend | Beschreibung                        |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------- | ------- | ----------------------------------- |
+| [fastapi-mysql-generator](https://github.com/CoderCharm/fastapi-mysql-generator)                  | [@CoderCharm](https://github.com/CoderCharm)           | Keine     | FastAPI | FastAPI + MySQL + JWT + Casbin      |
+| [FastAPI-MySQL-Tortoise-Casbin](https://github.com/xingxingzaixian/FastAPI-MySQL-Tortoise-Casbin) | [@xingxingzaixian](https://github.com/xingxingzaixian) | Keine     | FastAPI | FastAPI + MySQL + Tortoise + Casbin |
+| [openstack-Policy-Editor](https://github.com/casbin/openstack-policy-editor)                      | Casbin                                                 | Bootstrap | Django  | Die Web-Oberfläche für Kasbin       |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Projekt                                                                                                                    | Autor                                        | Frontend           | Backend   | Beschreibung                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------ | --------- | ------------------------------------------------------------------------------- |
+| [Tadmin](https://github.com/leeqvip/tadmin)                                                                                | [@leeqvip](https://github.com/leeqvip)       | AmazeUI            | ThinkPHP  | Non-intrusive backend framework based on ThinkPHP                               |
+| [video.tinywan.com](https://github.com/Tinywan/video.tinywan.com)                                                          | [@Tinywanner](https://github.com/Tinywan)    | LayUI              | ThinkPHP  | RESTful API Gateway basierend auf ThinkPHP5 + ORM + JWT + RBAC (Casbin)         |
+| [laravel-casbin-admin](https://github.com/pl1998/laravel-casbin-admin)                                                     | [@pl1998](https://github.com/pl1998)         | Vue + Element UI   | Laravel   | RBAC Berechtigungsverwaltungssystem basierend auf vue-element-admin und Laravel |
+| larke-admin ([Frontend](https://github.com/deatil/larke-admin-frontend), [Backend](https://github.com/deatil/larke-admin)) | [@deatil](https://github.com/deatil)         | Vue 2 + Element UI | Laravel 8 | Adminportal basierend auf Laravel 8, JWT und RBAC                               |
+| [hyperf-vuetify-admin](https://github.com/TragicMale/hyperf-vuetify-admin)                                                 | [@TragicMale](https://github.com/TragicMale) | Vue + Vuetify 2.x  | Hyperf    | Admin Portal basierend auf Hyperf, Vuetify und Casbin                           |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

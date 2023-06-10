@@ -1,0 +1,60 @@
+---
+id: dispatchers
+title: 调度器
+description: 调度器提供了同步递增策略变化的方法。
+keywords:
+  - 调度器
+authors:
+  - dovics
+---
+
+
+
+调度器提供了同步递增策略变化的方法。 它应以手工艺等一致性算法为基础，以确保所有执行者的一致性和一致性。 通过调度器用户们可以轻松地建立分布式集群。
+
+调度器的方法分为两部分。 第一种是与Casbin相结合的方法。 这些方法应该在Casbin内部调用。 用户们可以使用由Casbin本身提供的更完整的api。
+
+另一个部分是调度器本身定义的方法，包括调度器初始化方法， 和不同算法提供的不同函数，如动态资格、配置变更等。
+
+:::note
+
+我们希望调度器在运行时确保Casbin执行的一致性。 因此，如果初始化时策略不一致，调度器将无法正常工作。 用户在使用调度器之前需要确保所有实例的状态一致。
+
+:::
+
+完整的Casbin调度器列表如下所示。 我们欢迎来自任何第三方的调度器，请通知我们，以将您的调度器加入列表中:)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 调度器                                                                     | 类型   | 作者                                 | 描述                                                                      |
+| ----------------------------------------------------------------------- | ---- | ---------------------------------- | ----------------------------------------------------------------------- |
+| [Hashicorp Raft Dispatcher](https://github.com/casbin/hraft-dispatcher) | raft | Casbin                             | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+| [KDKYG/casbin-dispatcher](https://github.com/KDKYG/casbin-dispatcher)   | raft | [@KDKYG](https://github.com/KDKYG) | Dispatcher based on [hashicorp/raft](https://github.com/hashicorp/raft) |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### 分布式执行
+
+DistributedEnforcer 为调度器包装 SyncedEnforcer.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+

@@ -1,0 +1,100 @@
+---
+id: how-it-works
+title: 仕組み
+description: How Casbin works
+keywords:
+  - PERM
+  - request
+  - policy
+  - matcher
+  - effect
+authors:
+  - nodece
+---
+
+Casbin では、アクセス制御モデルは **PERM メタモデル (Policy, Effect, Request, Matchers)** に基づいて CONF ファイルに抽象化されます。 そのため、プロジェクトの承認メカニズムの切り替えやアップグレードは、構成を変更するのと同じくらい簡単です。 利用可能なモデルを組み合わせることで、独自のアクセス制御モデルをカスタマイズできます。 たとえば、RBACロールとABAC属性を1つのモデル内にまとめて、1つのポリシールールを共有できます。
+
+PERMモデルは、リソースとユーザの関係を記述する4つの基礎(ポリシー、エフェクト、リクエスト、マッチャ)で構成されています。
+
+### リクエスト
+リクエストパラメータを定義します。 基本的なリクエストはタプルオブジェクトで、少なくとも件名(アクセスされたエンティティ)、オブジェクト(アクセスされたリソース)、アクション(アクセスメソッド) が必要です。
+
+例えば、リクエスト定義は以下のようになります: `r={sub,obj,act}`
+
+実際には、アクセス制御マッチング関数のために提供すべきパラメータ名と順序を定義します。
+
+### ポリシー
+アクセス戦略のモデルを定義します。 実際には、ポリシールール文書内のフィールドの名前と順序を定義します。
+
+例えば: `p={sub, obj, act}` または `p={sub, obj, act, eft}`
+
+Note: eft (ポリシー結果) が定義されていない場合、ポリシーファイル内の result フィールドは読み込まれません。 一致するポリシーの結果はデフォルトで許可されます
+
+### Matcher
+リクエストとポリシーの一致ルール。
+
+For example: `m = r.sub == p.sub && r.act == p.act && r.obj == p.obj` This simple and common matching rule means that if the requested parameters (entities, resources, and methods) are equal, that is, if they can be found in the policy, then the policy result (`p.eft`) is returned. 戦略の結果は `p.eft`に保存されます。
+
+### 効果
+マッチング結果に対して再び論理的な組み合わせ判断を行うモデルとして理解することができる。
+
+例: `e = some(where(p.eft == allow))`
+
+この文は、マッチング戦略結果p.eftが(ある程度)許可されている場合、最終結果はtrueになることを意味します。
+
+Let's look at another example: `e = some(where (p.eft == allow)) && !some(where (p.eft == deny))` The logical meaning of this example combination is: if there is a strategy that matches the result of allow and no strategy that matches the result of deny, the result is true. 言い換えれば、否定があれば、マッチング戦略がすべて許容されている場合、それは真実です。 両方ともfalseです (より簡単に言えば、allowとdenyが同時に存在する場合はdenyが優先されます)
+
+Casbinの最も基本的で最も簡単なモデルはACLです。 ACLのモデルCONFは:
+
+```ini
+# Request definition
+[request_definition]
+r = sub, obj, act
+
+# Policy definition
+[policy_definition]
+p = sub, obj, act
+
+# Policy effect
+[policy_effect]
+e = some(where (p.eft == allow))
+
+# Matchers
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+
+```
+
+ACL モデルのポリシー例:
+
+```
+p, alice, data1, read
+p, bob, data2, write
+```
+
+それは以下のことを意味します。
+
+- alice can read data1
+- ボブはデータ2を書き込むことができます
+
+最後に「\\」を追加することでマルチラインモードもサポートします:
+
+```ini
+# Matchers
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj \ 
+  && r.act == p.act == p.act
+```
+
+さらに、ABACを使用している場合。 `では、` で以下のように演算子 **を試すことができます。** 版 (jCasbin と Node-Casbin はまだサポートされていません):
+
+```ini
+# Matchers
+[matchers]
+m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
+```
+
+しかし、 **** は、配列の長さが **** **1**より長くなることを確認する必要があります。 そうしないとパニックを引き起こすでしょう
+
+他の演算子については、 [govaluate](https://github.com/Knetic/govaluate) を参照してください。
+

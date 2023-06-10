@@ -1,0 +1,95 @@
+---
+id: abac
+title: ABAC
+description: 基于 Casbin 的 ABAC
+keywords:
+  - ABAC
+  - ABAC模式
+authors:
+  - hsluoyz
+---
+
+## 什么是ABAC模式？
+
+ABAC是 `基于属性的访问控制`，可以使用主体、客体或动作的属性，而不是字符串本身来控制访问。 您之前可能就已经听过 XACML ，是一个复杂的 ABAC 访问控制语言。 与XACML相比，Casbin的ABAC非常简单: 在ABAC中，可以使用struct(或基于编程语言的类实例) 而不是字符串来表示模型元素。
+
+例如，ABAC的官方实例如下：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == r.obj.Owner
+```
+
+我们在 `matcher` 中使用 `r.obj.Owner` 代替 `r.obj`。 在 `Enforce()` 函数中传递的 `r.obj` 函数是结构或类实例，而不是字符串。 Casbin将使用映像来检索 `obj`结构或类中的成员变量。
+
+这里是 `r.obj` construction 或 class 的定义：
+
+```go
+type testResource struct {
+    Name  string
+    Owner string
+}
+```
+
+## 如何使用ABAC？
+
+简单地说，要使用ABAC，您需要做两件事：
+
+1. 在模型匹配器中指定属性。
+2. 将元素的结构或类实例作为Casbin的`Enforce()` 的参数传入。
+
+:::warning
+
+目前，仅有形如 `r.sub`, `r.obj`, `r.act`等请求元素支持ABAC。 您不能在policy元素上使用它，比如`p.sub`，因为在Casbin的policy中没有定义结构或者类。
+
+:::
+
+:::tip
+
+您可以在匹配器中使用多个ABAC属性，例如:`m = r.sub.Domain == r.obj.Domain`。
+
+:::
+
+:::tip
+
+逗号与csv的分隔符相冲突，如果你需要在策略中使用逗号，需要避免冲突。 Casbin 通过 [csv 库](https://pkg.go.dev/encoding/csv)解析策略文件，你可以用引号包裹语句。 例如， `"keyMatch("bob", r.sub.Role)"` 将不会被视为csv文件分割。
+
+:::
+
+## 适配复杂而庞大的ABAC规则
+
+上述ABAC实例的核心非常简单，但授权系统通常需要许多非常复杂的ABAC规则。 为了满足这一需要，上述实现将在很大程度上使得模型冗长复杂。 因此，我们可以选择在策略中添加规则代替在模型中添加规则。 这是通过引入一个 `eval()` 功能结构完成的。 下面是此类ABAC模型的示例。
+
+这是用于定义ABAC模型的 `CONF` 文件。
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
+```
+
+在这里， `p.sub_rule` 是由策略中使用的必要属性组成的结构类型或类类型(用户定义类型)。
+
+这是针对`Enforcement`模型使用的策略 现在您就可以使用作为参数传递到 `eval()`函数的对象实例来定义某些ABAC约束条件。
+
+```csv
+p, r.sub.Age > 18, /data1, read
+p, r.sub.Age < 60, /data2, write
+```

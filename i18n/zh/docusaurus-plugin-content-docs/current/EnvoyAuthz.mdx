@@ -1,0 +1,62 @@
+---
+id: envoy
+title: 使用 Envoy 实现 Service Mesh 权限管理
+description: 使用 Envoy 实现 Service Mesh 权限管理
+keywords:
+  - Envoy
+  - Envoy-authz
+  - Istio
+authors:
+  - ashish493
+---
+
+
+
+[Envoy-authz](https://github.com/casbin/envoy-authz) 是供 Envoy 通过 Casbin 执行外部 RBAC 和 ABAC 权限管理的中间件。 这个中间件通过 gRPC 服务器使用 [Envoy 的外部权限 API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html)。 该代理可部署在 Istio 等基于 Envoy 的 Service Mesh 上。
+
+## 需求
+
+- Envoy 1.17 以上版本
+- Istio 或 任意 Service Mesh 类型
+- gRPC 依赖项
+
+依赖项通过 `go.mod` 进行管理。
+
+## 中间件工作原理
+
+- 客户端发起 http 请求
+- Envoy 代理发送该请求至 grpc 服务器
+- gRPC 服务器基于 Casbin 策略为请求进行授权
+- 通过授权后，就会发送请求，否则会被禁止
+
+gRPC 服务器基于 Envoy 中 [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) 的通信数据协议（Protocol Buffer ，简称为 Protobuf）。
+
+```
+// 对传入网络服务的请求
+// 执行授权检查的通用接口
+service Authorization {
+  // 基于传入请求的属性执行授权检查
+  // 并返回 `OK` 或非 `OK` 的状态。
+  rpc Check(v2.CheckRequest) returns (v2.CheckResponse);
+}
+```
+上面的协议文件中，必须使用权限服务器中的 `Check()` 服务。
+
+## 用法
+- 遵循此[指南](/docs/how-it-works)，在配置文件中定义 Casbin 策略。
+
+You can verify/test your policies on online [casbin-editor](/editor).
+
+- 使用以下命令启动授权服务器：
+```
+$ go build .
+$ ./authz 
+```
+- Load the envoy configuration:-
+```
+$  envoy -c authz.yaml -l info
+```
+Envoy 启动后，就会开始拦截请求以进行授权处理。
+
+## 集成至 Istio
+为了让此中间件顺利运行，需要发送 JWT 的 Token 中包含用户名信息的自定义请求头。 更多修改`请求头`的内容，请参阅 [Istio 官方文档](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/)。

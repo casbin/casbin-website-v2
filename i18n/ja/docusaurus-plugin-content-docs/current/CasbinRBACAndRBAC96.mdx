@@ -1,0 +1,74 @@
+---
+id: rbac-96
+title: Casbin RBAC vs RBAC96
+description: Difference between Casbin RBAC and RBAC96
+keywords:
+  - RBAC96
+  - Casbin RBAC
+authors:
+  - kininaru
+---
+
+
+
+## Casbin RBAC と RBAC96
+
+このドキュメントでは、Casbin RBAC と [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf) を比較します。
+
+Casbin RBAC は、RBAC96 のほぼすべての機能をサポートし、その上に新機能を追加しました。
+
+| RBAC バージョン | サポートレベル                                                                            | 説明                                                                                                                                                           |
+| ---------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RBAC0      | 完全に対応しています                                                                         | RBAC0 は RBAC96 の基本バージョンです。 ユーザ、ロール、権限の関係を明確にしました。                                                                                                            |
+| RBAC1      | 完全に対応しています                                                                         | RBAC1 added role hierarchies on RBAC0, meaning if `alice` has `role1`, `role1` has `role2`, then `alice` will also have `role2` and inherit its permissions. |
+| RBAC2      | 相互排他的な処理はサポートされています ([このような](/docs/syntax-for-models#policy-effect)) が、量的な制限はありません | RBAC2 は RBAC0 に制約を追加しました。 したがって、RBAC2はポリシーにある相互排除を扱うことができます。                                                                                                 |
+| RBAC3      | 相互排他的な処理はサポートされています ([このような](/docs/syntax-for-models#policy-effect)) が、量的な制限はありません | RBAC3 は RBAC1 と RBAC2 の組み合わせです。 RBAC3 は RBAC1 と RBAC2 のロール階層と制約をサポートしています。                                                                                   |
+## Casbin RBAC と RBAC96 の違い
+
+1. Casbinでは、ユーザーとロールの区別が明確ではありません
+
+   Casbinでは、UserとRoleの両方が文字列として扱われます。 以下のようなポリシーファイルを作成した場合:
+
+   ```
+   p, admin, book, read
+   p, alice, book, read
+   g, amber, admin
+   ```
+
+   そして、メソッド `GetAllSubjects()` をこのように呼び出します(`e` は Casbin Enforcerのインスタンスです):
+
+   ```go
+   e.GetAllSubjects()
+   ```
+
+   戻り値は以下の通りです
+
+   ``` go
+   [adminalice]
+   ```
+
+   カスビンでは、科目には、ユーザーとロールが含まれているので。
+
+   しかし、以下のようにメソッド `GetAllRoles()` を呼び出した場合:
+
+   ``` go
+   e.GetAllRoles()
+   ```
+
+   戻り値は以下の通りです
+
+   ```go
+   [admin]
+   ```
+
+   そして今、あなたはCasbinのユーザーと役割の間に違いがあることを知っていますが、RBAC96ほどシャープではありません。 もちろん、 `user::alice`、 `role::admin` などのポリシーにプレフィックスを追加して、リレーションシップを明確にすることができます。
+
+2. Casbin RBAC は、RBAC96 より多くの権限を提供します
+
+   RBAC96で定義されている権限は7つだけです: read, write, append, execute, credit, debit, quiry
+
+   しかし、Casbinではパーミッションを文字列として扱います。 これにより、いくつかの権限を作成することができます。
+
+3. Casbin RBAC がドメインをサポートしています
+
+   Casbinでは、ドメインごとに認証を行うことができます。 この機能により、アクセス制御モデルがより柔軟になりました。

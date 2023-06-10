@@ -1,0 +1,46 @@
+{
+  "version.label": {
+    "message": "Nächste",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.The basics": {
+    "message": "Die Grundlagen",
+    "description": "The label for category The basics in sidebar docs"
+  },
+  "sidebar.docs.category.Model": {
+    "message": "Modell",
+    "description": "The label for category Model in sidebar docs"
+  },
+  "sidebar.docs.category.Storage": {
+    "message": "Speicher",
+    "description": "The label for category Storage in sidebar docs"
+  },
+  "sidebar.docs.category.Extensions": {
+    "message": "Erweiterungen",
+    "description": "The label for category Extensions in sidebar docs"
+  },
+  "sidebar.docs.category.API": {
+    "message": "API",
+    "description": "The label for category API in sidebar docs"
+  },
+  "sidebar.docs.category.Advanced usage": {
+    "message": "Erweiterte Nutzung",
+    "description": "The label for category Advanced usage in sidebar docs"
+  },
+  "sidebar.docs.category.Management": {
+    "message": "Management",
+    "description": "The label for category Management in sidebar docs"
+  },
+  "sidebar.docs.category.Editor": {
+    "message": "Redakteur",
+    "description": "The label for category Editor in sidebar docs"
+  },
+  "sidebar.docs.category.More": {
+    "message": "Mehr",
+    "description": "The label for category More in sidebar docs"
+  },
+  "sidebar.docs.link.PDF Download": {
+    "message": "PDF Download",
+    "description": "The label for link PDF Download in sidebar docs, linking to /pdf"
+  }
+}

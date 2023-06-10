@@ -1,0 +1,83 @@
+---
+id: contributing
+title: 参与贡献
+description: 为 Casdoor 做贡献
+keywords:
+  - 参与贡献
+authors:
+  - Selflocking
+  - EmperorYP7
+---
+
+Casbin 是一个支持访问控制模型的，强大的授权库，支持使用多种语言， 只要你擅长一种语言，你就可以参与Casbin的开发。 始终欢迎您为项目作出贡献。
+
+目前，主要有两类项目。
+
+* <**偏重算法**— — 第一类项目是不同语言实现的与算法相关的项目， 包括大部分主流编程语言，从Golang、Java、C++到Elixir、Dart和Rust及其外围产品。
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| 可用于生产环境                                                              | 可用于生产环境                                                           | 可用于生产环境                                                                   | 可用于生产环境                                                                |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-C++](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
+| 可用于生产环境                                                                | 可用于生产环境                                                                  | 可用于生产环境                                                            | 可用于生产环境                                                             |
+
+* **面向应用程序**— — 第二类项目是与应用程序相关的项目。
+
+| Project                                                  | Demo                                       | 详情                                                      | 技能栈...                                      |
+| -------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------- | ------------------------------------------- |
+| [Casdoor](https://github.com/casdoor/casdoor)            | [Casdoor](https://casdoor.org/)            | Casdoor 是基于 OAuth 2.0 / OIDC 的 UI 首次集中身份验证/单点登录(SSO) 平台 | JavaScript + React和 Golang + Beego + SQL    |
+| [Casnode](https://github.com/casbin/casnode)             | [Casbin 论坛](https://forum.casbin.com)      | Casnode 是下一代的论坛软件                                       | JavaScript + React和 Golang + Beego + SQL    |
+| [Casbin-OA](https://github.com/casbin/casbin-oa)         | [OA system](https://oa.casbin.com)         | Casbin-OA是Casbin技术作者的官方手稿处理、评价和显示系统。                    | JavaScript + React 和 Golang + Beego + MySQL |
+| [Casbin Editor](https://github.com/casbin/casbin-editor) | [Casbin Editor](https://editor.casbin.org) | Casbin Editor是一个在线的 Casbin 模型和策略编辑器                     | TypeScript + React                          |
+
+## 加入我们
+
+为Casbin作出贡献的方式多种多样，可以从以下几方面入手：
+
+* **使用Casbin 并报告问题！** 当使用Casbin时，报告问题以促进Casbin的发展，不论是缺陷还是建议。 Before file an issue on GitHub, it would be better to discuss first on [Discord](https://discord.com/invite/qteNGWt8UY) or [GitHub Discussions](https://github.com/casbin/casbin/discussions)
+
+  > 注意：在报告问题时，请使用英文描述您问题的细节。
+
+* **帮助优化文档！** 从文档开始贡献是参与贡献的良好开端。
+
+* **帮助解决问题！** 我们准备了一个适合初学者参与的简单任务的表格， 有不同级别，不同标签的挑战，[在此查看表格](https://github.com/orgs/casbin/projects/2)。
+
+## 合并请求
+
+Casbin使用GitHub 作为其开发平台。 因此，合并请求是贡献的主要来源。
+
+在您打开拉取请求之前，您需要知道一些基本准则：
+
+* 解释您为什么要发送此 PR 以及此 PR 将会在仓库中做些什么。
+
+* 请确保每个PR 只做一件事，否则请分开提交。
+
+* 如果有新添加的文件，请将Casbin许可证添加到新文件的顶部。
+
+  ```
+  // Copyright 2021 The casbin Authors. All Rights Reserved.
+  //
+  // Licensed under the Apache License, Version 2.0 (the "License");
+  // you may not use this file except in compliance with the License.
+  // You may obtain a copy of the License at
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  // Unless required by applicable law or agreed to in writing, software
+  // distributed under the License is distributed on an "AS IS" BASIS,
+  // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  // See the License for the specific language governing permissions and
+  // limitations under the License.
+  ```
+
+* 在向[Casdoor](https://github.com/casdoor/casdoor)，[Casnode](https://github.com/casbin/casnode) 和 [Casbin OA](https://github.com/casbin/casbin-oa)提交时，您可能需要搭建演示以向维护者证明您的PR能帮助到项目。
+
+* 当您打开PR 并提交您的贡献时，最好是使用Conventional Commits， 格式： `<type>(<scope>): <subject>`, `<scope>` 是可选的。 欲了解更详细的用法，请参阅 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
+## 许可协议
+
+为Casbin作出贡献，即代表您同意您的贡献将遵循 Apache 许可协议。

@@ -1,0 +1,13 @@
+---
+id: multi-threading
+title: Multi-threads
+description: Using Casbin in a multi-threading manner
+keywords:
+  - multi-threading
+authors:
+  - hsluoyz
+---
+
+Si vous utilisez Casbin de manière multithread, vous pouvez utiliser le wrapper synchronisé de l'agent de sécurité Casbin : https://github.com/casbin/casbin/blob/master/enforcer_synced.go (GoLang) et https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp (C+++).
+
+Il prend également en charge la fonctionnalité `AutoLoad` , ce qui signifie que le responsable de Casbin chargera automatiquement les dernières règles de la politique à partir de la base de données si elle a changé. Appelez `StartAutoLoadPolicy()` pour démarrer automatiquement le chargement de la politique périodiquement et appelez `StopAutoLoadPolicy()` pour l'arrêter.

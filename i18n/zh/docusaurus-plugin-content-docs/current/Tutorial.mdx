@@ -1,0 +1,198 @@
+---
+id: tutorials
+title: 使用指南
+description: Casbin 使用指南
+keywords:
+  - 使用指南
+authors:
+  - hsluoyz
+---
+
+
+
+阅读前，请注意某些教程适用于Casbin的模型，适用于所有Casbin的不同语言的实现。 其他的一些教程是关于特定语言的。
+
+### 我们的论文
+
+- [PML: An Interpreter-Based Access Control Policy Language for Web Services （PML：基于解释器的Web服务访问控制策略语言）](https://arxiv.org/abs/1903.09756)
+
+这篇论文深入剖析了Casbin的设计细节。 如果您在论文中使用Casbin/PML作为参考，请引用以下BibTex：
+
+```bibtex
+@article{luo2019pml,
+  title={PML: An Interpreter-Based Access Control Policy Language for Web Services},
+  author={Luo, Yang and Shen, Qingni and Wu, Zhonghai},
+  journal={arXiv preprint arXiv:1903.09756},
+  year={2019}
+}
+```
+
+- [一种基于元模型的访问控制策略描述语言](http://www.jos.org.cn/1000-9825/5624.htm)
+
+这里是另外一种更长版本的论文，发表在《软件学报》上 不同格式的引文 (Refworks, EndNote 等) 可在以下网址找到： [(另一个版本) 基于元模型的访问控制政策规格语言(中文)](https://kns.cnki.net/kcms/detail/Detail.aspx?dbname=CJFDLAST2020&filename=RJXB202002012&v=)
+
+### 视频
+
+- [一个安全保险库 - 实现与 Casbin 的中间件的授权 - JuniorDevSG](https://www.youtube.com/watch?v=OTT84oplR9o)
+- [基于Casbin的微型服务架构分享用户权限(俄文)](https://www.youtube.com/watch?v=Z5dUxH4PqYM)
+- [Nest.js - Casbin RESTful RBAC授权中间件](https://www.youtube.com/watch?v=mWlPNrCgVdE)
+- [Gin 教程 第10章：30分钟内学习 Casbin 基础模型](https://www.bilibili.com/video/BV1qz4y167XP)
+- [Gin 教程第11章：编码, API 和Casbin中的自定义功能](https://www.bilibili.com/video/BV13r4y1M7AC)
+- [Gin+Casbin权限实战速学(中文)](https://www.jtthink.com/course/132)
+- [jCasbin 基础：一个简单的RBAC示例(中文)](https://www.jtthink.com/course/play/2706)
+- [基于Casbin的Golang RBAC模型(中文)](https://www.bilibili.com/video/BV1Kf4y1U7iJ)
+- [学习Gin + Casbin(1)：通路& 概述(中文)](https://www.bilibili.com/video/BV1bp4y1a7je)
+- [ThinkPHP 5.1 + Casbin：导言(中文)](https://www.bilibili.com/video/BV1kz4y1Z7vd)
+- [ThinkPHP 5.1 + Casbin：RBAC授权 (中文)](https://www.bilibili.com/video/BV1A541187M4)
+- [ThinkPHP 5.1 + Casbin: RESTfull & 中间件(中文)](https://www.bilibili.com/video/BV1uk4y117up)
+- [PHP-Casbin 快速上手(中文)](https://www.bilibili.com/video/BV1dK4y1L7xy)
+- [ThinkPHP 5.1 + Casbin:如何使用自定义匹配函数(中文)](https://www.bilibili.com/video/BV1dq4y1Z78g)
+- [Webman实战教程：如何使用casbin权限控制 (中文)](https://www.bilibili.com/video/BV1X34y1Q7ZH)
+
+### PERM元模型(策略、效果、请求、匹配器)
+
+- [使用不同的访问控制模型配置来了解Casbin](https://medium.com/wesionary-team/understanding-casbin-with-different-access-control-model-configurations-faebc60f6da5)
+- [利用Casbin的PERM模型进行访问控制](https://www.narendraj9.dev/posts/generalized-authz.html)
+- [使用 Casbin 设计一个灵活的权限系统](https://medium.com/silo-blog/designing-a-flexible-permissions-system-with-casbin-f5d97fef17b8)
+- [授权访问控制列表](https://medium.com/pragmatic-programmers/authorize-with-access-control-lists-92fbec57a920)
+- [使用PERM和Casbin的访问控制(波斯语)](https://vrgl.ir/npwoy)
+- [RBAC? ABAC? .. PERM! New Way of Authorization for Cloud-Based Web Services and Apps (in Russian)（基于云的Web服务和应用程序授权的新方式（俄语））](https://habr.com/ru/post/539778/)
+- [练习 & 使用 Casbin & PERM 的灵活授权实例 (俄语)](https://habr.com/ru/post/540454/)
+- [Casbin权限管理（中文）](http://www.cnblogs.com/wang_yb/archive/2018/11/20/9987397.html)
+- [Casbin分析（中文）](https://www.cnblogs.com/xiaohunshi/p/10372881.html)
+- [系统权限设计（中文）](https://github.com/xizhibei/blog/issues/101)
+- [Casbin：一个权限引擎(中文)](https://github.com/xizhibei/blog/issues/102)
+- [使用 Casbin 实现ABAC (中文)](https://www.cnblogs.com/studyzy/p/11380736.html)
+- [Casbin 源代码分析(中文)](https://www.cnblogs.com/yjf512/p/12200206.html)
+- [Casbin 的权限评估(中文)](https://cloud.tencent.com/developer/article/1534674)
+- [Casbin：Go今日的库(中文)](https://juejin.im/post/5ee6c93ce51d45787d3484a1)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+### HTTP & RESTful
+
+- [ 在Go中使用 Casbin 实现基础的基于角色的 HTTP 授权](https://zupzup.org/casbin-http-role-auth) (或 [中文翻译](https://studygolang.com/articles/12323))
+
+### 监视器
+
+- [RBAC 通过Casbin Watcher分发同步(中文)](https://hongker.github.io/2021/02/19/golang-rbac-watcher/)
+
+### Beego
+
+- [使用 Casbin 与 Beego: 1. 开始测试(中文)](https://blog.csdn.net/hotqin888/article/details/78460385)
+- [使用 Casbin 与 Beego: 2. 策略储存(中文)](https://blog.csdn.net/hotqin888/article/details/78571240)
+- [使用 Casbin 与 Beego: 3. 策略查询 (中文)](https://blog.csdn.net/hotqin888/article/details/78992250)
+- [使用 Casbin 与 Beego: 4. 更新策略(中文)](https://blog.csdn.net/hotqin888/article/details/80032538)
+- [使用 Casbin 与 Beego: 5. 更新策略(续)(中文)](https://blog.csdn.net/hotqin888/article/details/80092285)
+
+### Gin
+
+- [使用 Casbin 的 Golang 项目授权](https://medium.com/wesionary-team/authorization-in-golang-projects-using-casbin-f8fad744dae5)
+- [教程：将 Gin 与 Casbin 集成](https://dev.to/maxwellhertz/tutorial-integrate-gin-with-cabsin-56m0)
+- [带Pipeline的 K8s 上的策略执行](https://banzaicloud.com/blog/policy-enforcement-k8s/)
+- [使用 JWT 和 Casbin 在Gin 应用程序中进行身份验证和授权](https://medium.com/@tienbm90/authentication-and-authorization-in-gin-application-with-jwt-and-casbin-a56bbbdec90b)
+- [后端 API 与 Go: 1. 基于 JWT 的身份验证 (中文)](https://studygolang.com/topics/6998)
+- [后端 API 与 Go: 2. 基于 Casbin 的授权(中文)](https://studygolang.com/topics/6999)
+- [在Gin和GORM使用Go的授权库Casbin（日语）](https://www.zaneli.com/blog/20181203)
+
+### Echo
+
+- [Casbin 网络授权](http://klotzandrew.com/blog/authorization-with-casbin)
+
+### Iris
+
+- [Iris + Casbin 权限控制实战](https://zxc0328.github.io/2018/05/14/casbin-iris/)
+- [基于Casbin的HTTP基于角色的访问控制（中文）](https://studyiris.com/example/exper/casbin.html)
+- [从头学习 iris + Casbin](https://learnku.com/articles/41416)
+
+### VMware Harbor
+
+- [Casbin: Golang访问控制框架 (中文)](http://www.growingdev.com/articles/2020/01/12/1578838858526.html)
+- [Harbor 访问控制 (中文)](http://www.growingdev.com/articles/2020/01/10/1578670203670.html)
+
+### Argo CD
+
+- [Argo CD 中使用 Casbin 建立 RBAC 权限体系](https://argoproj.github.io/argo-cd/operator-manual/rbac/)
+
+### GShark
+
+- [GShark：轻松有效地扫描Github中的敏感信息](https://mp.weixin.qq.com/s?__biz=MzI3MjA3MTY3Mw==&mid=2247483770&idx=1&sn=9f02c2803e1c946e8c23b16ff3eba757&chksm=eb396fecdc4ee6fa2f378e846f354f45acf6e6f540cfd54190e9353df47c7707e3a2aadf714f&token=115330850&lang=zh_CN#rd)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+### SpringBoot
+
+- [jCasbin：更轻量级的权限管理解决方案（中文）](https://blog.csdn.net/waynelee0809/article/details/85702551)
+- [JCasbin与JFinal的集成（中文）](http://www.jfinal.com/share/842)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+### Express
+
+- [如何将基于角色访问控制添加到您的AWS上的服务器](https://dev.to/matttyler/how-to-add-role-based-access-control-to-your-serverless-http-api-on-aws-17bk)
+
+### Koa
+
+- [Casbin and Koa授权 Part 1](https://dev.to/gerybbg/authorisation-with-casbin-and-koa-part-1-2gh)
+- [Casbin and Koa授权 Part 2](https://dev.to/gerybbg/authorisation-with-casbin-and-koa-part-2-2io5)
+
+### Nest
+
+- [如何使用 Casbin 和 Nest.js 创建基于角色的认证中间件](https://dev.to/dwipr/how-to-create-role-based-authorization-middleware-with-casbin-and-nest-js-52gm)
+- [nest.js：Casbin RESTful RBAC授权插件（视频）](https://www.youtube.com/watch?v=mWlPNrCgVdE)
+- [基于 Casbin 的 Node.js 基于属性的访问控制演示应用程序](https://github.com/Jarvie8176/casbin-example)
+- [多租户SaaS 启动工具包，带有cqrs graphql microservice 架构](https://github.com/juicycleff/ultimate-backend)
+
+### Fastify
+
+- [使用 Fastify 和 Casbin 在 Node.js 中的访问控制](https://www.nearform.com/blog/access-control-node-js-fastify-and-casbin/)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+- [Casbin, 您的项目中强大和高效的 ACL](http://phpmagazine.net/2018/11/casbin-powerful-and-efficient-acl-for-your-projects.html)
+
+### Laravel
+
+- [Laravel授权：支持ACL、RBAC、ABAC和其他模型的授权库](https://developpaper.com/laravel-authorization-authorization-library-supporting-acl-rbac-abac-and-other-models/)
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+- [在 .Net 中使用 Casbin 授权](https://krishnamohan.dev/blog/using-casbin-for-authorization-in-dotnet)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+- [在 Rust 中用 Casbin 实现基础的基于角色的 HTTP 授权](https://www.zupzup.org/rust-casbin-example/)
+- [如何在您的rust web应用程序中使用casbin 授权 [Part - 1]](https://dev.to/smrpn/how-to-use-casbin-authorization-in-your-rust-web-app-part-1-4f8f)
+- [如何在您的rust web应用程序中使用casbin 授权 [Part - 2]](https://dev.to/smrpn/how-to-use-casbin-authorization-in-your-rust-web-app-part-2-1bnm)
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+### APISIX
+
+- [使用 Casbin 在 APISX 中授权](https://medium.com/@rushitote/authorization-in-apisix-using-casbin-59b693669d6d)
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

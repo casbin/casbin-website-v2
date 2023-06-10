@@ -1,0 +1,86 @@
+---
+id: admin-portal
+title: Администратор портала
+description: Admin portal for Casbin
+keywords:
+  - Admin portal
+  - casdoor
+authors:
+  - hsluoyz
+---
+
+
+
+Мы предоставляем [веб-портал под названием Casdoor](https://casdoor.org) для управления моделями и управления политикой:
+
+![редактор модели](https://hsluoyz.github.io/casbin/ui_model_editor.png)
+
+![редактор политики](https://hsluoyz.github.io/casbin/ui_policy_editor.png)
+
+Существует также сторонние проекты админ-портала, которые используют Casbin в качестве движка авторизации. Вы можете начать создавать свой собственный сервис Casbin, основываясь на этих проектах.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Проект                                                                                                                    | Автор                                              | Интерфейс                    | Бэкенд   | Описание                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ---------------------------- | -------- | --------------------------------------------------------------------------- |
+| [Кастрюля](https://casdoor.org)                                                                                           | Casbin                                             | React + Ant Design           | Beego    | На основе Beego + XORM + React                                              |
+| [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)                                                       | [@go-admin-team](https://github.com/go-admi-team)  | Vue + Элемент интерфейса     | Gin      | go-admin На основе Gin + Casbin + GORM                                      |
+| [gin-vue-admin](https://github.com/piexlmax/gin-vue-admin)                                                                | [@piexlmax](https://github.com/piexlmax)           | Vue + Элемент интерфейса     | Gin      | На основе Gin + GORM + Vue                                                  |
+| [gin-admin](https://github.com/LyricTian/gin-admin)                                                                       | [@LyricTian](https://github.com/LyricTian)         | React + Ant Design           | Gin      | Строительные леса на основе Gin + GORM + Casbin + Ant Design React          |
+| [go-admin](https://github.com/hequan2017/go-admin)                                                                        | [@hequan2017](https://github.com/hequan2017)       | Нет                          | Gin      | Перейти на RESTful API шлюз, основанный на Gin + GORM + JWT + RBAC (Casbin) |
+| [zeus-админ](https://github.com/bullteam/zeus-admin)                                                                      | [бытовая команда](https://github.com/bullteam)     | Vue + Элемент интерфейса     | Gin      | Унифицированная платформа управления разрешениями на основе JWT + Casbin    |
+| [IrisAdminApi](https://github.com/snowlyg/IrisAdminApi)                                                                   | [@снежлиг](https://github.com/snowlyg)             | Vue + Элемент интерфейса     | Ирис     | Бэкэнд API на основе Iris + Casbin                                          |
+| [Грейф](https://github.com/tiger1103/gfast)                                                                               | [@tiger1103](https://github.com/tiger1103)         | Vue + Элемент интерфейса     | Go Frame | Администратор портала на основе GF (Go Frame)                               |
+| echo-admin ([Frontend](https://github.com/RealLiuSha/echo-admin-ui), [Backend](https://github.com/RealLiuSha/echo-admin)) | [@RealLiuSha](https://github.com/RealLiuSha)       | Vue 2.x + Элемент интерфейса | Эхо      | Администратор портала, основанного на Echo + Gorm + Casbin + Uber-FX        |
+| [Спектр в центре](https://github.com/atul-wankhade/Spec-Center)                                                           | [@atul-wankhade](https://github.com/atul-wankhade) | Нет                          | Мукс     | Платформа Golang RESTful на базе Casbin + MongoDB                           |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Проект                                                         | Автор                                    | Интерфейс | Бэкенд     | Описание                                                              |
+| -------------------------------------------------------------- | ---------------------------------------- | --------- | ---------- | --------------------------------------------------------------------- |
+| [spring-boot-web](https://github.com/BazookaW/spring-boot-web) | [@BazookaW](https://github.com/BazookaW) | Нет       | SpringBoot | Администратор портала на основе SpringBoot 2.0 + MyBatisPlus + Casbin |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Проект                                                                                         | Автор                                              | Интерфейс           | Бэкенд            | Описание                                                                                              |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------- | ----------------- | ----------------------------------------------------------------------------------------------------- |
+| [node-mysql-rest-api](https://github.com/JoemaNequinto/node-mysql-rest-api)                    | [@JoemaNequinto](https://github.com/JoemaNequinto) | Нет                 | Экспресс-доставка | Прибор для создания RESTful APIs Microservice в Node.js с помощью Express, Sequelize, JWT и Casbin.   |
+| [Касбин-роль-Mgt-Dashboard-RBAC](https://github.com/alikhan866/Casbin-Role-Mgt-Dashboard-RBAC) | [@alikhan866](https://github.com/alikhan866)       | React + Material UI | Экспресс-доставка | Удобное для новичка управление RBAC с интеграцией Enforcer для проверки результата исполнения на ходу |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Проект                                                                                            | Автор                                                  | Интерфейс | Бэкенд  | Описание                            |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------- | ------- | ----------------------------------- |
+| [fastapi-mysql-generator](https://github.com/CoderCharm/fastapi-mysql-generator)                  | [@CoderCharm](https://github.com/CoderCharm)           | Нет       | FastAPI | FastAPI + MySQL + JWT + Casbin      |
+| [FastAPI-MySQL-Tortoise-Casbin](https://github.com/xingxingzaixian/FastAPI-MySQL-Tortoise-Casbin) | [@xingxingzaixian](https://github.com/xingxingzaixian) | Нет       | FastAPI | FastAPI + MySQL + Tortoise + Casbin |
+| [openstack-policy-редактор](https://github.com/casbin/openstack-policy-editor)                    | Casbin                                                 | Bootstrap | Django  | Веб-интерфейс для Casbin            |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Проект                                                                                                                     | Автор                                        | Интерфейс                  | Бэкенд    | Описание                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | -------------------------- | --------- | -------------------------------------------------------------------------- |
+| [Тамин](https://github.com/leeqvip/tadmin)                                                                                 | [@leeqvip](https://github.com/leeqvip)       | AmazeUI                    | ThinkPHP  | Non-intrusive backend framework based on ThinkPHP                          |
+| [video.tinywan.com](https://github.com/Tinywan/video.tinywan.com)                                                          | [@Tinywanner](https://github.com/Tinywan)    | LayUI                      | ThinkPHP  | Надежный шлюз API, основанный на ThinkPHP5 + ORM + JWT + RBAC (Casbin)     |
+| [laravel-casbin-admin](https://github.com/pl1998/laravel-casbin-admin)                                                     | [@pl1998](https://github.com/pl1998)         | Vue + Элемент интерфейса   | Ларавель  | Система управления разрешениями RBAC на основе vue-element-admin и Laravel |
+| larke-admin ([Frontend](https://github.com/deatil/larke-admin-frontend), [Backend](https://github.com/deatil/larke-admin)) | [@deatil](https://github.com/deatil)         | Vue 2 + Элемент интерфейса | Laravel 8 | Портал администратора на базе Laravel 8, JWT и RBAC                        |
+| [hyperf-vuetify-admin](https://github.com/TragicMale/hyperf-vuetify-admin)                                                 | [@TragicMale](https://github.com/TragicMale) | Vue + Vuetify 2.x          | Hyperf    | Администратор портала на основе Hyperf, Vuetify и Casbin                   |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

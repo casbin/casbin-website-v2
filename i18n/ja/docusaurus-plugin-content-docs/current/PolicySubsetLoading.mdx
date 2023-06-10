@@ -1,0 +1,39 @@
+---
+id: policy-subset-loading
+title: ポリシーサブセットの読み込み
+description: Loading filtered policy
+keywords:
+  - filtered policy
+  - policy subset
+  - performance optimization
+authors:
+  - hsluoyz
+---
+
+フィルタされたポリシー管理をサポートするアダプタもあります。 これは、Casbinによってロードされたポリシーが、与えられたフィルタに基づいてストレージ内のポリシーのサブセットであることを意味します。 これにより、ポリシー全体を解析する際に、大規模なマルチテナント環境での効率的なポリシー執行がパフォーマンスのボトルネックになります。
+
+サポートされているアダプターでフィルターされたポリシーを使用するには、 `LoadFilteredPolicy` メソッドを呼び出します。 フィルタパラメータの有効なフォーマットは、使用するアダプタによって異なります。 偶発的なデータ損失を防ぐために、フィルタリングポリシーがロードされると、 `SavePolicy` メソッドは無効になります。
+
+たとえば、次のコードスニペットは、組み込みのフィルタリングされたファイルアダプタとドメインのRBACモデルを使用します。 この場合、フィルタはポリシーを単一ドメインに制限します。 `"domain1"` 以外のドメインのポリシー行は、ロードされたポリシーから省略されます。
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+// The loaded policy now only contains the entries pertaining to "domain1".
+```
+
+別のメソッドサポートのサブセット読み込み機能があります: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` は LoadFilteredPolicy に似ていますが、以前に読み込まれたポリシーはクリアせず、追加するだけです。

@@ -1,0 +1,227 @@
+---
+id: log-error
+title: Журнал & Обработка ошибок
+description: Casbin log & error handling
+keywords:
+  - log
+  - error
+  - error handling
+authors:
+  - hsluoyz
+---
+
+
+
+## Ведение журнала
+
+Касбин использует встроенный `лог` для печати журналов в консоли по умолчанию:
+
+```log
+2017/07/15 19:43:56 [Запрос: аль, данные1, чтение ---> true]
+```
+
+Журнал по умолчанию не включен. Вы можете переключить его через `Enforcer.EnableLog()` или последний параметр `NewEnforcer()`.
+
+::note
+
+Мы уже поддерживаем лесозаготовки модели, обеспечивать выполнение запроса, роли, политики в Голанге. Вы можете определить свой собственный лог для входа в Casbin. Если вы используете Python, pycasbin использует стандартный механизм записи логов Python. Пакет pycasbin заставляет вызвать logging.getLogger(), чтобы установить логгер. Не требуется никакой специальной настройки ведения журнала, кроме инициализации логгера в родительском приложении. Если ни один вход не интицизирован в родительском приложении, вы не увидите ни одного сообщения журнала из pycasbin.
+
+:::
+
+### Использовать другой логгер для различных усилителей
+
+У каждого силовика может быть свой собственный логгер, чтобы войти в систему, и он может быть изменен во время работы.
+
+И вы можете использовать корректный логгер, используя последний параметр `NewEnforcer()`, если вы используете этот способ для инициализации вашего форума, не нужно использовать включенный параметр, что выше приоритет включенного поля.
+
+```go
+// Установлен логгер по умолчанию как логгер e1.
+// Эта операция также может рассматриваться как изменение логгера e1 во время выполнения.
+e1.SetLogger(&Log.DefaultLogger{})
+
+// Установить другой логгер в качестве журналиста e2.
+e2.SetLogger(&YouOwnLogger)
+
+// Установка логгера при инициализации enforcer e3.
+e3, _ := casbin.NewEnforcer("Пример/rbac_model.conf", a, logger)
+```
+
+#### Поддерживаемые логгеры
+
+Мы предоставляем некоторые логгеры, чтобы помочь вам зарегистрировать информацию.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Logger                                                                                          | Автор  | Описание                                                                                                                                         |
+| ----------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Защитный логгер (встроен)](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | Логгер по умолчанию, используя golang log.                                                                                                       |
+| [Zap logger](https://github.com/casbin/zap-logger)                                              | Casbin | С помощью [zap](https://github.com/uber-go/zap), предоставьте журнал с кодировкой json и вы можете настроить больше с помощью своего zap-logger. |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| Logger                                                          | Автор  | Описание                                                                      |
+| --------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------- |
+| [logger psr3-bridge](https://github.com/php-casbin/psr3-bridge) | Casbin | Предоставляет совместимый с [PSR-3](https://www.php-fig.org/psr/psr-3/) мост. |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### Как записать логгер
+
+Ваш логгер должен реализовать интерфейс [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20).
+
+| Метод        | Тип       | Описание                                  |
+| ------------ | --------- | ----------------------------------------- |
+| EnableLog()  | mandatory | Проверьте, печатает ли сообщение.         |
+| Включено ()  | mandatory | Показывать статус текущего логгера.       |
+| LogModel()   | mandatory | Информация о журнале относительно модели. |
+| LogEnforce() | mandatory | Журнал информации о вступлении.           |
+| LogRole()    | mandatory | Лог информации, относящейся к роли.       |
+| LogPolicy()  | mandatory | Лог информации, связанной с политикой.    |
+
+
+Вы можете передать свой `лог` `Enforcer.SetLogger()`.
+
+Вот пример того, как настроить логгеры для Golang:
+
+```go
+импорт (
+    "fmt"
+    "log"
+    "strings"
+)
+
+// DefaultLogger - реализация для журнала с использованием golang log.
+type DefaultLogger struct {
+    enabled bool
+}
+
+func (l *DefaultLogger) EnableLog(enable bool) {
+    l. nabled = enable
+}
+
+func (l *DefaultLogger) IsEnabled() bool {
+    return l.enabled
+}
+
+func (l *DefaultLogger) LogModel(model [][]string) {
+    if !l. nabled {
+        return
+    }
+    var str strings.Builder
+    str. riteString("Модель: ")
+    для _, v := range model {
+        str. riteString(fmt.Sprintf("%v\n", v))
+    }
+
+    log.Println(str. tring())
+}
+
+func (l *DefaultLogger) LogEnforce(matcher string, request []interface{}, result bool, explains [][]string) {
+    if !l. nabled {
+        return
+    }
+
+    var reqStr strings.Builder
+    reqStr. riteString("Запрос: ")
+    для i, rval := request {
+        if i ! len(request)-1 {
+            reqStr. riteString(fmt. printf("%v, ", rval))
+        } else {
+            reqStr. riteString(fmt. printf("%v", rval))
+        }
+    }
+    reqStr. riteString(fmt.Sprintf(" ---> %t\n", результат))
+
+    reqStr. riteString("Политика хитов: ")
+    для i, pval := range объясняет {
+        if i ! len(explains)-1 {
+            reqStr. riteString(fmt. printf("%v, ", pval))
+        } else {
+            reqStr. riteString(fmt. printf("%v \n", pval))
+        }
+    }
+
+    log. rintln(reqStr. tring())
+}
+
+func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
+    if !l. nabled {
+        return
+    }
+
+    var str строк. uilder
+    str. riteString("Политика: ")
+    для k, v := range policy {
+        str.WriteString(fmt. printf("%s : %v\n", k, v))
+    }
+
+    log.Println(str. tring())
+}
+
+func (l *DefaultLogger) LogRole(roles []string) {
+    if !l. nabled {
+        return
+    }
+
+    log.Println("Роли: ", роли)
+}
+
+```
+
+## Обработка ошибок
+
+Ошибка или паника может произойти при использовании Casbin по следующим причинам:
+
+1. Неверный синтаксис в файле модели (.conf).
+2. Неверный синтаксис в файле политики (.csv).
+3. Пользовательская ошибка от адаптеров хранения, например, MySQL не удается подключиться.
+4. Casbin's bug.
+
+Существует пять основных функций, которые вам могут понадобиться для устранения ошибки или паники:
+
+| Функция                                                                                  | Поведение при ошибке |
+| ---------------------------------------------------------------------------------------- | -------------------- |
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer)                  | Ошибка возврата      |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel)             | Ошибка возврата      |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy)           | Ошибка возврата      |
+| [Сохранение политики ()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | Ошибка возврата      |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce)                 | Ошибка возврата      |
+
+::note
+
+`NewEnforcer()` вызывает `LoadModel()` и `LoadPolicy()` внутри. Поэтому при использовании `NewEnforcer()` вам не нужно вызывать два последних вызова.
+
+:::
+
+## Включить & отключить
+
+Силор может быть отключен через функцию `Enforcer.EnableEnforce()`. Когда он отключен, `Enforcer.Enforce()` всегда возвращает `true`. Другие операции, такие как добавление или удаление политики, не затрагиваются. Вот пример:
+
+```go
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+
+// вернет false.
+// По умолчанию, энсилиар включен.
+e.Enforce("non-authorized-user", "data1", "read")
+
+// Отключение усилителя во время запуска.
+e.EnableEnforce(false)
+
+// Возвращает истину за любой запрос.
+e.Enforce("non-authorized-user", "data1", "read")
+
+// Повторяйте вкл.
+e.EnableEnforce(true)
+
+// Возвращает false.
+e.Enforce("non-authorized-user", "data1", "read")
+```

@@ -1,0 +1,130 @@
+---
+id: rbac-with-pattern
+title: RBAC with Pattern
+description: RBAC with Pattern
+keywords:
+  - RBAC with Pattern
+  - 模式匹配
+authors:
+  - hsluoyz
+---
+
+
+
+## 快速入门
+
+- 在 `g(_,_) 中使用模式`
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+
+- 使用域名的模式
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+  ```
+- 使用所有模式
+
+  仅使用两个APIs
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` API,  which determine how the pattern matches.
+
+:::note
+
+如果您使用在线编辑器，它会在左下角指定模式匹配函数。 ![编辑器提示](/img/editor-tips.png)
+
+:::
+
+## 在 RBAC 中使用模式匹配
+
+有时，您希望一些具有特定模式的subjects, object 或者 domains/tenants能够被自动授予角色。 RBAC中的模式匹配函数可以帮助做到这一点。 模式匹配函数与前一个函数共享相同的参数和返回值：[matcher function](/docs/syntax-for-models#functions-in-matchers)。
+
+模式匹配函数支持g的每一个参数
+
+我们知道，在matcher里面RBAC通常被表示为 `g(r.sub, p.sub)` 接下来我们将使用如下策略：
+
+```
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+因此`alice` 可以阅读所有书籍，包括`book 1`和`book 2`。 但是当有数千本书时，如果我们仅仅使用`g`策略规则将每本书一个一个地添加到书籍角色（或组），那将会是非常繁琐的。
+
+不过，凭借着模式匹配函数，你可以把整个策略只用一行写下！
+
+```
+g, /book/:id, book_group
+```
+
+Casbin会自动将`/book/1`和`/book/2`匹配为模式`/book/:id`。 您需要做的仅仅是向enforcer注册该方法，例如像这样：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+当在domains/tenants里面使用模式匹配函数的时候，你需要把这个函数向enfoecer以及model进行注册
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g","KeyMatch2",util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+如果您不理解 `g(r.sub, p.sub, r.dom)` 意味着什么，请阅读 [rbac-with-domins](/docs/rbac-with-domains)。 简而言之， `g(r.sub, p.sub, r.dom)` 将检查用户 `r.sub` 在域内 `r.dom` 是否具有角色 `p.sub` 因此，这正是匹配器的工作方式。 您可以在这里查看完整的示例 [](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307)。
+
+除了上面的模式匹配语法外，我们还可以使用纯域模式。
+
+例如，如果我们想要 `sub` 在不同的域中访问， `domain1` 和 `domain2`, 我们可以使用纯域模式：
+
+```
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+在这个示例中，我们希望 `alice` 阅读并将 `数据` 写入domain1 和 domain2, 模式匹配 `*` 在 `g` 中，让 `alic` 可以访问两个域。
+
+通过使用模式匹配， 尤其是在更加复杂和我们需要考虑的大量域或对象的情况下， 我们可以执行 `policy_definition` 更加美雅和有效。

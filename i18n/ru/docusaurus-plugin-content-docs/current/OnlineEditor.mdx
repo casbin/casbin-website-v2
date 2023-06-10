@@ -1,0 +1,25 @@
+---
+id: online-editor
+title: Онлайн-редактор
+description: Writing Casbin model and policy in web browser
+keywords:
+  - online editor
+  - Casbin editor
+authors:
+  - hsluoyz
+---
+
+You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. Он предоставляет такие функциональные возможности, как `подсветка синтаксиса` и `завершение кода`, как IDE для языка программирования.
+
+## Использовать шаблон
+Если вы используете `RBAC с шаблоном` или `RBAC со всем шаблоном`, в левом нижнем углу.
+
+![советы редактора](/img/editor-tips.png).
+
+Если вы хотите написать эквивалентный код, вам нужно указать подходящий шаблон через api. Смотрите [RBAC с шаблоном](/docs/rbac-with-pattern)
+
+::note
+
+Редактор основан на [node-casbin](https://github.com/casbin/node-casbin). Из-за задержки синхронизации между языками касбина, результат аутентификации редактора `` может отличаться от результатов аутентификации используемого вами казино. Если да, то отправьте вопросы в используемое вами хранилище casbin.
+
+:::

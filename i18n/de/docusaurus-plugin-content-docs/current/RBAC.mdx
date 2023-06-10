@@ -1,0 +1,106 @@
+---
+id: rbac
+title: RBAC
+description: Casbin RBAC usage
+keywords:
+  - RBAC
+  - role definition
+  - role hierarchy
+authors:
+  - hsluoyz
+---
+
+## Rollendefinition
+
+`[role_definition]` ist die Definition für die RBAC-Rollenvererbungsbeziehungen. Casbin unterstützt mehrere RBAC-Systeme, z. Benutzer können Rollen und ihre Erbschaftsbeziehungen haben, und Ressourcen können auch Rollen und ihre Erbschaft haben. Diese beiden RBAC-Systeme werden nicht beeinträchtigt.
+
+Dieser Abschnitt ist optional. Wenn Sie keine RBAC-Rollen im Modell verwenden, lassen Sie diesen Abschnitt weg.
+
+```ini
+[role_definition]
+g = _, _
+g2 = _, _
+```
+
+Die obige Rollendefinition zeigt an, dass `g` ein RBAC-System ist und `g2` ein anderes RBAC-System. `_, _` bedeutet, dass es zwei Parteien innerhalb einer Erbschaftsbeziehung gibt. Normalerweise verwenden Sie `g` allein, wenn Sie nur Rollen von Benutzern benötigen.  Sie können auch `g` und `g2` verwenden, wenn Sie Rollen (oder Gruppen) für Benutzer und Ressourcen benötigen. Beispiele finden Sie in der [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) und [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf).
+
+Casbin speichert die aktuelle Benutzerrollen-Zuordnung (oder Ressourcen-Rollen-Zuordnung, wenn Sie Rollen auf Ressourcen verwenden) in der Richtlinie, zum Beispiel:
+
+```
+p, data2_admin, data2, read
+g, alice, data2_admin
+```
+
+Es bedeutet `Alice` inherits/ist Mitglied der Rolle `data2_admin`. `Alice` hier kann ein Benutzer, eine Ressource oder eine Rolle sein. Casbin erkennt es nur als String.
+
+Dann solltest du in einem Matcher die Rolle wie unten überprüfen:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+Es bedeutet, dass `sub` in der Anfrage die Rolle `Unter` in der Richtlinie haben sollte.
+
+:::note
+
+1. Casbin speichert nur die Benutzerrollenzuordnung.
+2. Casbin prüft nicht, ob ein Benutzer ein gültiger Benutzer ist oder Rolle eine gültige Rolle ist. Das sollte durch die Authentifizierung geregelt werden.
+3. Verwenden Sie nicht den gleichen Namen für einen Benutzer und eine Rolle innerhalb eines RBAC-Systems, da Casbin Benutzer und Rollen als Zeichenketten anerkennt und es gibt keine Möglichkeit für Kasbin zu wissen, ob Sie Benutzer `Alice` oder Rolle `Alice` angeben. Sie können es einfach mit `role_alice` lösen.
+4. Wenn `A` Rolle hat `B`, `B` hat Rolle `C`, dann `A` hat eine Rolle `C`. Diese Transitivität ist vorerst unendlich.
+
+:::
+
+:::info Token name convention
+
+Conventionally subject token name in policy definition is `sub` and placed in the beginning. Now Golang Casbin supports customized token name & place. If the subject token name is `sub`, the subject token can be placed at an arbitrary place and no extra action needs.  If the subject token name is not `sub` , `e.SetFieldIndex()` for `constant.SubjectIndex` should be called after the enforcer is initialized regardless of its position.
+```ini
+# `subject` here for sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+e.SetFieldIndex("p", constant.SubjectIndex, 2) // index start from 0
+ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an error
+```
+
+:::
+
+## Rollen-Hierarchie
+
+Casbin's RBAC unterstützt RBAC1's Rollen-Hierarchie-Funktion, was bedeutet, wenn `Alice` `Rolle hat`, `Rolle1` hat `Rollen2`, dann wird `alice` auch `role2` haben und seine Berechtigungen erben.
+
+Hier ist ein Konzept namens Hierarchieebene. Die Hierarchieebene für dieses Beispiel ist also 2. Für den eingebauten Rollenmanager in Kasbin können Sie die maximale Hierarchieebene angeben. Der Standardwert ist 10. Es bedeutet, dass ein Endbenutzer wie `Alice` nur 10 Rollenlevel erben kann.
+
+```go
+// NewRoleManager ist der Konstruktor für das Erstellen einer Instanz der
+// Standard RoleManager Implementierung.
+func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
+    rm := RoleManager{}
+    rm.allRoles = &sync. ap{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm. asPattern = false
+
+    Rückgabe &rm
+}
+```
+
+## Wie unterscheidet man die Rolle vom Benutzer?
+
+Casbin unterscheidet in seinem RBAC nicht zwischen der Rolle und dem Benutzer. Sie werden alle als Strings behandelt. Wenn Sie nur eine Ebene RBAC verwenden (eine Rolle wird niemals Mitglied einer anderen Rolle sein). Sie können `e.GetAllSubjects()` verwenden, um alle Benutzer und `e.GetAllRoles()` um alle Rollen zu erhalten. Sie listen nur alle `u` und alle `r` bzw. in allen `g, u, r` Regeln auf.
+
+Aber wenn Sie Mehrstufen-RBAC (mit Rollen-Hierarchie), und Ihre Anwendung speichert nicht, ob ein Name (string) ein Benutzer oder eine Rolle ist, oder Sie haben Benutzer und Rolle mit demselben Namen. Sie können ein Präfix zur Rolle wie `role::admin` hinzufügen, bevor Sie es an Kasbin übergeben. So werden Sie wissen, ob es eine Rolle ist, indem Sie dieses Präfix überprüfen.
+
+## Wie kann ich implizite Rollen oder Berechtigungen abfragen?
+
+Wenn ein Benutzer eine Rolle oder Berechtigung über RBAC Hierarchie erbt anstatt sie direkt in einer Richtlinien-Regel zuzuweisen, wir nennen solche Art der Zuweisung als `implizit`. Solche impliziten Beziehungen abfragen Sie müssen diese 2 APIs verwenden: `GetImplicitRolesForUser()` und `GetImplicitPermissionsForUser()` statt `GetRolesForUser()` und `GetPermissionsForUser()`. Für weitere Details siehe [dieses GitHub Ticket](https://github.com/casbin/casbin/issues/137).
+
+## Verwende Musterpassung in RBAC
+
+Siehe [RBAC mit Muster](/docs/rbac-with-pattern)
+
+## Rollen-Manager
+
+Siehe [Rollenmanager](/docs/role-managers) Abschnitt für Details.
+

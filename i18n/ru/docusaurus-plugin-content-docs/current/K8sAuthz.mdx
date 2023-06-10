@@ -1,0 +1,48 @@
+---
+id: k8s
+title: Авторизация Кубернетов
+description: Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin
+keywords:
+  - K8s-authz
+  - Kubernetes
+  - k8s
+authors:
+  - hsluoyz
+---
+
+[K8s-authz](https://github.com/casbin/k8s-authz) это Kubernetes (k8s) RBAC & ABAC authorization middleware на основе Casbin. Этот middleware использует K8s валидацию webhook для проверки политик, определенных casbin, по каждому запросу k8s ресурсов. Эти пользовательские контроллеры доступа выполняют некоторую проверку объекта запроса, который был переслан api сервером и основан на логике, отправляет ответ на api сервер, содержащий информацию о том, разрешить или отклонить запрос. Эти контроллеры зарегистрированы в Kubernetes с помощью `ValidatingAdmissionWebhook`.
+
+Сервер K8s должен знать когда отправлять входящий запрос нашему контроллеру приёма. Со своей стороны, мы определили веб-хук для проверки подлинности, который проксирует запросы любого типа K8s ресурс/подресурса и проверил их. Пользователю будет разрешено выполнять операции по этим ресурсам, только в том случае, если он санкционирует это действие. [Принудитель](/docs/get-started#new-a-casbin-enforcer) проверяет роли пользователя, определенные в политиках. Этот middleware будет развернут на кластере K8s.
+
+## Требования
+
+Перед тем как продолжить, убедитесь, что следует
+- Запущенный k8s Cluster. Вы можете запустить кластеры через Docker, включив их на Docker Desktop или вы можете настроить полностью K8s ytem локально или на вашем сервере. Вы можете следовать подробному [руководству](https://rominirani.com/tutorial-getting-started-with-kubernetes-on-your-windows-laptop-with-minikube-3269b54a226) для установки кластера k8 локально в Windows или [руководству](https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04) , если хотите установить для Linux.
+- Kubectl CLI Это [руководство](https://master--kubernetes-io-master-staging.netlify.app/docs/tasks/tools/install-kubectl-windows/) по установке на Windows и это [руководство](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) для Linux.
+- OpenSSL
+
+## Использование
+- Генерировать сертификаты и ключи для каждого пользователя, используя openssl и запустив следующий скрипт: -
+```
+./gen_cert.sh
+```
+- Создайте образ докер из файла [Dockerfile](https://github.com/casbin/k8s-authz/blob/master/Dockerfile) вручную, выполнив следующую команду и затем измените версию сборки здесь и в процессе установки [файла](https://github.com/casbin/k8s-authz/blob/718f58c46e3dbf79063b5b1c18348c2fee5de9e9/manifests/deployment.yaml#L18), по сборкам.
+```
+ docker build -t casbin/k8s_authz:0.1 .
+```
+- Определите политику касбина в [model.conf](https://github.com/casbin/k8s-authz/blob/master/config/model.conf) и [policy.csv](https://github.com/casbin/k8s-authz/blob/master/config/policy.csv). Вы можете обратиться к [документации](/docs/how-it-works) , чтобы узнать больше о работе этих политик.
+
+- Перед установкой вы можете изменить порты в [main.go](https://github.com/casbin/k8s-authz/blob/master/main.go) , а также в конфигурации webhook [файла](https://github.com/casbin/k8s-authz/blob/master/manifests/deployment.yaml) в зависимости от вашего использования.
+- Разверните контроллер проверки и webhook на кластере k8s путем запуска:-
+```
+кубектл применяет -f deployment.yaml
+```
+- For a production server, we need to create a k8s `secret` to place the certificates for security purposes.
+```
+kubectl создать секретный общий casbin -n по умолчанию \
+  --from-file=key.pem=certs/casbin-key.pem \
+  --from-file=cert.pem=certs/casbin-crt.pem
+```
+- Однажды, эта часть выполнена, нам нужно изменить директорию сертификатов в [. o](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) и затем в [манифесте](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) с меткой ``.
+
+Теперь сервер должен быть запущен и готов к проверке запросов на операции с ресурсами k8.

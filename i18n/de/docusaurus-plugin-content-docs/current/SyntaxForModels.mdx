@@ -1,0 +1,388 @@
+---
+id: syntax-for-models
+title: Syntax für Modelle
+description: Syntax for Models
+keywords:
+  - syntax
+authors:
+  - nodece
+---
+
+
+
+- Ein Modell CONF sollte mindestens vier Bereiche haben: `[request_definition], [policy_definition], [policy_effect], [matchers]`.
+
+- Wenn ein Modell RBAC verwendet, sollte es auch den `[role_definition]` Bereich hinzufügen.
+
+- Ein Modell CONF kann Kommentare enthalten. Die Kommentare beginnen mit `#`, und `#` wird den Rest der Zeile kommentieren.
+
+## Anforderungsdefinition
+
+`[request_definition]` ist die Definition für die Zugriffsanfrage. Es definiert die Argumente in der `e.Enforce(...)` Funktion.
+
+```ini
+[request_definition]
+r = sub, obj, handeln
+```
+
+`sub, obj, act` repräsentiert das klassische Dreieck: Zugriff auf Entität (Betreff), auf Ressource (Objekt) und Zugriffsmethode (Aktion). Sie können jedoch Ihr eigenes Anfrageformular anpassen, wie zum Beispiel `sub, handeln` wenn Sie keine bestimmte Ressource angeben müssen, oder `sub, sub2, obj, handeln Sie` , wenn Sie irgendwie zwei Zugriffseinheiten haben.
+
+## Richtlinien-Definition
+
+`[policy_definition]` ist die Definition für die Richtlinie. Er definiert die Bedeutung der Politik. Zum Beispiel haben wir folgendes Modell:
+
+```ini
+[policy_definition]
+p = sub, obj, act
+p2 = sub, act
+```
+
+Und wir haben folgende Richtlinien (falls in einer Richtlinien-Datei)
+
+```
+p, alice, data1, read
+p2, bob, write-all-objects
+```
+
+Jede Zeile in einer Politik wird als politische Regel bezeichnet. Jede Richtlinien-Regel beginnt mit einem `Richtlinientyp`, z. B. `p`, `p2`. Es wird verwendet, um der Richtlinien-Definition zu entsprechen, wenn es mehrere Definitionen gibt. Die obige Richtlinie zeigt die folgende Verbindung. Die Bindung kann im Matcher verwendet werden.
+
+```
+(alice, data1, read) -> (p.sub, p.obj, p.act)
+(bob, write-all-objects) -> (p2.sub, p2.act)
+```
+
+:::tip
+
+Die Elemente einer Regelregel werden immer als`Zeichenfolge` betrachtet. Wenn Sie dazu Fragen haben, lesen Sie bitte die Diskussion unter: https://github.com/casbin/casbin/issues/113
+
+:::
+
+## Richtlinien-Effekt
+
+`[policy_effect]` ist die Definition für den Policy-Effekt. Es legt fest, ob die Zugriffsanfrage genehmigt werden soll, wenn mehrere Richtlinien-Regeln mit der Anfrage übereinstimmen. Zum Beispiel erlaubt eine Regel und die andere verweigert.
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow))
+```
+
+Der obige Richtlinien-Effekt bedeutet, wenn es eine übereinstimmende Richtlinien-Regel von `allow`gibt, der endgültige Effekt ist `allow` (aka allow-override). `p.eft` ist der Effekt für eine Richtlinie, es kann `erlauben` oder `verweigern`. Es ist optional und der Standardwert `erlaubt`. Da wir es nicht oben angegeben haben, verwendet es den Standardwert.
+
+Ein weiteres Beispiel für die politische Wirkung ist:
+
+```ini
+[policy_effect]
+e = !some(where (p.eft == deny))
+```
+
+Es bedeutet, wenn es keine übereinstimmenden Regeln für`leugnen`gibt, der endgültige Effekt ist `allow` (aka deny-override). `einige` bedeutet: wenn es eine übereinstimmende Regel gibt. `irgendein` bedeutet: alle übereinstimmenden Richtlinien-Regeln (nicht hier verwendet). Der politische Effekt kann sogar mit logischen Ausdrücken verbunden werden:
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+```
+
+Es bedeutet mindestens eine übereinstimmende Richtlinien-Regel von`allow`, und es gibt keine übereinstimmende Richtlinien-Regel von`deny`. Auf diese Weise werden sowohl die Genehmigungen als auch die Verweigerung von Genehmigungen unterstützt, und das Leugnen überschreibt.
+
+:::note
+
+Obwohl wir die Syntax des Policy-Effekts wie oben konzipiert haben, verwenden die aktuellen Implementierungen nur hart-kodierte Policy-Effekte, da wir festgestellt haben, dass diese Art von Flexibilität nicht sehr notwendig ist. Daher müssen Sie vorerst einen der integrierten Policy-Effekte verwenden, anstatt Ihren eigenen zu personalisieren.
+
+:::
+
+Die unterstützten Richtlinien-Effekte sind:
+
+| Richtlinien-Effekt                                           | Bedeutung                  | Beispiel                                                      |
+| ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------- |
+| some(where (p.eft == allow))                                 | zulassen                   | [ACL, RBAC, etc.](/docs/supported-models#examples)            |
+| !some(where (p.eft == deny))                                 | verweigeren-überschreiben  | [Verweigerung überschreiben](/docs/supported-models#examples) |
+| some(where (p.eft == allow)) && !some(where (p.eft == deny)) | zulassen und ablehnen      | [Zulassen und verweigern](/docs/supported-models#examples)    |
+| priority(p.eft) &#124;&#124; deny                            | priorität                  | [Priorität](/docs/supported-models#examples)                  |
+| subjectPriority(p.eft)                                       | prioritäre Basis für Rolle | [Betreff-Priorität](/docs/supported-models#examples)          |
+
+## Matcher
+
+`[matchers]` ist die Definition für Policy-Matcher. Die Matcher sind Ausdrücke. Er legt fest, wie die Regeln der Politik anhand des Antrags bewertet werden.
+
+```ini
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+Der obige Matcher ist der einfachste, es bedeutet, dass Subjekt, Objekt und Aktion in einer Anfrage die in einer Regel der Richtlinie entsprechen sollten.
+
+Sie können die Arithmetik wie `+, -, *, /` und logische Operatoren wie `&&, |, |, verwenden!` in Übereinstimmungen.
+
+### Orders of expressions in matchers
+The order of expressions can greatly affect performance. Look at the following example for details:
+
+```go
+const rbac_models = `
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+
+func TestManyRoles(t *testing.T) {
+
+    m, _ := model.NewModelFromString(rbac_models)
+    e, _ := NewEnforcer(m, false)
+
+    roles := []string{"admin", "manager", "developer", "tester"}
+
+    // 2500 projects
+    for nbPrj := 1; nbPrj < 2500; nbPrj++ {
+        // 4 objects and 1 role per object (so 4 roles)
+        for _, role := range roles {
+            roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
+            objectDB := fmt.Sprintf("/projects/%d", nbPrj)
+            e.AddPolicy(roleDB, objectDB, "GET")
+        }
+        jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
+        e.AddGroupingPolicy("jasmine", jasmineRole)
+    }
+
+    e.AddGroupingPolicy("abu", "manager_project:1")
+    e.AddGroupingPolicy("abu", "manager_project:2499")
+
+    // With same number of policies
+    //  User 'abu' has only two roles
+    //  User 'jasmine' has many roles (1 role per policy, here 2500 roles)
+
+    request := func(subject, object, action string) {
+        t0 := time.Now()
+        resp, _ := e.Enforce(subject, object, action)
+        tElapse := time.Since(t0)
+        t.Logf("RESPONSE %-10s %s\t %s : %5v IN: %+v", subject, object, action, resp, tElapse)
+        if tElapse > time.Millisecond*100 {
+            t.Errorf("More than 100 milliseconds for %s %s %s : %+v", subject, object, action, tElapse)
+        }
+    }
+
+    request("abu", "/projects/1", "GET")        // really fast because only 2 roles in all policies and at the beginning of the casbin_rule table
+    request("abu", "/projects/2499", "GET")     // fast because only 2 roles in all policies
+    request("jasmine", "/projects/1", "GET")    // really fast at the beginning of the casbin_rule table
+
+    request("jasmine", "/projects/2499", "GET") // slow and fail the only 1st time   <<<< pb here
+    request("jasmine", "/projects/2499", "GET") // fast maybe due to internal cache mechanism
+
+    // same issue with non-existing roles
+    // request("jasmine", "/projects/999999", "GET") // slow fail the only 1st time   <<<< pb here
+    // request("jasmine", "/projects/999999", "GET") // fast maybe due to internal cache mechanism
+}
+```
+The enforce time may be very very long, up to 6 seconds
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+
+=== RUN   TestManyRoles
+    rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
+    rbac_api_test.go:598: RESPONSE abu        /projects/2499     GET :  true IN: 39.005173ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/1        GET :  true IN: 1.774319ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.164071648s
+    rbac_api_test.go:600: More than 100 milliseconds for jasmine /projects/2499 GET : 6.164071648s
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
+--- FAIL: TestManyRoles (6.24s)
+FAIL
+FAIL    github.com/casbin/casbin/v2     6.244s
+FAIL
+```
+
+However, if we can adjust the order of the expressions in matchers, and put more time-consuming expressions like functions behind, the execution time will be very short. Changing the order of expressions in matchers in the above example to
+```ini
+[matchers]
+m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
+```
+```
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+=== RUN   TestManyRoles
+    rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
+    rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/1        GET :  true IN: 2.908534ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 7.292963ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
+--- PASS: TestManyRoles (0.05s)
+PASS
+ok      github.com/casbin/casbin/v2     0.053s
+```
+## Typ mehrerer Abschnitte
+
+Wenn Sie mehrere Richtlinien-Definitionen oder mehrere Übereinstimmungen benötigen, können Sie wie `p2`, `m2` verwenden. Tatsächlich können alle oben genannten vier Abschnitte mehrere Typen verwenden und die Syntax ist `r`+number, wie `r2`, `e2`. Standardmäßig sollten diese vier Abschnitte einem entsprechen. So wie Ihr `r2` verwendet nur einen Matcher `m2` , um Richtlinien `p2` abzugleichen.
+
+Sie können `EnforceContext` als ersten Parameter von `enforce` Methode durchführen, um die Typen anzugeben, der `Vollstreckungskontext` ist wie folgt
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+EnforceContext{"r2","p2","e2","m2"}
+type EnforceContext struct {
+    RType string
+    PType string
+    EType string
+    MType string
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const enforceContext = new EnforceContext('r2', 'p2', 'e2', 'm2');
+class EnforceContext {
+  constructor(rType, pType, eType, mType) {
+    this.pType = pType;
+    this.eType = eType;
+    this.mType = mType;
+    this.rType = rType;
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+EnforceContext enforceContext = new EnforceContext("2");
+public class EnforceContext {
+    private String pType;
+    private String eType;
+    private String mType;
+    private String rType;
+    public EnforceContext(String suffix) {
+      this.pType = "p" + suffix;
+      this.eType = "e" + suffix;
+      this.mType = "m" + suffix;
+      this.rType = "r" + suffix;
+    }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Beispiel Verwendung, siehe [Modell](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) und [Richtlinie](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv), die Anfrage ist wie folgt
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+// Pass in einem Suffix als Parameter an NewEnforceContext,wie 2 oder 3 und es wird r2,p2,etc..
+enforceContext := NewEnforceContext("2")
+// Sie können auch einen bestimmten Typ individuell
+enforceContext angeben. Typ = "e"
+// Nicht in EnforceContext,die Standardeinstellung ist r,p,e,m
+e. nforce("alice", "data2", "read") // true
+// durchlaufen in EnforceContext
+e. nforce(enforceContext, struct{ Age int }{Age: 70}, "/data1", "read") //false
+e. nforce(enforceContext, struct{ Age int }{Age: 30}, "/data1", "read") //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+
+// Pass in einem Suffix als Parameter an NewEnforceContext,wie 2 oder 3 und es wird r2,p2,etc..
+const enforceContext = new NewEnforceContext('2');
+
+// You can also specify a certain type individually
+enforceContext.eType = "e"
+
+// Don't pass in EnforceContext,the default is r,p,e,m
+e.Enforce("alice", "data2", "read")     // true
+
+// pass in EnforceContext
+e.Enforce(enforceContext, {Age: 70}, "/data1", "read")      //false
+e.Enforce(enforceContext, {Age: 30}, "/data1", "read")      //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+// Pass in einem Suffix als Parameter an NewEnforceContext,wie 2 oder 3 und es wird r2, p2, etc..
+EnforceContext enforceContext = new EnforceContext("2");
+// Sie können auch einen bestimmten Typ individuell
+enforceContext angeben. eteType("e");
+// EnforceContext nicht übergeben, Standard ist r, p, e, m
+e. nforce("alice", "data2", "read"); // true
+// EnforceContext übergeben
+// TestEvalRule befindet sich in https://github. om/casbin/jcasbin/blob/master/src/test/java/org/casbin/jcasbin/main/AbacAPIUnitTest.java#L56
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 70), "/data1", "read"); // false
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1", "read"); // true true 
+ e.enforce(enforceContext, new AbacAPIUnitTestEval.TestEvalRule("alice", 30), "/data1", "read"); // true true true true
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Special Grammer
+
+Sie können auch `in`verwenden, der einzige Operator mit einem Textnamen. Dieser Operator prüft das Array auf der rechten Seite, um zu sehen, ob es einen Wert enthält, der gleich dem linken Wert ist. Die Gleichberechtigung wird durch den Operator == bestimmt und diese Bibliothek prüft nicht die Typen zwischen den Werten. Alle zwei Werte, wenn sie an die Schnittstelle gewirkt werden {}, und immer noch auf die Gleichberechtigung mit == überprüft werden können, werden wie erwartet funktionieren. Beachten Sie, dass Sie einen Parameter für das Array verwenden können, aber es muss eine `[]Schnittstelle sein{}` sein.
+
+Verweisen Sie auch auf [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf) und [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf)
+
+Beispiel:
+```ini
+[request_definition]
+r = sub, obj
+...
+[matchers]
+m = r.sub.Name in (r.obj.Admins)
+```
+
+```go
+e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice", "bob"}})
+```
+
+## Ausdruck-Auswerter
+
+Die Matcher-Auswertung in Casbin wird von Auswertern in jeder Sprache implementiert. Casbin integriert ihre Kompetenzen zur Bereitstellung der einheitlichen PERM-Sprache. Abgesehen von all der hier zur Verfügung gestellten Modellsyntax können diese Auswerter zusätzliche Funktionalität bieten, die möglicherweise nicht von einer anderen Sprache oder Implementierung unterstützt wird. Die Nutzung erfolgt auf eigene Gefahr.
+
+Die Auswerter für jede Casbin-Implementierung sind:
+
+| Implementierung | Sprache  | Expression evaluator                                                                               |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| Casbin          | Golang   | https://github.com/Knetic/govaluate                                                                |
+| jCasbin         | Jalta    | https://github.com/killme2008/aviator                                                              |
+| Node-Casbin     | Node.js  | https://de.github.com/donmccurdy/expression-eval                                                   |
+| PHP-Casbin      | PHP      | https://github.com/symfony/expression-language                                                     |
+| PyCasbin        | Python   | https://github.com/danthedeckie/simpleeval                                                         |
+| Casbin.NET      | C#       | https://github.com/davideicardi/DynamicExpresso                                                    |
+| Casbin4D        | Jennifer | https://github.com/casbin4d/Casbin4D/tree/master/SourceCode/Common/Third%20Party/TExpressionParser |
+| casbin-rs       | Rost     | https://de.github.com/jonathandturner/rhai                                                         |
+| casbin-cpp      | C++      | https://github.com/ArashPartow/exprtk                                                              |
+
+:::note
+
+Wenn Sie Probleme mit der Leistung von Casbin haben, wird dies wahrscheinlich durch die geringe Effizienz des Ausdrucks Auswerter verursacht. Sie können sowohl Probleme an Kasbin oder den Ausdruck-Auswerter direkt senden um Ratschläge zu beschleunigen. Siehe [Benchmarks](/docs/benchmark) Abschnitt für Details.
+
+:::

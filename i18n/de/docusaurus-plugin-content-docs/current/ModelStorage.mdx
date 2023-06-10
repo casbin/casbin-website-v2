@@ -1,0 +1,107 @@
+---
+id: model-storage
+title: Modellspeicher
+description: Model storage
+keywords:
+  - model storage
+authors:
+  - hsluoyz
+---
+
+Anders als die Politik, kann das Modell nur geladen werden, es kann nicht gespeichert werden. Weil wir der Meinung sind, dass das Modell keine dynamische Komponente ist und nicht zur Laufzeit geändert werden sollte so dass wir keine API implementieren, um das Modell in einen Speicher zu speichern.
+
+Die gute Nachricht ist, dass wir drei gleichwertige Möglichkeiten bieten, ein Modell statisch oder dynamisch zu laden:
+
+## Modell aus .CONF-Datei laden
+
+Dies ist die häufigste Art Casbin zu benutzen. Es ist einfach für Anfänger zu verstehen und praktisch, wenn Sie das Casbin Team um Hilfe bitten.
+
+Der Inhalt der `.CONF` Datei [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+Dann können Sie die Modelldatei laden als:
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## Modell aus Code laden
+
+Das Modell kann dynamisch aus dem Code initialisiert werden anstatt mit der `.CONF` Datei. Hier ist ein Beispiel für das RBAC-Modell:
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/v2/model"
+    "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+// Modell vom Go-Code initialisieren
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "some(where (p. ft == allow))")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p. bj && r.act == p.act")
+
+// Regeln aus dem .CSV-Datei-Adapter laden.
+// Ersetzen Sie es mit Ihrem Adapter, um Dateien zu vermeiden.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Erstellt den Durchsetzer.
+e := casbin.NewEnforcer(m, a)
+```
+
+## Modell aus String laden
+
+Oder Sie laden den gesamten Modelltext aus einem mehrzeiligen String. Das Gute an diesem Weg ist, dass Sie keine Modelldatei pflegen müssen.
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+)
+
+// Initialize the model from a string.
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = irgendwo (p. ft == allow))
+
+[matchers]
+m = g(r.sub, p. ub) && r.obj == p.obj && r.act == p. ct
+`
+m, _ := model.NewModelFromString(text)
+
+// Richtlinien aus dem .CSV-Datei-Adapter laden.
+// Ersetzen Sie es mit Ihrem Adapter, um Dateien zu vermeiden.
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// Erstellt den Durchsetzer.
+e := casbin.NewEnforcer(m, a)
+```

@@ -1,0 +1,74 @@
+---
+id: rbac-96
+title: Casbin RBAC vs. RBAC96
+description: Difference between Casbin RBAC and RBAC96
+keywords:
+  - RBAC96
+  - Casbin RBAC
+authors:
+  - kininaru
+---
+
+
+
+## Casbin RBAC und RBAC96
+
+In diesem Dokument vergleichen wir Casbin RBAC mit [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf).
+
+Casbin RBAC unterstützt fast alle Funktionen von RBAC96 und hat darüber hinaus neue Features hinzugefügt.
+
+| RBAC-Version | Support-Level                                                                                                                                       | Beschreibung                                                                                                                                                                             |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RBAC0        | voll unterstützt                                                                                                                                    | RBAC0 ist die Basisversion von RBAC96. Es klärte die Beziehung zwischen Benutzern, Rollen und Berechtigungen.                                                                            |
+| RBAC1        | voll unterstützt                                                                                                                                    | RBAC1 hat Rollen-Hierarchien auf RBAC0 hinzugefügt, was bedeutet, dass `Alice` `Rollen1`hat `Rolle1` hat `Rollen2`, dann wird `alice` auch `role2` haben und seine Berechtigungen erben. |
+| RBAC2        | gegenseitig ausschließende Handhabung wird unterstützt ([, wie diese](/docs/syntax-for-models#policy-effect)), aber quantitative Grenzen sind nicht | RBAC2 fügte Einschränkungen für RBAC0 hinzu. RBAC2 kann also mit gegenseitigen Ausschlüssen in der Politik umgehen.                                                                      |
+| RBAC3        | gegenseitig ausschließende Handhabung wird unterstützt ([, wie diese](/docs/syntax-for-models#policy-effect)), aber quantitative Grenzen sind nicht | RBAC3 ist eine Kombination aus RBAC1 und RBAC2. RBAC3 unterstützt Rollenhierarchien und -beschränkungen in RBAC1 und RBAC2.                                                              |
+## Unterschied zwischen Casbin RBAC und RBAC96
+
+1. In Casbin ist die Unterscheidung zwischen Benutzer und Rolle nicht klar
+
+   In Casbin werden sowohl der Benutzer als auch die Rolle als Strings behandelt. Wenn Sie eine Richtlinien-Datei wie folgt geschrieben haben:
+
+   ```
+   p, admin, book, read
+   p, alice, book, read
+   g, amber, admin
+   ```
+
+   und rufen die Methode `GetAllSubjects()` auf, wie diese (`e` ist eine Instanz von Casbin Enforcer):
+
+   ```go
+   e.GetAllSubjects()
+   ```
+
+   dann erhalten Sie den Rückgabewert:
+
+   ``` go
+   [Adminalice]
+   ```
+
+   Da in Kasbin, Betreffe Benutzer und Rollen einbezogen.
+
+   Allerdings, wenn Sie die Methode `GetAllRoles()` so aufrufen:
+
+   ``` go
+   e.GetAllRoles()
+   ```
+
+   dann erhalten Sie den Rückgabewert:
+
+   ```go
+   [admin]
+   ```
+
+   Und jetzt wissen Sie, dass es eine Unterscheidung zwischen Benutzern und Rollen in Kasbin gibt, aber ist nicht so scharf wie in RBAC96. Natürlich können Sie ein paar Präfix zu Ihren Richtlinien hinzufügen, wie `user::alice`, `role::admin` , um deren Beziehungen zu klären.
+
+2. Casbin RBAC bietet mehr Berechtigungen als RBAC96
+
+   Nur 7 Berechtigungen sind in RBAC96 definiert: Lesen, Schreiben, Anhängen, Ausführen, Krediten, Debit, Anfrage.
+
+   Allerdings behandeln wir in Casbin Berechtigungen als Zeichenketten. Auf diese Weise können Sie einige Berechtigungen erstellen, die Ihnen besser passen.
+
+3. Casbin RBAC unterstützt Domains
+
+   In Casbin können Sie Autorisierungen durch Domains durchführen. Diese Funktion hat Ihr Access Control Model flexibler gemacht.

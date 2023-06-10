@@ -1,0 +1,409 @@
+---
+id: rbac-with-domains-api
+title: RBAC avec API Domains
+description: A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code
+keywords:
+  - RBAC with domains
+  - API
+authors:
+  - hsluoyz
+---
+
+
+
+Une API plus conviviale pour RBAC avec les domaines. Cette API est un sous-ensemble de Management API. Les utilisateurs de RBAC peuvent utiliser cette API pour simplifier le code.
+
+## Référence
+
+la variable globale `e` est l'instance Enforcer .
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforcer::new("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsersForRoleInDomain()`
+
+GetUsersForRoleInDomain récupère les utilisateurs qui ont un rôle dans un domaine.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_users_for_role_in_domain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRolesForUserInDomain()`
+
+GetRolesForUserInDomain récupère les rôles qu'un utilisateur a dans un domaine.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetRolesForUserInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_roles_for_user_in_domain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getRolesForUserInDomain("admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetPermissionsForUserInDomain()`
+
+GetPermissionsForUserInDomain récupère les permissions pour un utilisateur ou un rôle dans un domaine.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetPermissionsForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddRoleForUserInDomain()`
+
+AddRoleForUserInDomain ajoute un rôle pour un utilisateur dans un domaine. Renvoie false si l'utilisateur a déjà le rôle (aka non affecté).
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok = e.add_role_for_user_in_domain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRoleForUserInDomain()`
+
+Supprimer rôleForUserInDomain supprime un rôle pour un utilisateur dans un domaine. Renvoie false si l'utilisateur n'a pas le rôle (aka non affecté).
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRolesForUserInDomain()`
+
+Supprimer les RolesForUserInDomain supprime tous les rôles pour un utilisateur dans un domaine. Renvoie false si l'utilisateur n'a aucun rôle (aka non affecté).
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllUsersByDomain()`
+
+GetAllUsersByDomain obtiendrait tous les utilisateurs associés au domaine. Retourne un tableau de chaîne vide si aucun domaine n'est défini dans le modèle.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteAllUsersByDomain()`
+
+DeleteAllUsersByDomain supprimera tous les utilisateurs associés au domaine. Renvoie false si aucun domaine n'est défini dans le modèle.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteDomains()`
+
+DeleteDomains supprimera tous les utilisateurs et rôles associés. Cela supprimera tous les domaines si le paramètre n'est pas fourni.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteDomains("domain1", "domain2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllDomains()`
+
+GetAllDomains obtiendrait tous les domaines.
+
+Par exemple :
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res, _ := e.GetAllDomains()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+Si vous gérez un domaine comme `name::domain`, cela peut conduire à un comportement inattendu. En Casbin, `::` est un mot clé inversé, tout comme `pour`, `si` dans un langage de programmation, nous ne devrions jamais mettre `::` dans un domaine.
+
+:::
+
+### `GetImplicitUsersForResourceByDomain()`
+
+GetImplicitUsersForResourceByDomain return implicit user based on resource and domain.
+
+For example:
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+g, alice, admin, domain1
+g, bob, admin, domain2
+```
+GetImplicitUsersForResourceByDomain("data1", "domain1") will return `[["alice", "domain1", "data1", "read"],["alice", "domain1", "data1", "write"]], nil`
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResourceByDomain("data1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+Only users will be returned, roles (2nd arg in "g") will be excluded.
+
+:::

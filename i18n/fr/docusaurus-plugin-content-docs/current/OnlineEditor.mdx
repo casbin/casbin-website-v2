@@ -1,0 +1,25 @@
+---
+id: online-editor
+title: Éditeur en ligne
+description: Writing Casbin model and policy in web browser
+keywords:
+  - online editor
+  - Casbin editor
+authors:
+  - hsluoyz
+---
+
+You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. Il fournit des fonctionnalités telles que `la coloration syntaxique` et `la complétion de code`, tout comme un IDE pour un langage de programmation.
+
+## Utiliser le modèle
+Si vous utilisez `RBAC avec le pattern` ou `RBAC avec tout le pattern`, il spécifie la fonction de recherche de masques dans le coin inférieur gauche.
+
+![conseils-éditeur](/img/editor-tips.png).
+
+Si vous voulez écrire le code équivalent, vous devez spécifier la fonction de masque à travers l'api approprié. Voir [RBAC avec le modèle](/docs/rbac-with-pattern)
+
+:::note
+
+L'éditeur est basé sur [node-casbin](https://github.com/casbin/node-casbin). En raison du délai de synchronisation entre les différentes langues de la casbine, le résultat d'authentification de l'éditeur `` peut être différent du résultat d'authentification de la casbin que vous utilisez. Dans l'affirmative, veuillez soumettre des problèmes au dépôt casbin que vous utilisez.
+
+:::

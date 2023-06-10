@@ -1,0 +1,100 @@
+---
+id: how-it-works
+title: Comment ça marche
+description: How Casbin works
+keywords:
+  - PERM
+  - request
+  - policy
+  - matcher
+  - effect
+authors:
+  - nodece
+---
+
+En Casbin, un modèle de contrôle d'accès est résumé dans un fichier CONF basé sur le **métamodel PERM (Politique, Effect, Demande, Matchers)**. Donc changer ou mettre à jour le mécanisme d'autorisation d'un projet est aussi simple que modifier une configuration. Vous pouvez personnaliser votre propre modèle de contrôle d'accès en combinant les modèles disponibles. Par exemple, vous pouvez combiner les rôles RBAC et les attributs ABAC ensemble dans un modèle et partager un ensemble de règles de politique.
+
+Le modèle PERM est composé de quatre fondations (Politiques, Effets, Demandes, Matchers) décrivant la relation entre ressources et utilisateurs.
+
+### Demander
+Définissez les paramètres de la requête. Une requête basique est un objet tuple nécessitant au moins un sujet (entité accédée), un objet (ressource accédée) et une action (méthode d'accès)
+
+Par exemple, une définition de requête peut ressembler à ceci : `r={sub,obj,act}`
+
+Il définit en fait le nom et l'ordre des paramètres que nous devons fournir pour la fonction de contrôle d'accès.
+
+### Politique de confidentialité
+Définissez le modèle de la stratégie d'accès. En fait, il définit le nom et l'ordre des champs dans le document de la règle de police.
+
+Par exemple : `p={sub, obj, act}` ou `p={sub, obj, act, eft}`
+
+Note: Si eft (résultat de la politique) n'est pas défini, alors le champ résultat dans le fichier de régulation ne sera pas lu, et le résultat de la règle correspondante sera autorisé par défaut.
+
+### Correspondant
+Règles correspondantes de la requête et de la politique.
+
+Par exemple: `m = r.sub == p.sub && r.act == p.act && r.obj == p. bj` Cette règle de correspondance simple et commune signifie que si les paramètres demandés (entités, les ressources, et les méthodes) sont égales, c'est-à-dire si elles peuvent être trouvées dans la politique, alors le résultat de la politique (`p. ft`) est retourné. Le résultat de la stratégie sera sauvegardé dans `p.eft`.
+
+### Effet
+Il peut être compris comme un modèle dans lequel un jugement de combinaison logique est effectué à nouveau sur les résultats correspondants de Matchers.
+
+Par exemple : `e = quelque(où(p.eft == allow))`
+
+Cette phrase signifie que si le résultat de la stratégie correspondante p.eft a le résultat de (certains) autoriser, alors le résultat final est vrai
+
+Regardons un autre exemple : `e = quelque part (p.eft == allow)) && !some(où (p. ft == niy))` La signification logique de cette combinaison d'exemple est : s'il y a une stratégie qui correspond au résultat de l'autorisation, et aucune stratégie ne correspond au résultat de la négation, le résultat est vrai. En d'autres termes, il est vrai que toutes les stratégies d'appariement sont autorisées, s'il y a un quelconque négligence, tous les deux sont faux (plus simplement, lorsque la permission et le refus existent en même temps, le refus prend la priorité)
+
+Le modèle le plus basique et le plus simple de Casbin est ACL. La CONF du modèle ACL est :
+
+```ini
+# Définition de la requête
+[request_definition]
+r = sub, obj, act
+
+# Définition de la politique
+[policy_definition]
+p = sub, obj, acte
+
+# Effet de police
+[policy_effect]
+e = quelque part (où (p. ft == allow))
+
+# correspondances
+[matchers]
+m = r. ub == p.sub && r.obj == p.obj && r.act == p.act
+
+```
+
+Un exemple de politique pour le modèle ACL est comme :
+
+```
+p, alice, data1, read
+p, bob, data2, write
+```
+
+Cela signifie :
+
+- alice peut lire les données1
+- bob peut écrire des données2
+
+Nous supportons également le mode multi-lignes en ajoutant '\\' à la fin :
+
+```ini
+# Matchers
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj \ 
+  && r.act == p.act
+```
+
+De plus, si vous utilisez ABAC, vous pouvez essayer l'opérateur `dans` comme dans Casbin **golang** édition (jCasbin et Node-Casbin ne sont pas encore supportés) :
+
+```ini
+# Matchs
+[matchers]
+m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
+```
+
+Mais vous **DEVRIEZ** vous assurer que la longueur de la table est **PLUS** que **1**, sinon il provoquera la panique.
+
+Pour plus d'opérateurs, vous pouvez jeter un coup d'œil à [la valeur de la chèvre](https://github.com/Knetic/govaluate)
+

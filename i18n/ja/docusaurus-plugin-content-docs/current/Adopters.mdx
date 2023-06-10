@@ -1,0 +1,76 @@
+---
+id: adopters
+title: Adopters
+description: Casbin' Adopters
+keywords:
+  - adopter
+  - showcase
+authors:
+  - nodece
+---
+
+
+
+## 直接統合
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 名前                                                              | 説明                                                             | モデル                                                                                                       | ポリシー                                                                                                |
+| --------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [VMwareハーバー](https://github.com/goharbor/harbor)                | コンテンツを保存、署名、およびスキャンするVMwareのオープンソースの信頼できるクラウドネイティブレジストリプロジェクト。 | [コード](https://github.com/goharbor/harbor/blob/master/src/pkg/permission/evaluator/rbac/casbin.go#L24-L44) | [Beego ORM](https://github.com/goharbor/harbor/blob/master/src/replication/dao/policy.go#L24-L26)   |
+| [Intel RMD](https://github.com/intel/rmd)                       | インテルのリソース管理デーモン。                                               | [.conf](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/model.conf)                              | [.csv](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/policy.csv)                         |
+| [VMware Dispatch](https://github.com/vmware/dispatch)           | サーバーレス スタイル アプリケーションをデプロイおよび管理するためのフレームワーク。                    | [コード](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers.go#L46-L55)            | [コード](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers_test.go#L35-L45) |
+| [Skydive](https://github.com/skydive-project/skydive)           | オープンソースのリアルタイムネットワークトポロジーとプロトコルアナライザ。                          | [コード](https://github.com/skydive-project/skydive/blob/master/config/config.go#L136-L140)                  | [.csv](https://github.com/skydive-project/skydive/blob/master/rbac/policy.csv)                      |
+| [Zenpress](https://github.com/insionng/zenpress)                | Golangで書かれたCMSシステム。                                            | [.conf](https://github.com/insionng/zenpress/blob/master/content/config/rbac_model.conf)                  | [Gorm](https://github.com/insionng/zenpress/blob/master/model/user.go#L53-L77)                      |
+| [アルゴCD](https://github.com/argoproj/argo-cd)                    | Kubernetes向けのGitOps連続デリバリー。                                    | [.conf](https://github.com/argoproj/argo-cd/blob/master/util/rbac/model.conf)                             | [.csv](https://github.com/argoproj/argo-cd/blob/master/util/rbac/builtin-policy.csv)                |
+| [無錫の雲](https://github.com/muxiyun/Mae)                          | Kubernetesクラスタを簡単に管理できるMuxi CloudのPaaS。                        | [.conf](https://github.com/muxiyun/Mae/blob/master/conf/casbinmodel.conf)                                 | [コード](https://github.com/muxiyun/Mae/blob/master/pkg/casbin/initPolicy.go#L21-L95)                  |
+| [EngineerCMS](https://github.com/3xxx/EngineerCMS)              | エンジニアのための知識を管理するためのCMS。                                        | [.conf](https://github.com/3xxx/EngineerCMS/blob/master/conf/rbac_model.conf)                             | [SQLite](https://github.com/3xxx/EngineerCMS/blob/master/database/engineer.db)                      |
+| [Cyber Auth API](https://github.com/CyberlifeCN/cyber-auth-api) | Golang認証APIプロジェクト。                                             | [.conf](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_model.conf)                  | [.csv](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_policy.csv)             |
+| [IRISコミュニティ](https://github.com/irisnet/iris-community)         | IRISコミュニティアクティビティのウェブサイト。                                      | [.conf](https://github.com/irisnet/iris-community/blob/master/authz/authz_model.conf)                     | [.csv](https://github.com/irisnet/iris-community/blob/master/authz/authz_policy.csv)                |
+| [メタデータ DB](https://github.com/Bnei-Baruch/mdb)                  | BBアーカイブメタデータデータベース。                                            | [.conf](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_model.conf)                       | [.csv](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_policy.csv)                  |
+| [Qilin API](https://github.com/ProtocolONE/qilin.api)           | ProtocolONEのライセンスはゲームコンテンツの管理ツールです。                            | [コード](https://github.com/ProtocolONE/rbac/blob/master/model.go)                                           | [.csv](https://github.com/ProtocolONE/rbac/tree/master/conf)                                        |
+| [Devtron Labs](https://github.com/devtron-labs/devtron)         | Kubernetesのソフトウェアデリバリワークフロー                                    | [.conf](https://github.com/devtron-labs/devtron/blob/main/auth_model.conf)                                | [Xorm](https://github.com/devtron-labs/devtron/blob/main/internal/casbin/Adapter.go)                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| 名前                                                               | 説明                              | モデル                                                                                                                                                                                 | ポリシー |
+| ---------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| [lighty.io](https://github.com/PantheonTechnologies/lighty-core) | OpenDaylightのSDNコントローラ用ソリューション。 | [README](https://github.com/PantheonTechnologies/lighty-core/blob/6f2ceaae6a68e08c96d14d2fa8ee060ad9f61606/lighty-examples/lighty-controller-springboot-netconf/README.md#security) | 該当なし |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名前                                                                      | 説明                                                                                                                                    | モデル                                                                                                                               | ポリシー                                                                                                                                |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Notadd](https://github.com/notadd/notadd)                              | A micro-service development architecture based on Nest.js.                                                                            | [.conf](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/rbac_model.conf) | [DB adapter](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/adapter.ts)   |
+| [ARC API](https://github.com/sourcefuse/loopback4-microservice-catalog) | A Catalog of Microservices based on [Loopback](https://loopback.io/doc/en/lb4/) Created by [SourceFuse](https://www.sourcefuse.com/). | [Usage](https://github.com/sourcefuse/loopback4-authorization#Extension-enhancement-using-CASBIN-authorisation)                   | [Provider](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/casbin-authorization-action.provider.ts) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 名前                                            | 説明                  | モデル                                                                                         | ポリシー |
+| --------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------- | ---- |
+| [dtrace](https://github.com/EduScaled/dtrace) | EduScaledのトレースシステム。 | [コミット](https://github.com/EduScaled/dtrace/commit/6e8d6b52ec2fa120e8ad63f84a4aecc3eae14c02) | 該当なし |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+## プラグイン経由の統合
+
+| 名前                                                    | 説明                                                             | プラグイン                                                                                                                                                           | モデル                                                                                                 | ポリシー                                                                                                    |
+| ----------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [Docker](https://github.com/docker/docker)            | 世界をリードするソフトウエアコンテナプラットフォーム                                     | [casbin-authz-plugin](https://github.com/casbin/casbin-authz-plugin) ([Docker 推奨](https://docs.docker.com/engine/extend/legacy_plugins/#authorization-plugins)) | [.conf](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_model.conf)        | [.csv](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_policy.csv)             |
+| [Gobis](https://github.com/orange-cloudfoundry/gobis) | [Orange](https://github.com/orange-cloudfoundry)の軽量API Gateway | [casbin](https://github.com/orange-cloudfoundry/gobis-middlewares/tree/master/casbin)                                                                           | [コード](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/model.go#L52-L65) | [リクエスト](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/adapter.go#L46-L64) |

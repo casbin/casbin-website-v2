@@ -1,0 +1,76 @@
+---
+id: adopters
+title: Nos Adopteurs
+description: Casbin' Adopters
+keywords:
+  - adopter
+  - showcase
+authors:
+  - nodece
+---
+
+
+
+## Intégration directe
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Nom                                                                   | Description                                                                                         | Modélisation                                                                                               | Politique de confidentialité                                                                         |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Port VMware](https://github.com/goharbor/harbor)                     | Le projet de registre natif du cloud de confiance de VMware qui stocke, signe et scanne le contenu. | [Code](https://github.com/goharbor/harbor/blob/master/src/pkg/permission/evaluator/rbac/casbin.go#L24-L44) | [Beego ORM](https://github.com/goharbor/harbor/blob/master/src/replication/dao/policy.go#L24-L26)    |
+| [RMD Intel](https://github.com/intel/rmd)                             | Démon de gestion des ressources d'Intel.                                                            | [.conf](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/model.conf)                               | [.CSV](https://github.com/intel/rmd/blob/master/etc/rmd/acl/url/policy.csv)                          |
+| [Expédition VMware](https://github.com/vmware/dispatch)               | Un framework pour le déploiement et la gestion d'applications de style sans serveur.                | [Code](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers.go#L46-L55)            | [Code](https://github.com/vmware/dispatch/blob/master/pkg/identity-manager/handlers_test.go#L35-L45) |
+| [Skydive](https://github.com/skydive-project/skydive)                 | Une topologie de réseau en temps réel open source et un analyseur de protocoles.                    | [Code](https://github.com/skydive-project/skydive/blob/master/config/config.go#L136-L140)                  | [.CSV](https://github.com/skydive-project/skydive/blob/master/rbac/policy.csv)                       |
+| [Zenpress](https://github.com/insionng/zenpress)                      | Un système CMS écrit en Golang.                                                                     | [.conf](https://github.com/insionng/zenpress/blob/master/content/config/rbac_model.conf)                   | [Gorm](https://github.com/insionng/zenpress/blob/master/model/user.go#L53-L77)                       |
+| [CD Argo](https://github.com/argoproj/argo-cd)                        | La livraison continue de GitOps pour Kubernetes.                                                    | [.conf](https://github.com/argoproj/argo-cd/blob/master/util/rbac/model.conf)                              | [.CSV](https://github.com/argoproj/argo-cd/blob/master/util/rbac/builtin-policy.csv)                 |
+| [Nuage de Muxi](https://github.com/muxiyun/Mae)                       | PaaS de Muxi Cloud, un moyen plus facile de gérer la grappe de serveurs Kubernetes.                 | [.conf](https://github.com/muxiyun/Mae/blob/master/conf/casbinmodel.conf)                                  | [Code](https://github.com/muxiyun/Mae/blob/master/pkg/casbin/initPolicy.go#L21-L95)                  |
+| [CMS d'Ingénieur](https://github.com/3xxx/EngineerCMS)                | Un CMS pour gérer les connaissances des ingénieurs.                                                 | [.conf](https://github.com/3xxx/EngineerCMS/blob/master/conf/rbac_model.conf)                              | [SQLite](https://github.com/3xxx/EngineerCMS/blob/master/database/engineer.db)                       |
+| [Cyber Auth API](https://github.com/CyberlifeCN/cyber-auth-api)       | Un projet d'API d'authentification Golang.                                                          | [.conf](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_model.conf)                   | [.CSV](https://github.com/CyberlifeCN/cyber-auth-api/blob/master/conf/authz_policy.csv)              |
+| [Communauté IRIS](https://github.com/irisnet/iris-community)          | Site Web des activités communautaires IRIS.                                                         | [.conf](https://github.com/irisnet/iris-community/blob/master/authz/authz_model.conf)                      | [.CSV](https://github.com/irisnet/iris-community/blob/master/authz/authz_policy.csv)                 |
+| [Base de données des métadonnées](https://github.com/Bnei-Baruch/mdb) | Base de données des métadonnées d'archive BB.                                                       | [.conf](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_model.conf)                        | [.CSV](https://github.com/Bnei-Baruch/mdb/blob/master/data/permissions_policy.csv)                   |
+| [Qilin API](https://github.com/ProtocolONE/qilin.api)                 | Outil de gestion des licences de ProtocolONE pour le contenu du jeu.                                | [Code](https://github.com/ProtocolONE/rbac/blob/master/model.go)                                           | [.CSV](https://github.com/ProtocolONE/rbac/tree/master/conf)                                         |
+| [Labs Devtron](https://github.com/devtron-labs/devtron)               | Flux de travail pour Kubernetes.                                                                    | [.conf](https://github.com/devtron-labs/devtron/blob/main/auth_model.conf)                                 | [Xorme](https://github.com/devtron-labs/devtron/blob/main/internal/casbin/Adapter.go)                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| Nom                                                              | Description                                   | Modélisation                                                                                                                                                                        | Politique de confidentialité |
+| ---------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| [lighty.io](https://github.com/PantheonTechnologies/lighty-core) | La solution OpenDaylight pour contrôleur SDN. | [README](https://github.com/PantheonTechnologies/lighty-core/blob/6f2ceaae6a68e08c96d14d2fa8ee060ad9f61606/lighty-examples/lighty-controller-springboot-netconf/README.md#security) | N/A                          |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| Nom                                                                     | Description                                                                                                                           | Modélisation                                                                                                                      | Politique de confidentialité                                                                                                        |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Notadd](https://github.com/notadd/notadd)                              | A micro-service development architecture based on Nest.js.                                                                            | [.conf](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/rbac_model.conf) | [DB adapter](https://github.com/notadd/notadd/blob/e58d0a0cf5d691c3fe20170e94cdd8e2c627abd4/apps/nest-upms/src/casbin/adapter.ts)   |
+| [ARC API](https://github.com/sourcefuse/loopback4-microservice-catalog) | A Catalog of Microservices based on [Loopback](https://loopback.io/doc/en/lb4/) Created by [SourceFuse](https://www.sourcefuse.com/). | [Usage](https://github.com/sourcefuse/loopback4-authorization#Extension-enhancement-using-CASBIN-authorisation)                   | [Provider](https://github.com/sourcefuse/loopback4-authorization/blob/master/src/providers/casbin-authorization-action.provider.ts) |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| Nom                                           | Description                     | Modélisation                                                                                   | Politique de confidentialité |
+| --------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------- |
+| [dtrace](https://github.com/EduScaled/dtrace) | Système de traçage d'EduScaled. | [Valider](https://github.com/EduScaled/dtrace/commit/6e8d6b52ec2fa120e8ad63f84a4aecc3eae14c02) | N/A                          |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+## Intégration via le plugin
+
+| Nom                                                   | Description                                                                                 | Plug-in                                                                                                                                                                     | Modélisation                                                                                         | Politique de confidentialité                                                                               |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [Docker](https://github.com/docker/docker)            | La première plateforme de conteneur logiciel au monde                                       | [casbin-authz-plugin](https://github.com/casbin/casbin-authz-plugin) ([recommandé par Docker](https://docs.docker.com/engine/extend/legacy_plugins/#authorization-plugins)) | [.conf](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_model.conf)         | [.CSV](https://github.com/casbin/casbin-authz-plugin/blob/master/examples/basic_policy.csv)                |
+| [Gobis](https://github.com/orange-cloudfoundry/gobis) | La passerelle API légère de [Orange](https://github.com/orange-cloudfoundry)écrite en aller | [casbin](https://github.com/orange-cloudfoundry/gobis-middlewares/tree/master/casbin)                                                                                       | [Code](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/model.go#L52-L65) | [Demander](https://github.com/orange-cloudfoundry/gobis-middlewares/blob/master/casbin/adapter.go#L46-L64) |

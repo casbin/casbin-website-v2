@@ -1,0 +1,41 @@
+---
+id: performance
+title: Leistungsoptimierung
+description: Casbin performance optimization
+keywords:
+  - optimization
+authors:
+  - hsluoyz
+---
+
+Wenn Sie in einer Produktionsumgebung mit Millionen von Benutzern oder Berechtigungen angewendet werden, können Sie bei der Durchsetzung von Casbin auf Performance-Downgrade stoßen, es gibt in der Regel zwei Ursachen:
+
+#### Hoher Lautstärkeverkehr
+
+Die Anzahl der anstehenden Anfragen pro Sekunde ist zu groß, z.B. 10.000 Anfrage/s für eine einzelne Casbin-Instanz. In diesem Fall reicht eine einzige Casbin-Instanz normalerweise nicht aus, um alle Anfragen zu bearbeiten. Es gibt zwei mögliche Lösungen:
+
+1. Verwenden Sie Multithreading um mehrere Casbin-Instanzen zu aktivieren, so dass Sie alle Kerne des Computers vollständig nutzen können. Siehe Details auf: [Multi-Threading](/docs/multi-threading).
+
+2. Verteilen Sie Casbin-Instanzen in einem Cluster (mehrere Maschinen). Verwenden Sie Watcher um sicherzustellen, dass alle Casbin-Instanzen konsistent sind. Siehe Details auf: [Beobachter](/docs/watchers).
+
+:::note
+
+Sie können die oben genannten Methoden zur gleichen Zeit verwenden, z.B. Casbin in einen 10-Maschinen-Cluster einbinden. Jede Maschine hat 5 Fäden gleichzeitig, um die Durchsetzung von Casbin-Anfragen zu bedienen.
+
+:::
+
+#### Hohe Anzahl an Regeln für Richtlinien
+
+Millionen von politischen Regeln können in einer Wolke oder mehreren Mietern erforderlich sein. Jeder Durchsetzungsruf oder sogar das Laden der Regeln zum ersten Zeitpunkt ist sehr langsam. Derartige Fälle können in der Regel auf verschiedene Weise gemildert werden:
+
+1. Ihr Casbin-Modell oder -Politik ist nicht gut konzipiert. Ein gut geschriebenes Modell und Richtlinie abstrahiert die duplizierte Logik für jeden Benutzer/Mieter und reduziert die Anzahl der Regeln auf ein sehr kleines Level (< 100): e. ., können Sie einige Standardregeln für alle Instanzen teilen und die Benutzer ihre Regeln später anpassen lassen. Benutzerdefinierte Regeln können die Standardregeln überschreiben. Wenn Sie noch Fragen haben, senden Sie bitte GitHub an die Casbin Repos.
+
+2. Teilen Sie, damit ein Casbin-Vollstrecker nur eine kleine Reihe von Richtlinien-Regeln laden kann, z. enforcer_0 dient nur für tenant_0 bis tenant_99, enforcer_1 dient nur für tenant_100 bis tenant_199. Um nur eine Teilmenge aller Richtlinien-Regeln zu laden, siehe Details unter: [Richtlinien-Untermengenladen](/docs/policy-subset-loading).
+
+3. Erteilen Sie RBAC Rollen anstelle von Benutzern direkt Rechte. Casbin's RBAC wird durch einen Rollenvererbungsbaum (als Cache) implementiert. Da ein Benutzer wie Alice, verwendet Casbin nur O(1) Zeit, um den RBAC Baum nach Rollenbenutzer-Beziehung abzufragen und durchzusetzen. Wenn sich Ihre g Regeln nicht oft ändern, muss der RBAC Baum nicht aktualisiert werden. Siehe Details auf dieser Wörterbuch: https://github.com/casbin/casbin/issues/681#issuecomment-763801583
+
+:::note
+
+Sie können die oben genannten Methoden gleichzeitig ausprobieren.
+
+:::

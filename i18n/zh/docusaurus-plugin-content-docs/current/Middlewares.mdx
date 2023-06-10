@@ -1,0 +1,171 @@
+---
+id: middlewares
+title: 中间件
+description: Casbin 中间件
+keywords:
+  - 中间件
+authors:
+  - hsluoyz
+---
+
+
+
+### Web框架
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 名称                                               | 描述                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Gin](https://github.com/gin-gonic/gin)          | 一个有着更好性能的 HTTP 网络框架，支持类似于 Martini 的 API，通过以下插件实现：[authz](https://github.com/gin-contrib/authz)或 [gin-casbin](https://github.com/maxwellhertz/gin-casbin)                                                                                                                                                                                                           |
+| [Beego](https://github.com/beego/beego)          | 一个 Go 语言的开源、高性能网络框架，通过以下插件实现：[plugins/authz](https://github.com/astaxie/beego/blob/master/plugins/authz)                                                                                                                                                                                                                                                           |
+| [Caddy](https://github.com/caddyserver/caddy)    | 快速、跨平台的有自动HTTPS的HTTP/2 web服务器，通过插件：[caddy-authz](https://github.com/casbin/caddy-authz)实现。                                                                                                                                                                                                                                                                         |
+| [Traefik](https://github.com/traefik/traefik)    | 云端本地应用程序代理，通过插件： [Traefik-auth插件](https://github.com/Knight-7/auth-plugin) 实现                                                                                                                                                                                                                                                                                      |
+| [Kratos](https://github.com/go-kratos/kratos)    | Your ultimate Go microservices framework for the cloud-native era, via plugin: [tx7do/kratos-casbin](https://github.com/tx7do/kratos-casbin) or [overstarry/kratos-casbin](https://github.com/overstarry/kratos-casbin)                                                                                                                                            |
+| [Go kit](https://github.com/go-kit/kit)          | 一个用于微服务的工具包，通过内置插件：[plugins/authz](https://github.com/go-kit/kit/tree/master/auth/casbin)实现。                                                                                                                                                                                                                                                                       |
+| [Fiber](https://github.com/gofiber/fiber)        | An Express inspired web framework written in Go, via middleware: [casbin in gofiber/contrib](https://github.com/gofiber/contrib/tree/main/casbin) or [fiber-casbinrest](https://github.com/prongbang/fiber-casbinrest) or [fiber-boilerplate](https://github.com/sujit-baniya/fiber-boilerplate) or [gofiber-casbin](https://github.com/pcminh0505/gofiber-casbin) |
+| [Revel](https://github.com/revel/revel)          | 一个用Go语言编制的高效、全栈的web框架，通过插件： [auth/casbin](https://github.com/revel/modules/tree/master/auth/casbin)实现。                                                                                                                                                                                                                                                             |
+| [Echo](https://github.com/labstack/echo)         | High performance, minimalist Go web framework, via plugin: [echo-authz](https://github.com/labstack/echo-contrib/tree/master/casbin) or [echo-casbin](https://github.com/alexferl/echo-casbin) or [casbinrest](https://github.com/prongbang/casbinrest) or [echo-boilerplate](https://github.com/alexferl/echo-boilerplate)                                        |
+| [Iris](https://github.com/kataras/iris)          | (这个) 地球上用Go语言编写的最快的web框架。 HTTP/2 Ready-To-GO, via plugin: [casbin](https://github.com/iris-contrib/middleware/tree/master/casbin) or [iris-middleware-casbin](https://github.com/kokobing/iris-middleware-casbin)                                                                                                                                                  |
+| [GoFrame](https://github.com/gogf/gf)            | 模块化的，强力的，高性能的和企业级的Golang的应用开发框架，通过插件 [gf-casbin](https://github.com/dobyte/gf-casbin) 实现.                                                                                                                                                                                                                                                                          |
+| [Negroni](https://github.com/urfave/negroni)     | Golang的惯用HTTP中间件，通过插件：[negroni-authz](https://github.com/casbin/negroni-authz)实现                                                                                                                                                                                                                                                                                   |
+| [Chi](https://github.com/pressly/chi)            | 一个用于构建 HTTP 服务的轻量级的、常用的和可组合的路由器, 通过插件: [chi-authz](https://github.com/casbin/chi-authz) 实现                                                                                                                                                                                                                                                                         |
+| [Buffalo](https://github.com/gobuffalo/buffalo)  | 基于Go的网络开发生态，致力于让你的生活更简单，通过插件：[buffalo-mw-rbac 实现](https://github.com/kgosse/buffalo-mw-rbac)                                                                                                                                                                                                                                                                       |
+| [Macaron](https://github.com/go-macaron/macaron) | 一个使用Go语言实现的高产能、模块化的网络框架，通过插件： [authz](https://github.com/go-macaron/authz) 实现                                                                                                                                                                                                                                                                                      |
+| [DotWeb](https://github.com/devfeel/dotweb)      | 简易的Go网络微框架，通过插件： [authz](https://github.com/devfeel/middleware/tree/master/authz) 实现                                                                                                                                                                                                                                                                               |
+| [Tango](https://github.com/lunny/tango)          | 微型 & 插拔式的Go网络框架，通过插件 [authz](https://gitea.com/tango/authz) 实现                                                                                                                                                                                                                                                                                                     |
+| [Baa](https://github.com/go-baa/baa)             | 一个带有路由，中间件，依赖注入和http context 的express Go网络框架，通过插件 [authz](https://github.com/baa-middleware/authz) 实现                                                                                                                                                                                                                                                              |
+| [Tyk](https://github.com/TykTechnologies/tyk)    | 一个开源企业API网关，通过插件支持REST、GraphQL、TCP和gRPC协议： [tyk-authz](https://github.com/casbin/tyk-authz)                                                                                                                                                                                                                                                                        |
+| [Hertz](https://github.com/cloudwego/hertz)      | Go HTTP framework with high-performance and strong-extensibility for building micro-services, via plugin: [casbin](https://github.com/hertz-contrib/casbin)                                                                                                                                                                                                        |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+| 名称                                                     | 描述                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Spring Boot](https://projects.spring.io/spring-boot/) | 让创建Spring程序和服务更加简单，通过插件： [casbin-spring-boot-starter](https://github.com/jcasbin/casbin-spring-boot-starter) 或 [jcasbin-springboot-plugin](https://github.com/jcasbin/jcasbin-springboot-plugin) 或 [使用jCasbin的SpringBoot安全示例](https://github.com/jveverka/spring-examples/tree/master/spring-jcasbin) 实现 |
+| [Apache Shiro](https://shiro.apache.org/)              | 一个强大且易于使用的 Java 安全框架，通过插件进行身份验证、授权、加密和会话管理，通过插件： [shirro-casbin](https://github.com/jcasbin/shiro-casbin) 或 [shiro-jcasbin-spring-boot-starter](https://github.com/mapleafgo/shiro-jcasbin-spring-boot-starter) 实现                                                                                       |
+| [Vert.x](https://vertx.io/)                            | 一个用于在JVM上创建灵活应用的工具箱，通过插件：[vertx-auth-jcasbin](https://github.com/vert-x3/vertx-auth/pull/215) 实现                                                                                                                                                                                                         |
+| [JFinal](http://www.jfinal.com/)                       | 一个简单、轻量、迅速、独立、可扩展的Java WEB + ORM 框架，通过插件： [jcasbin-jfinal-plugin](https://github.com/jcasbin/jfinal-authz) 实现                                                                                                                                                                                            |
+| [Nutz](https://nutzam.com/)                            | 适合所有所有Java开发者的WEB框架 (MVC/IOC/AOP/DAO/JSON)， 通过插件： [jcasbin-nutz-plugin](https://github.com/jcasbin/nutz-authz) 实现                                                                                                                                                                                        |
+| [mangoo I/O](https://github.com/svenkubiak/mangooio)   | 一个直观，轻量、高性能、全栈Java Web框架通过内置插件 [AuthorizationService.java](https://github.com/svenkubiak/mangooio/blob/e8c647a3f7c427bce27377025bec074f6d767f50/mangooio-core/src/main/java/io/mangoo/services/AuthorizationService.java)                                                                                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名称                                                                     | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Shield](https://github.com/odpf/shield)                               | 一个建于 casbin 顶部的 authZ 服务器和 authZ 认知反向代理。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| [Express](https://github.com/expressjs/express)                        | 用于node的快速，无意的，最小化的网络框架，通过插件 [express-authz](https://github.com/node-casbin/express-authz) 实现                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [Koa](https://github.com/koajs/koa)                                    | 用于Node.JS的高表达性的中间件使用ES2017异步函数，通过 [koa-authz](https://github.com/node-casbin/koa-authz) 或者 [koajs-starter](https://github.com/djordjep/koajs-starter) 或[koa-casbin](https://github.com/zcong1993/koa-casbin)插件实现                                                                                                                                                                                                                                                                                                         |
+| [LoopBack 4](https://github.com/koajs/koa)                             | 一个高扩展性的 Node.js 和 TypeScript 框架，通过插件构建API和微型服务： [loopback4-authorization](https://github.com/sourcefuse/loopback4-authorization)                                                                                                                                                                                                                                                                                                                                                                                         |
+| [Nest](https://nestjs.com/)                                            | 使用Typescript和JavaScript构建高效和可伸缩的服务器端应用程序的先进Node.js框架 通过插件： [nest-authz](https://github.com/dreamdevil00/nest-authz) or [nest-casbin](https://github.com/pardjs/nest-casbin) 或 [NestJS Casbin 模块](https://github.com/switchit-conseil/nestjs-casbin-module) 或 [nestjs-casbin](https://github.com/juicycleff/nestjs-casbin) 或 [shanbe-api](https://github.com/merajsahebdar/shanbe-api) 或 [acl-nest](https://github.com/Twiddlle/acl-nest) 或 [nestjs-casbin-typeorm](https://github.com/0xb4lamx/nestjs-casbin-typeorm) 实现 |
+| [Fastify](https://github.com/fastify/fastify)                          | 用于Node.js的快速和低开销网页框架： [fastify-casbin](https://github.com/nearform/fastify-casbin) or [fastify-casbin-rest](https://github.com/nearform/fastify-casbin-rest)                                                                                                                                                                                                                                                                                                                                                             |
+| [Egg](https://github.com/eggjs/egg)                                    | 用于使用Node.Js & Koa更好地来构建企业框架和应用，通过 [egg-authz](https://github.com/node-casbin/egg-authz) 或者 [egg-zrole](https://github.com/klren0312/egg-zrole)插件实现                                                                                                                                                                                                                                                                                                                                                                       |
+| [hapi](https://hapi.dev/)                                              | 简单、安全、值的开发者信赖的框架。 通过插件： [hapi-authz](https://github.com/node-casbin/hapi-authz) 实现                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [Casbin JWT Express](https://github.com/tiagostutz/casbin-jwt-express) | 使用无状态JWT token来使Casbin ACL(访问控制列表) 有效的授权中间件                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| 名称                                                 | 描述                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Laravel](https://laravel.com/)                    | 为网络工程师设计的PHP框架，通过插件 [laravel-casbin](https://github.com/php-casbin/laravel-authz) 实现                                                                                                                                                                                                               |
+| [Yii PHP Framework](https://www.yiiframework.com/) | 快速、安全和高效的PHP框架，通过插件： [yii-permission](https://github.com/php-casbin/yii-permission) or [yii-casbin](https://github.com/php-casbin/yii-casbin)                                                                                                                                                      |
+| [CakePHP](https://cakephp.org/)                    | 创建快速的稳定的PHP框架，通过 [cake-casbin](https://github.com/php-casbin/cake-permission) 插件实现                                                                                                                                                                                                                 |
+| [CodeIgniter](https://codeigniter.com/)            | 在 CodeIgniter4 网页框架中通过插件将具有角色和权限的用户联系起来，通过插件： [CodeIgniter Permission ](https://github.com/php-casbin/codeigniter-permission) 实现                                                                                                                                                                   |
+| [ThinkPHP 5.1](http://www.thinkphp.cn/)            | ThinkPHP 5.1框架，通过插件 [think-casbin](https://github.com/php-casbin/think-casbin) 实现                                                                                                                                                                                                                  |
+| [ThinkPHP 6.0](http://www.thinkphp.cn/)            | ThinkPHP 6.0框架，通过 [think-authz](https://github.com/php-casbin/think-authz) 插件实现                                                                                                                                                                                                                    |
+| [Symfony](https://symfony.com/)                    | Symfony PHP框架，通过插件： [symfony-permission](https://github.com/php-casbin/symfony-permission) 或者 [symfony-casbin](https://github.com/videni/symfony-casbin)                                                                                                                                           |
+| [Hyperf](https://github.com/hyperf/hyperf)         | A coroutine framework that focuses on hyperspeed and flexibility, via plugin: [hyperf-permission](https://github.com/php-casbin/hyperf-permission) or [donjan-deng/hyperf-casbin](https://github.com/donjan-deng/hyperf-casbin) or [cblink/hyperf-casbin](https://github.com/cblink/hyperf-casbin) |
+| [EasySwoole](https://www.easyswoole.com/)          | 基于 Swoole 扩展实现的一个分布式的，持续存储的 PHP 框架，用过插件： [easyswoole-permission](https://github.com/php-casbin/easyswoole-permission) 或者 [easyswoole-hyperfOrm-permission](https://github.com/ice-leng/easyswoole-hyperfOrm-permission) 实现                                                                         |
+| [Slim](https://www.slimframework.com/)             | 一个 PHP 微型框架，通过插件帮助您快速实现简单但强大的 Web 应用程序和API，通过插件： [casbin-with-slim](https://github.com/php-casbin/casbin-with-slim) 实现                                                                                                                                                                             |
+| [Phalcon](https://phalcon.io/)                     | 以C-扩展形式发送的全堆栈PHP框架，通过插件： [phalcon-permission](https://github.com/php-casbin/phalcon-permission) 实现                                                                                                                                                                                                 |
+| [Webman](https://github.com/walkor/webman)         | High performance HTTP Service Framework for PHP based on Workerman, via plugin: [webman-permission](https://github.com/php-casbin/webman-permission) or [webman-casbin](https://github.com/sunsgneayo/webman-casbin)                                                                               |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 名称                                             | 描述                                                                                                                                                                                                                                        |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Django](https://www.djangoproject.com/)       | 高级 Python Web 框架，通过插件： [django-casbin](https://github.com/pycasbin/django-casbin) 或 [django-authority](https://github.com/pycasbin/django-authorization)即可实现                                                                              |
+| [Flask](http://flask.pocoo.org/)               | 基于Werkzeug和Jinja的 Python 微型框架，通过插件[flask-authz](https://github.com/pycasbin/flask-authz) ， [Flask-Casbin (第三方实现，或许更好)](https://github.com/daymien/Flask-Casbin) 或者 [rbac-flask](https://github.com/daobeng/rbac-flask/tree/flask-casbin)。 |
+| [FastAPI](https://github.com/tiangolo/fastapi) | 使用 Python 3.6+ API的现代、快速(高性能)、网页框架，基于标准 Python 类型提示, 通过插件： [fastapi-authz](https://github.com/pycasbin/fastapi-authz) 或者 [Fastapi-app](https://github.com/lqmanh/fastapi-app) 实现                                                          |
+| [OpenStack](https://www.openstack.org/)        | 部署最广泛的开放源码云软件，通过插件： [openstack-patron](https://github.com/casbin/openstack-patron) 实现                                                                                                                                                     |
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+| 名称                                                           | 描述                                                                                                                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core) | 一个开放源码和跨平台框架，用于建立以云为基础的现代互联网连接应用。 例如Web应用、Iot应用和移动后端，通过插件：[Casbin.AspNetCore](https://github.com/casbin-net/Casbin.AspNetCore) |
+| [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core) | 通过插件在ASP.NET核心框架中使用Casbin的简单演示： [CasbinACL-aspNetCore](https://github.com/MustafaMustafayev/CasbinACL-aspNetCore)              |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+| 名称                                                | 描述                                                                                                                                                                                                                                                                |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Actix](https://github.com/actix/actix)           | Rust 框架，通过插件 [actix-casbin](https://github.com/casbin-rs/actix-casbin) 实现                                                                                                                                                                                         |
+| [Actix web](https://github.com/actix/actix-web)   | 一个小型、务实和快速的rust网络框架，通过插件： [actix-casbin-auth](https://github.com/casbin-rs/actix-casbin-auth) 实现                                                                                                                                                                  |
+| [Rocket](https://github.com/SergioBenitez/Rocket) | 为 Rust 设计的网页框架，它使得在不牺牲灵活性、可用性或类型安全的情况下实现快速、安全的 web 应用程序， 通过插件： [rocket-authz](https://github.com/casbin-rs/rocket-authz) 或 [rocket-casbin-auth](https://github.com/oiatz/rocket-casbin-auth) 或 [rocket-casbin-demo](https://github.com/simoin/Rocket_Casbin_Demo) |
+| [Axum 网络](https://github.com/tokio-rs/axum)       | 一个符合人体工程学和模块化的rust网络框架，通过插件： [axum-casbin-auth](https://github.com/casbin-rs/axum-casbin-auth) 实现                                                                                                                                                                 |
+| [Poem 网页](https://github.com/poem-web/poem)       | 通过插件 [poem-casbin](https://github.com/casbin-rs/poem-casbin)便可使用Rust 编程语言的 web 框架，其功能齐全、易于操作。                                                                                                                                                                     |
+
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+```
+
+| 名称                                         | 描述                                                                                                                                                                                       |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [OpenResty](https://openresty.org/)        | 基于 NGINX 和 LuaJIT 的动态网络平台，通过插件： [lua-resty-casbin](https://github.com/casbin-lua/lua-resty-casbin) 和 [casbin-openresty-example](https://github.com/rushitote/casbin-openresty-example)实现 |
+| [Kong](https://github.com/Kong/kong)       | 一个云原生、可伸展的 API 网关，有着高性能和扩展性能，通过插件： [kong-authz](https://github.com/casbin-lua/kong-authz)实现                                                                                              |
+| [APISIX](https://github.com/apache/apisix) | 一个动态的、实时的高性能API网关，通过插件： [apisix-authz](https://github.com/apache/apisix/blob/master/docs/en/latest/plugins/authz-casbin.md) 实现                                                           |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Swift" label="Swift">
+```
+
+| 名称                                      | 描述                                                                                   |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| [Vapor](https://github.com/vapor/vapor) | 服务器端的Swift web 框架，通过插件： [vapor-authz](https://github.com/SwiftCasbin/vapor-authz) 实现 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+### 云提供商
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 名称                          | 描述                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [Okta](https://okta.com/)   | 一个可信的平台通过插件保护身份： [casbin-spring-boot-demo](https://github.com/myriad-personal/casbin-spring-boot-demo) |
+| [Auth0](https://auth0.com/) | 一个实现简单、可适应的认证和授权平台，通过插件： [casbin-auth0-rbac](https://auth0.com/)实现                                     |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

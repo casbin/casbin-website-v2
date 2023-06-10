@@ -1,0 +1,283 @@
+---
+id: api-overview
+title: API の概要
+description: Casbin API usage
+keywords:
+  - API overview
+  - API
+  - API usage
+authors:
+  - hsluoyz
+---
+
+この概要では、Casbin API の使用方法についてのみ説明し、Casbin のインストール方法および動作方法について説明しません。 これらのチュートリアルはこちらでご覧いただけます: [Casbin](/docs/get-started) のインストールと [Casbin の仕組み](/docs/how-it-works)。 したがって、このチュートリアルを読み始めると、完全にインストールされ、Casbinをコードにインポートしたと仮定します。
+
+## APIを強制する
+
+CasbinのEnforceAPIから始めましょう。 `model.conf`からRBACモデルを読み込み、 `policy.csv` からポリシーを読み込みます。 モデル構文 [](/docs/syntax-for-models)はこちらで学ぶことができますが、このチュートリアルでは説明しません。 以下の設定ファイルを理解できると仮定します。
+
+`model.conf`
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+`policy.csv`
+
+```
+p, admin, data1, read
+p, admin, data1, write
+p, admin, data2, read
+p, admin, data2, write
+p, alice, data1, read
+p, bob, data2, write
+g, amber, admin
+g, abc, admin
+```
+
+設定ファイルを読み込んだ後、以下のコードをお読みください。
+
+```go
+// load information from files
+enforcer, err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    log.Fatalf("error, detail: %s", err)
+}
+ok, err := enforcer.Enforce("alice", "data1", "read")
+```
+
+このコードは、ローカルファイルからアクセス制御モデルとポリシーをロードします。 関数 `casbin.NewEnforcer()` はエンフォーサーを返す。 2つのパラメータをファイルパスとして認識し、そこからファイルをロードします。 プロセスで発生したエラーは `err` に保存されます。 このコードは、モデルとポリシーをロードするためにデフォルトのアダプタを使用しました。 もちろん、サードパーティ製のアダプタを使用して同じ結果を得ることができます。
+
+Code `ok, err := enforcer.Enforce("alice", "data1", "read")`  はアクセス権限を確認するものです。 alice が操作読み取りで data1 にアクセスできる場合。 返される値 `ok` は `true`になります。そうでなければ、 `false` になります。 この例では、 `ok` の値は `true` です。
+
+## EnforceEx API
+
+時々、どのポリシーがリクエストを許可したのか疑問に思うかもしれないので、関数 `EnforceEx()` を用意しました。 以下のように使用できます。
+
+```go
+ok, reason, err := enforcer.EnforceEx("amber", "data1", "read")
+fmt.Println(ok, reason) // true [admin data1 read]
+```
+
+function `EnforceEx()` は戻り値の `理由の` に正確なポリシー文字列を返します。 In this example, `amber` is a role of `admin`, so policy `p, admin, data1, read` made this request `true`. このコードの出力はコメントにあります。
+
+CasbinはこのようなAPIをたくさん用意しました。 これらの API は、基本的な関数にいくつかの追加機能を追加しました。 それらは次のとおりです:
+
+- `ok, err := enforcer.EnforceWithMatcher(matcher, request)`
+
+  マッチャー付き。
+
+- `ok, reason, err := enforcer.EnforceExWithMatcher(matcher, request)`
+
+  `EnforceWithMatcher()` と `EnforceEx()` の組み合わせ。
+
+- `boolArray, err := enforcer.BatchEnforce(requests)`
+
+  リスト・ジョブを実行し、配列を返します。
+
+これはCasbinのシンプルな使い方です。 Casbinを使用して、これらのAPI経由で認証サーバーを開始できます。 次の段落では、他のいくつかの種類の API を紹介します。
+
+## Management API
+
+### Get API
+
+これらの API はポリシー内の正確なオブジェクトを取得するために使用されます。 今回は、最後の例のような施行者をロードし、そこから何かを得ます。
+
+以下のコードをお読みください:
+
+```go
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    fmt.Printf("Error, details: %s\n", err)
+}
+allSubjects := enforcer.GetAllSubjects()
+fmt.Println(allSubjects)
+```
+
+前の例と同様に、最初の4行はローカルファイルから必要な情報をロードしました。 ここではそれについてもう話しません。
+
+コード `allSubjects := enforcer.GetAllSubjects()` ポリシーファイル内のすべてのサブジェクトを取得し、配列として返しました。 その配列を印刷しました
+
+通常、コードの出力は次のようになります:
+
+```
+[admin alice bob]
+```
+
+関数 `GetAllSubjects()` を `GetAllNamedSubjects()` に変更することもできます。 現在のポリシーに現れる被験者のリストを取得します。
+
+同様に、 `オブジェクト、アクション、ロール` の `GetAll` 関数を用意しました。 関数名の `件名` という単語を、関数にアクセスしたい場合に必要な単語に変更するだけです。
+
+さらに、我々は政策のためのより多くの取得を持っています。 callメソッドとreturn値は上記と似ています。
+
+- `policy = e.GetPolicy()` は、ポリシーのすべての認可ルールを取得します。
+- `filteredPolicy := e.GetFilteredPolicy(0, "alice")` は、ポリシー内のすべての認可ルールを取得し、フィールドフィルタを指定することができます。
+- `namedPolicy := e.GetNamedPolicy("p")` は、指定されたポリシー内のすべての認可ルールを取得します。
+- `filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")` は、名前付きポリシー内のすべての認可ルールを取得し、フィールドフィルタを指定することができます。
+- `groupingPolicy := e.GetGroupingPolicy()` は、ポリシー内のすべてのロール継承ルールを取得します。
+- `filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")` は、ポリシー内のすべてのロール継承ルールを取得し、フィールドフィルタを指定することができます。
+- `namedGroupingPolicy := e.GetNamedGroupingPolicy("g")` は、ポリシーのすべてのロール継承ルールを取得します。
+- `namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")` は、ポリシー内のすべてのロール継承ルールを取得します。
+
+### 追加、削除、API の更新
+
+Casbinはポリシー用の多くのAPIを用意しました。 これらの API を使用すると、実行時にポリシーを動的に追加、削除、または編集することができます。
+
+このコードは、ポリシーを追加、削除、更新する方法、およびポリシーが存在することを確認する方法を示します。
+
+```go
+// load information from files
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+   fmt.Printf("Error, details: %s\n", err)
+}
+
+// add a policy, then use HasPolicy() to confirm that
+enforcer.AddPolicy("added_user", "data1", "read")
+hasPolicy := enforcer.HasPolicy("added_user", "data1", "read")
+fmt.Println(hasPolicy) // true, we added that policy successfully
+
+// remove a policy, then use HasPolicy() to confirm that
+enforcer.RemovePolicy("alice", "data1", "read")
+hasPolicy = enforcer.HasPolicy("alice", "data1", "read")
+fmt.Println(hasPolicy) // false, we deleted that policy successfully
+
+// update a policy, then use HasPolicy() to confirm that
+enforcer.UpdatePolicy([]string{"added_user", "data1", "read"}, []string{"added_user", "data1", "write"})
+hasPolicy = enforcer.HasPolicy("added_user", "data1", "read")
+fmt.Println(hasPolicy) // false, the origin policy has lapsed
+hasPolicy = enforcer.HasPolicy("added_user", "data1", "write")
+fmt.Println(hasPolicy) // true, the new policy is in use
+```
+
+これらの4種類の API を使用してポリシーを編集できます。 このように、 `FilteredPolicy、NamedPolicy、FilteredNamedPolicy、GroupingPolicy、NamedGroupingPolicy、FilteredGroupingPolicy、FilteredNamedGroupingPolicy` に同じ種類のAPIを用意しました。 これらを使用するには、関数名のワード `ポリシー` を上記の単語に置き換える必要があります。
+
+また、パラメータを配列に変更する場合は、ポリシーの編集をバッチ処理できます。
+
+例えば、以下のように機能します。
+
+```go
+enforcer.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
+```
+
+`ポリシー` を `ポリシー`に変更し、パラメータを次のように編集する場合:
+
+```go
+enforcer.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
+```
+
+これらのポリシーを一括編集できます
+
+同じ操作は `GroupingPolicy, NamedGroupingPolicy` にも有用です。
+
+### AddEx API
+
+Casbin provides AddEx series APIs to help users add rules in batches.
+
+```go
+AddPoliciesEx(rules [][]string) (bool, error)
+AddNamedPoliciesEx(ptype string, rules [][]string) (bool, error)
+AddGroupingPoliciesEx(rules [][]string) (bool, error)
+AddNamedGroupingPoliciesEx(ptype string, rules [][]string) (bool, error)
+SelfAddPoliciesEx(sec string, ptype string, rules [][]string) (bool, error) 
+```
+The difference between these methods and the methods without the Ex suffix is that if one of the rules already exists, they will continue to check the next rule instead of returning false directly.
+
+For example: Compare `AddPolicies` and `AddPoliciesEx`
+
+You can copy the code below into the test under casbin to run and observe.
+```go
+func TestDemo(t *testing.T) {
+    e, err := NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+    if err != nil {
+        fmt.Printf("Error, details: %s\n", err)
+    }
+    e.ClearPolicy()
+    e.AddPolicy("user1", "data1", "read")
+    fmt.Println(e.GetPolicy())
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+    // policy {"user1", "data1", "read"} now exists
+
+    // Use AddPolicies to add rules in batches
+    ok, _ := e.AddPolicies([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+    fmt.Println(e.GetPolicy())
+    // {"user2", "data2", "read"} failed to add because {"user1", "data1", "read"} already exists
+    // AddPolicies returns false and no other policies are checked, even though they may not exist in the existing ruleset
+    // ok == false
+    fmt.Println(ok)
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+    // Use AddPoliciesEx to add rules in batches
+    ok, _ = e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+    fmt.Println(e.GetPolicy())
+    // {"user2", "data2", "read"} is added successfully
+    // because AddPoliciesEx automatically filters the existing {"user1", "data1", "read"}
+    // ok == true
+    fmt.Println(ok)
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+}
+```
+
+## RBAC API
+
+CasbinはRBACモデルとポリシーを変更するためのAPIを提供しています。 RBAC に慣れていれば、これらの API を簡単に使用できます。
+
+ここでは、CasbinのRBAC APIの使用方法についてのみ説明し、RBAC自体について説明しません。 詳細はこちら [](/docs/rbac)をご覧ください。
+
+以前と同じように、モデルやポリシーをロードするためにこのコードを使用します。
+
+```go
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    fmt.Printf("Error, details: %s\n", err)
+}
+```
+
+次に、これらのAPIにアクセスするためにEnforcer `enforcer` のインスタンスを使用します。
+
+```go
+roles, err := enforcer.GetRolesForUser("amber")
+fmt.Println(roles) // [admin]
+users, err := enforcer.GetUsersForRole("admin")
+fmt.Println(users) // [amber abc]
+```
+
+`GetRolesForUser()` は、琥珀を含むすべてのロールを含む配列を返した。 この例では、amber にロール管理者が 1 つしかないため、array `roles` は `[admin]` です。 同様に、 `GetUsersForRole()` を使用して、ユーザーがロールに属するようにすることもできます。 この関数の戻り値も配列です。
+
+```go
+enforcer.HasRoleForUser("amber", "admin") // true
+```
+
+`HasRoleForUser()` を使用して、ユーザーがロールに属しているかどうかを確認できます。 この例では、amber は admin のメンバーなので、関数の戻り値は `true` です。
+
+```go
+fmt.Println(enforcer.Enforce("bob", "data2", "write")) // true
+enforcer.DeletePermission("data2", "write")
+fmt.Println(enforcer.Enforce("bob", "data2", "write")) // false
+```
+
+権限を削除するには `DeletePermission()` を使用できます。
+
+```go
+fmt.Println(enforcer.Enforce("alice", "data1", "read")) // true
+enforcer.DeletePermissionForUser("alice", "data1", "read")
+fmt.Println(enforcer.Enforce("alice", "data1", "read")) // false
+```
+
+また、 `DeletePermissionForUser()` を使用して、ユーザの権限を削除します。
+
+CasbinにはこのようなAPIがたくさんあります。 これらのメソッドの呼び出しと戻り値は上記の API と同じスタイルを持ちます。 これらのAPIは、 [次のドキュメント](/docs/rbac-api) にあります。

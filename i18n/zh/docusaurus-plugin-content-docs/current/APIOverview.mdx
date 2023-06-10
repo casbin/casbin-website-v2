@@ -1,0 +1,283 @@
+---
+id: api-overview
+title: API概述
+description: Casbin API 使用
+keywords:
+  - API 概述
+  - API
+  - API使用方法
+authors:
+  - hsluoyz
+---
+
+这个概述只告诉你如何使用Casbin的API，并没有解释Casbin是如何安装和如何工作的。 你可以在这里找到这些教程：[Casbin的安装](/docs/get-started)和[Casbin如何工作](/docs/how-it-works)。 因此，当你开始阅读本教程时，我们假设你已经完全安装并将Casbin导入你的代码中。
+
+## 用于强制执行的API(Enforce API)
+
+让我们从Casbin的Enforce API开始。 我们将从`model.conf`加载一个RBAC模型，并从`policy.csv`加载策略。 你可以在这里[学习模型的语法](/docs/syntax-for-models)，在本教程中我们将不谈这个问题。 我们假设你能理解下面给出的配置文件。
+
+`model.conf`
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+`policy.csv`
+
+```
+p, admin, data1, read
+p, admin, data1, write
+p, admin, data2, read
+p, admin, data2, write
+p, alice, data1, read
+p, bob, data2, write
+g, amber, admin
+g, abc, admin
+```
+
+阅读完配置文件后，请阅读以下代码：
+
+```go
+// 从文件中加载信息
+enforcer, err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    log.Fatalf("error, detail: %s", err)
+}
+ok, err := enforcer.Enforce("alice", "data1", "read")
+```
+
+这段代码从本地文件加载访问控制模型和策略。 函数`casbin.NewEnforcer()`将返回一个执行者。 它将识别其两个参数为文件路径，并从那里加载文件。 过程中发生的错误被存储在`err`中。 这段代码使用默认的适配器来加载模型和策略。 当然，你也可以通过使用第三方适配器得到同样的结果。
+
+代码`ok, err := enforcer.Enforce("alice", "data1", "read")`是为了确认访问权限。 如果alice可以通过read操作访问data1，返回值`ok`将是`true`，否则将是`false`。 在这个例子中，`ok`的值是`true`。
+
+## EnforceEx API
+
+有时你可能想知道哪个政策允许这个请求，所以我们准备了函数`EnforceEx()`。 你可以像这样使用它：
+
+```go
+ok, reason, err := enforcer.EnforceEx("amber", "data1", "read")
+fmt.Println(ok, reason) // true [admin data1 read]
+```
+
+函数`EnforceEx()`将在返回值`reason`中返回准确的策略字符串。 在这个例子中，`amber`是`admin`的一个角色，所以策略`p, admin, data1, read`使得这个请求`true`。 这段代码的输出在注释中。
+
+Casbin准备了很多这样的API。 这些API在基本的功能上增加了一些额外的功能。 它们是：
+
+- `ok, err := enforcer.EnforceWithMatcher(matcher, request)`
+
+  与一个匹配器。
+
+- `ok, reason, err := enforcer.EnforceExWithMatcher(matcher, request)`
+
+  `EnforceWithMatcher()`和`EnforceEx()`的组合。
+
+- `boolArray, err := enforcer.BatchEnforce(requests)`
+
+  做一个列表工作(list job)，然后返回一个数组。
+
+这是一个简单的Casbin使用案例。 你可以使用Casbin通过这些API来启动一个授权服务器。 我们将在接下来的段落中向你展示一些其他类型的API。
+
+## 管理 API
+
+### Get API
+
+这些API用于获取策略中的确切对象。 这一次，我们像最后一个例子一样加载了一个 enforcer 并从它中获得一些东西。
+
+请阅读以下代码：
+
+```go
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    fmt.Printf("Error, details: %s\n", err)
+}
+allSubjects := enforcer.GetAllSubjects()
+fmt.Println(allSubjects)
+```
+
+就行上一个例子一样，前四行代码从本地文档中载入了一些必要的信息。 我们将不再在这里谈这一点。
+
+代码`allSubjects := enforcer.GetAllSubjects()` 把策略文档里的所有 subjects 提取出来，并且将它们作为一个数组返回。 然后我们打印这个数组
+
+通常情况下，这段代码的输出会是这样：
+
+```
+[admin alice bob]
+```
+
+您也可以更改函数 `GetAllSubjects()` 到 `GetAllNamedSubjects()`, 以获取当前命名策略中显示的 subjects 列表。
+
+同样地，我们为 `Objects, Actions, Roles` 准备了 `GetAll` 函数 你唯一需要做的是，如果你想访问这些函数，将函数名称中的`Subject`一词改为你想要的。
+
+同时，我们还有更多用于策略获取的API。 它们的调用方法和返回的值，都和上面提到的非常相似。
+
+- `policy = e.GetPolicy()`用于获取策略中的授权规则。
+- `filteredPolicy := e.GetFilteredPolicy(0, "alice")`用于获取策略中的授权的规则，可以自定义“域过滤器”(field filters)。
+- `namedPolicy := e.GetNamedPolicy("p")` 用于获取被命名的策略中所有被授权的规则
+- `filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")`用于获取被命名的策略中所有被授权的规则，可以自定义“域过滤器”(field filters)。
+- `groupingPolicy := e.GetGroupingPolicy()`用于获取策略中所有任务继承规则。
+- `filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")`用于获取策略中所有任务继承规则，可以自定义“域过滤器”(field filters)。
+- `namedGroupingPolicy := e.GetNamedGroupingPolicy("g")`用于获取策略中所有任务继承规则。
+- `namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")`用于获取策略中所有任务继承规则。
+
+### 添加，删除，更新 API
+
+Casbin为策略准备了很多API。 这些API允许您在运行时动态地添加、删除或编辑策略。
+
+此代码向您展示了如何添加、删除和更新您的政策，并告诉您如何确认政策存在：
+
+```go
+// 从文件中加载信息
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+   fmt.Printf("Error, details: %s\n", err)
+}
+
+// 添加一条策略，然后使用 HasPolicy() 来确认
+enforcer.AddPolicy("added_user", "data1", "read")
+hasPolicy := enforcer.HasPolicy("added_user", "data1", "read")
+fmt.Println(hasPolicy) // 若显示为 true，也就是我们成功添加了策略
+
+// 移除一条策略，然后使用 HasPolicy() 来确认
+enforcer.RemovePolicy("alice", "data1", "read")
+hasPolicy = enforcer.HasPolicy("alice", "data1", "read")
+fmt.Println(hasPolicy) // 若显示为 false，也就是我们成功删除了策略
+
+// 更新一条策略，然后使用 HasPolicy() 来确认
+enforcer.UpdatePolicy([]string{"added_user", "data1", "read"}, []string{"added_user", "data1", "write"})
+hasPolicy = enforcer.HasPolicy("added_user", "data1", "read")
+fmt.Println(hasPolicy) // 若显示为 false 原来的策略已失效
+hasPolicy = enforcer.HasPolicy("added_user", "data1", "write")
+fmt.Println(hasPolicy) // 若显示为true，则策略被成功更新
+```
+
+使用这四种API可以编辑策略。 像这些一样，我们为 `FilteredPolicy, NamedPolicy, FilteredNamedPolicy, GroupingPolicy, NamedGroupingPolicy, FilteredGroupingPolicy, FilteredNamedGroupingPolicy`准备了同样种类的API。 要使用它们，您只需要把函数名中的单词 `Policy`替换为上面提到的单词。
+
+此外，如果你将参数更改为数组，你可以批量编辑你的策略。
+
+例如，对于这样的函数：
+
+```go
+enforcer.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
+```
+
+如果我们把`Policy` 改为`Policies`，并编辑参数为：
+
+```go
+enforcer.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
+```
+
+然后我们可以批量编辑这些策略。
+
+同样的操作对`GroupingPolicy、NamedGroupingPolicy`也有用。
+
+### AddEx API
+
+Casbin provides AddEx series APIs to help users add rules in batches.
+
+```go
+AddPoliciesEx(rules [][]string) (bool, error)
+AddNamedPoliciesEx(ptype string, rules [][]string) (bool, error)
+AddGroupingPoliciesEx(rules [][]string) (bool, error)
+AddNamedGroupingPoliciesEx(ptype string, rules [][]string) (bool, error)
+SelfAddPoliciesEx(sec string, ptype string, rules [][]string) (bool, error) 
+```
+The difference between these methods and the methods without the Ex suffix is that if one of the rules already exists, they will continue to check the next rule instead of returning false directly.
+
+For example: Compare `AddPolicies` and `AddPoliciesEx`
+
+You can copy the code below into the test under casbin to run and observe.
+```go
+func TestDemo(t *testing.T) {
+    e, err := NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+    if err != nil {
+        fmt.Printf("Error, details: %s\n", err)
+    }
+    e.ClearPolicy()
+    e.AddPolicy("user1", "data1", "read")
+    fmt.Println(e.GetPolicy())
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+    // policy {"user1", "data1", "read"} now exists
+
+    // Use AddPolicies to add rules in batches
+    ok, _ := e.AddPolicies([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+    fmt.Println(e.GetPolicy())
+    // {"user2", "data2", "read"} failed to add because {"user1", "data1", "read"} already exists
+    // AddPolicies returns false and no other policies are checked, even though they may not exist in the existing ruleset
+    // ok == false
+    fmt.Println(ok)
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}})
+
+    // Use AddPoliciesEx to add rules in batches
+    ok, _ = e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+    fmt.Println(e.GetPolicy())
+    // {"user2", "data2", "read"} is added successfully
+    // because AddPoliciesEx automatically filters the existing {"user1", "data1", "read"}
+    // ok == true
+    fmt.Println(ok)
+    testGetPolicy(t, e, [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+}
+```
+
+## 基于角色的访问控制接口
+
+Casbin为你提供了来API来修改RBAC模型和策略。 如果你熟悉RBAC，你可以很容易地使用这些API：
+
+这里我们只告诉你如何使用Casbin的RBAC APIs，而不会谈论RBAC本身。 您可以从[这里](/docs/rbac)获取详情。
+
+我们使用这段代码来加载模型和政策，就像以前一样。
+
+```go
+enforcer,err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
+if err != nil {
+    fmt.Printf("Error, details: %s\n", err)
+}
+```
+
+然后，使用Enforcer `enforcer` 来访问这些API。
+
+```go
+roles, err := enforcer.GetRolesForUser("amber")
+fmt.Println(roles) // [admin]
+users, err := enforcer.GetUsersForRole("admin")
+fmt.Println(users) // [amber abc]
+```
+
+`GetRolesForUser()`返回一个数组，其中包含所有的角色。 在这个例子中，amber只有一个管理员角色，所以数组`roles`是`[admin]`。 并且相似地，你可以用`GetUsersForRole()`，来获得所有归属于这个角色的用户。 此函数的返回值也是一个数组。
+
+```go
+enforcer.HasRoleForUser("amber", "admin") // true
+```
+
+您可以使用`HasRoleForUser()`来确认用户是否属于该角色。 在这个例子中，amber是管理员的成员，所以这个函数的返回值是`true`.
+
+```go
+fmt.Println(enforcer.Enforce("bob", "data2", "write")) // true
+enforcer.DeletePermission("data2", "write")
+fmt.Println(enforcer.Enforce("bob", "data2", "write")) // false
+```
+
+您可以使用 `DeletePermission()` 来删除权限。
+
+```go
+fmt.Println(enforcer.Enforce("alice", "data1", "read")) // true
+enforcer.DeletePermissionForUser("alice", "data1", "read")
+fmt.Println(enforcer.Enforce("alice", "data1", "read")) // false
+```
+
+然后使用 `DeletePermissionForUser()` 来删除用户的权限。
+
+Casbin有很多这样的API。 它们的调用方式和返回值，都与上文提到的API有同样的样式。 你可以在[随后的文档](/docs/rbac-api)中找到这些API。

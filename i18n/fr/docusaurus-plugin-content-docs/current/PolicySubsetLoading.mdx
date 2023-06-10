@@ -1,0 +1,39 @@
+---
+id: policy-subset-loading
+title: Chargement du sous-ensemble de la politique
+description: Loading filtered policy
+keywords:
+  - filtered policy
+  - policy subset
+  - performance optimization
+authors:
+  - hsluoyz
+---
+
+Certains adaptateurs prennent en charge la gestion des politiques filtrées. Cela signifie que la politique chargée par Casbin est un sous-ensemble de la politique de stockage basée sur un filtre donné. Cela permet une application efficace des politiques dans de grands environnements multilocataires lors de l'analyse de l'ensemble de la politique devient un goulot d'étranglement de performance.
+
+Pour utiliser des règles filtrées avec un adaptateur pris en charge, appelez simplement la méthode `LoadFilteredPolicy`. Le format valide pour le paramètre de filtre dépend de l'adaptateur utilisé. Pour éviter la perte accidentelle de données, la méthode `SavePolicy` est désactivée lorsqu'une politique filtrée est chargée.
+
+Par exemple, le code snippet suivant utilise l'adaptateur de fichier filtré intégré et le modèle RBAC avec des domaines. Dans ce cas, le filtre limite la règle à un seul domaine. Toutes les lignes de régulation pour les domaines autres que `"domain1"` sont omises de la politique chargée :
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+// The loaded policy now only contains the entries pertaining to "domain1".
+```
+
+Il y a une autre fonctionnalité de chargement de sous-ensemble de méthode : `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` est similaire à LoadFilteredPolicy, or il n'efface pas la politique précédente chargée, n'ajoutez que cela.

@@ -285,11 +285,9 @@ var _hmt = _hmt || [];
           editUrl: ({locale, docPath}) => {
             if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
+            } else {
+              return `https://github.com/casbin/casbin-website-v2/edit/master/i18n/${locale}/docusaurus-plugin-content-docs/current/${docPath}`;
             }
-            if (locale === "zh") {
-              return "https://crowdin.com/project/casbin-website/zh-CN";
-            }
-            return `https://crowdin.com/project/casbin-website/${locale}`;
           },
         },
         blog: {
@@ -297,11 +295,9 @@ var _hmt = _hmt || [];
           editUrl: ({locale, blogDirPath, blogPath}) => {
             if (locale === "en") {
               return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
+            } else {
+              return `https://github.com/casbin/casbin-website-v2/edit/master/i18n/${locale}/docusaurus-plugin-content-blog/${blogPath}`;
             }
-            if (locale === "zh") {
-              return "https://crowdin.com/project/casbin-website/zh-CN";
-            }
-            return `https://crowdin.com/project/casbin-website/${locale}`;
           },
         },
         theme: {
