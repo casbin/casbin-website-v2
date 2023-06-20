@@ -95,3 +95,20 @@ The benchmarking result of ``luajit bench.lua`` is as follows (op = an ``enforce
 </TabItem>
 </Tabs>
 ```
+
+# BenchMark Monitoring
+
+In the embedded web page below, you can see the performance changes of Casbin with each update.
+
+You can also directly browse it at [casbin benchmark-monitoring](https://v1.casbin.org/casbin/benchmark-monitoring).
+
+```mdx-code-block
+import styles from './styles.module.css';
+import BenchMarkPreview from "@site/src/components/BenchMarkPreview";
+```
+
+```mdx-code-block
+<div className={styles.gradientborder}>
+  <BenchMarkPreview src="https://v1.casbin.org/casbin/benchmark-monitoring" />
+</div>
+```
