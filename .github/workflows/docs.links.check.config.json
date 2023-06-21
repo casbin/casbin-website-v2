@@ -1,0 +1,13 @@
+{
+    "ignorePatterns": [
+        {
+            "pattern": "^[^h]"
+        },
+        {
+            "pattern": "^https://codeigniter.com/"
+        },
+        {
+            "pattern": "^https://www.thinkphp.cn/"
+        }
+    ]
+}
