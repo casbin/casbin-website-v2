@@ -8,6 +8,9 @@
         },
         {
             "pattern": "^https://www.thinkphp.cn/"
+        },
+        {
+            "pattern": "^http://www.jos.org.cn/1000-9825/5624.htm"
         }
     ]
 }
