@@ -25,6 +25,7 @@ module.exports = {
         "get-started",
         "how-it-works",
         "tutorials",
+        "understanding-casbin-detail",
         {
           type: "link",
           label: "PDF Download",
