@@ -6,9 +6,20 @@ keywords: [RBAC, API]
 authors: [nodece]
 ---
 
-
-
 A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
+
+Example:
+
+```csv
+p, admin, data1, read
+p, admin, data1, write
+p, staff, data2, read
+p, staff, data2, write
+g, amber, admin
+g, admin, user
+g, abc, staff
+g, abc, admin
+```
 
 ## Reference
 
@@ -29,7 +40,10 @@ e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 ```
 
 ```typescript
-const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
+const e = await newEnforcer(
+  "examples/rbac_model.conf",
+  "examples/rbac_policy.csv"
+);
 ```
 
 ```mdx-code-block
@@ -94,7 +108,7 @@ For example:
 ```
 
 ```go
-res := e.GetRolesForUser("alice")
+res := e.GetRolesForUser("abc") // [admin staff] , nil
 ```
 
 ```mdx-code-block
@@ -103,7 +117,7 @@ res := e.GetRolesForUser("alice")
 ```
 
 ```typescript
-const res = await e.getRolesForUser('alice')
+const res = await e.getRolesForUser("alice");
 ```
 
 ```mdx-code-block
@@ -168,7 +182,7 @@ For example:
 ```
 
 ```go
-res := e.GetUsersForRole("data1_admin")
+res := e.GetUsersForRole("admin") // [amber abc] nil
 ```
 
 ```mdx-code-block
@@ -177,7 +191,7 @@ res := e.GetUsersForRole("data1_admin")
 ```
 
 ```typescript
-const res = await e.getUsersForRole('data1_admin')
+const res = await e.getUsersForRole("data1_admin");
 ```
 
 ```mdx-code-block
@@ -242,7 +256,7 @@ For example:
 ```
 
 ```go
-res := e.HasRoleForUser("alice", "data1_admin")
+res := e.HasRoleForUser("amber", "staff")  // false, nil
 ```
 
 ```mdx-code-block
@@ -251,7 +265,7 @@ res := e.HasRoleForUser("alice", "data1_admin")
 ```
 
 ```typescript
-const res = await e.hasRoleForUser('alice', 'data1_admin')
+const res = await e.hasRoleForUser("alice", "data1_admin");
 ```
 
 ```mdx-code-block
@@ -317,7 +331,7 @@ For example:
 ```
 
 ```go
-e.AddRoleForUser("alice", "data2_admin")
+e.AddRoleForUser("amber", "staff") // true nil
 ```
 
 ```mdx-code-block
@@ -326,7 +340,7 @@ e.AddRoleForUser("alice", "data2_admin")
 ```
 
 ```typescript
-await e.addRoleForUser('alice', 'data2_admin')
+await e.addRoleForUser("alice", "data2_admin");
 ```
 
 ```mdx-code-block
@@ -381,7 +395,6 @@ boolean added = e.addRoleForUser("alice", "data2_admin");
 </Tabs>
 ```
 
-
 ### `AddRolesForUser()`
 
 AddRolesForUser adds multiple roles for a user.
@@ -395,8 +408,8 @@ For example:
 ```
 
 ```go
-var roles = []string{"data2_admin", "data1_admin"}
-e.AddRolesForUser("alice", roles)
+var roles = []string{"admin", "staff"}
+e.AddRolesForUser("alice", roles) // true nil
 ```
 
 ```mdx-code-block
@@ -424,7 +437,6 @@ let all_added = e.add_roles_for_user("alice", roles, None).await?; // No domain
 </Tabs>
 ```
 
-
 ### `DeleteRoleForUser()`
 
 DeleteRoleForUser deletes a role for a user.
@@ -438,7 +450,7 @@ For example:
 ```
 
 ```go
-e.DeleteRoleForUser("alice", "data1_admin")
+e.DeleteRoleForUser("abc", "staff") // true nil
 ```
 
 ```mdx-code-block
@@ -447,7 +459,7 @@ e.DeleteRoleForUser("alice", "data1_admin")
 ```
 
 ```typescript
-await e.deleteRoleForUser('alice', 'data1_admin')
+await e.deleteRoleForUser("alice", "data1_admin");
 ```
 
 ```mdx-code-block
@@ -515,7 +527,7 @@ For example:
 ```
 
 ```go
-e.DeleteRolesForUser("alice")
+e.DeleteRolesForUser("abc") // true nil
 ```
 
 ```mdx-code-block
@@ -524,7 +536,7 @@ e.DeleteRolesForUser("alice")
 ```
 
 ```typescript
-await e.deleteRolesForUser('alice')
+await e.deleteRolesForUser("alice");
 ```
 
 ```mdx-code-block
@@ -592,7 +604,7 @@ For example:
 ```
 
 ```
-e.DeleteUser("alice")
+e.DeleteUser("amber") // true, nil
 ```
 
 ```mdx-code-block
@@ -601,7 +613,7 @@ e.DeleteUser("alice")
 ```
 
 ```typescript
-await e.deleteUser('alice')
+await e.deleteUser("alice");
 ```
 
 ```mdx-code-block
@@ -668,7 +680,7 @@ For example:
 ```
 
 ```go
-e.DeleteRole("data2_admin")
+e.DeleteRole("staff") // true, nil
 ```
 
 ```mdx-code-block
@@ -677,7 +689,7 @@ e.DeleteRole("data2_admin")
 ```
 
 ```typescript
-await e.deleteRole("data2_admin")
+await e.deleteRole("data2_admin");
 ```
 
 ```mdx-code-block
@@ -745,7 +757,7 @@ For example:
 ```
 
 ```go
-e.DeletePermission("read")
+e.DeletePermission("read") // true, nil
 ```
 
 ```mdx-code-block
@@ -754,7 +766,7 @@ e.DeletePermission("read")
 ```
 
 ```typescript
-await e.deletePermission('read')
+await e.deletePermission("read");
 ```
 
 ```mdx-code-block
@@ -809,7 +821,6 @@ boolean deleted = e.deletePermission("read");
 </Tabs>
 ```
 
-
 ### `AddPermissionForUser()`
 
 AddPermissionForUser adds a permission for a user or role.
@@ -823,7 +834,7 @@ For example:
 ```
 
 ```go
-e.AddPermissionForUser("bob", "read")
+e.AddPermissionForUser("employee", "read") // true,nil
 ```
 
 ```mdx-code-block
@@ -832,7 +843,7 @@ e.AddPermissionForUser("bob", "read")
 ```
 
 ```typescript
-await e.addPermissionForUser('bob', 'read')
+await e.addPermissionForUser("bob", "read");
 ```
 
 ```mdx-code-block
@@ -902,7 +913,7 @@ For example:
 ```go
 var permissions = [][]string{{"data1", "read"},{"data2","write"}}
 for i := 0; i < len(permissions); i++ {
-    e.AddPermissionsForUser("alice", permissions[i])
+    e.AddPermissionsForUser("amber", permissions[i]) // true,nil
 }
 ```
 
@@ -913,8 +924,8 @@ for i := 0; i < len(permissions); i++ {
 
 ```typescript
 const permissions = [
-    ["data1", "read"],
-    ["data2", "write"],
+  ["data1", "read"],
+  ["data2", "write"],
 ];
 
 permissions.map((permission) => e.addPermissionForUser("bob", ...permission));
@@ -939,7 +950,6 @@ let all_added = e.add_permissions_for_user("bob", permissions).await?;
 </Tabs>
 ```
 
-
 ### `DeletePermissionForUser()`
 
 DeletePermissionForUser deletes a permission for a user or role.
@@ -953,7 +963,7 @@ For example:
 ```
 
 ```go
-e.DeletePermissionForUser("bob", "read")
+e.DeletePermissionForUser("bob", "read") // false,nil
 ```
 
 ```mdx-code-block
@@ -962,7 +972,7 @@ e.DeletePermissionForUser("bob", "read")
 ```
 
 ```typescript
-await e.deletePermissionForUser("bob", "read")
+await e.deletePermissionForUser("bob", "read");
 ```
 
 ```mdx-code-block
@@ -1017,7 +1027,6 @@ boolean deleted = e.deletePermissionForUser("bob", "read");
 </Tabs>
 ```
 
-
 ### `DeletePermissionsForUser()`
 
 DeletePermissionsForUser deletes permissions for a user or role.
@@ -1031,7 +1040,7 @@ For example:
 ```
 
 ```go
-e.DeletePermissionsForUser("bob")
+e.DeletePermissionsForUser("bob") // false,nil (User does not Exist)
 ```
 
 ```mdx-code-block
@@ -1040,7 +1049,7 @@ e.DeletePermissionsForUser("bob")
 ```
 
 ```typescript
-await e.deletePermissionsForUser('bob')
+await e.deletePermissionsForUser("bob");
 ```
 
 ```mdx-code-block
@@ -1107,7 +1116,7 @@ For example:
 ```
 
 ```go
-e.GetPermissionsForUser("bob")
+e.GetPermissionsForUser("admin") //[[admin data1 read] [admin data1 write]] , nil
 ```
 
 ```mdx-code-block
@@ -1116,7 +1125,7 @@ e.GetPermissionsForUser("bob")
 ```
 
 ```typescript
-await e.getPermissionsForUser('bob')
+await e.getPermissionsForUser("bob");
 ```
 
 ```mdx-code-block
@@ -1172,7 +1181,7 @@ For example:
 ```
 
 ```go
-e.HasPermissionForUser("alice", []string{"read"})
+e.HasPermissionForUser("admin", []string{"read"}) // true
 ```
 
 ```mdx-code-block
@@ -1181,7 +1190,7 @@ e.HasPermissionForUser("alice", []string{"read"})
 ```
 
 ```typescript
-await e.hasPermissionForUser('alice', 'read')
+await e.hasPermissionForUser("alice", "read");
 ```
 
 ```mdx-code-block
@@ -1241,11 +1250,10 @@ Compared to GetRolesForUser(), this function retrieves indirect roles besides di
 
 For example:  
 g, alice, role:admin  
-g, role:admin, role:user  
+g, role:admin, role:user
 
 GetRolesForUser("alice") can only get: ["role:admin"].  
 But GetImplicitRolesForUser("alice") will get: ["role:admin", "role:user"].
-
 
 For example:
 
@@ -1255,7 +1263,7 @@ For example:
 ```
 
 ```go
-e.GetImplicitRolesForUser("alice")
+e.GetImplicitRolesForUser("amber")
 ```
 
 ```mdx-code-block
@@ -1264,7 +1272,7 @@ e.GetImplicitRolesForUser("alice")
 ```
 
 ```typescript
-await e.getImplicitRolesForUser("alice")
+await e.getImplicitRolesForUser("alice");
 ```
 
 ```mdx-code-block
@@ -1323,12 +1331,11 @@ GetImplicitUsersForRole gets all users inheriting the role.
 Compared to GetUsersForRole(), this function retrieves indirect users.
 
 For example:  
-g, alice, role:admin  
-g, role:admin, role:user  
+g, amber, admin  
+g, admin, staff
 
-GetUsersForRole("role:user") can only get: ["role:admin"].  
-But GetImplicitUesrsForRole("role:user") will get: ["role:admin", "alice"].
-
+GetUsersForRole("staff") can only get: ["admin"].  
+But GetImplicitUsersForRole("staff") will get: ["admin", "amber"].
 
 For example:
 
@@ -1338,7 +1345,7 @@ For example:
 ```
 
 ```go
-users := e.GetImplicitUsersForRole("role:user")
+users := e.GetImplicitUsersForRole("user") // ["abc","amber","admin"]
 ```
 
 ```mdx-code-block
@@ -1367,12 +1374,12 @@ List<String> users = e.getImplicitUsersForRole("role:user");
 ### `GetImplicitPermissionsForUser()`
 
 GetImplicitPermissionsForUser gets implicit permissions for a user or role.  
-Compared to GetPermissionsForUser(), this function retrieves permissions for inherited roles.  
+Compared to GetPermissionsForUser(), this function retrieves permissions for inherited roles.
 
 For example:  
 p, admin, data1, read  
 p, alice, data2, read  
-g, alice, admin  
+g, alice, admin
 
 GetPermissionsForUser("alice") can only get: [["alice", "data2", "read"]].  
 But GetImplicitPermissionsForUser("alice") will get: [["admin", "data1", "read"], ["alice", "data2", "read"]].
@@ -1385,7 +1392,7 @@ For example:
 ```
 
 ```go
-e.GetImplicitPermissionsForUser("alice")
+e.GetImplicitPermissionsForUser("alice") //[[admin data1 read] [admin data1 write] [staff data2 read] [staff data2 write]] <nil>
 ```
 
 ```mdx-code-block
@@ -1393,7 +1400,7 @@ e.GetImplicitPermissionsForUser("alice")
 <TabItem value="Node.js" label="Node.js">
 ```
 
-```text
+```typescript
 await e.getImplicitPermissionsForUser("alice")
 ```
 
@@ -1487,6 +1494,7 @@ e.get_named_implicit_permissions_for_user("p2", "alice")
 ```
 
 ### `GetDomainsForUser()`
+
 GetDomainsForUser gets all domains which a user has.
 
 For example:
@@ -1532,14 +1540,13 @@ g, alice, data2_admin
 GetImplicitResourcesForUser("alice") will return
 `[[alice data1 read] [alice data2 read] [alice data2 write]]`
 
-
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
 ```go
-resources, err := e.GetImplicitResourcesForUser("alice")
+resources, err := e.GetImplicitResourcesForUser("alice") // [[amber data1 read] [amber data1 write] [amber data2 read] [amber data2 write]] <nil>
 ```
 
 ```mdx-code-block
