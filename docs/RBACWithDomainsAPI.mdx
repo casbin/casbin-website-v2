@@ -8,7 +8,7 @@ authors: [hsluoyz]
 
 
 
-A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code. 
+A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
 
 ## Reference
 
@@ -389,6 +389,7 @@ p, admin, domain2, data2, write
 g, alice, admin, domain1
 g, bob, admin, domain2
 ```
+
 GetImplicitUsersForResourceByDomain("data1", "domain1") will return `[["alice", "domain1", "data1", "read"],["alice", "domain1", "data1", "write"]], nil`
 
 ```mdx-code-block

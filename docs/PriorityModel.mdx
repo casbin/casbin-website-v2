@@ -6,13 +6,14 @@ keywords: [priority model]
 authors: [hsluoyz]
 ---
 
-Casbin support load policies with priority. 
+Casbin support load policies with priority.
 
 ## Load Policy with Priority Implicitly
 
 It's quite simple, the order determines the priority, policy appeared earlier has higher priority.
 
 model.conf:
+
 ```ini
 [policy_effect]
 e = priority(p.eft) || deny
@@ -29,15 +30,17 @@ The smaller priority value will have a higher priority. If there's a non-numeric
 The priority token name in policy definition is  "priority" conventionally. A customized one requires invoking `e.SetFieldIndex()` and reload policies (full example on [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044) ).
 
 model.conf:
+
 ```ini
 [policy_definition]
 p = customized_priority, sub, obj, act, eft
 ```
 
 Golang code example:
+
 ```go
 e, _ := NewEnforcer("./example/priority_model_explicit_customized.conf",
-	                "./example/priority_policy_explicit_customized.csv")
+                    "./example/priority_policy_explicit_customized.csv")
 // Due to the customized priority token, the enforcer failed to handle the priority.
 ok, err := e.Enforce("bob", "data2", "read") // the result will be `true, nil`
 // set PriorityIndex and reload
@@ -54,6 +57,7 @@ ok, err := e.Enforce("bob", "data2", "read") // the result will be `false, nil`
 Now, explicit priority only support `AddPolicy` & `AddPolicies`, if `UpdatePolicy` been called, you shouldn't change the priority attribute.
 
 model.conf:
+
 ```ini
 [request_definition]
 r = sub, obj, act
@@ -72,6 +76,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
 policy.csv
+
 ```csv
 p, 10, data1_deny_group, data1, read, deny
 p, 10, data1_deny_group, data1, write, deny
@@ -88,16 +93,19 @@ g, alice, data1_deny_group
 ```
 
 request:
-```
+
+```csv
 alice, data1, write --> true // for `p, 1, alice, data1, write, allow` has highest priority
 bob, data2, read --> false
 bob, data2, write --> true // for bob has role of `data2_allow_group` which has right to write data2, and there's no deny policy with higher priority 
 ```
+
 ## Load Policy with Priority Based on Role and User Hierarchy
 
 The inherited structure of roles and users can only be multiple trees, not graphs. If one user has multiple roles,you have to make sure the user has the same level in different trees. If two roles have the same level,the policy(the role corresponding) appeared earlier has higher priority. more details also see [casbin#833](https://github.com/casbin/casbin/pull/833)、[casbin#831](https://github.com/casbin/casbin/issues/831)
 
 model.conf:
+
 ```ini
 [request_definition]
 r = sub, obj, act
@@ -116,6 +124,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
 policy.csv
+
 ```csv
 p, root, data1, read, deny
 p, admin, data1, read, deny
@@ -136,13 +145,15 @@ g, alice, subscriber
 ```
 
 Request:
-```
+
+```csv
 jane, data1, read --> true // jane is at the bottom,so priority is higher than editor, admin and root
 alice, data1, read --> true
 ```
 
- The role hierarchy like this: 
-```
+ The role hierarchy like this:
+
+```text
 role: root
  └─ role: admin
     ├─ role editor
@@ -152,9 +163,9 @@ role: root
        └─ user: alice
 ```
 
-The priority automatically like this: 
+The priority automatically like this:
 
-```
+```text
 role: root                 # auto priority: 30
  └─ role: admin            # auto priority: 20
      ├─ role: editor       # auto priority: 10

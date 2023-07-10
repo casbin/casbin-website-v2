@@ -84,92 +84,91 @@ Your logger should implement the [Logger](https://github.com/casbin/casbin/blob/
 | LogRole()    | mandatory | Log info related to role.                 |
 | LogPolicy()  | mandatory | Log info related to policy.               |
 
-
 You can pass your custom `logger` to `Enforcer.SetLogger()`.
 
 Here is an example about how to customize a logger for Golang:
 
 ```go
 import (
-	"fmt"
-	"log"
-	"strings"
+    "fmt"
+    "log"
+    "strings"
 )
 
 // DefaultLogger is the implementation for a Logger using golang log.
 type DefaultLogger struct {
-	enabled bool
+    enabled bool
 }
 
 func (l *DefaultLogger) EnableLog(enable bool) {
-	l.enabled = enable
+    l.enabled = enable
 }
 
 func (l *DefaultLogger) IsEnabled() bool {
-	return l.enabled
+    return l.enabled
 }
 
 func (l *DefaultLogger) LogModel(model [][]string) {
-	if !l.enabled {
-		return
-	}
-	var str strings.Builder
-	str.WriteString("Model: ")
-	for _, v := range model {
-		str.WriteString(fmt.Sprintf("%v\n", v))
-	}
+    if !l.enabled {
+        return
+    }
+    var str strings.Builder
+    str.WriteString("Model: ")
+    for _, v := range model {
+        str.WriteString(fmt.Sprintf("%v\n", v))
+    }
 
-	log.Println(str.String())
+    log.Println(str.String())
 }
 
 func (l *DefaultLogger) LogEnforce(matcher string, request []interface{}, result bool, explains [][]string) {
-	if !l.enabled {
-		return
-	}
+    if !l.enabled {
+        return
+    }
 
-	var reqStr strings.Builder
-	reqStr.WriteString("Request: ")
-	for i, rval := range request {
-		if i != len(request)-1 {
-			reqStr.WriteString(fmt.Sprintf("%v, ", rval))
-		} else {
-			reqStr.WriteString(fmt.Sprintf("%v", rval))
-		}
-	}
-	reqStr.WriteString(fmt.Sprintf(" ---> %t\n", result))
+    var reqStr strings.Builder
+    reqStr.WriteString("Request: ")
+    for i, rval := range request {
+        if i != len(request)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", rval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v", rval))
+        }
+    }
+    reqStr.WriteString(fmt.Sprintf(" ---> %t\n", result))
 
-	reqStr.WriteString("Hit Policy: ")
-	for i, pval := range explains {
-		if i != len(explains)-1 {
-			reqStr.WriteString(fmt.Sprintf("%v, ", pval))
-		} else {
-			reqStr.WriteString(fmt.Sprintf("%v \n", pval))
-		}
-	}
+    reqStr.WriteString("Hit Policy: ")
+    for i, pval := range explains {
+        if i != len(explains)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", pval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v \n", pval))
+        }
+    }
 
-	log.Println(reqStr.String())
+    log.Println(reqStr.String())
 }
 
 func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
-	if !l.enabled {
-		return
-	}
+    if !l.enabled {
+        return
+    }
 
-	var str strings.Builder
-	str.WriteString("Policy: ")
-	for k, v := range policy {
-		str.WriteString(fmt.Sprintf("%s : %v\n", k, v))
-	}
+    var str strings.Builder
+    str.WriteString("Policy: ")
+    for k, v := range policy {
+        str.WriteString(fmt.Sprintf("%s : %v\n", k, v))
+    }
 
-	log.Println(str.String())
+    log.Println(str.String())
 }
 
 func (l *DefaultLogger) LogRole(roles []string) {
-	if !l.enabled {
-		return
-	}
+    if !l.enabled {
+        return
+    }
 
-	log.Println("Roles: ", roles)
+    log.Println("Roles: ", roles)
 }
 
 ```

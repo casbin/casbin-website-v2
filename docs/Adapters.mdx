@@ -323,7 +323,6 @@ let e = Enforcer::new("examples/basic_model.conf", a).await?;
 
 Below shows how to initialize an enforcer from MySQL database. it connects to a MySQL DB on 127.0.0.1:3306 with root and blank password.
 
-
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
@@ -418,7 +417,9 @@ If you want to convert adapter from ``A`` to ``B``, you can do like this:
    ```go
    e, _ := NewEnforcer(m, A)
    ```
+
    or
+
    ```go
    e.SetAdapter(A)
    e.LoadPolicy()
@@ -426,13 +427,13 @@ If you want to convert adapter from ``A`` to ``B``, you can do like this:
 
 2. convert your adapter from A to B
 
-   ```
+   ```go
    e.SetAdapter(B)
    ```
 
 3. Save policy from memory to B
 
-   ```
+   ```go
    e.LoadPolicy()
    ```
 
@@ -495,7 +496,7 @@ e.AddPolicy(...)
 e.RemovePolicy(...)
 ```
 
-For more examples, please see: https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go
+For more examples, please see: <https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go>
 
 ### How to write an adapter
 
@@ -520,17 +521,17 @@ If an adapter doesn't support ``Auto-Save``, it should provide an empty implemen
 ```go
 // AddPolicy adds a policy rule to the storage.
 func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
-	return errors.New("not implemented")
+    return errors.New("not implemented")
 }
 
 // RemovePolicy removes a policy rule from the storage.
 func (a *Adapter) RemovePolicy(sec string, ptype string, rule []string) error {
-	return errors.New("not implemented")
+    return errors.New("not implemented")
 }
 
 // RemoveFilteredPolicy removes policy rules that match the filter from the storage.
 func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
-	return errors.New("not implemented")
+    return errors.New("not implemented")
 }
 ```
 
@@ -545,6 +546,7 @@ There're details about how to write an adapter.
 * Table definition should be `(id int primary key, ptype varchar, v0 varchar, v1 varchar, v2 varchar, v3 varchar, v4 varchar, v5 varchar)`.
 * The unique key index should be built on columns `ptype,v0,v1,v2,v3,v4,v5`.
 * `LoadFilteredPolicy` requires a `filter` as parameter. The filter should be something like this.
+
     ```json
     {
         "p":[ [ "alice" ], [ "bob" ] ],
@@ -555,4 +557,4 @@ There're details about how to write an adapter.
 
 ### Who is responsible to create the DB?
 
-As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: https://github.com/casbin/xorm-adapter
+As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: <https://github.com/casbin/xorm-adapter>

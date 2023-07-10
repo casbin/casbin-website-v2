@@ -18,11 +18,11 @@ g = _, _
 g2 = _, _
 ```
 
-The above role definition shows that ``g`` is a RBAC system, and ``g2`` is another RBAC system. ``_, _`` means there are two parties inside an inheritance relation. As a common case, you usually use ``g`` alone if you only need roles on users.  You can also use ``g`` and ``g2`` when you need roles (or groups) on both users and resources. Please see the [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) and [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) for examples.
+The above role definition shows that ``g`` is a RBAC system, and ``g2`` is another RBAC system. ``_,_`` means there are two parties inside an inheritance relation. As a common case, you usually use ``g`` alone if you only need roles on users.  You can also use ``g`` and ``g2`` when you need roles (or groups) on both users and resources. Please see the [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) and [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) for examples.
 
 Casbin stores the actual user-role mapping (or resource-role mapping if you are using roles on resources) in the policy, for example:
 
-```
+```csv
 p, data2_admin, data2, read
 g, alice, data2_admin
 ```
@@ -51,6 +51,7 @@ It means ``sub`` in the request should have the role ``sub`` in the policy.
 
 Conventionally subject token name in policy definition is `sub` and placed in the beginning. Now Golang Casbin supports customized token name & place.
 If the subject token name is `sub`, the subject token can be placed at an arbitrary place and no extra action needs.  If the subject token name is not `sub` , `e.SetFieldIndex()` for `constant.SubjectIndex` should be called after the enforcer is initialized regardless of its position.
+
 ```ini
 # `subject` here for sub
 [policy_definition]
@@ -74,12 +75,12 @@ Here is a concept called hierarchy level. So the hierarchy level for this exampl
 // NewRoleManager is the constructor for creating an instance of the
 // default RoleManager implementation.
 func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
-	rm := RoleManager{}
-	rm.allRoles = &sync.Map{}
-	rm.maxHierarchyLevel = maxHierarchyLevel
-	rm.hasPattern = false
+    rm := RoleManager{}
+    rm.allRoles = &sync.Map{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm.hasPattern = false
 
-	return &rm
+    return &rm
 }
 ```
 
@@ -100,4 +101,3 @@ See [RBAC with Pattern](/docs/rbac-with-pattern)
 ## Role manager
 
 See [Role Managers](/docs/role-managers) section for details.
-

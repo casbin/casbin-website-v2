@@ -11,6 +11,7 @@ In Casbin, an access control model is abstracted into a CONF file based on the *
 The PERM model is composed of four foundations (Policy, Effect, Request, Matchers) describing the relationship between resources and users.
 
 ### Request
+
 Define the request parameters. A basic request is a tuple object, requiring at least a subject (accessed entity), object (accessed resource) and action (access method)
 
 For instance, a request definition may look like this:
@@ -19,6 +20,7 @@ For instance, a request definition may look like this:
 It actually defines the parameter name and order which we should provide for access control matching function.
 
 ### Policy
+
 Define the model of the access strategy. In fact, it defines the name and order of the fields in the Policy rule document.
 
 For instance:
@@ -27,12 +29,14 @@ For instance:
 Note: If eft (policy result) is not defined, then the result field in the policy file will not be read, and the matching policy result will be allowed by default.
 
 ### Matcher
+
 Matching rules of Request and Policy.
 
 For example: `m = r.sub == p.sub && r.act == p.act && r.obj == p.obj`
 This simple and common matching rule means that if the requested parameters (entities, resources, and methods) are equal, that is, if they can be found in the policy, then the policy result (`p.eft`) is returned. The result of the strategy will be saved in `p.eft`.
 
 ### Effect
+
 It can be understood as a model in which a logical combination judgment is performed again on the matching results of Matchers.
 
 For example: `e = some(where(p.eft == allow))`
@@ -66,7 +70,7 @@ m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 
 An example policy for ACL model is like:
 
-```
+```csv
 p, alice, data1, read
 p, bob, data2, write
 ```
@@ -96,4 +100,3 @@ m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
 But you **SHOULD** make sure that the length of the array is **MORE** than **1**, otherwise there will cause it to panic.
 
 For more operators, you may take a look at [govaluate](https://github.com/Knetic/govaluate)
-

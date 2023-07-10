@@ -6,12 +6,10 @@ keywords: [RBAC ACL]
 authors: [aravindarc]
 ---
 
-# Understanding how Casbin Works
-
 In this post I will explain RBAC design and implementation using the [Casbin](https://casbin.org/) library. For a SaaS platform that deals with multiple Resource
 Hierarchies, and roles that inherit permissions from higher levels Casbin is a performant alternative to consider.
 
-## What is RBAC?
+## RBAC Introduction
 
 RBAC is a method of restricting access to resources based on the Roles that an individual holds. Let's look at Azure's
 RBAC system in the next section to better understand how Hierarchical RBAC works, and then we can try to implement a system
@@ -89,7 +87,7 @@ alice, read, data1
 
 Result will be
 
-```
+```text
 true
 ```
 
@@ -153,7 +151,7 @@ bob, write, data1
 
 Result will be
 
-```
+```text
 true
 false
 true
@@ -168,7 +166,7 @@ false
 The **g - Role to action mapping** table has a Graph mapping the role to action mapping. This Graph can be coded as a list of
 edges, as shown in the policy which is a common way of representing a Graph
 
-```
+```csv
 g, reader, read
 g, owner, read
 g, owner, write
@@ -251,7 +249,7 @@ alice, rg-read, rg1
 
 Result will be
 
-```
+```text
 true
 ```
 
@@ -262,8 +260,7 @@ true
 The **g - Role to (Action, Role) Mapping** table has a Graph mapping the role to action, role mapping. This Graph can be coded as a list of
 edges, as shown in the policy which is a common way of representing a Graph
 
-```
-
+```csv
 // subscription role to subscription action mapping
 g, sub-reader, sub-read
 g, sub-owner, sub-read
@@ -281,7 +278,7 @@ g, sub-owner, rg-owner
 
 The **g2 - Sub to RG Mapping** table has a Graph mapping subscription to resourceGroup.
 
-```
+```csv
 // subscription resource to resourceGroup resource mapping
 g2, sub1, rg1
 g2, sub2, rg2
