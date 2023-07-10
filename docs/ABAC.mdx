@@ -32,8 +32,8 @@ Here is a definition for the ``r.obj`` struct or class:
 
 ```go
 type testResource struct {
-	Name  string
-	Owner string
+    Name  string
+    Owner string
 }
 ```
 
@@ -62,7 +62,7 @@ If you need to use comma in policy which conflicts with csv's separator and we n
 
 :::
 
-## Scaling the model for complex and large number of ABAC rules.
+## Scaling the model for complex and large number of ABAC rules
 
 The above instance of ABAC implementation is at its core very simple, but oftentimes the authorization system needs a very complex and large number of ABAC rules. To fit this necessity the above implementation will increase the verbosity of the model to a large extent. So, it’s wise to add the rules in the policy instead of in the model. This is done by introducing a ``eval()`` functional construct. Below is the example instance to manage such ABAC models.
 
@@ -83,7 +83,7 @@ m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
 ```
 
 Here, ``p.sub_rule`` is of type struct or class(user-defined type) which consists of necessary attributes to be used in the policy.
- 
+
 This is the policy that is used against the model for ``Enforcement``. Now, you can use the object instance which is passed to ``eval()`` as a parameter to define certain ABAC constraints.
 
 ```csv

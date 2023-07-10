@@ -769,7 +769,7 @@ For example:
 <TabItem value="Go" label="Go" default>
 ```
 
-```
+```go
 allRoles = e.GetAllRoles()
 ```
 
@@ -980,7 +980,6 @@ List<List<String>> policy = e.getPolicy();
 </Tabs>
 ```
 
-
 ### `GetFilteredPolicy()`
 
 GetFilteredPolicy gets all the authorization rules in the policy, field filters can be specified.
@@ -1128,7 +1127,6 @@ List<List<String>> namedPolicy = e.getNamedPolicy("p");
 </TabItem>
 </Tabs>
 ```
-
 
 ### `GetFilteredNamedPolicy()`
 
@@ -1743,10 +1741,10 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"jack", "data4", "read"},
-	[]string {"katy", "data4", "write"},
-	[]string {"leyo", "data4", "read"},
-	[]string {"ham", "data4", "write"},
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
 }
 
 areRulesAdded := e.AddPolicies(rules)
@@ -1790,10 +1788,10 @@ are_rules_added = e.add_policies(rules)
 
 ```rust
 let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
 ];
 
 let are_rules_added = e.add_policies(rules).await?
@@ -1806,10 +1804,10 @@ let are_rules_added = e.add_policies(rules).await?
 
 ```java
 String[][] rules = {
-	{"jack", "data4", "read"},
-	{"katy", "data4", "write"},
-	{"leyo", "data4", "read"},
-	{"ham", "data4", "write"},
+    {"jack", "data4", "read"},
+    {"katy", "data4", "write"},
+    {"leyo", "data4", "read"},
+    {"ham", "data4", "write"},
 };
 
 boolean areRulesAdded = e.addPolicies(rules);
@@ -1937,10 +1935,10 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"jack", "data4", "read"},
-	[]string {"katy", "data4", "write"},
-	[]string {"leyo", "data4", "read"},
-	[]string {"ham", "data4", "write"},
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
 }
 
 areRulesAdded := e.AddNamedPolicies("p", rules)
@@ -1984,10 +1982,10 @@ are_rules_added = e.add_named_policies("p", rules)
 
 ```rust
 let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
 ];
 
 let are_rules_added := e.add_named_policies("p", rules).await?;
@@ -2000,10 +1998,10 @@ let are_rules_added := e.add_named_policies("p", rules).await?;
 
 ```java
 List<List<String>> rules = Arrays.asList(
-	Arrays.asList("jack", "data4", "read"),
-	Arrays.asList("katy", "data4", "write"),
-	Arrays.asList("leyo", "data4", "read"),
-	Arrays.asList("ham", "data4", "write")
+    Arrays.asList("jack", "data4", "read"),
+    Arrays.asList("katy", "data4", "write"),
+    Arrays.asList("leyo", "data4", "read"),
+    Arrays.asList("ham", "data4", "write")
 );
 boolean areRulesAdded = e.addNamedPolicies("p", rules);
 ```
@@ -2051,6 +2049,7 @@ For example:
 ```go
 ok, err := e.SelfAddPoliciesEx("p", "p", [][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
 ```
+
 ```mdx-code-block
 </TabItem>
 </Tabs>
@@ -2149,10 +2148,10 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"jack", "data4", "read"},
-	[]string {"katy", "data4", "write"},
-	[]string {"leyo", "data4", "read"},
-	[]string {"ham", "data4", "write"},
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
 }
 
 areRulesRemoved := e.RemovePolicies(rules)
@@ -2196,10 +2195,10 @@ are_rules_removed = e.remove_policies(rules)
 
 ```rust
 let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
 ];
 
 let are_rules_removed = e.remove_policies(rules).await?;
@@ -2212,10 +2211,10 @@ let are_rules_removed = e.remove_policies(rules).await?;
 
 ```java
 String[][] rules = {
-	{"jack", "data4", "read"},
-	{"katy", "data4", "write"},
-	{"leyo", "data4", "read"},
-	{"ham", "data4", "write"},
+    {"jack", "data4", "read"},
+    {"katy", "data4", "write"},
+    {"leyo", "data4", "read"},
+    {"ham", "data4", "write"},
 };
 boolean areRulesRemoved = e.removePolicies(rules);
 ```
@@ -2396,10 +2395,10 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"jack", "data4", "read"},
-	[]string {"katy", "data4", "write"},
-	[]string {"leyo", "data4", "read"},
-	[]string {"ham", "data4", "write"},
+    []string {"jack", "data4", "read"},
+    []string {"katy", "data4", "write"},
+    []string {"leyo", "data4", "read"},
+    []string {"ham", "data4", "write"},
 }
 
 areRulesRemoved := e.RemoveNamedPolicies("p", rules)
@@ -2443,10 +2442,10 @@ are_rules_removed = e.remove_named_policies("p", rules)
 
 ```rust
 let rules = vec![
-	vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
-	vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
-	vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["jack".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["katy".to_owned(), "data4".to_owned(), "write".to_owned()],
+    vec!["leyo".to_owned(), "data4".to_owned(), "read".to_owned()],
+    vec!["ham".to_owned(), "data4".to_owned(), "write".to_owned()],
 ];
 
 let areRulesRemoved = e.remove_named_policies("p", rules).await?;
@@ -2459,10 +2458,10 @@ let areRulesRemoved = e.remove_named_policies("p", rules).await?;
 
 ```java
 List<List<String>> rules = Arrays.asList(
-	Arrays.asList("jack", "data4", "read"),
-	Arrays.asList("katy", "data4", "write"),
-	Arrays.asList("leyo", "data4", "read"),
-	Arrays.asList("ham", "data4", "write")
+    Arrays.asList("jack", "data4", "read"),
+    Arrays.asList("katy", "data4", "write"),
+    Arrays.asList("leyo", "data4", "read"),
+    Arrays.asList("ham", "data4", "write")
 );
 boolean areRulesRemoved = e.removeNamedPolicies("p", rules);
 ```
@@ -2791,8 +2790,8 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"ham", "data4_admin"},
-	[]string {"jack", "data5_admin"},
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
 }
 
 areRulesAdded := e.AddGroupingPolicies(rules)
@@ -2833,8 +2832,8 @@ are_rules_added = e.add_grouping_policies(rules)
 
 ```rust
 let rules = vec![
-	vec!["ham".to_owned(), "data4_admin".to_owned()],
-	vec!["jack".to_owned(), "data5_admin".to_owned()],
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
 ];
 
 let areRulesAdded = e.add_grouping_policies(rules).await?;
@@ -2847,8 +2846,8 @@ let areRulesAdded = e.add_grouping_policies(rules).await?;
 
 ```java
 String[][] groupingRules = {
-	{"ham", "data4_admin"},
-	{"jack", "data5_admin"}
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
 };
 boolean areRulesAdded = e.addGroupingPolicies(groupingRules);
 ```
@@ -2879,6 +2878,7 @@ ok, err := e.AddGroupingPoliciesEx([][]string{{"user1", "member"}, {"user2", "me
 </TabItem>
 </Tabs>
 ```
+
 ### `AddNamedGroupingPolicy()`
 
 AddNamedGroupingPolicy adds a named role inheritance rule to the current policy.
@@ -2960,7 +2960,7 @@ boolean added = e.addNamedGroupingPolicy("g", "group1", "data2_admin");
 ### `AddNamedGroupingPolicies()`
 
 AddNamedGroupingPolicies adds named role inheritance rules to the current policy.
-The operation is atomic in nature. 
+The operation is atomic in nature.
 Hence, if authorization rules consists of rules which are not consistent with the current policy, the function returns false and no policy rule is added to the current policy.
 If all the authorization rules are consistent with the policy rules, the function returns true and each policy rule is added to the current policy.
 
@@ -2973,8 +2973,8 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"ham", "data4_admin"},
-	[]string {"jack", "data5_admin"},
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
 }
 
 areRulesAdded := e.AddNamedGroupingPolicies("g", rules)
@@ -3015,8 +3015,8 @@ are_rules_added = e.add_named_grouping_policies("g", rules)
 
 ```rust
 let rules = vec![
-	vec!["ham".to_owned(), "data4_admin".to_owned()],
-	vec!["jack".to_owned(), "data5_admin".to_owned()],
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
 ];
 
 let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
@@ -3029,8 +3029,8 @@ let are_rules_added = e.add_named_grouping_policies("g", rules).await?;
 
 ```java
 String[][] groupingRules = {
-	{"ham", "data4_admin"},
-	{"jack", "data5_admin"}
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
 };
 boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
 ```
@@ -3039,6 +3039,7 @@ boolean areRulesAdded = e.addNamedGroupingPolicies("g", groupingRules);
 </TabItem>
 </Tabs>
 ```
+
 ### `AddNamedGroupingPoliciesEx()`
 
 AddNamedGroupingPoliciesEx adds named role inheritance rules to the current policy.
@@ -3055,6 +3056,7 @@ For example:
 ```go
 ok, err := e.AddNamedGroupingPoliciesEx("g", [][]string{{"user1", "member"}, {"user2", "member"}})
 ```
+
 ```mdx-code-block
 </TabItem>
 </Tabs>
@@ -3152,9 +3154,9 @@ For example:
 
 ```go
 rules := [][] string {
-				[]string {"ham", "data4_admin"},
-				[]string {"jack", "data5_admin"},
-		}
+                []string {"ham", "data4_admin"},
+                []string {"jack", "data5_admin"},
+        }
 
 areRulesRemoved := e.RemoveGroupingPolicies(rules)
 ```
@@ -3180,8 +3182,8 @@ const areRulesRemoved = await e.removeGroupingPolicies(groupingRules);
 
 ```rust
 let rules = vec![
-	vec!["ham".to_owned(), "data4_admin".to_owned()],
-	vec!["jack".to_owned(), "data5_admin".to_owned()],
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
 ];
 
 let are_rules_removed = e.remove_grouping_policies(rules).await?;
@@ -3208,8 +3210,8 @@ are_rules_removed = e.remove_grouping_policies(rules)
 
 ```java
 String[][] groupingRules = {
-	{"ham", "data4_admin"},
-	{"jack", "data5_admin"}
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
 };
 boolean areRulesRemoved = e.removeGroupingPolicies(groupingRules);
 ```
@@ -3387,8 +3389,8 @@ For example:
 
 ```go
 rules := [][] string {
-	[]string {"ham", "data4_admin"},
-	[]string {"jack", "data5_admin"},
+    []string {"ham", "data4_admin"},
+    []string {"jack", "data5_admin"},
 }
 
 areRulesRemoved := e.RemoveNamedGroupingPolicies("g", rules)
@@ -3428,8 +3430,8 @@ are_rules_removed = e.remove_named_grouping_policies("g", rules)
 
 ```rust
 let rules = vec![
-	vec!["ham".to_owned(), "data4_admin".to_owned()],
-	vec!["jack".to_owned(), "data5_admin".to_owned()],
+    vec!["ham".to_owned(), "data4_admin".to_owned()],
+    vec!["jack".to_owned(), "data5_admin".to_owned()],
 ];
 
 let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
@@ -3442,8 +3444,8 @@ let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
 
 ```java
 String[][] groupingRules = {
-	{"ham", "data4_admin"},
-	{"jack", "data5_admin"}
+    {"ham", "data4_admin"},
+    {"jack", "data5_admin"}
 };
 boolean areRulesRemoved = e.removeNamedGroupingPolicies("g", groupingRules);
 ```
@@ -3621,20 +3623,20 @@ For example:
 
 ```go
 func CustomFunction(key1 string, key2 string) bool {
-	if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" {
-		return true
-	} else if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId" {
-		return true
-	} else {
-		return false
-	}
+    if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" {
+        return true
+    } else if key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId" {
+        return true
+    } else {
+        return false
+    }
 }
 
 func CustomFunctionWrapper(args ...interface{}) (interface{}, error) {
-	key1 := args[0].(string)
-	key2 := args[1].(string)
+    key1 := args[0].(string)
+    key2 := args[1].(string)
 
-	return bool(CustomFunction(key1, key2)), nil
+    return bool(CustomFunction(key1, key2)), nil
 }
 
 e.AddFunction("keyMatchCustom", CustomFunctionWrapper)
@@ -3666,20 +3668,20 @@ e.addFunction("keyMatchCustom", customFunction);
 
 ```php
 func customFunction($key1, $key2) {
-	if ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data/:resource") {
-		return true;
-	} elseif ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data2/:id/using/:resId") {
-		return true;
-	} else {
-		return false;
-	}
+    if ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data/:resource") {
+        return true;
+    } elseif ($key1 == "/alice_data2/myid/using/res_id" && $key2 == "/alice_data2/:id/using/:resId") {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 func customFunctionWrapper(...$args){
-	$key1 := $args[0];
-	$key2 := $args[1];
+    $key1 := $args[0];
+    $key2 := $args[1];
 
-	return customFunction($key1, $key2);
+    return customFunction($key1, $key2);
 }
 
 $e->addFunction("keyMatchCustom", customFunctionWrapper);
@@ -3705,7 +3707,7 @@ e.add_function("keyMatchCustom", custom_function)
 
 ```rust
 fn custom_function(key1: STring, key2: String) {
-	key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" || key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId"
+    key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data/:resource" || key1 == "/alice_data2/myid/using/res_id" && key2 == "/alice_data2/:id/using/:resId"
 }
 
 
@@ -3719,23 +3721,23 @@ e.add_function("keyMatchCustom", custom_function);
 
 ```java
 public static class CustomFunc extends CustomFunction {
-	@Override
-	public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
-		String key1 = FunctionUtils.getStringValue(arg1, env);
-		String key2 = FunctionUtils.getStringValue(arg2, env);
-		if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data/:resource")) {
-			return AviatorBoolean.valueOf(true);
-		} else if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data2/:id/using/:resId")) {
-			return AviatorBoolean.valueOf(true);
-		} else {
-			return AviatorBoolean.valueOf(false);
-		}
-	}
+    @Override
+    public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2) {
+        String key1 = FunctionUtils.getStringValue(arg1, env);
+        String key2 = FunctionUtils.getStringValue(arg2, env);
+        if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data/:resource")) {
+            return AviatorBoolean.valueOf(true);
+        } else if (key1.equals("/alice_data2/myid/using/res_id") && key2.equals("/alice_data2/:id/using/:resId")) {
+            return AviatorBoolean.valueOf(true);
+        } else {
+            return AviatorBoolean.valueOf(false);
+        }
+    }
 
-	@Override
-	public String getName() {
-		return "keyMatchCustom";
-	}
+    @Override
+    public String getName() {
+        return "keyMatchCustom";
+    }
 }
 
 FunctionTest.CustomFunc customFunc = new FunctionTest.CustomFunc();

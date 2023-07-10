@@ -6,8 +6,6 @@ keywords: [benchmarks, overhead]
 authors: [hsluoyz]
 ---
 
-
-
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
@@ -15,7 +13,7 @@ authors: [hsluoyz]
 
 The overhead of policy enforcement is benchmarked in [model_b_test.go](https://github.com/casbin/casbin/blob/master/model_b_test.go). The testbed is:
 
-```
+```text
 Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 2601 Mhz, 4 Core(s), 8 Logical Processor(s)
 ```
 
@@ -44,7 +42,7 @@ The overhead of policy enforcement of [Casbin CPP](https://github.com/casbin/cas
 [`tests/benchmarks`](https://github.com/casbin/casbin-cpp/tree/master/tests/benchmarks) directory with the help of
 [Google's benchmarking tool](https://github.com/google/benchmark). The testbed for these benchmarks is:
 
-```
+```text
 Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz, 4 cores, 4 threads
 ```
 
@@ -71,7 +69,7 @@ Here is the benchmarking result of executing `casbin_benchmark` target built in 
 
 [Lua Casbin's](https://github.com/casbin/lua-casbin) overhead of policy enforcement is benchmarked in [bench.lua](https://github.com/casbin/lua-casbin/blob/master/bench.lua). The testbed was a Ubuntu VM with the CPU:
 
-```
+```text
 AMD Ryzen(TM) 5 4600H CPU @ 3.0GHz, 6 Cores, 12 Threads
 ```
 
@@ -96,11 +94,11 @@ The benchmarking result of ``luajit bench.lua`` is as follows (op = an ``enforce
 </Tabs>
 ```
 
-# Benchmark monitoring
+## Benchmark monitoring
 
 In the embedded web page below, you can see the performance changes of Casbin for each commit.
 
-You can also directly browse it at: https://v1.casbin.org/casbin/benchmark-monitoring
+You can also directly browse it at: <https://v1.casbin.org/casbin/benchmark-monitoring>
 
 <div
   style={{margin:"(0 auto)", transform:"scale(0.85)", width:"1000px", boxShadow:"0 0 50px grey", borderRadius:"20px"}}>

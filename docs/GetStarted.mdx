@@ -15,7 +15,7 @@ authors: [nodece]
 <TabItem value="Go" label="Go" default>
 ```
 
-```
+```bash
 go get github.com/casbin/casbin/v2
 ```
 
@@ -73,7 +73,6 @@ pip install casbin
 <TabItem value=".NET" label=".NET">
 ```
 
-
 ```bash
 dotnet add package Casbin.NET
 ```
@@ -126,7 +125,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 luarocks install casbin  
 ```
 
-If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks 
+If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks
 -- you may want to run as a privileged user or use your local tree with --local.
 you can add --local behind your command like this to fix:
 
@@ -147,9 +146,9 @@ It has two configuration files, `model.conf` and `policy.csv`. Among them, `mode
 
 In another word, to new a Casbin enforcer, you must provide a [Model](supported-models) and an [Adapter](adapters).
 
-Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) for more information. 
+Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) for more information.
 
-- Use the Model file and default [FileAdapter](adapters#file-adapter-built-in): 
+- Use the Model file and default [FileAdapter](adapters#file-adapter-built-in):
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -290,7 +289,7 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 </Tabs>
 ```
 
-- Use the Model text with other Adapter: 
+- Use the Model text with other Adapter:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -299,18 +298,18 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 
 ```go
 import (
-	"log"
+    "log"
 
-	"github.com/casbin/casbin/v2"
-	"github.com/casbin/casbin/v2/model"
-	xormadapter "github.com/casbin/xorm-adapter/v2"
-	_ "github.com/go-sql-driver/mysql"
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin/v2/model"
+    xormadapter "github.com/casbin/xorm-adapter/v2"
+    _ "github.com/go-sql-driver/mysql"
 )
 
 // Initialize a Xorm adapter with MySQL database.
 a, err := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/casbin")
 if err != nil {
-	log.Fatalf("error: adapter: %s", err)
+    log.Fatalf("error: adapter: %s", err)
 }
 
 m, err := model.NewModelFromString(`
@@ -327,12 +326,12 @@ e = some(where (p.eft == allow))
 m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 `)
 if err != nil {
-	log.Fatalf("error: model: %s", err)
+    log.Fatalf("error: model: %s", err)
 }
 
 e, err := casbin.NewEnforcer(m, a)
 if err != nil {
-	log.Fatalf("error: enforcer: %s", err)
+    log.Fatalf("error: enforcer: %s", err)
 }
 ```
 

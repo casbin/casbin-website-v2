@@ -10,14 +10,15 @@ authors: [hsluoyz]
 
 [Casbin.js](https://github.com/casbin/casbin.js) is a Casbin addon that facilites your access-control management in the frontend application.
 
-
 ## Installation
 
 ```bash
 npm install casbin.js
 npm install casbin
 ```
+
 or
+
 ```bash
 yarn add casbin.js
 ```
@@ -32,7 +33,9 @@ yarn add casbin.js
 | [angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin                                 | Angular wrapper for Casbin.js                                     |
 
 ## Quick Start
+
 You can use `manual` mode in your frontend application, and set the permission whenever you wish.
+
 ```javascript
 const casbinjs = require("casbin.js");
 // Set the user's permission:
@@ -78,21 +81,22 @@ in the code above, variable `success` in parameters means the request get the re
 
 You can refer to our [React example](https://github.com/casbin-js/examples) to see a practical usage of Casbin.js
 
-<!-- #### Permission Object
+### Permission Object
+
 Casbin.js will accept a JSON object to manipulate the correspoding permission of a visitor. For example:
-```
+
+```json
 {
     "read": ["data1", "data2"],
     "write": ["data1"]
 }
 ```
-The permission object above shows the visitor can `read` `data1` and `data2` objects, while can only `write` `data1` objects. -->
 
+The permission object above shows the visitor can `read` `data1` and `data2` objects, while can only `write` `data1` objects. -->
 
 ## Advanced Usage
 
 Casbin.js provides a perfect solution to integrating your frontend access-control management with your backend Casbin service.
-
 
 Use `auto` mode and specify your endpoint when initializing the Casbin.js `Authorizer`, it will automatically sync the permission and manipulate the frontend status.
 
@@ -123,6 +127,7 @@ Correspondingly, you need to expose an interface (e.g. a RestAPI) to generate th
 :::note
 
 Your endpoint server should return something like
+
 ```json
 {
     "other":"other",
@@ -153,34 +158,39 @@ Currently, `CasbinJsGetPermissionForUser` api is only supported in Go Casbin and
 
 :::
 
-
 ## API List
 
-#### `setPermission(permission: string)`
+### `setPermission(permission: string)`
+
 Set the permission object. Always used in `manual` mode.
 
-#### `setUser(user: string)`
+### `setUser(user: string)`
+
 Set the visitor identity and update the permission. Always used in `auto` mode.
 
-#### `can(action: string, object: string)`
+### `can(action: string, object: string)`
+
 Check if the user can perform `action` on `object`.
 
-#### `cannot(action: string, object: string)`
+### `cannot(action: string, object: string)`
+
 Check if the user **cannot** perform `action` on `object`.
 
-#### `canAll(action: string, objects: Array<object>)`
+### `canAll(action: string, objects: Array<object>)`
+
 Check if the user can perform `action` on **all** object in `objects`.
 
-#### `canAny(action: string, objects: Array<object>)`
-Check if the user can perform `action` on **any one** of the `objects`.
+### `canAny(action: string, objects: Array<object>)`
 
+Check if the user can perform `action` on **any one** of the `objects`.
 
 ## Why Casbin.js
 
 People may wonder the difference between Node-Casbin and Casbin.js. In a word, Node-Casbin is the core of Casbin implemented in NodeJS environment, and it's normally used as an access-controlling management toolkit at the server ends. Casbin.js is an frontend library that help you use Casbin to authorize your webpage user at the client side.
 
 Normally, it is not proper to directly build up a Casbin service and do the authorization/enforcement tasks at a web frontend application due to the following problems:
-1. When someone turn on the client, the enforcer will be initialized, and it will pull all the policies from the backend persistent layers. A high concurrency could bring tough pressure on the databases and cost a lot of network throughput. 
+
+1. When someone turn on the client, the enforcer will be initialized, and it will pull all the policies from the backend persistent layers. A high concurrency could bring tough pressure on the databases and cost a lot of network throughput.
 2. Loading all policies to the client sides could bring secure risks.
 3. Difficult for the seperation between client and server as well as the agile development.
 
