@@ -15,9 +15,8 @@ Casbin website is built using [Docusaurus](https://docusaurus.io/), you can get 
 ### Running Locally
 
 1. `git clone https://github.com/casbin/casbin-website-v2.git`
-2. `cd casbin-website-v2`
-3. `yarn`: install dependencies.
-4. `yarn start`: starting the development server.
+2. `yarn`: install dependencies.
+3. `yarn start`: starting the development server.
 
 ## Contributing
 
