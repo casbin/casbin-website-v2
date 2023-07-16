@@ -307,7 +307,7 @@ import (
 )
 
 // Initialize a Xorm adapter with MySQL database.
-a, err := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/casbin")
+a, err := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
 if err != nil {
     log.Fatalf("error: adapter: %s", err)
 }
