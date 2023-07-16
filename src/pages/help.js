@@ -45,10 +45,17 @@ function Hello() {
             <h2><Translate>Tencent QQ</Translate></h2>
             <Translate values={{
               qqLink: (
-                <a href="https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885">546057381</a>
+                <a href="https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885" target="_blank" rel="noreferrer">
+                  546057381
+                </a>
+              ),
+              WeChat_group: (
+                <a href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/wechat.jpg" target="_blank" rel="noreferrer">
+                  WeChat group
+                </a>
               ),
             }}>
-              {"You can contact us by joining the QQ group: {qqLink}."}
+              {"You can contact us by joining the QQ group: {qqLink} or {WeChat_group}."}
             </Translate>
           </div>
           <div className="col">
