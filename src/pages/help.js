@@ -45,7 +45,7 @@ function Hello() {
             <h2><Translate>Tencent QQ</Translate></h2>
             <Translate values={{
               qqLink: (
-                <a href="https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885" target="_blank" rel="noreferrer">
+                <a href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/qq_casbin.png" target="_blank" rel="noreferrer">
                   546057381
                 </a>
               ),
