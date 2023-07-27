@@ -47,7 +47,7 @@ export default function DefaultNavbarItem({
     return (
       <>
         <Comp
-          href="https://shang.qq.com/wpa/qunwpa?idkey=8ac8b91fc97ace3d383d0035f7aa06f7d670fd8e8d4837347354a31c18fac885"
+          href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/qq_casbin.png"
           className="header-community-qq"
           {...props}
           activeClassName={
