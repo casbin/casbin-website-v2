@@ -32,32 +32,56 @@ module.exports = {
         alt: "My Site Logo",
         src: "img/casbin.svg",
       },
+      hideOnScroll: true,
       items: [
         {
-          type: "doc",
-          docId: "overview",
-          position: "left",
           label: "Docs",
+          position: "left",
+          to: "/docs/overview",
+          items: [
+            {
+              label: "Get Started",
+              to: "/docs/get-started",
+            },
+            {
+              label: "Model",
+              to: "/docs/category/model",
+            },
+            {
+              label: "Storage",
+              to: "/docs/category/storage",
+            },
+            {
+              label: "Adapters",
+              to: "/docs/adapters",
+            },
+            {
+              label: "API",
+              to: "/docs/category/api",
+            },
+            {
+              label: "IDE plugins",
+              to: "/docs/ide-plugins",
+            },
+            {
+              label: "Start Contributing",
+              to: "/docs/contributing",
+            },
+          ],
         },
-        {to: "/blog", label: "Blog", position: "left"},
+        {
+          to: "/blog",
+          label: "Blog",
+          position: "left",
+        },
         {
           to: "/help",
           label: "Help",
           position: "left",
         },
         {
-          href: "/docs/management-api",
-          label: "API",
-          position: "left",
-        },
-        {
           href: "/editor",
           label: "Editor",
-          position: "left",
-        },
-        {
-          href: "/docs/ide-plugins",
-          label: "IDE plugins",
           position: "left",
         },
         {

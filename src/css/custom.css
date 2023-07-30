@@ -22,19 +22,41 @@
   font-weight: 300 700;
   font-display: swap;
   font-style: normal;
-  src: url("/fonts/FiraCode-VF.woff2") format("woff2-variations"),
+  src:
+    url("/fonts/FiraCode-VF.woff2") format("woff2-variations"),
     url("/fonts/FiraCode-VF.woff") format("woff-variations");
 }
 
 /* You can override the default Infima variables here. */
 :root {
   --ifm-spacing-horizontal: 1.5rem;
-  --ifm-font-family-base: "Inter var", system-ui, -apple-system, Segoe UI,
-    Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont,
-    "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
-  --ifm-font-family-monospace: "Fira Code VF", SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+  --ifm-font-family-base:
+    "Inter var",
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    sans-serif,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  --ifm-font-family-monospace:
+    "Fira Code VF",
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
   --ifm-code-font-size: 95%; /* code block font size */
   --site-primary-hue-saturation: 210 68%; /* announcementBar */
 
@@ -185,20 +207,8 @@ html[data-theme="dark"] .header-community-wechat::before {
 }
 
 div[class^="announcementBar_"] {
-  --site-announcement-bar-stripe-color1: hsl(
-    var(--site-primary-hue-saturation) 85%
-  );
-  --site-announcement-bar-stripe-color2: hsl(
-    var(--site-primary-hue-saturation) 95%
-  );
-
-  background: repeating-linear-gradient(
-    35deg,
-    var(--site-announcement-bar-stripe-color1),
-    var(--site-announcement-bar-stripe-color1) 20px,
-    var(--site-announcement-bar-stripe-color2) 10px,
-    var(--site-announcement-bar-stripe-color2) 40px
-  );
+  background: rgb(113 102 222 / 33%);
+  color: var(--docsearch-text-color);
   font-weight: bold;
 }
 
@@ -287,21 +297,15 @@ aside.theme-doc-sidebar-container {
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z' fill='%23181818'/%3E%3C/svg%3E");
 }
 
-html[data-theme="dark"]
-  .theme-doc-sidebar-container
-  button[title="Collapse sidebar"] {
+html[data-theme="dark"] .theme-doc-sidebar-container button[title="Collapse sidebar"] {
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.707 4.293a1 1 0 0 1 0 1.414L9.414 12l6.293 6.293a1 1 0 0 1-1.414 1.414l-7-7a1 1 0 0 1 0-1.414l7-7a1 1 0 0 1 1.414 0Z' fill='%23ffffff'/%3E%3C/svg%3E");
 }
 
-html[data-theme="dark"]
-  .theme-doc-sidebar-container
-  div[title="Expand sidebar"] {
+html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"] {
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.293 4.293a1 1 0 0 0 0 1.414L14.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414l7-7a1 1 0 0 0 0-1.414l-7-7a1 1 0 0 0-1.414 0Z' fill='%23ffffff'/%3E%3C/svg%3E");
 }
 
-.theme-doc-sidebar-container
-  :is(div[title="Expand sidebar"], button[title="Collapse sidebar"])
-  svg {
+.theme-doc-sidebar-container :is(div[title="Expand sidebar"], button[title="Collapse sidebar"]) svg {
   display: none;
 }
 
