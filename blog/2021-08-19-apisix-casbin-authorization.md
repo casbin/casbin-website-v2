@@ -22,7 +22,7 @@ The plugin uses three parameters for authorizing any request - subject, object a
 
 Let's say we want to create a model with three resources at the paths - `/`, `/res1` and `/res2`. And we want to have a model like this:
 
-![image](https://i.imgur.com/7BlvBNR.png)
+![image](/img/blog/model.png)
 
 This would mean that all users (`*`) like for example `jack` can access the homepage (`/`). And users with `admin` permissions like `alice` and `bob` can access all the pages and resources (like `res1` and `res2`). Also, let's restrict users without any admin permissions to using only `GET` request method. For this scenario, we could define the model as:
 
