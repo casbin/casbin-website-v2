@@ -11,6 +11,6 @@ which is powered by Docusaurus. Docusaurus provides lots of awesome features lik
 Markdown styles, full-text search, versioning, translation.
 
 The documentation is not perfect yet and still needs tuning. The source code is hosted
-on GitHub: https://github.com/casbin/casbin-website.
+on GitHub: https://github.com/casbin/casbin-website-v2 .
 
 Any contribution or suggestion is welcome!

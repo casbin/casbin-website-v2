@@ -267,7 +267,7 @@ var _hmt = _hmt || [];
     announcementBar: {
       id: "announcement", // ID of the announcement bar
       content:
-        "<a href=\"https://casdoor.org/\">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>",
+        `<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>`,
       isCloseable: true,
     },
     docs: {
