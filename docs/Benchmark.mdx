@@ -35,6 +35,35 @@ The benchmarking result of ``go test -bench=. -benchmem`` is as follows (op = an
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="Python" label="Python">
+```
+
+The overhead of policy enforcement of [Pycasbin](https://github.com/casbin/pycasbin) is benchmarked in
+[`tests/benchmarks`](https://github.com/casbin/pycasbin/tree/master/tests/benchmarks) directory. The testbed for these benchmarks is:
+
+```text
+Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz (Runned by Github actions)
+platform linux -- Python 3.11.4, pytest-7.0.1, pluggy-1.2.0
+```
+
+Here is the benchmarking result of executing `casbin_benchmark` (op = an `enforce()` call, ms = millisecond):
+
+| Test case                 | Rule size                                | Time overhead (ms/op) |
+|---------------------------|------------------------------------------|-----------------------|
+| ACL                       | 2 rules (2 users)                        | 0.067691              |
+| RBAC                      | 5 rules (2 users, 1 role)                | 0.080045              |
+| RBAC (small)              | 1100 rules (1000 users, 100 roles)       | 0.853590              |
+| RBAC (medium)             | 11000 rules (10000 users, 1000 roles)    | 6.986668              |
+| RBAC (large)              | 110000 rules (100000 users, 10000 roles) | 77.922851             |
+| RBAC with resource roles  | 6 rules (2 users, 2 roles)               | 0.106090              |
+| RBAC with domains/tenants | 6 rules (2 users, 1 role, 2 domains)     | 0.103628              |
+| ABAC                      | 0 rule (0 user)                          | 0.053213              |
+| RESTful                   | 5 rules (3 users)                        | NA                    |
+| Deny-override             | 6 rules (2 users, 1 role)                | NA                    |
+| Priority                  | 9 rules (2 users, 2 roles)               | 0.084684              |
+
+```mdx-code-block
+</TabItem>
 <TabItem value="C++" label="C++">
 ```
 
