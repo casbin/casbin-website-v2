@@ -1,16 +1,16 @@
 ---
 id: watchers
 title: Watchers
-description: Keeping consistence between multiple Casbin enforcer instances
+description: Maintaining consistency between multiple Casbin enforcer instances
 keywords: [watcher, multiple Casbin enforcer, WatcherEx]
 authors: [hsluoyz]
 ---
 
 
 
-We support to use distributed messaging systems like [etcd](https://github.com/coreos/etcd) to keep consistence between multiple Casbin enforcer instances. So our users can concurrently use multiple Casbin enforcers to handle large number of permission checking requests.
+We support the use of distributed messaging systems like [etcd](https://github.com/coreos/etcd) to maintain consistency between multiple Casbin enforcer instances. This allows our users to concurrently use multiple Casbin enforcers to handle a large number of permission checking requests.
 
-Similar to policy storage adapters, we don't put watcher code in the main library. Any support for a new messaging system should be implemented as a watcher. A complete list of Casbin watchers is provided as below. Any 3rd-party contribution on a new watcher is welcomed, please inform us and I will put it in this list:)
+Similar to policy storage adapters, we do not include watcher code in the main library. Any support for a new messaging system should be implemented as a watcher. A complete list of Casbin watchers is provided below. We welcome any third-party contributions for a new watcher, please inform us and we will add it to this list:)
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -39,7 +39,7 @@ Similar to policy storage adapters, we don't put watcher code in the main librar
 |------------------------------------------------------------|------------------|--------------------------------------------|-------------------------------------------------------|
 | [Etcd Adapter](https://github.com/mapleafgo/jcasbin-extra) | KV store         | [@mapleafgo](https://github.com/mapleafgo) | Watcher for [etcd](https://github.com/coreos/etcd)    |
 | [Redis Watcher](https://github.com/jcasbin/redis-watcher)  | KV store         | Casbin                                     | Watcher for [Redis](http://redis.io/)                 |
-| [Lettuce-Based Redis Watcher](https://github.com/jcasbin/lettuce-redis-watcher)  | KV store         | Casbin                                     | Watcher for [Redis](http://redis.io/ based on [Lettuce](https://lettuce.io/))                 |
+| [Lettuce-Based Redis Watcher](https://github.com/jcasbin/lettuce-redis-watcher)  | KV store         | Casbin                                     | Watcher for [Redis](<http://redis.io/> based on [Lettuce](https://lettuce.io/))                 |
 | [Kafka Watcher](https://github.com/jcasbin/kafka-watcher)  | Messaging system | Casbin                                     | Watcher for [Apache Kafka](https://kafka.apache.org/) |
 
 ```mdx-code-block

@@ -1,22 +1,18 @@
 ---
 id: rolemanager-api
 title: RoleManager API
-description: RoleManager provides interface to define the operations for managing roles. Adding matching function to rolemanager allows using wildcards in role name and domain
+description: The RoleManager API provides an interface for defining operations to manage roles. The addition of a matching function to the RoleManager allows the use of wildcards in role names and domains.
 keywords: [rolemanager, API]
 authors: [closetool, kiloson-c]
 ---
 
-
-
 ## RoleManager
 
-RoleManager provides interface to define the operations for managing roles.
-Adding matching function to rolemanager allows using wildcards in role name and domain.
+The RoleManager provides an interface for defining operations to manage roles. The addition of a matching function to the RoleManager allows the use of wildcards in role names and domains.
 
 ### `AddNamedMatchingFunc()`
 
-AddNamedMatchingFunc add MatchingFunc by ptype to RoleManager.
-MatchingFunc will work when operating role matching.
+The `AddNamedMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `MatchingFunc` will be used when performing role matching.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -74,8 +70,7 @@ For example:
 
 ### `AddNamedDomainMatchingFunc()`
 
-AddNamedDomainMatchingFunc add MatchingFunc by ptype to RoleManager.
-`DomainMatchingFunc` is similar to `MatchingFunc` listed above.
+The `AddNamedDomainMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `DomainMatchingFunc` is similar to the `MatchingFunc` listed above.
 
 For example:
 
@@ -106,7 +101,7 @@ For example:
 
 ### `GetRoleManager()`
 
-GetRoleManager gets the current role manager for `g`.
+The `GetRoleManager` function gets the current role manager for `g`.
 
 For example:
 
@@ -144,7 +139,7 @@ For example:
 
 ### `GetNamedRoleManager()`
 
-GetNamedRoleManager gets the role manager by named ptype.
+The `GetNamedRoleManager` function gets the role manager by named Ptype.
 
 For example:
 
@@ -182,7 +177,7 @@ For example:
 
 ### `SetRoleManager()`
 
-SetRoleManager sets the current role manager for `g`.
+The `SetRoleManager` function sets the current role manager for `g`.
 
 For example:
 
@@ -220,7 +215,7 @@ For example:
 
 ### `SetNamedRoleManager()`
 
-SetNamedRoleManager sets the role manager by named ptype.
+The `SetNamedRoleManager` function sets the role manager by named Ptype.
 
 For example:
 
@@ -249,7 +244,7 @@ For example:
 
 ### `Clear()`
 
-Clear clears all stored data and resets the role manager to the initial state.
+The `Clear` function clears all stored data and resets the role manager to its initial state.
 
 For example:
 

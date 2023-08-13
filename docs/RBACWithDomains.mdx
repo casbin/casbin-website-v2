@@ -1,23 +1,23 @@
 ---
 id: rbac-with-domains
 title: RBAC with Domains
-description: RBAC with domains usage
+description: Usage of RBAC with domains
 keywords: [RBAC with domains]
 authors: [hsluoyz]
 ---
 
-## Role definition with domains tenants
+## Role Definition with Domain Tenants
 
-The RBAC roles in Casbin can be global or domain-specific. Domain-specify roles mean that the roles for a user can be different when the user is at different domains/tenants. This is very useful for large systems like a cloud, as the users are usually in different tenants.
+The RBAC roles in Casbin can be global or domain-specific. Domain-specific roles mean that the roles for a user can be different when the user is in different domains/tenants. This is very useful for large systems like a cloud, as users are usually in different tenants.
 
-The role definition with domains/tenants should be something like:
+The role definition with domains/tenants should look like this:
 
 ```ini
 [role_definition]
 g = _, _, _
 ```
 
-The 3rd ``_`` means the name of domain/tenant, this part should not be changed. Then the policy can be:
+The third `_` represents the name of the domain/tenant, and this part should not be changed. Then the policy can be:
 
 ```csv
 p, admin, tenant1, data1, read
@@ -27,21 +27,21 @@ g, alice, admin, tenant1
 g, alice, user, tenant2
 ```
 
-It means ``admin`` role in ``tenant1`` can read ``data1``. And ``alice`` has ``admin`` role in ``tenant1``, and has ``user`` role in ``tenant2``. So she can read ``data1``. However, since ``alice`` is not an ``admin`` in ``tenant2``, she cannot read ``data2``.
+This means that the `admin` role in `tenant1` can read `data1`. And `alice` has the `admin` role in `tenant1` and the `user` role in `tenant2`. Therefore, she can read `data1`. However, since `alice` is not an `admin` in `tenant2`, she cannot read `data2`.
 
-Then in a matcher, you should check the role as below:
+Then, in a matcher, you should check the role as follows:
 
 ```ini
 [matchers]
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 ```
 
-Please see the [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf) for examples.
+Please refer to the [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf) for examples.
 
-:::info Token name convention
+:::info Token Name Convention
 
-Note: Conventionally domain token name in policy definition is `dom` and placed as the second token(`sub, dom, obj, act`).
-Now Golang Casbin supports customized token name & place. If the domain token name is `dom`, the domain token can be placed at an arbitrary place and no extra action needs.  If the domain token name is not `dom` , `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized regardless of its position.
+Note: Conventionally, the domain token name in policy definition is `dom` and is placed as the second token (`sub, dom, obj, act`).
+Now, Golang Casbin supports customized token names and placement. If the domain token name is `dom`, the domain token can be placed at an arbitrary position without any additional action. If the domain token name is not `dom`, `e.SetFieldIndex()` for `constant.DomainIndex` should be called after the enforcer is initialized, regardless of its position.
 
 ```ini
 # `domain` here for `dom`
@@ -50,7 +50,7 @@ p = sub, obj, act, domain
 ```
 
 ```go
-e.SetFieldIndex("p", constant.DomainIndex, 3) // index start from 0
+e.SetFieldIndex("p", constant.DomainIndex, 3) // index starts from 0
 users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, it will raise an error
 ```
 

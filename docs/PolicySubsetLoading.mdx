@@ -1,12 +1,12 @@
 ---
 id: policy-subset-loading
 title: Policy Subset Loading
-description: Loading filtered policy
-keywords: [filtered policy, policy subset, performance optimization]
+description: Loading filtered policies
+keywords: [filtered policies, policy subset, performance optimization]
 authors: [hsluoyz]
 ---
 
-Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.
+Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy stored in the database based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments where parsing the entire policy becomes a performance bottleneck.
 
 To use filtered policies with a supported adapter, simply call the `LoadFilteredPolicy` method. The valid format for the filter parameter depends on the adapter used. To prevent accidental data loss, the `SavePolicy` method is disabled when a filtered policy is loaded.
 
@@ -32,4 +32,4 @@ enforcer.LoadFilteredPolicy(filter)
 // The loaded policy now only contains the entries pertaining to "domain1".
 ```
 
-There's another method support subset loading feature: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` is similar to LoadFilteredPolicy, but it does not clear previous loaded policy, only append.
+There is another method that supports the subset loading feature: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` is similar to `LoadFilteredPolicy`, but it does not clear the previously loaded policy. It only appends the filtered policy to the existing policy.
