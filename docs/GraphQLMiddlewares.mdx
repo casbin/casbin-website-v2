@@ -1,14 +1,12 @@
 ---
 id: graphql-middlewares
 title: GraphQL Middlewares
-description: authorization for GraphQL endpoints
+description: Authorization for GraphQL endpoints
 keywords: [GraphQL, GraphQL Middlewares]
 authors: [hsluoyz]
 ---
 
-
-
-Casbin follows the officially suggested way to provide authorization for GraphQL endpoints by having a single source of truth for authorization: <https://graphql.org/learn/authorization/> . In another word, Casbin should be placed between GraphQL layer and your business logic.
+Casbin follows the officially suggested way to provide authorization for GraphQL endpoints by having a single source of truth for authorization: <https://graphql.org/learn/authorization/>. In other words, Casbin should be placed between the GraphQL layer and your business logic.
 
 ```javascript
 // Casbin authorization logic lives inside postRepository
@@ -27,9 +25,9 @@ var postType = new GraphQLObjectType({
 });
 ```
 
-## Supported GraphQL middlewares
+## Supported GraphQL Middlewares
 
-A complete list of Casbin GraphQL middlewares is provided as below. Any 3rd-party contribution on a new GraphQL middleware is welcomed, please inform us and we will put it in this list:)
+A complete list of Casbin GraphQL middlewares is provided below. Any third-party contributions on a new GraphQL middleware are welcomed. Please inform us, and we will add it to this list:)
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -39,7 +37,7 @@ A complete list of Casbin GraphQL middlewares is provided as below. Any 3rd-part
 | Middleware                                                                         | GraphQL Implementation                           | Author                                         | Description                                            |
 |------------------------------------------------------------------------------------|--------------------------------------------------|------------------------------------------------|--------------------------------------------------------|
 | [graphql-authz](https://github.com/casbin/graphql-authz)                           | [graphql](https://github.com/graphql-go/graphql) | Casbin                                         | An authorization middleware for graphql-go             |
-| [graphql-casbin](https://github.com/esmaeilpour/graphql-casbin)                    | [graphql](https://github.com/graphql-go/graphql) | [@esmaeilpour](https://github.com/esmaeilpour) | An Implementation of using Graphql and Casbin together |
+| [graphql-casbin](https://github.com/esmaeilpour/graphql-casbin)                    | [graphql](https://github.com/graphql-go/graphql) | [@esmaeilpour](https://github.com/esmaeilpour) | An implementation of using Graphql and Casbin together |
 | [gqlgen_casbin_RBAC_example](https://github.com/WenyXu/gqlgen_casbin_RBAC_example) | [gqlgen](https://github.com/99designs/gqlgen)    | [@WenyXu](https://github.com/WenyXu)           | (empty)                                                |
 
 ```mdx-code-block

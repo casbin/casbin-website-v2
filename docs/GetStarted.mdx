@@ -6,8 +6,6 @@ keywords: [Casbin, get started, installation, usage]
 authors: [nodece]
 ---
 
-
-
 ## Installation
 
 ```mdx-code-block
@@ -53,7 +51,7 @@ yarn add casbin
 <TabItem value="PHP" label="PHP">
 ```
 
-Require this package in the `composer.json` of your project. This will download the package:
+Require this package in the `composer.json` of your project to download the package:
 
 ```bash
 composer require casbin/casbin
@@ -83,13 +81,13 @@ dotnet add package Casbin.NET
 ```
 
 ```bash
-# download source
+# Download source
 git clone https://github.com/casbin/casbin-cpp.git
 
-# generate project files
+# Generate project files
 cd casbin-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
 
-# build and install casbin
+# Build and install casbin
 cmake --build . --config Release --target casbin install -j 10
 ```
 
@@ -105,8 +103,8 @@ cargo add casbin
 // If you use async-std as async executor
 cargo add async-std
 
-// If you use tokio as async executor
-cargo add tokio // make sure you activate its `macros` feature
+// If you use tokio as async executor, make sure you activate its `macros` feature
+cargo add tokio
 ```
 
 ```mdx-code-block
@@ -125,12 +123,10 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 luarocks install casbin  
 ```
 
-If report Error: Your user does not have write permissions in /usr/local/lib/luarocks/rocks
--- you may want to run as a privileged user or use your local tree with --local.
-you can add --local behind your command like this to fix:
+If you receive an error message: "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", you may want to run the command as a privileged user or use your local tree with `--local`. To fix the error, you can add `--local` behind your command like this:
 
 ```bash
-luarocks install casbin  --local
+luarocks install casbin --local
 ```
 
 ```mdx-code-block
@@ -140,15 +136,15 @@ luarocks install casbin  --local
 
 ## New a Casbin enforcer
 
-Casbin uses configuration files to set the access control model.
+Casbin uses configuration files to define the access control model.
 
-It has two configuration files, `model.conf` and `policy.csv`. Among them, `model.conf` stores our access model, and `policy.csv` stores our specific user permission configuration. The use of Casbin is very refined. Basically, we just need one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
+There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. The usage of Casbin is very straightforward. We only need to create one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
 
-In another word, to new a Casbin enforcer, you must provide a [Model](supported-models) and an [Adapter](adapters).
+In other words, to create a Casbin enforcer, you need to provide a [Model](supported-models) and an [Adapter](adapters).
 
-Casbin has a [FileAdapter](adapters#file-adapter-built-in), see [Adapter](adapters) for more information.
+Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use. See [Adapter](adapters) for more information.
 
-- Use the Model file and default [FileAdapter](adapters#file-adapter-built-in):
+- Example of using the Model file and the default [FileAdapter](adapters#file-adapter-built-in):
 
 ```mdx-code-block
 <Tabs groupId="langs">

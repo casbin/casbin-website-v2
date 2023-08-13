@@ -1,16 +1,16 @@
 ---
 id: priority-model
 title: Priority Model
-description: Priority Model
+description: Casbin's Priority Model for managing policies with different priorities
 keywords: [priority model]
 authors: [hsluoyz]
 ---
 
-Casbin support load policies with priority.
+Casbin supports loading policies with priority.
 
-## Load Policy with Priority Implicitly
+## Load Policy with Implicit Priority
 
-It's quite simple, the order determines the priority, policy appeared earlier has higher priority.
+It's quite simple: the order determines the priority; policies that appear earlier have higher priority.
 
 model.conf:
 
@@ -19,15 +19,15 @@ model.conf:
 e = priority(p.eft) || deny
 ```
 
-## Load Policy with Priority Explicitly
+## Load Policy with Explicit Priority
 
 > Also see: [casbin#550](https://github.com/casbin/casbin/issues/550)
 
-The smaller priority value will have a higher priority. If there's a non-numerical character in priority, it will be in the last, rather than throw an error.
+A smaller priority value indicates a higher priority. If there's a non-numerical character in the priority, it will be placed last instead of throwing an error.
 
 :::info Token name convention
 
-The priority token name in policy definition is  "priority" conventionally. A customized one requires invoking `e.SetFieldIndex()` and reload policies (full example on [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044) ).
+The conventionally used priority token name in the policy definition is "priority". To use a custom one, you need to invoke `e.SetFieldIndex()` and reload the policies (see the full example on [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044)).
 
 model.conf:
 
@@ -41,9 +41,9 @@ Golang code example:
 ```go
 e, _ := NewEnforcer("./example/priority_model_explicit_customized.conf",
                     "./example/priority_policy_explicit_customized.csv")
-// Due to the customized priority token, the enforcer failed to handle the priority.
+// Due to the customized priority token, the enforcer fails to handle the priority.
 ok, err := e.Enforce("bob", "data2", "read") // the result will be `true, nil`
-// set PriorityIndex and reload
+// Set PriorityIndex and reload
 e.SetFieldIndex("p", constant.PriorityIndex, 0)
 err := e.LoadPolicy()
 if err != nil {
@@ -54,7 +54,7 @@ ok, err := e.Enforce("bob", "data2", "read") // the result will be `false, nil`
 
 :::
 
-Now, explicit priority only support `AddPolicy` & `AddPolicies`, if `UpdatePolicy` been called, you shouldn't change the priority attribute.
+Currently, explicit priority only supports `AddPolicy` & `AddPolicies`. If `UpdatePolicy` has been called, you shouldn't change the priority attribute.
 
 model.conf:
 
@@ -95,14 +95,14 @@ g, alice, data1_deny_group
 request:
 
 ```csv
-alice, data1, write --> true // for `p, 1, alice, data1, write, allow` has highest priority
+alice, data1, write --> true // because `p, 1, alice, data1, write, allow` has the highest priority
 bob, data2, read --> false
-bob, data2, write --> true // for bob has role of `data2_allow_group` which has right to write data2, and there's no deny policy with higher priority 
+bob, data2, write --> true // because bob has the role of `data2_allow_group` which has the right to write data2, and there's no deny policy with higher priority 
 ```
 
 ## Load Policy with Priority Based on Role and User Hierarchy
 
-The inherited structure of roles and users can only be multiple trees, not graphs. If one user has multiple roles,you have to make sure the user has the same level in different trees. If two roles have the same level,the policy(the role corresponding) appeared earlier has higher priority. more details also see [casbin#833](https://github.com/casbin/casbin/pull/833)、[casbin#831](https://github.com/casbin/casbin/issues/831)
+The inherited structure of roles and users can only be multiple trees, not graphs. If a user has multiple roles, you have to make sure the user has the same level in different trees. If two roles have the same level, the policy (associated with the role) that appeared earlier has higher priority. For more details, also see [casbin#833](https://github.com/casbin/casbin/pull/833) and [casbin#831](https://github.com/casbin/casbin/issues/831).
 
 model.conf:
 
@@ -147,11 +147,11 @@ g, alice, subscriber
 Request:
 
 ```csv
-jane, data1, read --> true // jane is at the bottom,so priority is higher than editor, admin and root
+jane, data1, read --> true // because jane is at the bottom, her priority is higher than that of editor, admin, and root
 alice, data1, read --> true
 ```
 
- The role hierarchy like this:
+ The role hierarchy looks like this:
 
 ```text
 role: root
@@ -163,7 +163,7 @@ role: root
        └─ user: alice
 ```
 
-The priority automatically like this:
+The priority automatically looks like this:
 
 ```text
 role: root                 # auto priority: 30

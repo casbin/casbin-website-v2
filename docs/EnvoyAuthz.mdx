@@ -6,58 +6,58 @@ keywords: [Envoy, Envoy-authz, Istio]
 authors: [ashish493]
 ---
 
-[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware of Envoy which performs external RBAC & ABAC authorization through casbin. This middleware uses [Envoy's external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) through a gRPC server. This proxy would be deployed on any type of envoy-based service meshes like Istio.
+[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware for Envoy that performs external RBAC & ABAC authorization through casbin. This middleware uses [Envoy's external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server. This proxy can be deployed on any type of Envoy-based service mesh, such as Istio.
 
 ## Requirements
 
 - Envoy 1.17+
-- Istio or any type of service mesh
+- Istio or any other type of service mesh
 - grpc dependencies
 
-Dependencies are managed through `go.mod`.
+Dependencies are managed using `go.mod`.
 
-## Working of Middleware
+## Working of the Middleware
 
-- A client would make a http request.
-- Envoy proxy would send that request to grpc server.
-- The grpc server would then authorize the request based on casbin policies.
-- If authorized, the request would be sent through or else, it gets denied.
+- A client makes an HTTP request.
+- The Envoy proxy sends the request to the gRPC server.
+- The gRPC server authorizes the request based on casbin policies.
+- If authorized, the request is forwarded; otherwise, it is denied.
 
-The grpc server is based on protocol buffer from [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) from Envoy.
+The gRPC server is based on protocol buffer from [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) in Envoy.
 
 ```protobuf
-// A generic interface for performing authorization check on incoming
+// A generic interface for performing authorization checks on incoming
 // requests to a networked service.
 service Authorization {
-  // Performs authorization check based on the attributes associated with the
-  // incoming request, and returns status `OK` or not `OK`.
+  // Performs an authorization check based on the attributes associated with the
+  // incoming request and returns a status of `OK` or not `OK`.
   rpc Check(v2.CheckRequest) returns (v2.CheckResponse);
 }
 ```
 
-From the above proto file, we have to use `Check()` service in the authorization server.
+From the above proto file, we need to use the `Check()` service in the authorization server.
 
 ## Usage
 
-- Define the Casbin policies under config files by following this [guide](/docs/how-it-works).
+- Define the Casbin policies in the config files following this [guide](/docs/how-it-works).
 
-You can verify/test your policies on online [casbin-editor](/editor).
+You can verify/test your policies using the online [casbin-editor](/editor).
 
-- Start the authorizing server by running:-
+- Start the authentication server by running:
 
 ```bash
 go build .
 ./authz
 ```
 
-- Load the envoy configuration:-
+- Load the Envoy configuration:
 
 ```bash
 envoy -c authz.yaml -l info
 ```
 
-Once the envoy starts, it will start intercepting requests for the authorization process.
+Once Envoy starts, it will intercept requests for the authorization process.
 
-## Integrating to Istio
+## Integrating with Istio
 
-You need to send custom headers, which would contain usernames in the JWT token OF headers for this middleware to work. You can check the official [Istio docs](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) to get more info on modifying `Request Headers`.
+To make this middleware work, you need to send custom headers containing usernames in the JWT token or headers. You can refer to the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) for more information on modifying `Request Headers`.

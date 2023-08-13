@@ -8,15 +8,15 @@ authors: [nodece]
 
 1. [**ACL (Access Control List)**](https://en.wikipedia.org/wiki/Access_control_list)
 2. **ACL with [superuser](https://en.wikipedia.org/wiki/Superuser)**
-3. **ACL without users**: especially useful for systems that don't have authentication or user log-ins.
-4. **ACL without resources**: some scenarios may target for a type of resources instead of an individual resource by using permissions like ``write-article``, ``read-log``. It doesn't control the access to a specific article or log.
+3. **ACL without users**: This is especially useful for systems that don't have authentication or user logins.
+4. **ACL without resources**: In some scenarios, the target is a type of resource instead of an individual resource. Permissions like "write-article" and "read-log" can be used. This doesn't control access to a specific article or log.
 5. **[RBAC (Role-Based Access Control)](https://en.wikipedia.org/wiki/Role-based_access_control)**
-6. **RBAC with resource roles**: both users and resources can have roles (or groups) at the same time.
-7. **RBAC with domains/tenants**: users can have different role sets for different domains/tenants.
-8. **[ABAC (Attribute-Based Access Control)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: syntax sugar like ``resource.Owner`` can be used to get the attribute for a resource.
-9. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: supports paths like ``/res/*``, ``/res/:id`` and HTTP methods like ``GET``, ``POST``, ``PUT``, ``DELETE``.
-10. **Deny-override**: both allow and deny authorizations are supported, deny overrides the allow.
-11. **Priority**: the policy rules can be prioritized like firewall rules.
+6. **RBAC with resource roles**: Both users and resources can have roles (or groups) at the same time.
+7. **RBAC with domains/tenants**: Users can have different sets of roles for different domains/tenants.
+8. **[ABAC (Attribute-Based Access Control)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: Syntax sugar like "resource.Owner" can be used to get the attribute for a resource.
+9. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: Supports paths like "/res/*", "/res/:id", and HTTP methods like "GET", "POST", "PUT", "DELETE".
+10. **Deny-override**: Both allow and deny authorizations are supported, where deny overrides allow.
+11. **Priority**: The policy rules can be prioritized, similar to firewall rules.
 
 ## Examples
 

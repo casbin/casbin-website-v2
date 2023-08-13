@@ -2,55 +2,56 @@
 id: k8s
 title: Authorization of Kubernetes
 description: Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin
-keywords: [K8s-authz, Kubernetes, k8s]
+keywords: [Kubernetes authorization, Kubernetes RBAC, Kubernetes ABAC, K8s-authz]
 authors: [hsluoyz]
 ---
 
-[K8s-authz](https://github.com/casbin/k8s-authz) is a Kubernetes (k8s) RBAC & ABAC authorization middleware based on Casbin. This middleware uses K8s validation admission webhook to check the policies defined by casbin, for every request of the k8s resources. These custom admission controllers perform some kind of validation on the request object that was forwarded by api server and based on a logic, sends back a response to api server that contains information on whether to allow or reject the request. These controllers are registered with Kubernetes using the `ValidatingAdmissionWebhook`.
+[K8s-authz](https://github.com/casbin/k8s-authz) is a Kubernetes (k8s) authorization middleware based on Casbin that utilizes RBAC (Role-Based Access Control) and ABAC (Attribute-Based Access Control) for policy enforcement. This middleware integrates with the K8s validation admission webhook to validate the policies defined by Casbin for each request made to K8s resources. Custom admission controllers are registered with Kubernetes using the `ValidatingAdmissionWebhook` to perform validations on request objects forwarded by the API server and provide a response indicating whether the request should be allowed or rejected.
 
-The K8s API server needs to know when to send the incoming request to our admission controller. For this part, we have defined a validation webhook which would proxy the requests for any type of K8s resource/sub-resource and perform policy verification on it. The user would be allowed to perform the operations on these resources, only if the casbin enforcer authorizes it. The [enforcer](/docs/get-started#new-a-casbin-enforcer) checks the roles of the user defined in the policies. This middleware would be deployed on the K8s cluster.
+To determine when to send incoming requests to the admission controller, a validation webhook has been implemented. This webhook proxies requests for any type of K8s resource or sub-resource and performs policy verification. Users are only allowed to perform operations on these resources if they are authorized by the Casbin enforcer. The [enforcer](/docs/get-started#new-a-casbin-enforcer) checks the roles of the user as defined in the policies. The K8s cluster is the deployment target for this middleware.
 
 ## Requirements
 
-Before proceeding, make sure to have the following-
+Before proceeding, ensure that you have the following:
 
-- A running k8s Cluster.
-You can either run the clusters through Docker by enabling it on the Docker Desktop or you can setup the complete K8s ecosytem locally or on your server. You can follow this detailed [guide](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/) to setup the k8s cluster locally on Windows or this [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04) if want to setup for Linux.
-- Kubectl CLI
-This is the [guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) to setup it on Windows and this [guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) for Linux.
+- A running Kubernetes cluster. You can set up a local cluster using Docker or set up a complete Kubernetes ecosystem on your server. For detailed instructions, refer to this [guide](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/) for setting up a local Kubernetes cluster on Windows or this [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04) for setting up a cluster on Linux.
+- Kubectl CLI. Instructions for installing Kubectl on Windows can be found [here](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/), and for Linux [here](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/).
 - OpenSSL
 
 ## Usage
 
-- Generate the certificates and keys for every user by using openssl and running the following script:-
+Follow these steps to use K8s-authz:
 
-```bash
-./gen_cert.sh
-```
+1. Generate certificates and keys for each user using OpenSSL. Run the script below:
 
-- Build the docker image from the [Dockerfile](https://github.com/casbin/k8s-authz/blob/master/Dockerfile) manually by running the following command and then change the build version here and at the deployment [file](https://github.com/casbin/k8s-authz/blob/718f58c46e3dbf79063b5b1c18348c2fee5de9e9/manifests/deployment.yaml#L18), as per the builds.
+    ```bash
+    ./gen_cert.sh
+    ```
 
-```bash
-docker build -t casbin/k8s_authz:0.1 .
-```
+2. Build the Docker image from the [Dockerfile](https://github.com/casbin/k8s-authz/blob/master/Dockerfile) manually by running the following command. Remember to change the build version in the command and in the deployment [file](https://github.com/casbin/k8s-authz/blob/718f58c46e3dbf79063b5b1c18348c2fee5de9e9/manifests/deployment.yaml#L18) accordingly.
 
-- Define the casbin policies in the [model.conf](https://github.com/casbin/k8s-authz/blob/master/config/model.conf) and [policy.csv](https://github.com/casbin/k8s-authz/blob/master/config/policy.csv). You can refer the [docs](/docs/how-it-works) to get to know more about the working of these policies.
+    ```bash
+    docker build -t casbin/k8s_authz:0.1 .
+    ```
 
-- Before deploying, you can change the ports in [main.go](https://github.com/casbin/k8s-authz/blob/master/main.go) and also in the validation webhook configuration [file](https://github.com/casbin/k8s-authz/blob/master/manifests/deployment.yaml) depending on your usage.
-- Deploy the validation controller and the webhook on k8s cluster by running:-
+3. Define the Casbin policies in the [model.conf](https://github.com/casbin/k8s-authz/blob/master/config/model.conf) and [policy.csv](https://github.com/casbin/k8s-authz/blob/master/config/policy.csv) files. For more information on how these policies work, refer to the [documentation](/docs/how-it-works).
 
-```bash
-kubectl apply -f deployment.yaml
-```
+4. Before deploying, you can modify the ports in the [main.go](https://github.com/casbin/k8s-authz/blob/master/main.go) file, as well as in the validation webhook configuration [file](https://github.com/casbin/k8s-authz/blob/master/manifests/deployment.yaml), based on your specific requirements.
 
-- For a production server, we need to create a k8s `secret` to place the certificates for security purposes.
+5. Deploy the validation controller and the webhook on the Kubernetes cluster by running the following command:
 
-```bash
-kubectl create secret generic casbin -n default \
-  --from-file=key.pem=certs/casbin-key.pem \
-  --from-file=cert.pem=certs/casbin-crt.pem
-```
+    ```bash
+    kubectl apply -f deployment.yaml
+    ```
 
-- Once, this part is done we need to change the directory of the certs in [main.go](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) and then in [manifests](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) with that of the `secret`.
+6. For a production server, it is recommended to create a Kubernetes `secret` to secure the certificates:
 
-Now the server should be running and ready to validate the requests for the operations on the k8s resources.
+    ```bash
+    kubectl create secret generic casbin -n default \
+      --from-file=key.pem=certs/casbin-key.pem \
+      --from-file=cert.pem=certs/casbin-crt.pem
+    ```
+
+7. After completing the above steps, you need to update the certificate directory in [main.go](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) and the [manifests](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) with the directory of the created `secret`.
+
+Now, the server should be up and running, ready to validate requests made to K8s resources and enforce policies accordingly.

@@ -1,18 +1,16 @@
 ---
 id: rbac-with-domains-api
 title: RBAC with Domains API
-description: A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code
+description: A more user-friendly API for RBAC with domains. This API is a subset of the Management API. RBAC users can use this API to simplify their code.
 keywords: [RBAC with domains, API]
 authors: [hsluoyz]
 ---
 
-
-
-A more friendly API for RBAC with domains. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
+A more user-friendly API for RBAC with domains. This API is a subset of the Management API. RBAC users can use this API to simplify their code.
 
 ## Reference
 
-global variable `e` is Enforcer instance.
+The global variable `e` represents the Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -84,7 +82,7 @@ Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rba
 
 ### `GetUsersForRoleInDomain()`
 
-GetUsersForRoleInDomain gets the users that has a role inside a domain.
+The `GetUsersForRoleInDomain()` function retrieves the users that have a role within a domain.
 
 For example:
 
@@ -122,7 +120,7 @@ res = e.get_users_for_role_in_domain("admin", "domain1")
 
 ### `GetRolesForUserInDomain()`
 
-GetRolesForUserInDomain gets the roles that a user has inside a domain.
+The `GetRolesForUserInDomain()` function retrieves the roles that a user has within a domain.
 
 For example:
 
@@ -169,7 +167,7 @@ List<String> res = e.getRolesForUserInDomain("admin", "domain1");
 
 ### `GetPermissionsForUserInDomain()`
 
-GetPermissionsForUserInDomain gets permissions for a user or role inside a domain.
+The `GetPermissionsForUserInDomain()` function retrieves the permissions for a user or role within a domain.
 
 For example:
 
@@ -198,8 +196,7 @@ List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
 
 ### `AddRoleForUserInDomain()`
 
-AddRoleForUserInDomain adds a role for a user inside a domain.
-Returns false if the user already has the role (aka not affected).
+The `AddRoleForUserInDomain()` function adds a role for a user within a domain. It returns `false` if the user already has the role (no changes made).
 
 For example:
 
@@ -237,8 +234,7 @@ boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
 
 ### `DeleteRoleForUserInDomain()`
 
-DeleteRoleForUserInDomain deletes a role for a user inside a domain.
-Returns false if the user does not have the role (aka not affected).
+The `DeleteRoleForUserInDomain()` function removes a role for a user within a domain. It returns `false` if the user does not have the role (no changes made).
 
 For example:
 
@@ -267,8 +263,7 @@ boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
 
 ### `DeleteRolesForUserInDomain()`
 
-DeleteRolesForUserInDomain deletes all roles for a user inside a domain.
-Returns false if the user does not have any roles (aka not affected).
+The `DeleteRolesForUserInDomain()` function removes all roles for a user within a domain. It returns `false` if the user does not have any roles (no changes made).
 
 For example:
 
@@ -288,8 +283,7 @@ ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
 
 ### `GetAllUsersByDomain()`
 
-GetAllUsersByDomain would get all users associated with the domain.
-Returns empty string array if has no domain defined in model.
+The `GetAllUsersByDomain()` function retrieves all users associated with the given domain. It returns an empty string array if no domain is defined in the model.
 
 For example:
 
@@ -309,8 +303,7 @@ res := e.GetAllUsersByDomain("domain1")
 
 ### `DeleteAllUsersByDomain()`
 
-DeleteAllUsersByDomain would delete all users associated with the domain.
-Returns false if has no domain defined in model.
+The `DeleteAllUsersByDomain()` function deletes all users associated with the given domain. It returns `false` if no domain is defined in the model.
 
 For example:
 
