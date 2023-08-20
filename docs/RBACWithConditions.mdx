@@ -1,0 +1,211 @@
+---
+id: rbac-with-conditions
+title: RBAC with Conditions
+description: Usage of RBAC with conditions
+keywords: [RBAC with conditions]
+authors: [PokIsemaine]
+---
+# RBAC with Conditions
+
+## Conditional RoleManager
+
+`ConditionalRoleManager` supports custom condition functions at the policy level.
+
+For example, when we need a temporary role policy, we can follow the following approach:
+
+`model.conf`
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _, (_, _)
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+`g = _, _, (_, _)` uses `(_, _)` to contain a list of arguments to pass to the condition function
+and `_` as a parameter placeholder
+
+`policy.csv`
+```csv
+p, alice, data1, read
+p, data2_admin, data2, write
+p, data3_admin, data3, read
+p, data4_admin, data4, write
+p, data5_admin, data5, read
+p, data6_admin, data6, write
+p, data7_admin, data7, read
+p, data8_admin, data8, write
+
+g, alice, data2_admin, 0000-01-01 00:00:00, 0000-01-02 00:00:00
+g, alice, data3_admin, 0000-01-01 00:00:00, 9999-12-30 00:00:00
+g, alice, data4_admin, _, _
+g, alice, data5_admin, _, 9999-12-30 00:00:00
+g, alice, data6_admin, _, 0000-01-02 00:00:00
+g, alice, data7_admin, 0000-01-01 00:00:00, _
+g, alice, data8_admin, 9999-12-30 00:00:00, _
+```
+
+### Basic Usage
+
+Add a conditional function for the role policy(`g`type policy)  through `AddNamedLinkConditionFunc`,
+and when enforcing is executed, the corresponding parameters will be automatically obtained
+and passed in the conditional function for checking.
+If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+
+```go
+e.AddNamedLinkConditionFunc("g", "alice", "data2_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data3_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data4_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data5_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data6_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data7_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data8_admin", util.TimeMatchFunc)
+
+
+e.enforce("alice", "data1", "read")     // except: true
+e.enforce("alice", "data2", "write")    // except: false
+e.enforce("alice", "data3", "read")     // except: true
+e.enforce("alice", "data4", "write")    // except: true
+e.enforce("alice", "data5", "read")     // except: true
+e.enforce("alice", "data6", "write")    // except: false
+e.enforce("alice", "data7", "read")     // except: true
+e.enforce("alice", "data8", "write")    // except: false
+```
+
+### Custom condition functions
+
+Custom conditional functions need to conform to the following function types
+```go
+type LinkConditionFunc = func(args ...string) (bool, error)
+```
+
+for example:
+
+```go
+// TimeMatchFunc is the wrapper for TimeMatch.
+func TimeMatchFunc(args ...string) (bool, error) {
+	if err := validateVariadicStringArgs(2, args...); err != nil {
+		return false, fmt.Errorf("%s: %s", "TimeMatch", err)
+	}
+	return TimeMatch(args[0], args[1])
+}
+
+// TimeMatch determines whether the current time is between startTime and endTime.
+// You can use "_" to indicate that the parameter is ignored
+func TimeMatch(startTime, endTime string) (bool, error) {
+	now := time.Now()
+	if startTime != "_" {
+		if start, err := time.Parse("2006-01-02 15:04:05", startTime); err != nil {
+			return false, err
+		} else if !now.After(start) {
+			return false, nil
+		}
+	}
+
+	if endTime != "_" {
+		if end, err := time.Parse("2006-01-02 15:04:05", endTime); err != nil {
+			return false, err
+		} else if !now.Before(end) {
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
+```
+
+## Conditional RoleManager with domains
+
+`model.conf`
+
+```ini
+[request_definition]
+r = sub, dom, obj, act
+
+[policy_definition]
+p = sub, dom, obj, act
+
+[role_definition]
+g = _, _, _, (_, _)
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+`policy.csv`
+
+```
+p, alice, data1, read
+p, data2_admin, data2, write
+p, data3_admin, data3, read
+p, data4_admin, data4, write
+p, data5_admin, data5, read
+p, data6_admin, data6, write
+p, data7_admin, data7, read
+p, data8_admin, data8, write
+
+g, alice, data2_admin, domain2, 0000-01-01 00:00:00, 0000-01-02 00:00:00
+g, alice, data3_admin, domain3, 0000-01-01 00:00:00, 9999-12-30 00:00:00
+g, alice, data4_admin, domain4, _, _
+g, alice, data5_admin, domain5, _, 9999-12-30 00:00:00
+g, alice, data6_admin, domain6, _, 0000-01-02 00:00:00
+g, alice, data7_admin, domain7, 0000-01-01 00:00:00, _
+g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
+```
+### Basic Usage
+
+Add a conditional function for the role policy(`g`type policy)  through `AddNamedDomainLinkConditionFunc`,
+and when enforcing is executed, the corresponding parameters will be automatically obtained
+and passed in the conditional function for checking.
+If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+
+```go
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data2_admin", "domain2", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data3_admin", "domain3", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data4_admin", "domain4", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data5_admin", "domain5", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data6_admin", "domain6", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data7_admin", "domain7", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data8_admin", "domain8", util.TimeMatchFunc)
+
+
+e.enforce("alice", "domain1", "data1", "read")              // except: true
+e.enforce("alice", "domain2", "data2", "write")             // except: false
+e.enforce("alice", "domain3", "data3", "read")              // except: true
+e.enforce("alice", "domain4", "data4", "write")             // except: true
+e.enforce("alice", "domain5", "data5", "read")              // except: true
+e.enforce("alice", "domain6", "data6", "write")             // except: false
+e.enforce("alice", "domain7", "data7", "read")              // except: true
+e.enforce("alice", "domain8", "data8", "write")             // except: false
+e.enforce("alice", "domain_not_exist", "data1", "write")    // except: false
+e.enforce("alice", "domain_not_exist", "data2", "read")     // except: false
+e.enforce("alice", "domain_not_exist", "data3", "write")    // except: false
+e.enforce("alice", "domain_not_exist", "data4", "read")     // except: false
+e.enforce("alice", "domain_not_exist", "data5", "write")    // except: false
+e.enforce("alice", "domain_not_exist", "data6", "read")     // except: false
+e.enforce("alice", "domain_not_exist", "data7", "write")    // except: false
+e.enforce("alice", "domain_not_exist", "data8", "read")     // except: false
+```
+
+### Custom condition functions
+
+Like the basic `Conditional RoleManager`, custom functions are supported, and there is no difference in use.
+
+Note that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` are at different levels and are used in different situations.
+
+![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)
+
+
+
