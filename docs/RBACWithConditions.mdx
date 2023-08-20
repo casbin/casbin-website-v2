@@ -5,7 +5,6 @@ description: Usage of RBAC with conditions
 keywords: [RBAC with conditions]
 authors: [PokIsemaine]
 ---
-# RBAC with Conditions
 
 ## Conditional RoleManager
 
@@ -14,6 +13,7 @@ authors: [PokIsemaine]
 For example, when we need a temporary role policy, we can follow the following approach:
 
 `model.conf`
+
 ```ini
 [request_definition]
 r = sub, obj, act
@@ -35,6 +35,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 and `_` as a parameter placeholder
 
 `policy.csv`
+
 ```csv
 p, alice, data1, read
 p, data2_admin, data2, write
@@ -84,6 +85,7 @@ e.enforce("alice", "data8", "write")    // except: false
 ### Custom condition functions
 
 Custom conditional functions need to conform to the following function types
+
 ```go
 type LinkConditionFunc = func(args ...string) (bool, error)
 ```
@@ -93,33 +95,33 @@ for example:
 ```go
 // TimeMatchFunc is the wrapper for TimeMatch.
 func TimeMatchFunc(args ...string) (bool, error) {
-	if err := validateVariadicStringArgs(2, args...); err != nil {
-		return false, fmt.Errorf("%s: %s", "TimeMatch", err)
-	}
-	return TimeMatch(args[0], args[1])
+    if err := validateVariadicStringArgs(2, args...); err != nil {
+        return false, fmt.Errorf("%s: %s", "TimeMatch", err)
+    }
+    return TimeMatch(args[0], args[1])
 }
 
 // TimeMatch determines whether the current time is between startTime and endTime.
 // You can use "_" to indicate that the parameter is ignored
 func TimeMatch(startTime, endTime string) (bool, error) {
-	now := time.Now()
-	if startTime != "_" {
-		if start, err := time.Parse("2006-01-02 15:04:05", startTime); err != nil {
-			return false, err
-		} else if !now.After(start) {
-			return false, nil
-		}
-	}
+    now := time.Now()
+    if startTime != "_" {
+        if start, err := time.Parse("2006-01-02 15:04:05", startTime); err != nil {
+            return false, err
+        } else if !now.After(start) {
+            return false, nil
+        }
+    }
 
-	if endTime != "_" {
-		if end, err := time.Parse("2006-01-02 15:04:05", endTime); err != nil {
-			return false, err
-		} else if !now.Before(end) {
-			return false, nil
-		}
-	}
+    if endTime != "_" {
+        if end, err := time.Parse("2006-01-02 15:04:05", endTime); err != nil {
+            return false, err
+        } else if !now.Before(end) {
+            return false, nil
+        }
+    }
 
-	return true, nil
+    return true, nil
 }
 ```
 
@@ -146,7 +148,7 @@ m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 
 `policy.csv`
 
-```
+```csv
 p, alice, data1, read
 p, data2_admin, data2, write
 p, data3_admin, data3, read
@@ -164,6 +166,7 @@ g, alice, data6_admin, domain6, _, 0000-01-02 00:00:00
 g, alice, data7_admin, domain7, 0000-01-01 00:00:00, _
 g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
 ```
+
 ### Basic Usage
 
 Add a conditional function for the role policy(`g`type policy)  through `AddNamedDomainLinkConditionFunc`,
@@ -206,6 +209,3 @@ Like the basic `Conditional RoleManager`, custom functions are supported, and th
 Note that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` are at different levels and are used in different situations.
 
 ![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)
-
-
-

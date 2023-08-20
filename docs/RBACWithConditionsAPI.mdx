@@ -11,6 +11,7 @@ A more user-friendly API for [RBAC with conditions](RBACWithConditions.mdx).
 ## Reference
 
 ### AddNamedLinkConditionFunc
+
 `AddNamedLinkConditionFunc` Add condition function fn for Link `userName->roleName`,
 when fn returns true, Link is valid, otherwise invalid
 
@@ -29,6 +30,7 @@ e.AddNamedLinkConditionFunc("g", "userName", "roleName", YourLinkConditionFunc)
 ```
 
 ### AddNamedDomainLinkConditionFunc
+
 `AddNamedDomainLinkConditionFunc` Add condition function fn for Link `userName-> {roleName, domain}`,
 when fn returns true, Link is valid, otherwise invalid
 
@@ -47,6 +49,7 @@ e.AddNamedDomainLinkConditionFunc("g", "userName", "roleName", "domainName", You
 ```
 
 ### SetNamedLinkConditionFuncParams
+
 `SetNamedLinkConditionFuncParams` Sets the parameters of the condition function fn for Link `userName->roleName`
 
 ```mdx-code-block
@@ -65,6 +68,7 @@ e.SetNamedLinkConditionFuncParams("g", "userName2", "roleName2", "YourConditionF
 ```
 
 ### SetNamedDomainLinkConditionFuncParams
+
 `SetNamedDomainLinkConditionFuncParams` Sets the parameters of the condition function fn
 for Link `userName->{roleName, domain}`
 
