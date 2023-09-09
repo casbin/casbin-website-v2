@@ -558,3 +558,32 @@ There're details about how to write an adapter.
 ### Who is responsible to create the DB?
 
 As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: <https://github.com/casbin/xorm-adapter>
+
+## Context Adapter
+
+[ContextAdapter](https://github.com/casbin/casbin/blob/master/persist/adapter_context.go) provides a context-aware interface for Casbin adapters.
+
+Through context, you can implement features such as timeout control for the Adapter API
+
+### Example
+
+[gormadapter](https://github.com/casbin/gorm-adapter) supports adapter with context, the following is a timeout control implemented using context
+
+```go
+ca, _ := NewContextAdapter("mysql", "root:@tcp(127.0.0.1:3306)/", "casbin")
+// Limited time 300s
+ctx, cancel := context.WithTimeout(context.Background(), 300*time.Microsecond)
+defer cancel()
+
+err := ca.AddPolicyCtx(ctx, "p", "p", []string{"alice", "data1", "read"})
+if err != nil {
+    panic(err)
+}
+```
+
+### How to write an context adapter
+
+`Context Adapter` API only has an extra layer of context processing than ordinary `Adapter API`,
+and on the basis of implementing ordinary Adapter API, you can encapsulate your own processing logic for context
+
+A simple reference to the `gormadapter`: [context_adapter.go](https://github.com/casbin/gorm-adapter/blob/master/context_adapter.go)
