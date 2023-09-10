@@ -267,7 +267,7 @@ var _hmt = _hmt || [];
     announcementBar: {
       id: "announcement", // ID of the announcement bar
       content:
-        `<a href="https://casdoor.org/">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>`,
+        "<a href=\"https://casdoor.org/\">💖 Looking for an open-source identity and access management solution like Okta, Auth0, Keycloak ? Learn more about: Casdoor</a>",
       isCloseable: true,
     },
     docs: {
@@ -305,26 +305,14 @@ var _hmt = _hmt || [];
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
-          editUrl: ({locale, docPath}) => {
-            if (locale === "en") {
-              return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
-            }
-            if (locale === "zh") {
-              return "https://crowdin.com/project/casbin-website/zh-CN";
-            }
-            return `https://crowdin.com/project/casbin-website/${locale}`;
+          editUrl: ({docPath}) => {
+            return `https://github.com/casbin/casbin-website-v2/edit/master/docs/${docPath}`;
           },
         },
         blog: {
           showReadingTime: true,
-          editUrl: ({locale, blogDirPath, blogPath}) => {
-            if (locale === "en") {
-              return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
-            }
-            if (locale === "zh") {
-              return "https://crowdin.com/project/casbin-website/zh-CN";
-            }
-            return `https://crowdin.com/project/casbin-website/${locale}`;
+          editUrl: ({blogDirPath, blogPath}) => {
+            return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
           },
         },
         theme: {
