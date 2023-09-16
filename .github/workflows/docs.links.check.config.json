@@ -8,6 +8,9 @@
         },
         {
             "pattern": "^https://www.thinkphp.cn/"
+        },
+        {
+            "pattern": "^https://virgool.io/@a3dho3yn"
         }
     ]
 }
