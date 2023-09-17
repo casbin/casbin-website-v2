@@ -27,5 +27,18 @@ A complete list of Casbin enforcers is provided below. Any 3rd-party contributio
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="Python" label="Python" default>
+```
+
+| Enforcer                                                                                    | Author | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Enforcer](https://github.com/casbin/pycasbin/blob/master/casbin/enforcer.py)                        | Casbin | The `Enforcer` is the basic structure for users to interact with Casbin policies and models. You can find more details about the `Enforcer` API [here](/docs/management-api).                                                                                                                                                                                                            |
+| [DistributedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/distributed_enforcer.py) | Casbin | The `DistributedEnforcer` supports multiple instances in distributed clusters. It wraps the `SyncedEnforcer` for the dispatcher. You can find more details about the dispatcher [here](/docs/dispatchers#distributedenforcer).                                                                                                                                                                   |
+| [SyncedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/synced_enforcer.py)           | Casbin | The `SyncedEnforcer` is based on the `Enforcer` and provides synchronized access. It is thread-safe.                                                                                                                                                                                                                                                                               |
+| [AsyncEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/async_enforcer.py)| Casbin | The `AsyncEnforcer` provides async API.                                                                                                                                                                                                                                                                                                 |
+| [FastEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/fast_enforcer.py)| Casbin | The `FastEnforcer` uses a new model which is 50x faster than the normal model. You can find more [here](https://github.com/wakemaster39/fastbin)                                                                                                                                                                                                                                                                                                 |
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
