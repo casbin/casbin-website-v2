@@ -11,6 +11,9 @@
         },
         {
             "pattern": "^https://virgool.io/@a3dho3yn"
+        },
+        {
+            "pattern": "^https://blog.csdn.net"
         }
     ]
 }
