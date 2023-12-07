@@ -302,6 +302,9 @@ var _hmt = _hmt || [];
     [
       "@docusaurus/preset-classic",
       {
+        gtag: {
+          trackingID: "G-8S2TKCJ27X",
+        },
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
@@ -317,6 +320,10 @@ var _hmt = _hmt || [];
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        sitemap: {
+          changefreq: "weekly",
+          priority: 0.5,
         },
       },
     ],
