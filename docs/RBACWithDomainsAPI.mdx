@@ -368,6 +368,32 @@ If you are handling a domain like ```name::domain```, it may lead to unexpected 
 
 :::
 
+### `GetAllRolesByDomain()`
+
+GetAllRolesByDomain would get all roles associated with the domain.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllRolesByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+This method does not apply to domains that have an inheritance relationship, also known as implicit roles.
+
+:::
+
 ### `GetImplicitUsersForResourceByDomain()`
 
 GetImplicitUsersForResourceByDomain return implicit user based on resource and domain.
