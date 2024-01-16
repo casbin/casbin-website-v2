@@ -1232,7 +1232,8 @@ boolean has = e.hasPermissionForUser("alice", "read");
 GetImplicitRolesForUser gets implicit roles that a user has.
 Compared to GetRolesForUser(), this function retrieves indirect roles besides direct roles.
 
-For example: 
+For example:
+
 ```csv
 g, alice, role:admin  
 g, role:admin, role:user  
@@ -1317,6 +1318,7 @@ GetImplicitUsersForRole gets all users inheriting the role.
 Compared to GetUsersForRole(), this function retrieves indirect users.
 
 For example:  
+
 ```csv
 g, alice, role:admin  
 g, role:admin, role:user  
@@ -1365,6 +1367,7 @@ GetImplicitPermissionsForUser gets implicit permissions for a user or role.
 Compared to GetPermissionsForUser(), this function retrieves permissions for inherited roles.  
 
 For example:  
+
 ```csv
 p, admin, data1, read  
 p, alice, data2, read  
@@ -1450,6 +1453,7 @@ GetNamedImplicitPermissionsForUser gets implicit permissions for a user or role 
 Compared to GetImplicitPermissionsForUser(), this function allow you to specify the policy name.
 
 For example:
+
 ```csv
 p, admin, data1, read
 p2, admin, create
@@ -1490,6 +1494,7 @@ e.get_named_implicit_permissions_for_user("p2", "alice")
 GetDomainsForUser gets all domains which a user has.
 
 For example:
+
 ```csv
 p, admin, domain1, data1, read
 p, admin, domain2, data2, read
