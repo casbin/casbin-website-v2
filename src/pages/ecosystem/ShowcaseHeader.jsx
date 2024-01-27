@@ -3,7 +3,7 @@ import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
 import React from "react";
 import {DESCRIPTION, TITLE} from "@site/src/pages/ecosystem/index";
-const SUBMIT_URL = "https://github.com/facebook/docusaurus/discussions/7826";
+const SUBMIT_URL = "https://github.com/casbin/casbin-website-v2";
 
 export default function ShowcaseHeader() {
   return (

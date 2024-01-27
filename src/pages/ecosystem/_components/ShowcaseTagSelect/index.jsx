@@ -5,16 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useHistory, useLocation} from "@docusaurus/router";
 import {toggleListItem} from "@site/src/utils/jsUtils";
 
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem";
+import {prepareUserState} from "@site/src/pages/ecosystem/SearchBar";
 
 const TagQueryStringKey = "tags";
 
@@ -29,10 +25,7 @@ function replaceSearchTags(search, newTags) {
   return searchParams.toString();
 }
 
-function ShowcaseTagSelect(
-  {id, icon, label, tag, ...rest},
-  ref
-) {
+function ShowcaseTagSelect({id, icon, label, tag, ...rest}, ref) {
   const location = useLocation();
   const history = useHistory();
   const [selected, setSelected] = useState(false);
@@ -43,6 +36,7 @@ function ShowcaseTagSelect(
   const toggleTag = useCallback(() => {
     const tags = readSearchTags(location.search);
     const newTags = toggleListItem(tags, tag);
+
     const newSearch = replaceSearchTags(location.search, newTags);
     history.push({
       ...location,

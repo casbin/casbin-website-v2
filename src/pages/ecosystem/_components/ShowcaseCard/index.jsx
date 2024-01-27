@@ -25,9 +25,7 @@ const TagComp = React.forwardRef(({label, color, description}, ref) => (
 ));
 
 function ShowcaseCardTag({tags}) {
-  console.log("tags", tags);
   const tagObjects = tags.map((tag) => ({tag, ...Tags[tag]}));
-  console.log("tagObjects", tagObjects);
   // Keep same order for all tags
   const tagObjectsSorted = sortBy(tagObjects, (tagObject) =>
     TagList.indexOf(tagObject.tag)
@@ -54,12 +52,13 @@ function ShowcaseCardTag({tags}) {
 }
 
 function getCardImage(user) {
-  return (
-    user.preview ??
-    `https://slorber-api-screenshot.netlify.app/${encodeURIComponent(
-      user.website
-    )}/showcase`
-  );
+  return "http://localhost:3000/img/casbin.svg";
+  // return (
+  //   user.preview ??
+  //   `https://slorber-api-screenshot.netlify.app/${encodeURIComponent(
+  //     user.website
+  //   )}/showcase`
+  // );
 }
 
 function ShowcaseCard({user}) {

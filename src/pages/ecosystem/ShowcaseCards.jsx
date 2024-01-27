@@ -50,19 +50,21 @@ export default function ShowcaseCards() {
               <ul
                 className={clsx("container", "clean-list", styles.showcaseList)}
               >
-                {favoriteUsers.map((user) => (
-                  <ShowcaseCard key={user.title} user={user} />
-                ))}
+                {favoriteUsers.map((user, index) => {
+                  return <ShowcaseCard key={user.title + index} user={user} />;
+                })}
               </ul>
             </div>
           </div>
           <div className="container margin-top--lg">
             <Heading as="h2" className={styles.showcaseHeader}>
-              <Translate id="showcase.usersList.allUsers">All sites</Translate>
+              <Translate id="showcase.usersList.allUsers">
+                All plugins
+              </Translate>
             </Heading>
             <ul className={clsx("clean-list", styles.showcaseList)}>
-              {otherUsers.map((user) => (
-                <ShowcaseCard key={user.title} user={user} />
+              {otherUsers.map((user, index) => (
+                <ShowcaseCard key={user.title + index} user={user} />
               ))}
             </ul>
           </div>
@@ -73,8 +75,8 @@ export default function ShowcaseCards() {
             className={clsx("margin-bottom--md", styles.showcaseFavoriteHeader)}
           />
           <ul className={clsx("clean-list", styles.showcaseList)}>
-            {filteredUsers.map((user) => (
-              <ShowcaseCard key={user.title} user={user} />
+            {filteredUsers.map((user, index) => (
+              <ShowcaseCard key={user.title + index} user={user} />
             ))}
           </ul>
         </div>

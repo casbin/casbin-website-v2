@@ -9,15 +9,13 @@ import React, {useCallback, useEffect, useState} from "react";
 import clsx from "clsx";
 import {useHistory, useLocation} from "@docusaurus/router";
 
-
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem";
+import {prepareUserState} from "@site/src/pages/ecosystem/SearchBar";
 
 export const OperatorQueryKey = "operator";
 
 export function readOperator(search) {
-  return (new URLSearchParams(search).get(OperatorQueryKey) ??
-    "OR");
+  return new URLSearchParams(search).get(OperatorQueryKey) ?? "OR";
 }
 
 export default function ShowcaseFilterToggle() {
@@ -73,7 +71,8 @@ export default function ShowcaseFilterToggle() {
       <button
         className="button button--outline button--primary"
         type="button"
-        onClick={() => ClearTag()}>
+        onClick={() => ClearTag()}
+      >
         Clear All
       </button>
     </div>

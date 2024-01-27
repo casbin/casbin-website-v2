@@ -8,7 +8,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#00ADD8",
   },
   Java: {
     label: translate({message: "Java"}),
@@ -17,7 +17,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#007396",
   },
   NodeJS: {
     label: translate({message: "NodeJS"}),
@@ -26,7 +26,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#339933",
   },
   PHP: {
     label: translate({message: "PHP"}),
@@ -35,7 +35,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#777BB4",
   },
   Python: {
     label: translate({message: "Python"}),
@@ -44,7 +44,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#3776AB",
   },
   dotNET: {
     label: translate({message: "dotNET"}),
@@ -53,7 +53,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#512BD4",
   },
   Rust: {
     label: translate({message: "Rust"}),
@@ -62,7 +62,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#000000",
   },
   Lua: {
     label: translate({message: "Lua"}),
@@ -71,7 +71,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#000080",
   },
   Swift: {
     label: translate({message: "Swift"}),
@@ -80,7 +80,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#FA7343",
   },
   Ruby: {
     label: translate({message: "Ruby"}),
@@ -89,7 +89,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#CC342D",
   },
   Cpp: {
     label: translate({message: "Cpp"}),
@@ -98,7 +98,7 @@ export const Tags = {
         "Our favorite Docusaurus sites that you must absolutely check out!",
       id: "showcase.tag.favorite.description",
     }),
-    color: "#e9669e",
+    color: "#00599C",
   },
   adapter: {
     label: translate({message: "adapter"}),
@@ -106,7 +106,7 @@ export const Tags = {
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
       id: "showcase.tag.opensource.description",
     }),
-    color: "#39ca30",
+    color: "#FFC107",
   },
   dispatcher: {
     label: translate({message: "dispatcher"}),
@@ -114,7 +114,7 @@ export const Tags = {
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
       id: "showcase.tag.opensource.description",
     }),
-    color: "#39ca30",
+    color: "#FF9800",
   },
   middleware: {
     label: translate({message: "middleware"}),
@@ -122,7 +122,7 @@ export const Tags = {
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
       id: "showcase.tag.opensource.description",
     }),
-    color: "#39ca30",
+    color: "#9C27B0",
   },
   RoleManager: {
     label: translate({message: "RoleManager"}),
@@ -130,7 +130,7 @@ export const Tags = {
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
       id: "showcase.tag.opensource.description",
     }),
-    color: "#39ca30",
+    color: "#3F51B5",
   },
   watcher: {
     label: translate({message: "watcher"}),
@@ -138,7 +138,7 @@ export const Tags = {
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
       id: "showcase.tag.opensource.description",
     }),
-    color: "#39ca30",
+    color: "#8BC34A",
   },
   // favorite: {
   //   label: translate({message: "Favorite"}),
