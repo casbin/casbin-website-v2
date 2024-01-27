@@ -10,7 +10,7 @@ import {useHistory, useLocation} from "@docusaurus/router";
 import {toggleListItem} from "@site/src/utils/jsUtils";
 
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem/SearchBar";
+import {prepareUserState} from "@site/src/pages/ecosystem/_components/SearchBar";
 
 const TagQueryStringKey = "tags";
 

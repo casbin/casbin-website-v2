@@ -1,5 +1,5 @@
-import {useFilteredUsers} from "@site/src/pages/ecosystem/useFilteredUsers";
-import {useSiteCountPlural} from "@site/src/pages/ecosystem/useSiteCountPlural";
+import {useFilteredUsers} from "@site/src/pages/ecosystem/_hooks/useFilteredUsers";
+import {useSiteCountPlural} from "@site/src/pages/ecosystem/_hooks/useSiteCountPlural";
 import clsx from "clsx";
 import styles from "@site/src/pages/ecosystem/styles.module.css";
 import Heading from "@theme/Heading";

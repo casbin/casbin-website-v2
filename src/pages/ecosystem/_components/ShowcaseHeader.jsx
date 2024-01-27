@@ -2,7 +2,7 @@ import Heading from "@theme/Heading";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
 import React from "react";
-import {DESCRIPTION, TITLE} from "@site/src/pages/ecosystem/index";
+import {DESCRIPTION, TITLE} from "@site/src/pages/ecosystem";
 const SUBMIT_URL = "https://github.com/casbin/casbin-website-v2";
 
 export default function ShowcaseHeader() {

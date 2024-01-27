@@ -1,4 +1,4 @@
-import {useFilteredUsers} from "@site/src/pages/ecosystem/useFilteredUsers";
+import {useFilteredUsers} from "@site/src/pages/ecosystem/_hooks/useFilteredUsers";
 import Heading from "@theme/Heading";
 import Translate from "@docusaurus/Translate";
 import {sortedUsers} from "@site/src/data/users";

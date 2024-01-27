@@ -10,7 +10,7 @@ import clsx from "clsx";
 import {useHistory, useLocation} from "@docusaurus/router";
 
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem/SearchBar";
+import {prepareUserState} from "@site/src/pages/ecosystem/_components/SearchBar";
 
 export const OperatorQueryKey = "operator";
 
