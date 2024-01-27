@@ -4,8 +4,7 @@ export const Tags = {
   Go: {
     label: translate({message: "Go"}),
     description: translate({
-      message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+      message: "go language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#00ADD8",
@@ -14,7 +13,7 @@ export const Tags = {
     label: translate({message: "Java"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Java language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#007396",
@@ -22,8 +21,7 @@ export const Tags = {
   NodeJS: {
     label: translate({message: "NodeJS"}),
     description: translate({
-      message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+      message: "NodeJS runtime",
       id: "showcase.tag.favorite.description",
     }),
     color: "#339933",
@@ -32,7 +30,7 @@ export const Tags = {
     label: translate({message: "PHP"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "PHP language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#777BB4",
@@ -41,7 +39,7 @@ export const Tags = {
     label: translate({message: "Python"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Python Language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#3776AB",
@@ -50,7 +48,7 @@ export const Tags = {
     label: translate({message: "dotNET"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        ".NET runtime",
       id: "showcase.tag.favorite.description",
     }),
     color: "#512BD4",
@@ -59,7 +57,7 @@ export const Tags = {
     label: translate({message: "Rust"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Rust language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#000000",
@@ -68,7 +66,7 @@ export const Tags = {
     label: translate({message: "Lua"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Lua language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#000080",
@@ -77,7 +75,7 @@ export const Tags = {
     label: translate({message: "Swift"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Swift language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#FA7343",
@@ -95,7 +93,7 @@ export const Tags = {
     label: translate({message: "Cpp"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Cpp language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#00599C",
@@ -103,7 +101,7 @@ export const Tags = {
   adapter: {
     label: translate({message: "adapter"}),
     description: translate({
-      message: "Open-Source Docusaurus sites can be useful for inspiration!",
+      message: "Adapter",
       id: "showcase.tag.opensource.description",
     }),
     color: "#FFC107",
@@ -111,7 +109,7 @@ export const Tags = {
   dispatcher: {
     label: translate({message: "dispatcher"}),
     description: translate({
-      message: "Open-Source Docusaurus sites can be useful for inspiration!",
+      message: "dispatcher",
       id: "showcase.tag.opensource.description",
     }),
     color: "#FF9800",
@@ -127,7 +125,7 @@ export const Tags = {
   RoleManager: {
     label: translate({message: "RoleManager"}),
     description: translate({
-      message: "Open-Source Docusaurus sites can be useful for inspiration!",
+      message: "RoleManager",
       id: "showcase.tag.opensource.description",
     }),
     color: "#3F51B5",
@@ -135,7 +133,7 @@ export const Tags = {
   watcher: {
     label: translate({message: "watcher"}),
     description: translate({
-      message: "Open-Source Docusaurus sites can be useful for inspiration!",
+      message: "watcher",
       id: "showcase.tag.opensource.description",
     }),
     color: "#8BC34A",
