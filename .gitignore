@@ -22,3 +22,6 @@ yarn-error.log*
 
 .idea/
 *.iml
+
+# temp floder for test
+/temp/
