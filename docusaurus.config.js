@@ -77,7 +77,7 @@ module.exports = {
         },
         {
           to: "/ecosystem",
-          label: "ecosystem",
+          label: "Ecosystem",
           position: "left",
         },
         {
