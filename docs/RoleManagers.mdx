@@ -12,13 +12,13 @@ The role manager is used to manage the RBAC role hierarchy (user-role mapping) i
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
+
 import {RoleManagerGoData} from "@site/src/data/RoleManagerData/RoleManagerGoData";
 import {RoleManagerJavaData} from "@site/src/data/RoleManagerData/RoleManagerJavaData"; import RoleManagerMDTable
   from "@site/src/data/RoleManagerData/RoleManagerMDTable";
 import {RoleManagerNodejsData} from "@site/src/data/RoleManagerData/RoleManagerNodejsData";
 import {RoleManagerPhpData} from "@site/src/data/RoleManagerData/RoleManagerPhpData";
 import {RoleManagerPythonData} from "@site/src/data/RoleManagerData/RoleManagerPythonData";
-
 
 <RoleManagerMDTable data={RoleManagerGoData}></RoleManagerMDTable>
 
@@ -30,7 +30,6 @@ For developers: all role managers must implement the [RoleManager](https://githu
 ```
 
 <RoleManagerMDTable data={RoleManagerJavaData}></RoleManagerMDTable>
-
 
 For developers: all role managers must implement the [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java) interface. The [Default Role Manager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) can be used as a reference implementation.
 
@@ -50,8 +49,6 @@ For developers: all role managers must implement the [RoleManager](https://githu
 
 <RoleManagerMDTable data={RoleManagerPhpData}></RoleManagerMDTable>
 
-
-
 For developers: all role managers must implement the [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php) interface. The [Default Role Manager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) can be used as a reference implementation.
 
 ```mdx-code-block
@@ -60,7 +57,6 @@ For developers: all role managers must implement the [RoleManager](https://githu
 ```
 
 <RoleManagerMDTable data={RoleManagerPythonData}></RoleManagerMDTable>
-
 
 For developers: all role managers must implement the [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py) interface. The [Default Role Manager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) can be used as a reference implementation.
 

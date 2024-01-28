@@ -18,6 +18,7 @@ A complete list of Casbin adapters is provided as below. Any 3rd-party contribut
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
+
 import {AdapterDotNETData} from "@site/src/data/AdapterData/AdapterDotNETData"; import {
   AdapterGoData
 } from "@site/src/data/AdapterData/AdapterGoData";
@@ -33,74 +34,74 @@ import {AdapterSwiftData} from "@site/src/data/AdapterData/AdapterSwiftData";
 
 <AdapterMDTable data={AdapterGoData}></AdapterMDTable>
 
-
 ```mdx-code-block
 </TabItem>
 <TabItem value="Java" label="Java">
 ```
-<AdapterMDTable data={AdapterJavaData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterJavaData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
 ```
-<AdapterMDTable data={AdapterNodejsData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterNodejsData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="PHP" label="PHP">
 ```
-<AdapterMDTable data={AdapterPhpData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterPhpData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Python" label="Python">
 ```
-<AdapterMDTable data={AdapterPythonData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterPythonData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value=".NET" label=".NET">
 ```
-<AdapterMDTable data={AdapterDotNETData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterDotNETData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Rust" label="Rust">
 ```
-<AdapterMDTable data={AdapterRustData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterRustData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Ruby" label="Ruby">
 ```
-<AdapterMDTable data={AdapterRubyData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterRubyData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Swift" label="Swift">
 ```
-<AdapterMDTable data={AdapterSwiftData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterSwiftData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 <TabItem value="Lua" label="Lua">
 ```
-<AdapterMDTable data={AdapterLuaData}></AdapterMDTable>
 
+<AdapterMDTable data={AdapterLuaData}></AdapterMDTable>
 
 ```mdx-code-block
 </TabItem>
 </Tabs>
 ```
+
 :::note
 
 1. If ``casbin.NewEnforcer()`` is called with an explicit or implicit adapter, the policy will be loaded automatically.
@@ -295,7 +296,7 @@ e := casbin.NewEnforcer("examples/basic_model.conf", a)
 
 If you want to convert adapter from ``A`` to ``B``, you can do like this:
 
-1. Load policy from A to memory
+1.Load policy from A to memory
 
 ```go
 e, _ := NewEnforcer(m, A)
@@ -308,13 +309,13 @@ e.SetAdapter(A)
 e.LoadPolicy()
    ```
 
-2. convert your adapter from A to B
+2.convert your adapter from A to B
 
 ```go
 e.SetAdapter(B)
-   ```
+```
 
-3. Save policy from memory to B
+3.Save policy from memory to B
 
 ```go
 e.SavePolicy()
