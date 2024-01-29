@@ -84,6 +84,6 @@ export const WatcherGoData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Go", "watcher"],
+    tags: ["Go", "Watcher"],
   };
 });

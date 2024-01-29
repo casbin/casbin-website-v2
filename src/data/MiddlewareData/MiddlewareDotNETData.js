@@ -14,6 +14,6 @@ export const MiddlewareDotNETData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["dotNET", "middleware"],
+    tags: ["dotNET", "Middleware"],
   };
 });

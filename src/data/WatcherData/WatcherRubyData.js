@@ -18,6 +18,6 @@ export const WatcherRubyData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Ruby", "watcher"],
+    tags: ["Ruby", "Watcher"],
   };
 });

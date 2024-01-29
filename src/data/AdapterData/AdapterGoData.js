@@ -384,6 +384,6 @@ export const AdapterGoData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Go", "adapter"],
+    tags: ["Go", "Adapter"],
   };
 });

@@ -31,6 +31,6 @@ export const MiddlewareRustData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Rust", "middleware"],
+    tags: ["Rust", "Middleware"],
   };
 });

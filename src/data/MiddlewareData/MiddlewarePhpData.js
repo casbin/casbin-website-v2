@@ -70,6 +70,6 @@ export const MiddlewarePhpData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["PHP", "middleware"],
+    tags: ["PHP", "Middleware"],
   };
 });

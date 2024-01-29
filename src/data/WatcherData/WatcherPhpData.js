@@ -9,6 +9,6 @@ export const WatcherPhpData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["PHP", "watcher"],
+    tags: ["PHP", "Watcher"],
   };
 });

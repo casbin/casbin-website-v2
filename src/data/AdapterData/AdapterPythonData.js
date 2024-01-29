@@ -163,6 +163,6 @@ export const AdapterPythonData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Python", "adapter"],
+    tags: ["Python", "Adapter"],
   };
 });

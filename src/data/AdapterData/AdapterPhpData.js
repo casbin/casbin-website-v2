@@ -86,6 +86,6 @@ export const AdapterPhpData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["PHP", "adapter"],
+    tags: ["PHP", "Adapter"],
   };
 });

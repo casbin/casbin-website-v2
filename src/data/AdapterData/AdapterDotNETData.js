@@ -48,6 +48,6 @@ export const AdapterDotNETData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["dotNET", "adapter"],
+    tags: ["dotNET", "Adapter"],
   };
 });

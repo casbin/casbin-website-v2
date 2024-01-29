@@ -58,6 +58,6 @@ export const MiddlewareNodejsData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["NodeJS", "middleware"],
+    tags: ["NodeJS", "Middleware"],
   };
 });

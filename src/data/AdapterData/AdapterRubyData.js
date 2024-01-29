@@ -21,6 +21,6 @@ export const AdapterRubyData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Ruby", "adapter"],
+    tags: ["Ruby", "Adapter"],
   };
 });

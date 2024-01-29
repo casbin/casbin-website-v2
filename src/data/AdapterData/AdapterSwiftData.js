@@ -29,6 +29,6 @@ export const AdapterSwiftData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Swift", "adapter"],
+    tags: ["Swift", "Adapter"],
   };
 });

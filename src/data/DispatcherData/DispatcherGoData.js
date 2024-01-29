@@ -19,6 +19,6 @@ export const DispatcherGoData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Go", "dispatcher"],
+    tags: ["Go", "Dispatcher"],
   };
 });

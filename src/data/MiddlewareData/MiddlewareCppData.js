@@ -8,6 +8,6 @@ export const MiddlewareCppData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Cpp", "middleware"],
+    tags: ["Cpp", "Middleware"],
   };
 });

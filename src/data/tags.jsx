@@ -98,7 +98,7 @@ export const Tags = {
     }),
     color: "#00599C",
   },
-  adapter: {
+  Adapter: {
     label: translate({message: "adapter"}),
     description: translate({
       message: "Adapter",
@@ -106,7 +106,7 @@ export const Tags = {
     }),
     color: "#FFC107",
   },
-  dispatcher: {
+  Dispatcher: {
     label: translate({message: "dispatcher"}),
     description: translate({
       message: "dispatcher",
@@ -114,7 +114,7 @@ export const Tags = {
     }),
     color: "#FF9800",
   },
-  middleware: {
+  Middleware: {
     label: translate({message: "middleware"}),
     description: translate({
       message: "Open-Source Docusaurus sites can be useful for inspiration!",
@@ -130,7 +130,7 @@ export const Tags = {
     }),
     color: "#3F51B5",
   },
-  watcher: {
+  Watcher: {
     label: translate({message: "watcher"}),
     description: translate({
       message: "watcher",

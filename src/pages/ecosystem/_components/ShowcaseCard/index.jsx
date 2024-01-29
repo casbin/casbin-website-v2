@@ -19,7 +19,7 @@ import CustomMarkdown from "@site/src/components/MarkdownToJsx/CustomMarkdown";
 
 const TagComp = React.forwardRef(({label, color, description}, ref) => (
   <li ref={ref} className={styles.tag} title={description}>
-    <span className={styles.textLabel}>{label.toLowerCase()}</span>
+    <span className={styles.textLabel}>{label.slice(0, 1).toUpperCase() + label.slice(1)}</span>
     <span className={styles.colorLabel} style={{backgroundColor: color}} />
   </li>
 ));

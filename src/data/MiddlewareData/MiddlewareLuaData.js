@@ -20,6 +20,6 @@ export const MiddlewareLuaData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Lua", "middleware"],
+    tags: ["Lua", "Middleware"],
   };
 });

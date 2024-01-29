@@ -30,6 +30,6 @@ export const MiddlewareJavaData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Java", "middleware"],
+    tags: ["Java", "Middleware"],
   };
 });

@@ -14,6 +14,10 @@ import {TagList, Tags} from "@site/src/data/tags";
 export default function ShowcaseFilters() {
   const filteredUsers = useFilteredUsers();
   const siteCountPlural = useSiteCountPlural();
+
+  const languageList = TagList.slice(0, 11);
+  const pluginList = TagList.slice(11);
+
   return (
     <section className="container margin-top--l margin-bottom--lg">
       <div className={clsx("margin-bottom--sm", styles.filterCheckbox)}>
@@ -25,43 +29,61 @@ export default function ShowcaseFilters() {
         </div>
         <ShowcaseFilterToggle />
       </div>
-      <ul className={clsx("clean-list", styles.checkboxList)}>
-        {TagList.map((tag, i) => {
-          const {label, description, color} = Tags[tag];
-          const id = `showcase_checkbox_id_${tag}`;
-
-          return (
-            <li key={i} className={styles.checkboxListItem}>
-              <ShowcaseTooltip
-                id={id}
-                text={description}
-                anchorEl="#__docusaurus"
-              >
-                <ShowcaseTagSelect
-                  tag={tag}
-                  id={id}
-                  label={label}
-                  icon={
-                    tag === "favorite" ? (
-                      <FavoriteIcon svgClass={styles.svgIconFavoriteXs} />
-                    ) : (
-                      <span
-                        style={{
-                          backgroundColor: color,
-                          width: 10,
-                          height: 10,
-                          borderRadius: "50%",
-                          marginLeft: 8,
-                        }}
-                      />
-                    )
-                  }
-                />
-              </ShowcaseTooltip>
-            </li>
-          );
-        })}
-      </ul>
+      <div>
+        <ul className={clsx("clean-list", styles.checkboxList)}>
+          {
+            languageList.map((tag, i) => {
+              return <Li key={i} tag={tag}></Li>;
+            })}
+        </ul>
+      </div>
+      <div>
+        <ul className={clsx("clean-list", styles.checkboxList)}>
+          {
+            pluginList.map((tag, i) => {
+              return <Li key={i} tag={tag}></Li>;
+            })
+          }
+        </ul>
+      </div>
     </section>
+  );
+}
+
+function Li({
+  tag,
+}) {
+  const {label, description, color} = Tags[tag];
+  const id = `showcase_checkbox_id_${tag}`;
+
+  return (
+    <li className={styles.checkboxListItem}>
+      <ShowcaseTooltip
+        id={id}
+        text={description}
+        anchorEl="#__docusaurus"
+      >
+        <ShowcaseTagSelect
+          tag={tag}
+          id={id}
+          label={label}
+          icon={
+            tag === "favorite" ? (
+              <FavoriteIcon svgClass={styles.svgIconFavoriteXs} />
+            ) : (
+              <span
+                style={{
+                  backgroundColor: color,
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  marginLeft: 8,
+                }}
+              />
+            )
+          }
+        />
+      </ShowcaseTooltip>
+    </li>
   );
 }

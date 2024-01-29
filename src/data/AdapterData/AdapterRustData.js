@@ -91,6 +91,6 @@ export const AdapterRustData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Rust", "adapter"],
+    tags: ["Rust", "Adapter"],
   };
 });

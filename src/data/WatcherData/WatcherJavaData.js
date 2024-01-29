@@ -32,6 +32,6 @@ export const WatcherJavaData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Java", "watcher"],
+    tags: ["Java", "Watcher"],
   };
 });

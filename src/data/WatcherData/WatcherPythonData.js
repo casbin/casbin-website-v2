@@ -47,6 +47,6 @@ export const WatcherPythonData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Python", "watcher"],
+    tags: ["Python", "Watcher"],
   };
 });

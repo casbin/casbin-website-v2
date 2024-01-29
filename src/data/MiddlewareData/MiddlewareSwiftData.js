@@ -8,6 +8,6 @@ export const MiddlewareSwiftData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Swift", "middleware"],
+    tags: ["Swift", "Middleware"],
   };
 });

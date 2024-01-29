@@ -40,6 +40,6 @@ export const WatcherNodejsData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["NodeJS", "watcher"],
+    tags: ["NodeJS", "Watcher"],
   };
 });

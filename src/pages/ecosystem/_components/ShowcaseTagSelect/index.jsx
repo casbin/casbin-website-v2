@@ -70,7 +70,7 @@ function ShowcaseTagSelect({id, icon, label, tag, ...rest}, ref) {
         {...rest}
       />
       <label ref={ref} htmlFor={id} className={styles.checkboxLabel}>
-        {label}
+        {label.slice(0, 1).toUpperCase() + label.slice(1)}
         {icon}
       </label>
     </>

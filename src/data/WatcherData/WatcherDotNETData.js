@@ -9,6 +9,6 @@ export const WatcherDotNETData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["dotNET", "watcher"],
+    tags: ["dotNET", "Watcher"],
   };
 });

@@ -160,6 +160,6 @@ export const AdapterNodejsData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["NodeJS", "adapter"],
+    tags: ["NodeJS", "Adapter"],
   };
 });

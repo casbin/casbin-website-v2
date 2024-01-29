@@ -73,6 +73,6 @@ export const AdapterJavaData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Java", "adapter"],
+    tags: ["Java", "Adapter"],
   };
 });

@@ -118,6 +118,6 @@ export const MiddlewareGoData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Go", "middleware"],
+    tags: ["Go", "Middleware"],
   };
 });

@@ -47,6 +47,6 @@ export const AdapterLuaData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Lua", "adapter"],
+    tags: ["Lua", "Adapter"],
   };
 });

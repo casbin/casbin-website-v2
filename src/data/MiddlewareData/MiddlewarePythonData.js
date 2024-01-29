@@ -26,6 +26,6 @@ export const MiddlewarePythonData = [
 ].map((item) => {
   return {
     ...item,
-    tags: ["Python", "middleware"],
+    tags: ["Python", "Middleware"],
   };
 });
