@@ -1,5 +1,5 @@
 import React from "react";
-import Markdown from "markdown-to-jsx";
+import CustomMarkdown from "@site/src/components/MarkdownToJsx/CustomMarkdown";
 
 export default function DispatcherMDTable({data}) {
   // 表头
@@ -11,5 +11,5 @@ export default function DispatcherMDTable({data}) {
     markdown += `| ${item.title} | ${item.type} | ${item.author} | ${item.description} |\n`;
   });
 
-  return <Markdown>{markdown}</Markdown>;
+  return <CustomMarkdown>{markdown}</CustomMarkdown>;
 }

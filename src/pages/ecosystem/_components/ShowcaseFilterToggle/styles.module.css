@@ -57,5 +57,5 @@ input:focus-visible ~ .checkboxLabel::after {
 }
 
 input:checked ~ .checkboxLabel::after {
-  transform: translateX(calc(-1 * var(--border)));
+  transform: translateX(calc(-1 * 2px));
 }

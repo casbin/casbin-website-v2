@@ -14,8 +14,8 @@ import styles from "./styles.module.css";
 import {sortBy} from "@site/src/utils/jsUtils";
 import Tooltip from "@site/src/pages/ecosystem/_components/ShowcaseTooltip";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
-import Markdown from "markdown-to-jsx";
 import {TagList, Tags} from "@site/src/data/tags";
+import CustomMarkdown from "@site/src/components/MarkdownToJsx/CustomMarkdown";
 
 const TagComp = React.forwardRef(({label, color, description}, ref) => (
   <li ref={ref} className={styles.tag} title={description}>
@@ -71,7 +71,7 @@ function ShowcaseCard({user}) {
       <div className="card__body">
         <div className={clsx(styles.showcaseCardHeader)}>
           <Heading as="h4" className={styles.showcaseCardTitle}>
-            {user.title && <Markdown>{user.title}</Markdown>}
+            {user.title && <CustomMarkdown>{user.title}</CustomMarkdown>}
           </Heading>
           {user.tags.includes("favorite") && (
             <FavoriteIcon svgClass={styles.svgIconFavorite} size="small" />
@@ -84,13 +84,13 @@ function ShowcaseCard({user}) {
                 "styles.showcaseCardSrcBtn"
               )}
             >
-              <Markdown>{user.author}</Markdown>
+              <CustomMarkdown>{user.author}</CustomMarkdown>
             </div>
           )}
         </div>
         {user.description && (
           <p className={styles.showcaseCardBody}>
-            <Markdown>{user.description}</Markdown>
+            <CustomMarkdown>{user.description}</CustomMarkdown>
           </p>
         )}
       </div>

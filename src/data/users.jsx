@@ -23,7 +23,7 @@ const userExample = [
 
     tags: ["adapter", "go"],
 
-    preview: require("./showcase/agilets.png"),
+    // preview: require("./showcase/agilets.png"),
   },
 ];
 
