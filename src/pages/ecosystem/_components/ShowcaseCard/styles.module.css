@@ -8,6 +8,7 @@
 .showcaseCardImage {
   overflow: hidden;
   height: 150px;
+  width: 200px;
   border-bottom: 2px solid var(--ifm-color-emphasis-200);
 }
 

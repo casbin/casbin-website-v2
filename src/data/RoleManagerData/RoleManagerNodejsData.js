@@ -11,6 +11,7 @@ export const RoleManagerNodejsData = [
     author: "Casbin",
     description:
       "Supports role hierarchy stored in the Casbin policy, with time-range-based sessions",
+    image: require("/static/img/ecosystem/session.png"),
   },
 ].map((item) => {
   return {

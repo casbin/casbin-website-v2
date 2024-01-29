@@ -52,7 +52,8 @@ function ShowcaseCardTag({tags}) {
 }
 
 function getCardImage(user) {
-  return "https://casbin.org/img/casbin.svg";
+  // return require("http://localhost:3000/img/casbin.svg");
+  return user.image || require("/static/img/favicon.png");
   // return (
   //   user.preview ??
   //   `https://slorber-api-screenshot.netlify.app/${encodeURIComponent(

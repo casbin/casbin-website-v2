@@ -6,6 +6,7 @@ export const AdapterPhpData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
+    image: require("/static/img/ecosystem/file.png"),
   },
   {
     title: "[Database Adapter](https://github.com/php-casbin/database-adapter)",
@@ -14,6 +15,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Microsoft SQL Server are supported by [techone/database](https://github.com/techoner/database)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title: "[Zend Db Adapter](https://github.com/php-casbin/zend-db-adapter)",
@@ -22,6 +24,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Oracle, IBM DB2, Microsoft SQL Server, Other PDO Driver are supported by [zend-db](https://docs.zendframework.com/zend-db/)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title:
@@ -31,6 +34,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "Powerful PHP database abstraction layer ([DBAL](https://github.com/doctrine/dbal)) with many features for database schema introspection and management.",
+    image: require("/static/img/ecosystem/DBAL.png"),
   },
   {
     title: "[Medoo Adapter](https://github.com/php-casbin/medoo-adapter)",
@@ -39,6 +43,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "[Medoo](https://github.com/catfan/Medoo) is a lightweight PHP Database Framework to Accelerate Development, supports all SQL databases, including `MySQL`, `MSSQL`, `SQLite`, `MariaDB`, `PostgreSQL`, `Sybase`, `Oracle` and more.",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title:
@@ -48,6 +53,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, Oracle, IBM DB2, Microsoft SQL Server, PDO, etc. are supported by [laminas-db](https://github.com/laminas/laminas-db)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title: "[Zend-db Adapter](https://github.com/php-casbin/zend-db-adapter)",
@@ -56,6 +62,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, Oracle, IBM DB2, Microsoft SQL Server, PDO, etc. are supported by [zend-db](https://github.com/zendframework/zend-db)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title:
@@ -65,6 +72,7 @@ export const AdapterPhpData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Oracle, Microsoft SQL Server, MongoDB are supported by [ThinkORM](https://github.com/top-think/think-orm)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
   {
     title:
@@ -73,6 +81,7 @@ export const AdapterPhpData = [
     author: "[@nsnake](https://github.com/nsnake)",
     autoSave: "❌",
     description: "For [Redis](https://redis.io/)",
+    image: require("/static/img/ecosystem/redis.png"),
   },
 ].map((item) => {
   return {

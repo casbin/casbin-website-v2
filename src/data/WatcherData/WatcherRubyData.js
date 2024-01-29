@@ -5,6 +5,7 @@ export const WatcherRubyData = [
     type: "KV store",
     author: "[CasbinRuby](https://github.com/CasbinRuby)",
     description: "Watcher for [Redis](http://redis.io/)",
+    image: require("/static/img/ecosystem/redis.png"),
   },
   {
     title:
@@ -12,6 +13,7 @@ export const WatcherRubyData = [
     type: "Messaging system",
     author: "[CasbinRuby](https://github.com/CasbinRuby)",
     description: "Watcher for [RabbitMQ](https://www.rabbitmq.com/)",
+    image: require("/static/img/ecosystem/rabbitMQ.png"),
   },
 ].map((item) => {
   return {

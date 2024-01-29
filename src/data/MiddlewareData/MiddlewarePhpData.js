@@ -3,36 +3,43 @@ export const MiddlewarePhpData = [
     title: "[Laravel](https://laravel.com/)",
     description:
       "The PHP framework for web artisans, via plugin: [laravel-authz](https://github.com/php-casbin/laravel-authz)",
+    image: require("/static/img/ecosystem/laravel.png"),
   },
   {
     title: "[Yii PHP Framework](https://www.yiiframework.com/)",
     description:
       "A fast, secure, and efficient PHP framework, via plugin: [yii-permission](https://github.com/php-casbin/yii-permission) or [yii-casbin](https://github.com/php-casbin/yii-casbin)",
+    image: require("/static/img/ecosystem/yii.png"),
   },
   {
     title: "[CakePHP](https://cakephp.org/)",
     description:
       "Build fast, grow solid PHP Framework, via plugin: [cake-permission](https://github.com/php-casbin/cake-permission)",
+    image: require("/static/img/ecosystem/cake.png"),
   },
   {
     title: "[CodeIgniter](https://codeigniter.com/)",
     description:
       "Associate users with roles and permissions in CodeIgniter4 Web Framework, via plugin: [CodeIgniter Permission](https://github.com/php-casbin/codeigniter-permission)",
+    image: require("/static/img/ecosystem/codeIgniter.png"),
   },
   {
     title: "[ThinkPHP 5.1](https://www.thinkphp.cn/)",
     description:
       "The ThinkPHP 5.1 framework, via plugin: [think-casbin](https://github.com/php-casbin/think-casbin)",
+    image: require("/static/img/ecosystem/thinkPHP.png"),
   },
   {
     title: "[ThinkPHP 6.0](https://www.thinkphp.cn/)",
     description:
       "The ThinkPHP 6.0 framework, via plugin: [think-authz](https://github.com/php-casbin/think-authz)",
+    image: require("/static/img/ecosystem/thinkPHP.png"),
   },
   {
     title: "[Symfony](https://symfony.com/)",
     description:
       "The Symfony PHP framework, via plugin: [symfony-permission](https://github.com/php-casbin/symfony-permission) or [symfony-casbin](https://github.com/videni/symfony-casbin)",
+    image: require("/static/img/ecosystem/symfony.png"),
   },
   {
     title: "[Hyperf](https://github.com/hyperf/hyperf)",
@@ -53,6 +60,7 @@ export const MiddlewarePhpData = [
     title: "[Phalcon](https://phalcon.io/)",
     description:
       "A full-stack PHP framework delivered as a C-extension, via plugin: [phalcon-permission](https://github.com/php-casbin/phalcon-permission)",
+    image: require("/static/img/ecosystem/phalcon.png"),
   },
   {
     title: "[Webman](https://github.com/walkor/webman)",

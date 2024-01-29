@@ -6,6 +6,7 @@ export const AdapterRubyData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
+    image: require("/static/img/ecosystem/file.png"),
   },
   {
     title:
@@ -15,6 +16,7 @@ export const AdapterRubyData = [
     autoSave: "✅",
     description:
       "[ADO, Amalgalite, IBM_DB, JDBC, MySQL, Mysql2, ODBC, Oracle, PostgreSQL, SQLAnywhere, SQLite3, and TinyTDS](http://sequel.jeremyevans.net/) are supported by [Sequel](http://sequel.jeremyevans.net/)",
+    image: require("/static/img/ecosystem/SQL.png"),
   },
 ].map((item) => {
   return {
