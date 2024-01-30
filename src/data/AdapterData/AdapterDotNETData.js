@@ -6,7 +6,7 @@ export const AdapterDotNETData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: "/static/img/ecosystem/file.png",
+    image: "/img/ecosystem/file.png",
   },
   {
     title: "[EF Adapter](https://github.com/casbin-net/EF-Adapter)",
@@ -15,7 +15,7 @@ export const AdapterDotNETData = [
     autoSave: "❌",
     description:
       "MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, DB2, etc. are supported by [Entity Framework 6](https://docs.microsoft.com/en-us/ef/ef6/)",
-    image: "/static/img/ecosystem/SQL.png",
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[EFCore Adapter](https://github.com/casbin-net/EFCore-Adapter)",
@@ -24,7 +24,7 @@ export const AdapterDotNETData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, DB2, etc. are supported by [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)",
-    image: "/static/img/ecosystem/SQL.png",
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[Linq2DB Adapter](https://github.com/Tirael/Linq2DB-Adapter)",
@@ -33,7 +33,7 @@ export const AdapterDotNETData = [
     autoSave: "✅",
     description:
       "[MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, Access, Firebird, Sybase, etc.](https://github.com/linq2db/linq2db/blob/master/Tests/Base/TestProvName.cs) are supported by [linq2db](https://github.com/linq2db/linq2db)",
-    image: "/static/img/ecosystem/SQL.png",
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -43,7 +43,7 @@ export const AdapterDotNETData = [
     autoSave: "✅",
     description:
       "For [Microsoft Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction)",
-    image: "/static/img/ecosystem/cosmosDB.png",
+    image: "/img/ecosystem/cosmosDB.png",
   },
 ].map((item) => {
   return {

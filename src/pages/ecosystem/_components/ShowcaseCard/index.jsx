@@ -65,13 +65,30 @@ function ShowcaseCard({user}) {
   const image = getCardImage(user);
   return (
     <li key={user.title} className="card shadow--md">
-      <div className={clsx("card__image", styles.showcaseCardImage)}>
+      <div className={clsx(
+        "card__image"
+      )}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignContent: "center",
+        paddingTop: "10px",
+      }}
+      >
         <img
+          style={{
+            height: "90px",
+          }}
           src={image}
           alt={user.title}
         />
       </div>
-      <div className="card__body">
+      <div className="card__body"
+        style={{
+          paddingTop: "0px",
+        }}
+      >
         <div className={clsx(styles.showcaseCardHeader)}>
           <Heading as="h4" className={styles.showcaseCardTitle}>
             {user.title && <CustomMarkdown>{user.title}</CustomMarkdown>}
