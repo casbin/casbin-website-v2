@@ -23,7 +23,6 @@
   "dependencies": {
     "@crowdin/cli": "^3.7.10",
     "@docusaurus/core": "^2.4.3",
-    "@docusaurus/plugin-ideal-image": "2.4.3",
     "@docusaurus/preset-classic": "^2.4.3",
     "@giscus/react": "^2.2.4",
     "@mdx-js/react": "^1.6.21",

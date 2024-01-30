@@ -6,7 +6,7 @@ export const AdapterNodejsData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title: "[Filtered File Adapter (built-in)](/docs/policy-subset-loading)",
@@ -15,7 +15,7 @@ export const AdapterNodejsData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files with policy subset loading support",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title:
@@ -24,7 +24,7 @@ export const AdapterNodejsData = [
     author: "[@calebfaruki](https://github.com/calebfaruki)",
     autoSave: "❌",
     description: "For String",
-    image: require("/static/img/ecosystem/string.png"),
+    image: "/img/ecosystem/string.png",
   },
   {
     title: "[Basic Adapter](https://github.com/node-casbin/basic-adapter)",
@@ -33,7 +33,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "pg, mysql, mysql2, sqlite3, oracledb, mssql are supported by the adapter itself",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -43,7 +43,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Microsoft SQL Server are supported by [Sequelize](https://github.com/sequelize/sequelize)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[TypeORM Adapter](https://github.com/node-casbin/typeorm-adapter)",
@@ -52,7 +52,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, Oracle, WebSQL, MongoDB are supported by [TypeORM](https://github.com/typeorm/typeorm)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[Prisma Adapter](https://github.com/node-casbin/prisma-adapter)",
@@ -61,7 +61,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, MariaDB, SQLite, MS SQL Server, AWS Aurora, Azure SQL are supported by [Prisma](https://www.prisma.io/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[Knex Adapter](https://github.com/knex/casbin-knex-adapter)",
@@ -70,7 +70,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "MSSQL, MySQL, PostgreSQL, SQLite3, Oracle are supported by [Knex.js](https://knexjs.org/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -80,7 +80,7 @@ export const AdapterNodejsData = [
     autoSave: "✅",
     description:
       "MSSQL, MySQL, PostgreSQL, SQLite3, Oracle are supported by [Objection.js](https://vincit.github.io/objection.js/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:

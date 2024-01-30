@@ -6,7 +6,7 @@ export const AdapterLuaData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title: "[Filtered File Adapter (built-in)](/docs/policy-subset-loading)",
@@ -15,7 +15,7 @@ export const AdapterLuaData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files with policy subset loading support",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title: "[LuaSQL Adapter](https://github.com/casbin-lua/luasql-adapter)",
@@ -24,7 +24,7 @@ export const AdapterLuaData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite3 are supported by [LuaSQL](http://lunarmodules.github.io/luasql/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[4DaysORM Adapter](https://github.com/casbin-lua/4daysorm-adapter)",
@@ -33,7 +33,7 @@ export const AdapterLuaData = [
     autoSave: "✅",
     description:
       "MySQL, SQLite3 are supported by [4DaysORM](https://github.com/itdxer/4DaysORM)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -42,7 +42,7 @@ export const AdapterLuaData = [
     author: "[@tom2nonames](https://github.com/tom2nonames)",
     autoSave: "✅",
     description: "MySQL, PostgreSQL are supported by it",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
 ].map((item) => {
   return {

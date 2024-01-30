@@ -5,14 +5,14 @@ export const WatcherGoData = [
     type: "Database",
     author: "[@IguteChung](https://github.com/IguteChung)",
     description: "WatcherEx for [PostgreSQL](https://www.postgresql.org/)",
-    image: require("/static/img/ecosystem/postgreSQL.png"),
+    image: "/img/ecosystem/postgreSQL.png",
   },
   {
     title: "[Redis WatcherEx](https://github.com/casbin/redis-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "WatcherEx for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title:
@@ -20,28 +20,28 @@ export const WatcherGoData = [
     type: "KV store",
     author: "[@billcobbler](https://github.com/billcobbler)",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title: "[Etcd Watcher](https://github.com/casbin/etcd-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [etcd](https://github.com/coreos/etcd)",
-    image: require("/static/img/ecosystem/etcd.png"),
+    image: "/img/ecosystem/etcd.png",
   },
   {
     title: "[TiKV Watcher](https://github.com/casbin/tikv-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [TiKV](https://github.com/tikv/tikv)",
-    image: require("/static/img/ecosystem/tikv.png"),
+    image: "/img/ecosystem/tikv.png",
   },
   {
     title: "[Kafka Watcher](https://github.com/wgarunap/casbin-kafka-watcher)",
     type: "Messaging system",
     author: "[@wgarunap](https://github.com/wgarunap)",
     description: "Watcher for [Apache Kafka](https://kafka.apache.org/)",
-    image: require("/static/img/ecosystem/kafka.png"),
+    image: "/img/ecosystem/kafka.png",
   },
   {
     title: "[NATS Watcher](https://github.com/Soluto/casbin-nats-watcher)",
@@ -55,7 +55,7 @@ export const WatcherGoData = [
     author: "[Grepsr](https://github.com/grepsr)",
     description:
       "Watcher for [Apache ZooKeeper](https://zookeeper.apache.org/)",
-    image: require("/static/img/ecosystem/zookeeper.png"),
+    image: "/img/ecosystem/zookeeper.png",
   },
   {
     title:
@@ -79,7 +79,7 @@ export const WatcherGoData = [
     type: "Messaging system",
     author: "[@fmyxyz](https://github.com/fmyxyz)",
     description: "Watcher for [Apache RocketMQ](https://rocketmq.apache.org/)",
-    image: require("/static/img/ecosystem/rocketMQ.png"),
+    image: "/img/ecosystem/rocketMQ.png",
   },
 ].map((item) => {
   return {

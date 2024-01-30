@@ -4,14 +4,14 @@ export const WatcherPythonData = [
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [etcd](https://github.com/coreos/etcd)",
-    image: require("/static/img/ecosystem/etcd.png"),
+    image: "/img/ecosystem/etcd.png",
   },
   {
     title: "[Redis Watcher](https://github.com/pycasbin/redis-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title:
@@ -19,7 +19,7 @@ export const WatcherPythonData = [
     type: "KV store",
     author: "[ScienceLogic](https://github.com/ScienceLogic)",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title:
@@ -27,7 +27,7 @@ export const WatcherPythonData = [
     type: "KV store",
     author: "[@kevinkelin](https://github.com/kevinkelin)",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title:
@@ -35,14 +35,14 @@ export const WatcherPythonData = [
     type: "Database",
     author: "Casbin",
     description: "Watcher for [PostgreSQL](https://www.postgresql.org/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title: "[RabbitMQ Watcher](https://github.com/pycasbin/rabbitmq-watcher)",
     type: "Messaging system",
     author: "Casbin",
     description: "Watcher for [RabbitMQ](https://www.rabbitmq.com/)",
-    image: require("/static/img/ecosystem/rabbitMQ.png"),
+    image: "/img/ecosystem/rabbitMQ.png",
   },
 ].map((item) => {
   return {

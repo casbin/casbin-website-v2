@@ -6,7 +6,7 @@ export const AdapterPythonData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title:
@@ -16,7 +16,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MariaDB, MySQL, Oracle, SQLite, IBM DB2, Microsoft SQL Server, Firebird, ODBC are supported by [Django ORM](https://docs.djangoproject.com/en/3.0/ref/databases/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[SQLObject Adapter](https://github.com/pycasbin/sqlobject-adapter)",
@@ -25,7 +25,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Firebird, Sybase, MAX DB, pyfirebirdsql are supported by [SQLObject](http://www.sqlobject.org/index.html)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -35,7 +35,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase are supported by [SQLAlchemy](https://www.sqlalchemy.org/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -45,7 +45,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase are supported by [SQLAlchemy](https://www.sqlalchemy.org/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -55,7 +55,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite, Oracle, Microsoft SQL Server, Firebird, Sybase are supported by [Databases](https://www.encode.io/databases/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[Peewee Adapter](https://github.com/shblhy/peewee-adapter)",
@@ -64,7 +64,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite are supported by [Peewee](http://docs.peewee-orm.com/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -74,7 +74,7 @@ export const AdapterPythonData = [
     autoSave: "❌",
     description:
       "MongoDB is supported by [MongoEngine](http://mongoengine.org/)",
-    image: require("/static/img/ecosystem/monogoEngine.png"),
+    image: "/img/ecosystem/monogoEngine.png",
   },
   {
     title:
@@ -84,7 +84,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, Oracle, CockroachDB are supported by [Pony ORM](https://ponyorm.org/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -94,7 +94,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL (>=9.4), MySQL, MariaDB, and SQLite are supported by [Tortoise ORM](https://tortoise.github.io/databases.html)",
-    image: require("/static/img/ecosystem/postgreSQL.png"),
+    image: "/img/ecosystem/postgreSQL.png",
   },
   {
     title:
@@ -104,7 +104,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite are supported by [Ormar](https://github.com/collerek/ormar/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -114,7 +114,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite are supported by [SQLModel](https://github.com/tiangolo/sqlmodel)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -123,7 +123,7 @@ export const AdapterPythonData = [
     author: "[ScienceLogic](https://github.com/ScienceLogic)",
     autoSave: "✅ (without `remove_filtered_policy()`)",
     description: "For [Couchbase](https://www.couchbase.com/)",
-    image: require("/static/img/ecosystem/couchBase.png"),
+    image: "/img/ecosystem/couchBase.png",
   },
   {
     title: "[DynamoDB Adapter](https://github.com/abqadeer/python-dycasbin)",
@@ -131,7 +131,7 @@ export const AdapterPythonData = [
     author: "[@abqadeer](https://github.com/abqadeer/)",
     autoSave: "✅",
     description: "For [DynamoDB](https://aws.amazon.com/dynamodb/)",
-    image: require("/static/img/ecosystem/dynamoDB.png"),
+    image: "/img/ecosystem/dynamoDB.png",
   },
   {
     title: "[Pymongo Adapter](https://github.com/pycasbin/pymongo-adapter)",
@@ -140,7 +140,7 @@ export const AdapterPythonData = [
     autoSave: "❌",
     description:
       "MongoDB is supported by [Pymongo](https://pypi.org/project/pymongo/)",
-    image: require("/static/img/ecosystem/monogoDB.png"),
+    image: "/img/ecosystem/monogoDB.png",
   },
   {
     title: "[Redis Adapter](https://github.com/pycasbin/redis-adapter)",
@@ -148,7 +148,7 @@ export const AdapterPythonData = [
     author: "Casbin",
     autoSave: "✅",
     description: "For [Redis](https://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title:
@@ -158,7 +158,7 @@ export const AdapterPythonData = [
     autoSave: "✅",
     description:
       "For [Google Cloud Platform Firebase](https://firebase.google.com/)",
-    image: require("/static/img/ecosystem/firestore.jpeg"),
+    image: "/img/ecosystem/firestore.jpeg",
   },
 ].map((item) => {
   return {

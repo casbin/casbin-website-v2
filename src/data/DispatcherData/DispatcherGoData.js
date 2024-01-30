@@ -6,7 +6,7 @@ export const DispatcherGoData = [
     author: "Casbin",
     description:
       "A dispatcher based on [Hashicorp Raft](https://github.com/hashicorp/raft)",
-    image: require("/static/img/ecosystem/hashicorp.png"),
+    image: "/img/ecosystem/hashicorp.png",
   },
   {
     title:

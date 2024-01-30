@@ -7,7 +7,6 @@
 
 import React from "react";
 import clsx from "clsx";
-import Image from "@theme/IdealImage";
 
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
@@ -53,7 +52,7 @@ function ShowcaseCardTag({tags}) {
 
 function getCardImage(user) {
   // return require("http://localhost:3000/img/casbin.svg");
-  return user.image || require("/static/img/favicon.png");
+  return user.image || "/img/favicon.png";
   // return (
   //   user.preview ??
   //   `https://slorber-api-screenshot.netlify.app/${encodeURIComponent(
@@ -67,7 +66,10 @@ function ShowcaseCard({user}) {
   return (
     <li key={user.title} className="card shadow--md">
       <div className={clsx("card__image", styles.showcaseCardImage)}>
-        <Image img={image} alt={user.title} />
+        <img
+          src={image}
+          alt={user.title}
+        />
       </div>
       <div className="card__body">
         <div className={clsx(styles.showcaseCardHeader)}>

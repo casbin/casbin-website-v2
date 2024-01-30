@@ -4,14 +4,14 @@ export const WatcherNodejsData = [
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [etcd](https://github.com/coreos/etcd)",
-    image: require("/static/img/ecosystem/etcd.png"),
+    image: "/img/ecosystem/etcd.png",
   },
   {
     title: "[Redis Watcher](https://github.com/node-casbin/redis-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
   {
     title: "[Pub/Sub Watcher](https://github.com/node-casbin/pubsub-watcher)",
@@ -19,7 +19,7 @@ export const WatcherNodejsData = [
     author: "Casbin",
     description:
       "Watcher for [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs)",
-    image: require("/static/img/ecosystem/pubsub.png"),
+    image: "/img/ecosystem/pubsub.png",
   },
   {
     title:
@@ -28,14 +28,14 @@ export const WatcherNodejsData = [
     author: "Casbin",
     description:
       "Watcher for [MongoDB Change Streams](https://www.mongodb.com/docs/manual/changeStreams/)",
-    image: require("/static/img/ecosystem/monogoDB.png"),
+    image: "/img/ecosystem/monogoDB.png",
   },
   {
     title: "[Postgres Watcher](https://github.com/mcollina/casbin-pg-watcher)",
     type: "Database",
     author: "[@mcollina](https://github.com/mcollina)",
     description: "Watcher for [PostgreSQL](https://www.postgresql.org/)",
-    image: require("/static/img/ecosystem/postgreSQL.png"),
+    image: "/img/ecosystem/postgreSQL.png",
   },
 ].map((item) => {
   return {

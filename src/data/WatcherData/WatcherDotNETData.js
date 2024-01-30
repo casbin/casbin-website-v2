@@ -4,7 +4,7 @@ export const WatcherDotNETData = [
     type: "KV store",
     author: "[@Sbou](https://github.com/Sbou)",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
 ].map((item) => {
   return {

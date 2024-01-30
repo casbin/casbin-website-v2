@@ -6,7 +6,7 @@ export const AdapterSwiftData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/static/img/ecosystem/file.png",
   },
   {
     title:
@@ -15,7 +15,7 @@ export const AdapterSwiftData = [
     author: "Casbin",
     autoSave: "❌",
     description: "For memory",
-    image: require("/static/img/ecosystem/memory.png"),
+    image: "/static/img/ecosystem/memory.png",
   },
   {
     title: "[Fluent Adapter](https://github.com/SwiftCasbin/fluent-adapter)",
@@ -24,7 +24,7 @@ export const AdapterSwiftData = [
     autoSave: "✅",
     description:
       "[PostgreSQL, SQLite, MySQL, MongoDB](https://docs.vapor.codes/4.0/fluent/overview/#drivers) are supported by [Fluent](https://github.com/vapor/fluent)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/static/img/ecosystem/SQL.png",
   },
 ].map((item) => {
   return {

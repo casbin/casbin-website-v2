@@ -3,67 +3,67 @@ export const MiddlewareGoData = [
     title: "[Gin](https://github.com/gin-gonic/gin)",
     description:
       "A HTTP web framework featuring a Martini-like API with much better performance, via plugin: [authz](https://github.com/gin-contrib/authz) or [gin-casbin](https://github.com/maxwellhertz/gin-casbin)",
-    image: require("/static/img/ecosystem/gin.jpeg"),
+    image: "/img/ecosystem/gin.jpeg",
   },
   {
     title: "[Beego](https://github.com/beego/beego)",
     description:
       "An open-source, high-performance web framework for Go, via built-in plugin: [plugins/authz](https://github.com/astaxie/beego/blob/master/plugins/authz)",
-    image: require("/static/img/ecosystem/beego.png"),
+    image: "/img/ecosystem/beego.png",
   },
   {
     title: "[Caddy](https://github.com/caddyserver/caddy)",
     description:
       "Fast, cross-platform HTTP/2 web server with automatic HTTPS, via plugin: [caddy-authz](https://github.com/casbin/caddy-authz)",
-    image: require("/static/img/ecosystem/caddy.jpeg"),
+    image: "/img/ecosystem/caddy.jpeg",
   },
   {
     title: "[Traefik](https://github.com/traefik/traefik)",
     description:
       "The cloud native application proxy, via plugin: [traefik-auth-plugin](https://github.com/Knight-7/auth-plugin)",
-    image: require("/static/img/ecosystem/traefik.png"),
+    image: "/img/ecosystem/traefik.png",
   },
   {
     title: "[Kratos](https://github.com/go-kratos/kratos)",
     description:
       "Your ultimate Go microservices framework for the cloud-native era, via plugin: [tx7do/kratos-casbin](https://github.com/tx7do/kratos-casbin) or [overstarry/kratos-casbin](https://github.com/overstarry/kratos-casbin)",
-    image: require("/static/img/ecosystem/kratos.png"),
+    image: "/img/ecosystem/kratos.png",
   },
   {
     title: "[Go kit](https://github.com/go-kit/kit)",
     description:
       "A toolkit for microservices, via built-in plugin: [plugins/authz](https://github.com/go-kit/kit/tree/master/auth/casbin)",
-    image: require("/static/img/ecosystem/gokit.png"),
+    image: "/img/ecosystem/gokit.png",
   },
   {
     title: "[Fiber](https://github.com/gofiber/fiber)",
     description:
       "An Express inspired web framework written in Go, via middleware: [casbin in gofiber/contrib](https://github.com/gofiber/contrib/tree/main/casbin) or [fiber-casbinrest](https://github.com/prongbang/fiber-casbinrest) or [fiber-boilerplate](https://github.com/sujit-baniya/fiber-boilerplate) or [gofiber-casbin](https://github.com/pcminh0505/gofiber-casbin)",
-    image: require("/static/img/ecosystem/fiber.png"),
+    image: "/img/ecosystem/fiber.png",
   },
   {
     title: "[Revel](https://github.com/revel/revel)",
     description:
       "A high productivity, full-stack web framework for the Go language, via plugin: [auth/casbin](https://github.com/revel/modules/tree/master/auth/casbin)",
-    image: require("/static/img/ecosystem/revel.png"),
+    image: "/img/ecosystem/revel.png",
   },
   {
     title: "[Echo](https://github.com/labstack/echo)",
     description:
       "High performance, minimalist Go web framework, via plugin: [echo-authz](https://github.com/labstack/echo-contrib/tree/master/casbin) or [echo-casbin](https://github.com/alexferl/echo-casbin) or [casbinrest](https://github.com/prongbang/casbinrest) or [echo-boilerplate](https://github.com/alexferl/echo-boilerplate)",
-    image: require("/static/img/ecosystem/echo.png"),
+    image: "/img/ecosystem/echo.png",
   },
   {
     title: "[Iris](https://github.com/kataras/iris)",
     description:
       "The fastest web framework for Go in (THIS) Earth. HTTP/2 Ready-To-GO, via plugin: [casbin](https://github.com/iris-contrib/middleware/tree/master/casbin) or [iris-middleware-casbin](https://github.com/kokobing/iris-middleware-casbin)",
-    image: require("/static/img/ecosystem/iris.png"),
+    image: "/img/ecosystem/iris.png",
   },
   {
     title: "[GoFrame](https://github.com/gogf/gf)",
     description:
       "A modular, powerful, high-performance and enterprise-class application development framework of Golang, via plugin: [gf-casbin](https://github.com/dobyte/gf-casbin)",
-    image: require("/static/img/ecosystem/goframe.png"),
+    image: "/img/ecosystem/goframe.png",
   },
   {
     title: "[Negroni](https://github.com/urfave/negroni)",
@@ -75,19 +75,19 @@ export const MiddlewareGoData = [
     title: "[Chi](https://github.com/pressly/chi)",
     description:
       "A lightweight, idiomatic and composable router for building HTTP services, via plugin: [chi-authz](https://github.com/casbin/chi-authz)",
-    image: require("/static/img/ecosystem/chi.png"),
+    image: "/img/ecosystem/chi.png",
   },
   {
     title: "[Buffalo](https://github.com/gobuffalo/buffalo)",
     description:
       "A Go web development eco-system, designed to make your life easier, via plugin: [buffalo-mw-rbac](https://github.com/kgosse/buffalo-mw-rbac)",
-    image: require("/static/img/ecosystem/buffalo.jpeg"),
+    image: "/img/ecosystem/buffalo.jpeg",
   },
   {
     title: "[Macaron](https://github.com/go-macaron/macaron)",
     description:
       "A high productive and modular web framework in Go, via plugin: [authz](https://github.com/go-macaron/authz)",
-    image: require("/static/img/ecosystem/macaron.png"),
+    image: "/img/ecosystem/macaron.png",
   },
   {
     title: "[DotWeb](https://github.com/devfeel/dotweb)",
@@ -113,7 +113,7 @@ export const MiddlewareGoData = [
     title: "[Hertz](https://github.com/cloudwego/hertz)",
     description:
       "Go HTTP framework with high-performance and strong-extensibility for building micro-services, via plugin: [casbin](https://github.com/hertz-contrib/casbin)",
-    image: require("/static/img/ecosystem/hertz.png"),
+    image: "/img/ecosystem/hertz.png",
   },
 ].map((item) => {
   return {

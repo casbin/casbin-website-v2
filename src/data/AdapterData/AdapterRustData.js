@@ -6,7 +6,7 @@ export const AdapterRustData = [
     autoSave: "❌",
     description:
       "For [.CSV (Comma-Separated Values)](https://en.wikipedia.org/wiki/Comma-separated_values) files",
-    image: require("/static/img/ecosystem/file.png"),
+    image: "/img/ecosystem/file.png",
   },
   {
     title: "[Diesel Adapter](https://github.com/casbin-rs/diesel-adapter)",
@@ -15,7 +15,7 @@ export const AdapterRustData = [
     autoSave: "✅",
     description:
       "[SQLite, PostgreSQL, MySQL](https://github.com/diesel-rs/diesel/blob/master/guide_drafts/backend_installation.md) are supported by [Diesel](http://diesel.rs/)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[Sqlx Adapter](https://github.com/casbin-rs/sqlx-adapter)",
@@ -24,7 +24,7 @@ export const AdapterRustData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL are supported by [Sqlx](https://github.com/launchbadge/sqlx) with fully asynchronous operation",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -34,7 +34,7 @@ export const AdapterRustData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite are supported by [SeaORM](https://github.com/SeaQL/sea-orm) with fully asynchronous operation",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[SeaORM Adapter](https://github.com/ZihanType/sea-orm-adapter)",
@@ -43,7 +43,7 @@ export const AdapterRustData = [
     autoSave: "✅",
     description:
       "PostgreSQL, MySQL, SQLite are supported by [SeaORM](https://github.com/SeaQL/sea-orm) with fully asynchronous operation",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title:
@@ -53,7 +53,7 @@ export const AdapterRustData = [
     autoSave: "✅",
     description:
       "MySQL, PostgreSQL, SQLite, SQL Server, MariaDB, TiDB, CockroachDB, Oracle are supported by [Rbatis](https://github.com/rbatis/rbatis)",
-    image: require("/static/img/ecosystem/SQL.png"),
+    image: "/img/ecosystem/SQL.png",
   },
   {
     title: "[DynamodDB Adapter](https://github.com/fospitia/dynamodb-adapter)",
@@ -61,7 +61,7 @@ export const AdapterRustData = [
     author: "[@fospitia](https://github.com/fospitia)",
     autoSave: "✅",
     description: "For [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)",
-    image: require("/static/img/ecosystem/dynamoDB.png"),
+    image: "/img/ecosystem/dynamoDB.png",
   },
   {
     title:
@@ -70,7 +70,7 @@ export const AdapterRustData = [
     author: "[@wangjun861205](https://github.com/wangjun861205)",
     autoSave: "✅",
     description: "For [MongoDB](https://www.mongodb.com)",
-    image: require("/static/img/ecosystem/monogoDB.png"),
+    image: "/img/ecosystem/monogoDB.png",
   },
   {
     title: "[JSON Adapter](http://github.com/casbin-rs/json-adapter)",
@@ -78,7 +78,7 @@ export const AdapterRustData = [
     author: "Casbin",
     autoSave: "✅",
     description: "For [JSON](https://json.org/)",
-    image: require("/static/img/ecosystem/json.png"),
+    image: "/img/ecosystem/json.png",
   },
   {
     title: "[YAML Adapter](https://github.com/casbin-rs/yaml-adapter)",
@@ -86,7 +86,7 @@ export const AdapterRustData = [
     author: "Casbin",
     autoSave: "✅",
     description: "For [YAML](https://yaml.org/)",
-    image: require("/static/img/ecosystem/yaml.png"),
+    image: "/img/ecosystem/yaml.png",
   },
 ].map((item) => {
   return {

@@ -4,7 +4,7 @@ export const WatcherPhpData = [
     type: "KV store",
     author: "[@Tinywan](https://github.com/Tinywan)",
     description: "Watcher for [Redis](http://redis.io/)",
-    image: require("/static/img/ecosystem/redis.png"),
+    image: "/img/ecosystem/redis.png",
   },
 ].map((item) => {
   return {
