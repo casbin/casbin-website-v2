@@ -1,4 +1,4 @@
-import {useFilteredUsers} from "@site/src/pages/ecosystem/_hooks/useFilteredUsers";
+import {useFilteredList} from "@site/src/pages/ecosystem/_hooks/useFilteredList";
 import {useSiteCountPlural} from "@site/src/pages/ecosystem/_hooks/useSiteCountPlural";
 import clsx from "clsx";
 import styles from "@site/src/pages/ecosystem/styles.module.css";
@@ -9,10 +9,10 @@ import ShowcaseTooltip from "@site/src/pages/ecosystem/_components/ShowcaseToolt
 import ShowcaseTagSelect from "@site/src/pages/ecosystem/_components/ShowcaseTagSelect";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
 import React from "react";
-import {TagList, Tags} from "@site/src/data/tags";
+import {TagList, Tags} from "@site/src/tableData/tags";
 
 export default function ShowcaseFilters() {
-  const filteredUsers = useFilteredUsers();
+  const filteredUsers = useFilteredList();
   const siteCountPlural = useSiteCountPlural();
 
   const languageList = TagList.slice(0, 11);

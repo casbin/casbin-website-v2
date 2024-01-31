@@ -1,16 +1,9 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, {useCallback, useEffect, useState} from "react";
 import clsx from "clsx";
 import {useHistory, useLocation} from "@docusaurus/router";
 
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem/_components/SearchBar";
+import {prepareListState} from "@site/src/pages/ecosystem/_components/SearchBar";
 
 export const OperatorQueryKey = "operator";
 
@@ -36,7 +29,7 @@ export default function ShowcaseFilterToggle() {
     history.push({
       ...location,
       search: searchParams.toString(),
-      state: prepareUserState(),
+      state: prepareListState(),
     });
   }, [operator, location, history]);
 
@@ -44,7 +37,7 @@ export default function ShowcaseFilterToggle() {
     history.push({
       ...location,
       search: "",
-      state: prepareUserState(),
+      state: prepareListState(),
     });
   };
 

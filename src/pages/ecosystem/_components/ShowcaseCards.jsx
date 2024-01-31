@@ -1,22 +1,22 @@
-import {useFilteredUsers} from "@site/src/pages/ecosystem/_hooks/useFilteredUsers";
+import {useFilteredList} from "@site/src/pages/ecosystem/_hooks/useFilteredList";
 import Heading from "@theme/Heading";
 import Translate from "@docusaurus/Translate";
-import {sortedUsers} from "@site/src/data/users";
+import {sortedList} from "@site/src/tableData/tableData";
 import styles from "@site/src/pages/ecosystem/styles.module.css";
 import clsx from "clsx";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
 import ShowcaseCard from "@site/src/pages/ecosystem/_components/ShowcaseCard";
 import React from "react";
 
-const favoriteUsers = sortedUsers.filter((user) =>
-  user.tags.includes("favorite")
+const favoriteList = sortedList.filter((item) =>
+  item.tags.includes("favorite")
 );
-const otherUsers = sortedUsers.filter((user) => !user.tags.includes("favorite"));
+const otherUsers = sortedList.filter((item) => !item.tags.includes("favorite"));
 
 export default function ShowcaseCards() {
-  const filteredUsers = useFilteredUsers();
+  const filteredList = useFilteredList();
 
-  if (filteredUsers.length === 0) {
+  if (filteredList.length === 0) {
     return (
       <section className="margin-top--lg margin-bottom--xl">
         <div className="container padding-vert--md text--center">
@@ -30,7 +30,7 @@ export default function ShowcaseCards() {
 
   return (
     <section className="margin-top--lg margin-bottom--xl">
-      {filteredUsers.length === sortedUsers.length ? (
+      {filteredList.length === sortedList.length ? (
         <>
           <div className={styles.showcaseFavorite}>
             <div className="container">
@@ -50,8 +50,8 @@ export default function ShowcaseCards() {
               <ul
                 className={clsx("container", "clean-list", styles.showcaseList)}
               >
-                {favoriteUsers.map((user, index) => {
-                  return <ShowcaseCard key={user.title + index} user={user} />;
+                {favoriteList.map((item, index) => {
+                  return <ShowcaseCard key={item.title + index} item={item} />;
                 })}
               </ul>
             </div>
@@ -63,8 +63,8 @@ export default function ShowcaseCards() {
               </Translate>
             </Heading>
             <ul className={clsx("clean-list", styles.showcaseList)}>
-              {otherUsers.map((user, index) => (
-                <ShowcaseCard key={user.title + index} user={user} />
+              {otherUsers.map((item, index) => (
+                <ShowcaseCard key={item.title + index} item={item} />
               ))}
             </ul>
           </div>
@@ -75,8 +75,8 @@ export default function ShowcaseCards() {
             className={clsx("margin-bottom--md", styles.showcaseFavoriteHeader)}
           />
           <ul className={clsx("clean-list", styles.showcaseList)}>
-            {filteredUsers.map((user, index) => (
-              <ShowcaseCard key={user.title + index} user={user} />
+            {filteredList.map((item, index) => (
+              <ShowcaseCard key={item.title + index} item={item} />
             ))}
           </ul>
         </div>

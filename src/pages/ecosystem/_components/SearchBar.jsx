@@ -4,7 +4,7 @@ import styles from "@site/src/pages/ecosystem/styles.module.css";
 import {translate} from "@docusaurus/Translate";
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 
-export function prepareUserState() {
+export function prepareListState() {
   if (ExecutionEnvironment.canUseDOM) {
     return {
       scrollTopPosition: window.scrollY,
@@ -47,7 +47,7 @@ export default function SearchBar() {
           history.push({
             ...location,
             search: newSearch.toString(),
-            state: prepareUserState(),
+            state: prepareListState(),
           });
           setTimeout(() => {
             document.getElementById("searchbar")?.focus();

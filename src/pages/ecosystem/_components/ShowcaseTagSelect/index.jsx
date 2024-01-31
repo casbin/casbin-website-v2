@@ -1,16 +1,8 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, {useCallback, useEffect, useState} from "react";
 import {useHistory, useLocation} from "@docusaurus/router";
-import {toggleListItem} from "@site/src/utils/jsUtils";
 
 import styles from "./styles.module.css";
-import {prepareUserState} from "@site/src/pages/ecosystem/_components/SearchBar";
+import {prepareListState} from "@site/src/pages/ecosystem/_components/SearchBar";
 
 const TagQueryStringKey = "tags";
 
@@ -41,7 +33,7 @@ function ShowcaseTagSelect({id, icon, label, tag, ...rest}, ref) {
     history.push({
       ...location,
       search: newSearch,
-      state: prepareUserState(),
+      state: prepareListState(),
     });
   }, [tag, location, history]);
   return (
@@ -78,3 +70,14 @@ function ShowcaseTagSelect({id, icon, label, tag, ...rest}, ref) {
 }
 
 export default React.forwardRef(ShowcaseTagSelect);
+
+export function toggleListItem(list, item) {
+  const itemIndex = list.indexOf(item);
+  if (itemIndex === -1) {
+    return list.concat(item);
+  }
+  const newList = [...list];
+  newList.splice(itemIndex, 1);
+
+  return newList;
+}

@@ -1,19 +1,12 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React from "react";
 import clsx from "clsx";
 
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
-import {sortBy} from "@site/src/utils/jsUtils";
+import {sortBy} from "@site/src/tableData/tableData";
 import Tooltip from "@site/src/pages/ecosystem/_components/ShowcaseTooltip";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
-import {TagList, Tags} from "@site/src/data/tags";
+import {TagList, Tags} from "@site/src/tableData/tags";
 import CustomMarkdown from "@site/src/components/MarkdownToJsx/CustomMarkdown";
 
 const TagComp = React.forwardRef(({label, color, description}, ref) => (
@@ -50,21 +43,14 @@ function ShowcaseCardTag({tags}) {
   );
 }
 
-function getCardImage(user) {
-  // return require("http://localhost:3000/img/casbin.svg");
-  return user.image || "/img/favicon.png";
-  // return (
-  //   user.preview ??
-  //   `https://slorber-api-screenshot.netlify.app/${encodeURIComponent(
-  //     user.website
-  //   )}/showcase`
-  // );
+function getCardImage(item) {
+  return item.image || "/img/favicon.png";
 }
 
-function ShowcaseCard({user}) {
-  const image = getCardImage(user);
+function ShowcaseCard({item}) {
+  const image = getCardImage(item);
   return (
-    <li key={user.title} className="card shadow--md">
+    <li key={item.title} className="card shadow--md">
       <div className={clsx(
         "card__image"
       )}
@@ -81,7 +67,7 @@ function ShowcaseCard({user}) {
             height: "90px",
           }}
           src={image}
-          alt={user.title}
+          alt={item.title}
         />
       </div>
       <div className="card__body"
@@ -91,31 +77,31 @@ function ShowcaseCard({user}) {
       >
         <div className={clsx(styles.showcaseCardHeader)}>
           <Heading as="h4" className={styles.showcaseCardTitle}>
-            {user.title && <CustomMarkdown>{user.title}</CustomMarkdown>}
+            {item.title && <CustomMarkdown>{item.title}</CustomMarkdown>}
           </Heading>
-          {user.tags.includes("favorite") && (
+          {item.tags.includes("favorite") && (
             <FavoriteIcon svgClass={styles.svgIconFavorite} size="small" />
           )}
 
-          {user.author && (
+          {item.author && (
             <div
               className={clsx(
                 "button button--secondary button--sm",
                 "styles.showcaseCardSrcBtn"
               )}
             >
-              <CustomMarkdown>{user.author}</CustomMarkdown>
+              <CustomMarkdown>{item.author}</CustomMarkdown>
             </div>
           )}
         </div>
-        {user.description && (
+        {item.description && (
           <p className={styles.showcaseCardBody}>
-            <CustomMarkdown>{user.description}</CustomMarkdown>
+            <CustomMarkdown>{item.description}</CustomMarkdown>
           </p>
         )}
       </div>
       <ul className={clsx("card__footer", styles.cardFooter)}>
-        <ShowcaseCardTag tags={user.tags} />
+        <ShowcaseCardTag tags={item.tags} />
       </ul>
     </li>
   );

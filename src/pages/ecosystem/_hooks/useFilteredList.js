@@ -2,11 +2,11 @@ import {useLocation} from "@docusaurus/router";
 import {useEffect, useMemo, useState} from "react";
 import {readSearchTags} from "@site/src/pages/ecosystem/_components/ShowcaseTagSelect";
 import {readOperator} from "@site/src/pages/ecosystem/_components/ShowcaseFilterToggle";
-import {sortedUsers} from "@site/src/data/users";
+import {sortedList} from "@site/src/tableData/tableData";
 
 const SearchNameQueryKey = "name";
 
-export function useFilteredUsers() {
+export function useFilteredList() {
   const location = useLocation();
   const [operator, setOperator] = useState("OR");
   // On SSR / first mount (hydration) no tag is selected
@@ -22,7 +22,7 @@ export function useFilteredUsers() {
   }, [location]);
 
   return useMemo(
-    () => filterUsers(sortedUsers, selectedTags, operator, searchName),
+    () => filterList(sortedList, selectedTags, operator, searchName),
     [selectedTags, operator, searchName]
   );
 }
@@ -40,23 +40,23 @@ function restoreUserState(userState) {
   window.scrollTo({top: scrollTopPosition});
 }
 
-function filterUsers(users, selectedTags, operator, searchName) {
+function filterList(list, selectedTags, operator, searchName) {
   if (searchName) {
     // eslint-disable-next-line no-param-reassign
-    users = users.filter((user) =>
-      user.title.toLowerCase().includes(searchName.toLowerCase())
+    list = list.filter((item) =>
+      item.title.toLowerCase().includes(searchName.toLowerCase())
     );
   }
   if (selectedTags.length === 0) {
-    return users;
+    return list;
   }
-  return users.filter((user) => {
-    if (user.tags.length === 0) {
+  return list.filter((item) => {
+    if (item.tags.length === 0) {
       return false;
     }
     if (operator === "AND") {
-      return selectedTags.every((tag) => user.tags.includes(tag));
+      return selectedTags.every((tag) => item.tags.includes(tag));
     }
-    return selectedTags.some((tag) => user.tags.includes(tag));
+    return selectedTags.some((tag) => item.tags.includes(tag));
   });
 }
