@@ -64,6 +64,15 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Scenarios",
+      link: {type: "generated-index"},
+      items: [
+        "data-permissions",
+        "menu-permissions",
+      ],
+    },
+    {
+      type: "category",
       label: "Extensions",
       link: {type: "generated-index"},
       items: [
@@ -88,7 +97,6 @@ module.exports = {
         "rbac-with-domains-api",
         "rbac-with-conditions-api",
         "rolemanager-api",
-        "data-permissions",
       ],
     },
     {
