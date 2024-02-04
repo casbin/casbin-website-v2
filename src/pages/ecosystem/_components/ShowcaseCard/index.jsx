@@ -7,7 +7,7 @@ import {sortBy} from "@site/src/tableData/tableData";
 import Tooltip from "@site/src/pages/ecosystem/_components/ShowcaseTooltip";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
 import {TagList, Tags} from "@site/src/tableData/tags";
-import CustomMarkdown from "@site/src/components/MarkdownToJsx/CustomMarkdown";
+import CustomMarkdown, {isExternalLink} from "@site/src/components/MarkdownToJsx/CustomMarkdown";
 
 const TagComp = React.forwardRef(({label, color, description}, ref) => (
   <li ref={ref} className={styles.tag} title={description}>
@@ -47,29 +47,43 @@ function getCardImage(item) {
   return item.image || "/img/favicon.png";
 }
 
+function getTitleURL(title) {
+  const regex = /\]\((.+?)\)/;
+  const match = title.match(regex);
+  let url = "";
+  if(match) {
+    url = match[1];
+  }
+  return url;
+}
+
 function ShowcaseCard({item}) {
   const image = getCardImage(item);
+  const titleURL = getTitleURL(item.title);
+
   return (
     <li key={item.title} className="card shadow--md">
-      <div className={clsx(
+      <a className={clsx(
         "card__image"
       )}
+      target={isExternalLink(titleURL) ? "_blank" : "_self"}
+      href={titleURL}
       style={{
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignContent: "center",
         paddingTop: "10px",
-      }}
+      }} rel="noreferrer"
       >
         <img
           style={{
-            height: "90px",
+            height: "130px",
           }}
           src={image}
           alt={item.title}
         />
-      </div>
+      </a>
       <div className="card__body"
         style={{
           paddingTop: "0px",

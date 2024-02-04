@@ -1,7 +1,7 @@
 import React from "react";
 import Markdown from "markdown-to-jsx";
 
-const isExternalLink = (url) => {
+export const isExternalLink = (url) => {
   return url.startsWith("http://") || url.startsWith("https://");
 };
 
