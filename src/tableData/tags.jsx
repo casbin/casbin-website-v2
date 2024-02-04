@@ -84,7 +84,7 @@ export const Tags = {
     label: translate({message: "Ruby"}),
     description: translate({
       message:
-        "Our favorite Docusaurus sites that you must absolutely check out!",
+        "Ruby language",
       id: "showcase.tag.favorite.description",
     }),
     color: "#CC342D",
@@ -117,7 +117,7 @@ export const Tags = {
   Middleware: {
     label: translate({message: "middleware"}),
     description: translate({
-      message: "Open-Source Docusaurus sites can be useful for inspiration!",
+      message: "Middleware",
       id: "showcase.tag.opensource.description",
     }),
     color: "#9C27B0",
