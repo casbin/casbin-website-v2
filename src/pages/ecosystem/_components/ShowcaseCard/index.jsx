@@ -8,13 +8,29 @@ import Tooltip from "@site/src/pages/ecosystem/_components/ShowcaseTooltip";
 import FavoriteIcon from "@site/src/components/svgIcons/FavoriteIcon";
 import {TagList, Tags} from "@site/src/tableData/tags";
 import CustomMarkdown, {isExternalLink} from "@site/src/components/MarkdownToJsx/CustomMarkdown";
+import {useHistory} from "@docusaurus/router";
 
-const TagComp = React.forwardRef(({label, color, description}, ref) => (
-  <li ref={ref} className={styles.tag} title={description}>
+const TagComp = React.forwardRef(({label, color, description, tag}, ref) => {
+
+  //   note to refactor it
+  const history = useHistory();
+
+  const handleQueryParamChange = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("tags", tag);
+    history.push({
+      search: queryParams.toString(),
+    });
+  };
+
+  return <li onClick={() => {
+    handleQueryParamChange();
+  }} ref={ref} className={styles.tag} title={description}>
     <span className={styles.textLabel}>{label.slice(0, 1).toUpperCase() + label.slice(1)}</span>
     <span className={styles.colorLabel} style={{backgroundColor: color}} />
-  </li>
-));
+  </li>;
+}
+);
 
 function ShowcaseCardTag({tags}) {
   const tagObjects = tags.map((tag) => ({tag, ...Tags[tag]}));
