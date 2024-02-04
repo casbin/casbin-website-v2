@@ -10,7 +10,10 @@ const FeatureList = [
     path: "/img/model",
     description: (
       <Translate>
-        In Casbin, an access control model is abstracted into a CONF file based on the PERM metamodel (Policy, Effect, Request, Matchers). So switching or upgrading the authorization mechanism for a project is just as simple as modifying a configuration.
+        In Casbin, an access control model is abstracted into a CONF file based
+        on the PERM metamodel (Policy, Effect, Request, Matchers). So switching
+        or upgrading the authorization mechanism for a project is just as simple
+        as modifying a configuration.
       </Translate>
     ),
   },
@@ -18,14 +21,18 @@ const FeatureList = [
     title: <Translate>Flexible policy storage</Translate>,
     path: "/img/storage",
     description: (
-      <Translate values={{
-        adaptersLink: (
-          <a href="/docs/adapters">
-            <Translate>adapters</Translate>
-          </a>
-        ),
-      }}>
-        {"Besides memory and file, Casbin policy can be stored into lots of places. Currently, dozens of databases are supported, from MySQL, Postgres, Oracle to MongoDB, Redis, Cassandra, AWS S3. Check the full supported list at: {adaptersLink}."}
+      <Translate
+        values={{
+          adaptersLink: (
+            <a href="/docs/AdapterData">
+              <Translate>adapters</Translate>
+            </a>
+          ),
+        }}
+      >
+        {
+          "Besides memory and file, Casbin policy can be stored into lots of places. Currently, dozens of databases are supported, from MySQL, Postgres, Oracle to MongoDB, Redis, Cassandra, AWS S3. Check the full supported list at: {adaptersLink}."
+        }
       </Translate>
     ),
   },
@@ -34,7 +41,9 @@ const FeatureList = [
     path: "/img/language",
     description: (
       <Translate>
-        Casbin is implemented in Golang, Java, PHP and Node.js. All implementations share the same API and behaviors. You can learn Casbin once and use it everywhere.
+        Casbin is implemented in Golang, Java, PHP and Node.js. All
+        implementations share the same API and behaviors. You can learn Casbin
+        once and use it everywhere.
       </Translate>
     ),
   },
@@ -45,7 +54,11 @@ function Feature({title, path, description}) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <img src={colorMode === "light" ? path + ".png" : path + "-dark.png"} className={styles.featureSvg} alt={title} />
+        <img
+          src={colorMode === "light" ? path + ".png" : path + "-dark.png"}
+          className={styles.featureSvg}
+          alt={title}
+        />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>

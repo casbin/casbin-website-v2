@@ -1,10 +1,11 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
+/** @type {import("@docusaurus/types").DocusaurusConfig} */
 module.exports = {
   title: "Casbin",
-  tagline: "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
+  tagline:
+    "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
   url: "https://casbin.org",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -13,7 +14,13 @@ module.exports = {
   organizationName: "casbin", // Usually your GitHub org/user name.
   projectName: "casbin.io", // Usually your repo name.
   themeConfig: {
-    metadata: [{name: "Casbin", content: "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"}],
+    metadata: [
+      {
+        name: "Casbin",
+        content:
+          "An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
+      },
+    ],
     algolia: {
       appId: "6NBEV8TOFK",
       apiKey: "f00fe67a071e60e18a5c85ae314bba55",
@@ -67,6 +74,11 @@ module.exports = {
               to: "/docs/contributing",
             },
           ],
+        },
+        {
+          to: "/ecosystem",
+          label: "Ecosystem",
+          position: "left",
         },
         {
           to: "/blog",
@@ -262,7 +274,15 @@ var _hmt = _hmt || [];
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
-      additionalLanguages: ["ini", "csv", "lua", "csharp", "java", "php", "rust"],
+      additionalLanguages: [
+        "ini",
+        "csv",
+        "lua",
+        "csharp",
+        "java",
+        "php",
+        "rust",
+      ],
     },
     announcementBar: {
       id: "announcement", // ID of the announcement bar
@@ -328,7 +348,8 @@ var _hmt = _hmt || [];
       },
     ],
   ],
-  plugins: [],
+  plugins: [
+  ],
   i18n: {
     defaultLocale: "en",
     locales: ["en", "zh", "ko", "ru", "fr", "de", "ja"],
