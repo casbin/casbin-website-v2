@@ -30,7 +30,7 @@ In a cloud or multi-tenant environment, millions of policy rules may be required
 
 2. Do sharding to let a Casbin enforcer only load a small set of policy rules. For example, enforcer_0 can serve tenant_0 to tenant_99, while enforcer_1 can serve tenant_100 to tenant_199. To load only a subset of all policy rules, see: [Policy Subset Loading](/docs/policy-subset-loading).
 
-3. Grant permissions to RBAC roles instead of users directly. Casbin's RBAC is implemented by a role inheritance tree (as a cache). So, given a user like Alice, Casbin only takes O(1) time to query the RBAC tree for the role-user relationship and perform enforcement. If your g rules don't change often, then the RBAC tree won't need to be constantly updated. See the details of this discussion here: <https://github.com/casbin/casbin/issues/681#issuecomment-763801583>
+3. Grant permissions to RBAC roles instead of users directly. Casbin's RBAC is implemented by a role inheritance tree (as a cache). So, given a user like Alice, Casbin only takes O(1) time to query the RBAC tree for the role-user relationship and perform enforcement. If your g rules don't change often, then the RBAC tree won't need to be constantly updated. See the details of this discussion here: [https://github.com/casbin/casbin/issues/681#issuecomment-763801583](https://github.com/casbin/casbin/issues/681#issuecomment-763801583)
 
 :::note
 
