@@ -1,11 +1,12 @@
 name: Build and Deploy
-on: 
+on:
+  workflow_dispatch:
   push:
       branches:
         - master
 jobs:
   build-and-deploy:
-    env: 
+    env:
       CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +18,7 @@ jobs:
           yarn install
           yarn crowdin:sync
           yarn build
-    
+
       - name: Build PDF prerequisites 🔨
         run: |
           sudo apt install fonts-noto -y
