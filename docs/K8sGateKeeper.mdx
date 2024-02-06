@@ -10,7 +10,7 @@ authors: [ComradeProgrammer]
 
 Casbin K8s-GateKeeper is a Kubernetes admission webhook that integrates Casbin as the Access Control tool. By using Casbin K8s-GateKeeper, you can establish flexible rules to authorize or intercept any operation on K8s resources, WITHOUT writing any piece of code, but only several lines of declarative configurations of Casbin models and policies, which are part of the Casbin ACL (Access Control List) language.
 
-Casbin K8s-GateKeeper is developed and maintained by the Casbin community. The repository of this project is available here: <https://github.com/casbin/k8s-gatekeeper>
+Casbin K8s-GateKeeper is developed and maintained by the Casbin community. The repository of this project is available here: [https://github.com/casbin/k8s-gatekeeper](https://github.com/casbin/k8s-gatekeeper)
 
 ### 0.1 A Simple Example
 
@@ -259,7 +259,7 @@ When K8s-gatekeeper is authorizing a request, the input is always an object: the
 ok, err := enforcer.Enforce(admission)
 ```
 
-where `admission` is an `AdmissionReview` object defined by K8s's official go api `"k8s.io/api/admission/v1"`. You can find the definition of this struct in this repository: <https://github.com/kubernetes/api/blob/master/admission/v1/types.go>. For more information, you can also refer to <https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response>.
+where `admission` is an `AdmissionReview` object defined by K8s's official go api `"k8s.io/api/admission/v1"`. You can find the definition of this struct in this repository: [https://github.com/kubernetes/api/blob/master/admission/v1/types.go](https://github.com/kubernetes/api/blob/master/admission/v1/types.go). For more information, you can also refer to [https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response).
 
 Therefore, for any model used by K8s-gatekeeper, the definition of the `request_definition` should always be like this:
 

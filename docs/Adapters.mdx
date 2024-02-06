@@ -12,15 +12,14 @@ In Casbin, the policy storage is implemented as an adapter (aka middleware for C
 
 ## Supported adapters
 
-A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:)
+A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:
 
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 
-import {AdapterDotNETData} from "@site/src/tableData/AdapterData/AdapterDotNETData"; import {
-  AdapterGoData
-} from "@site/src/tableData/AdapterData/AdapterGoData";
+import {AdapterDotNETData} from "@site/src/tableData/AdapterData/AdapterDotNETData";
+import {  AdapterGoData} from "@site/src/tableData/AdapterData/AdapterGoData";
 import {AdapterJavaData} from "@site/src/tableData/AdapterData/AdapterJavaData";
 import {AdapterLuaData} from "@site/src/tableData/AdapterData/AdapterLuaData";
 import AdapterMDTable from "@site/src/tableData/AdapterData/AdapterMDTable";
@@ -380,7 +379,7 @@ e.AddPolicy(...)
 e.RemovePolicy(...)
 ```
 
-For more examples, please see: <https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go>
+For more examples, please see: [https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go](https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go)
 
 ### How to write an adapter
 
@@ -441,7 +440,7 @@ There're details about how to write an adapter.
 
 ### Who is responsible to create the DB?
 
-As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: <https://github.com/casbin/xorm-adapter>
+As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: [https://github.com/casbin/xorm-adapter](https://github.com/casbin/xorm-adapter)
 
 ## Context Adapter
 
