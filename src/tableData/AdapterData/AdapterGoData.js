@@ -136,6 +136,15 @@ export const AdapterGoData = [
     image: "/img/ecosystem/SQL.png",
   },
   {
+    title: "[Bun Adapter](https://github.com/JunNishimura/casbin-bun-adapter)",
+    type: "ORM",
+    author: "[@JunNishimura](https://github.com/JunNishimura)",
+    autoSave: "✅",
+    description:
+      "MySQL, SQLite, PostgreSQL, SQL Server are supported by [Bun ORM](https://bun.uptrace.dev/guide/drivers.html)",
+    image: null,
+  },    
+  {
     title:
       "[Filtered PostgreSQL Adapter](https://github.com/casbin/casbin-pg-adapter)",
     type: "SQL",
