@@ -23,6 +23,12 @@ export const MiddlewarePythonData = [
       "The most widely deployed open source cloud software in the world, via plugin: [openstack-patron](https://github.com/casbin/openstack-patron)",
     image: "/img/ecosystem/openstack.png",
   },
+  {
+    title: "[Tornado](https://www.tornadoweb.org/)",
+    description:
+      "Tornado is a Python web framework and asynchronous networking library, via plugin: [tornado-authz](https://github.com/pycasbin/tornado-authz)",
+    image: "/img/ecosystem/tornado.png",
+  },
 ].map((item) => {
   return {
     ...item,
