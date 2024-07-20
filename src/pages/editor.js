@@ -5,16 +5,14 @@ import Giscus from "@giscus/react";
 function Editor() {
   return (
     <Layout title="Editor" description="Casbin Online Editor">
-      <div>
+      <div className="editor-container">
         <iframe
           src="https://editor.casbin.org/"
-          style={{width: "100%", height: "850px", display: "block"}}
+          className="editor-iframe"
           title="Casbin-editor"
-          scrolling="no"
         />
       </div>
-      <br />
-      <div style={{width: "60vw", margin: "0 auto"}}>
+      <div className="comments-container">
         <Giscus
           id="comments"
           repo="casbin/casbin"
