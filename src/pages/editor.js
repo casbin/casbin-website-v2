@@ -1,13 +1,15 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import Giscus from "@giscus/react";
+import {useColorMode} from "@docusaurus/theme-common";
 
-function Editor() {
+function EditorContent() {
+  const {colorMode} = useColorMode();
   return (
-    <Layout title="Editor" description="Casbin Online Editor">
+    <>
       <div className="editor-container">
         <iframe
-          src="https://editor.casbin.org/"
+          src={`https://editor.casbin.org/?theme=${colorMode}`}
           className="editor-iframe"
           title="Casbin-editor"
         />
@@ -24,11 +26,22 @@ function Editor() {
           reactionsEnabled="1"
           emitMetadata="0"
           inputPosition="top"
-          theme="light"
+          theme={colorMode}
           lang="en"
           loading="lazy"
         />
       </div>
+    </>
+  );
+}
+
+function Editor() {
+  return (
+    <Layout
+      title="Editor"
+      description="Casbin Online Editor"
+    >
+      <EditorContent />
     </Layout>
   );
 }
