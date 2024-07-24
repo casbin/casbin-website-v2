@@ -2,14 +2,17 @@ import React from "react";
 import Layout from "@theme/Layout";
 import Giscus from "@giscus/react";
 import {useColorMode} from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 function EditorContent() {
   const {colorMode} = useColorMode();
+  const {i18n} = useDocusaurusContext();
+  const currentLanguage = i18n.currentLocale;
   return (
     <>
       <div className="editor-container">
         <iframe
-          src={`https://editor.casbin.org/?theme=${colorMode}`}
+          src={`https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`}
           className="editor-iframe"
           title="Casbin-editor"
         />
