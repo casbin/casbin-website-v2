@@ -8,18 +8,17 @@ function EditorContent() {
   const {colorMode} = useColorMode();
   const {i18n} = useDocusaurusContext();
   const currentLanguage = i18n.currentLocale;
-  const [iframeKey, setIframeKey] = useState(0);
+  const [editorUrl, setEditorUrl] = useState("");
 
   useEffect(() => {
-    setIframeKey(prevKey => prevKey + 1);
-  }, [colorMode]);
+    setEditorUrl(`https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`);
+  }, [colorMode, currentLanguage]);
 
   return (
     <>
       <div className="editor-container">
         <iframe
-          key={iframeKey}
-          src={`https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`}
+          src={editorUrl}
           className="editor-iframe"
           title="Casbin-editor"
         />
