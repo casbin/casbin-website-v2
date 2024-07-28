@@ -24,7 +24,7 @@ function DefaultNavbarItemDesktop({
 }
 function DefaultNavbarItemMobile({className, isDropdownItem, ...props}) {
   return (
-    <li className="menu__list-item">
+    <li className="menu__list-item dropdown__menu">
       <NavbarNavLink className={clsx("menu__link", className)} {...props} />
     </li>
   );
