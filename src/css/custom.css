@@ -260,6 +260,11 @@ div[class^="announcementBar_"] {
   font-size: 14px;
 }
 
+.dropdown__menu {
+  overflow: hidden;
+  max-height: 100vh;
+}
+
 /* doc sidebar */
 .menu__link {
   font-size: 14px;
