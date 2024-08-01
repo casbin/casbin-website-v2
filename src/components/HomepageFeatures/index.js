@@ -3,6 +3,7 @@ import clsx from "clsx";
 import styles from "./styles.module.css";
 import Translate from "@docusaurus/Translate";
 import {useColorMode} from "@docusaurus/theme-common";
+import ChatButton from "./ChatButton";
 
 const FeatureList = [
   {
@@ -68,7 +69,7 @@ function Feature({title, path, description}) {
   );
 }
 
-export default function HomepageFeatures() {
+function HomepageFeatures() {
   return (
     <section className={styles.features}>
       <div className="container">
@@ -79,5 +80,14 @@ export default function HomepageFeatures() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function Homepage() {
+  return (
+    <div>
+      <HomepageFeatures />
+      <ChatButton />
+    </div>
   );
 }
