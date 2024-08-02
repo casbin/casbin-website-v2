@@ -40,7 +40,7 @@ export const chatIframeContainer = {
   position: "fixed",
   bottom: "80px",
   right: "20px",
-  width: "min(500px, calc(100vw - 40px))",
+  width: "min(550px, calc(100vw - 40px))",
   height: "min(600px, calc(100vh - 100px))",
   borderRadius: "10px",
   zIndex: 1001,
@@ -49,7 +49,7 @@ export const chatIframeContainer = {
   transition: "all 0.3s ease",
   transform: "translateY(30px)",
   opacity: 1,
-  boxShadow: "0 5px 60px rgba(0, 0, 0, 0.6)",
+  boxShadow: "-8px 0 8px -8px rgba(0, 0, 0, 0.2), 0 -8px 8px -8px rgba(0, 0, 0, 0.2), 0 8px 8px -8px rgba(0, 0, 0, 0.2)",
 };
 
 export const chatIframeContainerOpen = {
@@ -60,5 +60,5 @@ export const chatIframeContainerOpen = {
 export const chatIframe = {
   width: "100%",
   height: "100%",
-  marginLeft: "-5px",
+  marginLeft: "-2px",
 };
