@@ -40,7 +40,7 @@ function ChatButton() {
       {isChatOpen && (
         <div style={chatIframeContainer}>
           <iframe
-            src="https://ai.casbin.com/"
+            src="https://ai.casbin.com/?isRaw=1"
             title="Chat with AI"
             style={chatIframe}
           ></iframe>
