@@ -106,7 +106,7 @@
     "react/no-unknown-property": [
       "error",
       {
-        "ignore": ["scrolling"]
+        "ignore": ["scrolling","fill"]
       }
     ]
   }
