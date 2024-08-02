@@ -35,21 +35,15 @@ export const chatIframeContainer = {
   position: "fixed",
   bottom: "80px",
   right: "20px",
-  width: "min(400px, calc(100vw - 40px))",
+  width: "min(500px, calc(100vw - 40px))",
   height: "min(600px, calc(100vh - 100px))",
-  backgroundColor: "white",
-  border: "1px solid #ccc",
   borderRadius: "10px",
-  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
   zIndex: 1001,
-  display: "flex",
   flexDirection: "column",
   overflow: "hidden",
 };
 
 export const chatIframe = {
-  flexGrow: 1,
-  border: "none",
   width: "100%",
   height: "100%",
 };

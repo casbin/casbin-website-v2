@@ -37,15 +37,13 @@ function ChatButton() {
           </>
         )}
       </button>
-      {isChatOpen && (
-        <div style={chatIframeContainer}>
-          <iframe
-            src="https://ai.casbin.com/?isRaw=1"
-            title="Chat with AI"
-            style={chatIframe}
-          ></iframe>
-        </div>
-      )}
+      <div style={{...chatIframeContainer, display: isChatOpen ? "flex" : "none"}}>
+        <iframe
+          src="https://ai.casbin.com/?isRaw=1"
+          title="Chat with AI"
+          style={chatIframe}
+        ></iframe>
+      </div>
     </div>
   );
 }
