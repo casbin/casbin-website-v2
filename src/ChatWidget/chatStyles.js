@@ -29,6 +29,7 @@ export const closeIcon = {
   fontSize: "50px",
   fontWeight: "100",
   lineHeight: 1,
+  transition: "transform 0.3s ease",
 };
 
 export const chatIframeContainer = {
@@ -41,6 +42,14 @@ export const chatIframeContainer = {
   zIndex: 1001,
   flexDirection: "column",
   overflow: "hidden",
+  transition: "all 0.3s ease",
+  transform: "translateY(30px)",
+  opacity: 1,
+};
+
+export const chatIframeContainerOpen = {
+  transform: "translateY(0)",
+  opacity: 1,
 };
 
 export const chatIframe = {
