@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
   chatButton,
+  chatButtonHover,
   chatButtonOpen,
   chatIframe,
   chatIframeContainer,
@@ -36,7 +37,7 @@ function ChatButton() {
         style={{
           ...chatButton,
           ...(isChatOpen ? chatButtonOpen : {}),
-          ...(isHovered ? {backgroundColor: "#2E2A57"} : {}),
+          ...(isHovered ? chatButtonHover : {}),
         }}
         onClick={handleClick}
         onMouseEnter={() => setIsHovered(true)}

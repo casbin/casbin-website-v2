@@ -7,7 +7,6 @@ export const chatButton = {
   border: "none",
   borderRadius: "50px",
   padding: "10px 20px",
-  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
   cursor: "pointer",
   zIndex: 1000,
   display: "flex",
@@ -15,6 +14,11 @@ export const chatButton = {
   fontWeight: "bold",
   fontSize: "16px",
   transition: "all 0.3s ease",
+};
+
+export const chatButtonHover = {
+  backgroundColor: "#2E2A57",
+  boxShadow: "0 6px 100px rgba(0, 0, 0, 0.5)",
 };
 
 export const chatButtonOpen = {
@@ -45,6 +49,7 @@ export const chatIframeContainer = {
   transition: "all 0.3s ease",
   transform: "translateY(30px)",
   opacity: 1,
+  boxShadow: "0 5px 60px rgba(0, 0, 0, 0.6)",
 };
 
 export const chatIframeContainerOpen = {
@@ -55,4 +60,5 @@ export const chatIframeContainerOpen = {
 export const chatIframe = {
   width: "100%",
   height: "100%",
+  marginLeft: "-5px",
 };
