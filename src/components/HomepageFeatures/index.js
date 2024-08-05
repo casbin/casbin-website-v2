@@ -1,9 +1,8 @@
-import React, {useEffect} from "react";
+import React from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 import Translate from "@docusaurus/Translate";
 import {useColorMode} from "@docusaurus/theme-common";
-import {initChatWidget} from "../../ChatWidget/chatWidget";
 
 const FeatureList = [
   {
@@ -70,11 +69,6 @@ function Feature({title, path, description}) {
 }
 
 export default function HomepageFeatures() {
-
-  useEffect(() => {
-    initChatWidget(document.body);
-  }, []);
-
   return (
     <section className={styles.features}>
       <div className="container">
