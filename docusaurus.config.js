@@ -283,6 +283,14 @@ var _hmt = _hmt || [];
       src: "/js/clarity.js",
       async: true,
     },
+    {
+      src: "https://tcdn.casibase.org/casibase.js",
+      async: true,
+    },
+    {
+      src: "/js/casibase.js",
+      async: true,
+    },
   ],
   presets: [
     [
