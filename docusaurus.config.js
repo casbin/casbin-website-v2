@@ -284,7 +284,11 @@ var _hmt = _hmt || [];
       async: true,
     },
     {
-      src: "/js/casibase-tracker.js",
+      src: "https://tcdn.casibase.org/casibase.js",
+      async: true,
+    },
+    {
+      src: "/js/casibase.js",
       async: true,
     },
   ],
