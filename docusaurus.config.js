@@ -284,10 +284,6 @@ var _hmt = _hmt || [];
       async: true,
     },
     {
-      src: "https://tcdn.casibase.org/casibase.js",
-      async: true,
-    },
-    {
       src: "/js/casibase.js",
       async: true,
     },
