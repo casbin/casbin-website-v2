@@ -6,6 +6,7 @@
     w[c]("init", {
       endpoint: "https://ai.casbin.com",
       themeColor: "rgb(64,59,121)",
+      popupTime: 5,
     });
   };
   const f = d.getElementsByTagName(s)[0];
