@@ -322,6 +322,6 @@ var _hmt = _hmt || [];
   ],
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "zh", "ko", "ru", "fr", "de", "ja", "es", "pt", "uk", "th", "ar", "id", "vi", "it", "ms", "tr"],
+    locales: ["en", "zh", "ko", "ru", "fr", "de", "ja", "es", "pt", "uk", "th", "ar", "id", "vi", "it", "ms", "tr","hu","ga"],
   },
 };
