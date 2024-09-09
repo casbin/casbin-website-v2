@@ -54,6 +54,13 @@ export const MiddlewareNodejsData = [
     description:
       "Authorization middleware that uses stateless JWT token to validate ACL rules using Casbin",
     image: "/img/ecosystem/jwt.png",
+  },  
+  {
+    title:
+      "[Hono](https://github.com/honojs/hono) ",
+    description:
+      "Fast, lightweight, built on Web Standards. via plugin: [@hono/casbin](https://github.com/honojs/middleware/tree/main/packages/casbin)",
+    image: "/img/ecosystem/hono.png",
   },
 ].map((item) => {
   return {
