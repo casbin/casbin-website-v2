@@ -17,6 +17,12 @@
         },
         {
             "pattern": "^https://kns.cnki.net"
+        },
+        {
+            "pattern": "^https://learnku.com"
+        },
+        {
+            "pattern": "^http://www.cnblogs.com"
         }
     ]
 }
