@@ -23,9 +23,6 @@
         },
         {
             "pattern": "^http://www.cnblogs.com"
-        },
-        {
-            "pattern":"https://habr.com"
         }
     ]
 }
