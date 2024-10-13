@@ -117,6 +117,13 @@ export const AdapterNodejsData = [
     description: "MongoDB is supported by [Mongoose](https://mongoosejs.com/)",
   },
   {
+    title: "[Node MongoDB Native Adapter](https://github.com/NathanBhanji/mongodb-casbin-adapter)",
+    type: "NoSQL",
+    author: "[NathanBhanji](https://github.com/NathanBhanji)",
+    autoSave: "✅",
+    description: "For [Node MongoDB Native](https://mongodb.github.io/node-mongodb-native/)",
+  },
+  {
     title:
       "[Node MongoDB Native Adapter](https://github.com/juicycleff/casbin-mongodb-adapter)",
     type: "NoSQL",
