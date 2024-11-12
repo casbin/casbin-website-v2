@@ -10,7 +10,7 @@ export const AdapterPythonData = [
   },
   {
     title:
-      "[Django ORM Adapter](https://github.com/pycasbin/django-orm-adapter)",
+      "[Django ORM Adapter](https://github.com/officialpycasbin/django-orm-adapter)",
     type: "ORM",
     author: "Casbin",
     autoSave: "✅",
@@ -19,7 +19,7 @@ export const AdapterPythonData = [
     image: "/img/ecosystem/SQL.png",
   },
   {
-    title: "[SQLObject Adapter](https://github.com/pycasbin/sqlobject-adapter)",
+    title: "[SQLObject Adapter](https://github.com/officialpycasbin/sqlobject-adapter)",
     type: "ORM",
     author: "Casbin",
     autoSave: "✅",
@@ -29,7 +29,7 @@ export const AdapterPythonData = [
   },
   {
     title:
-      "[SQLAlchemy Adapter](https://github.com/pycasbin/sqlalchemy-adapter)",
+      "[SQLAlchemy Adapter](https://github.com/officialpycasbin/sqlalchemy-adapter)",
     type: "ORM",
     author: "Casbin",
     autoSave: "✅",
@@ -39,7 +39,7 @@ export const AdapterPythonData = [
   },
   {
     title:
-      "[Async SQLAlchemy Adapter](https://github.com/pycasbin/async-sqlalchemy-adapter)",
+      "[Async SQLAlchemy Adapter](https://github.com/officialpycasbin/async-sqlalchemy-adapter)",
     type: "ORM",
     author: "Casbin",
     autoSave: "✅",
@@ -49,7 +49,7 @@ export const AdapterPythonData = [
   },
   {
     title:
-      "[Async Databases Adapter](https://github.com/pycasbin/casbin-databases-adapter)",
+      "[Async Databases Adapter](https://github.com/officialpycasbin/casbin-databases-adapter)",
     type: "ORM",
     author: "Casbin",
     autoSave: "✅",
@@ -134,7 +134,7 @@ export const AdapterPythonData = [
     image: "/img/ecosystem/dynamoDB.png",
   },
   {
-    title: "[Pymongo Adapter](https://github.com/pycasbin/pymongo-adapter)",
+    title: "[Pymongo Adapter](https://github.com/officialpycasbin/pymongo-adapter)",
     type: "NoSQL",
     author: "Casbin",
     autoSave: "❌",
@@ -143,7 +143,7 @@ export const AdapterPythonData = [
     image: "/img/ecosystem/monogoDB.png",
   },
   {
-    title: "[Redis Adapter](https://github.com/pycasbin/redis-adapter)",
+    title: "[Redis Adapter](https://github.com/officialpycasbin/redis-adapter)",
     type: "KV store",
     author: "Casbin",
     autoSave: "✅",

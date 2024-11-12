@@ -1,13 +1,13 @@
 export const WatcherPythonData = [
   {
-    title: "[Etcd Watcher](https://github.com/pycasbin/etcd-watcher)",
+    title: "[Etcd Watcher](https://github.com/officialpycasbin/etcd-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [etcd](https://github.com/coreos/etcd)",
     image: "/img/ecosystem/etcd.png",
   },
   {
-    title: "[Redis Watcher](https://github.com/pycasbin/redis-watcher)",
+    title: "[Redis Watcher](https://github.com/officialpycasbin/redis-watcher)",
     type: "KV store",
     author: "Casbin",
     description: "Watcher for [Redis](http://redis.io/)",
@@ -31,14 +31,14 @@ export const WatcherPythonData = [
   },
   {
     title:
-      "[PostgreSQL Watcher](https://github.com/pycasbin/postgresql-watcher)",
+      "[PostgreSQL Watcher](https://github.com/officialpycasbin/postgresql-watcher)",
     type: "Database",
     author: "Casbin",
     description: "Watcher for [PostgreSQL](https://www.postgresql.org/)",
     image: "/img/ecosystem/redis.png",
   },
   {
-    title: "[RabbitMQ Watcher](https://github.com/pycasbin/rabbitmq-watcher)",
+    title: "[RabbitMQ Watcher](https://github.com/officialpycasbin/rabbitmq-watcher)",
     type: "Messaging system",
     author: "Casbin",
     description: "Watcher for [RabbitMQ](https://www.rabbitmq.com/)",
