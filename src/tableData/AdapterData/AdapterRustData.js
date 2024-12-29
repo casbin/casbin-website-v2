@@ -88,6 +88,14 @@ export const AdapterRustData = [
     description: "For [YAML](https://yaml.org/)",
     image: "/img/ecosystem/yaml.png",
   },
+  {
+    title: "[String Adapter](https://github.com/casbin-rs/string-adapter)",
+    type: "String",
+    author: "Casbin",
+    autoSave: "❌",
+    description: "For [String](https://doc.rust-lang.org/std/string/struct.String.html)",
+    image: "/img/ecosystem/string.png",
+  },
 ].map((item) => {
   return {
     ...item,
