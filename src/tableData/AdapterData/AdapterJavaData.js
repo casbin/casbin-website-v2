@@ -46,13 +46,13 @@ export const AdapterJavaData = [
   },
   {
     title:
-      "[MongoDB Adapter](https://github.com/zzl221000/jcasbin-mongo-adapter)",
+      "[MongoDB Adapter](https://github.com/jcasbin/jcasbin-mongo-adapter)",
     type: "NoSQL",
     author: "Casbin",
     autoSave: "✅",
     description:
       "MongoDB is supported by [mongodb-driver-sync](https://mongodb.github.io/mongo-java-driver/)",
-    image: "img/ecosystem/monogoDB.png",
+    image: "/img/ecosystem/monogoDB.png",
   },
   {
     title: "[DynamoDB Adapter](https://github.com/jcasbin/dynamodb-adapter)",
