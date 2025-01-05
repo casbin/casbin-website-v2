@@ -46,7 +46,7 @@ export const AdapterJavaData = [
   },
   {
     title:
-      "[MongoDB Adapter](https://github.com/zzl221000/jcasbin-mongo-adapter)",
+      "[MongoDB Adapter](https://github.com/jcasbin/jcasbin-mongo-adapter)",
     type: "NoSQL",
     author: "Casbin",
     autoSave: "✅",
