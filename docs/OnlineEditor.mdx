@@ -8,9 +8,9 @@ authors: [hsluoyz]
 
 You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. It provides functionality such as "syntax highlighting" and "code completion", just like an IDE for a programming language.
 
-## Usage Pattern
+## Use Custom Functions
 
-If you are using "RBAC with pattern" or "RBAC with all pattern", the pattern matching function is specified in the lower left corner.
+If you need to use a customized matching function (e.g. "RBAC with Patterns"), you can add it by clicking the "Add Role Matching" button at the bottom left corner of the editor.
 
 ![editor-tips](/img/editor-tips.png).
 
@@ -18,6 +18,8 @@ If you want to write the equivalent code, you need to specify the pattern matchi
 
 :::note
 
-The editor is based on [node-casbin](https://github.com/casbin/node-casbin). Due to the synchronization delay between different versions of Casbin, the authentication result of the "editor" may differ from the authentication result of the Casbin version you are using. If you encounter any issues, please submit them to the Casbin repository you are using.
+The editor supports multiple Casbin implementations, including [Node-Casbin (Node.js)](https://github.com/casbin/node-casbin), [JCasbin (Java)](https://github.com/casbin/jcasbin), [Casbin (Go)](https://github.com/casbin/casbin), and [Casbin-rs (Rust)](https://github.com/casbin/casbin-rs). You can switch between different implementations in the upper right corner to test your model and policy.
+
+Although the editor validates through a remote CLI, due to environment differences, the validation results may differ slightly from the results you get in your local environment. If you encounter any issues, please submit them to the corresponding Casbin implementation repository.
 
 :::
