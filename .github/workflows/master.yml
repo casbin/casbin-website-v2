@@ -40,7 +40,7 @@ jobs:
           mv pdf/* build/pdf/ -f
 
       - name: Upload results 📤
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PDFs
           path: build/pdf/
