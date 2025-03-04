@@ -13,16 +13,17 @@ authors: [liulifox233]
 ### Go (casbin-go-cli)
 
 1. Clone project from repository
-```bash
-git clone https://github.com/casbin/casbin-go-cli.git
-```
+
+    ```bash
+    git clone https://github.com/casbin/casbin-go-cli.git
+    ```
 
 2. Build project
 
-```bash
-cd casbin-go-cli
-go build -o casbin
-```
+    ```bash
+    cd casbin-go-cli
+    go build -o casbin
+    ```
 
 ### Rust (casbin-rust-cli)
 
@@ -35,37 +36,41 @@ cargo install casbin-rust-cli
 #### From source
 
 1. Clone project from repository
-```bash
-git clone https://github.com/casbin-rs/casbin-rust-cli.git
-```
+
+    ```bash
+    git clone https://github.com/casbin-rs/casbin-rust-cli.git
+    ```
 
 2. Build project
 
-```bash
-cd casbin-rust-cli
-cargo build --release
-```
+    ```bash
+    cd casbin-rust-cli
+    cargo build --release
+    ```
+
 ### Java (casbin-java-cli)
 
 1. Clone project from repository
-```bash
-git clone https://github.com/jcasbin/casbin-java-cli.git
-```
+
+    ```bash
+    git clone https://github.com/jcasbin/casbin-java-cli.git
+    ```
 
 2. Build project, the jar package will be generated in the target directory
 
-```bash
-cd casbin-java-cli
-mvn clean install
-```
+    ```bash
+    cd casbin-java-cli
+    mvn clean install
+    ```
 
 ## Usage
 
 ## Options
+
 | options               | description                                                          | must | remark                                                    |
 |-----------------------|----------------------------------------------------------------------|------|-----------------------------------------------------------|
 | `-m, --model`         | The path of the model file or model text                             | y    | Please wrap it with `""` and separate each line with `\|` |
-| `-p, --policy`        | The path of the policy file or policy text                           | y    | Please wrap it with `""` and separate each line with `\|` |          
+| `-p, --policy`        | The path of the policy file or policy text                           | y    | Please wrap it with `""` and separate each line with `\|` |
 | `-e, --enforce`       | Check permissions                                                    | n    | Please wrap it with `""`                                  |
 | `-ex, --enforceEx`    | Check permissions and get which policy it is                         | n    | Please wrap it with `""`                                  |
 | `-AF, --addFuntion`   | Add custom funtion ( casbin-java-cli only )                          | n    | Please wrap it with `""` and separate each line with `\|` |
@@ -79,10 +84,13 @@ mvn clean install
     ```shell
     ./casbin enforce -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data1" "read"
     ```
+
     > {"allow":true,"explain":null}
+
     ```shell
     ./casbin enforce -m "[request_definition]\nr = sub, obj, act\n[policy_definition]\np = sub, obj, act\n[role_definition]\ng = _, _\n[policy_effect]\ne = some(where (p.eft == allow))\n[matchers]\nm = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act" -p "p, alice, data1, read\np, bob, data2, write\np, data2_admin, data2, read\np, data2_admin, data2, write\ng, alice, data2_admin" "alice" "data1" "read"
     ```
+
     > {"allow":true,"explain":null}
 
 - Check whether Alice has write permission for data2. If so, display the effective policy.
@@ -90,6 +98,7 @@ mvn clean install
     ```shell
     ./casbin enforceEx -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
     ```
+
     > {"allow":true,"explain":["data2_admin","data2","write"]}
 
 - Add a policy to the policy file ( casbin-java-cli only )
@@ -97,6 +106,7 @@ mvn clean install
     ```shell
     ./casbin addPolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
     ```
+
     > {"allow":true,"explain":null}
 
 - Delete a policy from the policy file ( casbin-java-cli only )
@@ -104,4 +114,5 @@ mvn clean install
     ```shell
     ./casbin removePolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
     ```
+
     > {"allow":true,"explain":null}
