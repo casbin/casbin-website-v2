@@ -119,6 +119,7 @@ module.exports = {
       items: [
         "admin-portal",
         "service",
+        "command-line-tools",
         "log-error",
         "frontend",
       ],
