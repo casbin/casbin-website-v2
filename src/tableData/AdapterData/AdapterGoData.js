@@ -143,7 +143,7 @@ export const AdapterGoData = [
     description:
       "MySQL, SQLite, PostgreSQL, SQL Server are supported by [Bun ORM](https://bun.uptrace.dev/guide/drivers.html)",
     image: null,
-  },    
+  },
   {
     title:
       "[Filtered PostgreSQL Adapter](https://github.com/casbin/casbin-pg-adapter)",
@@ -162,6 +162,14 @@ export const AdapterGoData = [
     description:
       "PostgreSQL is supported by [pgx](https://github.com/jackc/pgx)",
     image: "/img/ecosystem/postgreSQL.png",
+  },
+  {
+    "title": "[Pgx Adapter](https://github.com/gtoxlili/pgx-adapter)",
+    "type": "SQL",
+    "author": "[@gtoxlili](https://github.com/gtoxlili)",
+    "autoSave": "✅",
+    "description": "PostgreSQL is supported by [pgx](https://github.com/jackc/pgx), supports customizable column count",
+    "image": "/img/ecosystem/postgreSQL.png",
   },
   {
     title:
