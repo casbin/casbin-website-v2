@@ -14,6 +14,13 @@ export const WatcherJavaData = [
     image: "/img/ecosystem/redis.png",
   },
   {
+    title: "[Redis WatcherEx](https://github.com/jcasbin/redis-watcher-ex)",
+    type: "KV store",
+    author: "Casbin",
+    description: "WatcherEx for [Redis](http://redis.io/)",
+    image: "/img/ecosystem/redis.png",
+  },
+  {
     title:
       "[Lettuce-Based Redis Watcher](https://github.com/jcasbin/lettuce-redis-watcher)",
     type: "KV store",
@@ -21,6 +28,14 @@ export const WatcherJavaData = [
     description:
       "Watcher for [Redis](http://redis.io/) based on [Lettuce](https://lettuce.io/))",
     image: "/img/ecosystem/lettuce.png",
+  },
+  {
+    title:
+      "[PostgreSQL Watcher](https://github.com/jcasbin/jcasbin-postgres-watcher)",
+    type: "Database",
+    author: "Casbin",
+    description: "Watcher for [PostgreSQL](https://www.postgresql.org/)",
+    image: "/img/ecosystem/postgreSQL.png",
   },
   {
     title: "[Kafka Watcher](https://github.com/jcasbin/kafka-watcher)",
