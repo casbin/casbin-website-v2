@@ -1,5 +1,5 @@
 (function(w, d, s, c, i) {
-  // 读写关闭时间戳，localStorage 不可用时用 cookie 兜底
+  // Read/write close timestamp, fallback to cookie if localStorage is unavailable
   function setPopupClosedTime(ts) {
     try {
       localStorage.setItem("casibaseChatClosedTime", ts);
@@ -7,23 +7,23 @@
       document.cookie = "casibaseChatClosedTime=" + ts + ";max-age=86400;path=/";
     }
   }
-  // 获取上次关闭的时间戳，localStorage不可用时用 cookie 兜底
+  // Get the last close timestamp, fallback to cookie if localStorage is unavailable
   function getPopupClosedTime() {
     try {
       return localStorage.getItem("casibaseChatClosedTime");
     } catch (e) {
-      let match = document.cookie.match(/(?:^|; )casibaseChatClosedTime=(\d+)/);
+      const match = document.cookie.match(/(?:^|; )casibaseChatClosedTime=(\d+)/);
       return match ? match[1] : null;
     }
   }
 
-  // 默认不弹出聊天窗口
+  // By default, do not show the chat window
   let chatClosed = false;
   let lastClosed = 0;
-  // 获取上次关闭弹窗的时间戳，支持 localStorage 和 cookie
+  // Get the last closed timestamp, support both localStorage and cookie
   lastClosed = parseInt(getPopupClosedTime(), 10) || 0;
   const now = Date.now();
-  // 如果上次关闭时间在24h内，则不自动弹出聊天窗口
+  // If the last close time is within 24h, do not auto popup chat window
   if (now - lastClosed < 86400000) {
     chatClosed = true;
   }
@@ -35,22 +35,22 @@
     w[c]("init", {
       endpoint: "https://ai.casbin.com",
       themeColor: "rgb(64,59,121)",
-      // 24小时内只弹一次，chatClosed为true时不自动弹出
+      // Only popup once in 24h, if chatClosed is true do not auto popup
       popupTime: chatClosed ? -1 : 5,
       onClose: function() {
-        // 关闭时记录当前时间戳，24小时内不再弹出
+        // Record current timestamp when closed, do not popup again within 24h
         setPopupClosedTime(Date.now().toString());
       },
     });
 
-    // 兼容远程脚本不支持 onClose 的情况，监听 DOM 变化
+    // For remote scripts that do not support onClose, listen to DOM changes
     const observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (
           mutation.type === "attributes" &&
           mutation.target.classList.contains("chat-container")
         ) {
-          // 关闭弹窗时记录时间戳
+          // Record timestamp when chat window is closed
           if (!mutation.target.classList.contains("open") && mutation.oldValue && mutation.oldValue.includes("open")) {
             setPopupClosedTime(Date.now().toString());
           }
