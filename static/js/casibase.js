@@ -1,5 +1,5 @@
 (function(w, d, s, c, i) {
-  // Read/write close timestamp, fallback to cookie if localStorage is unavailable
+  // Set the close timestamp, fallback to cookie if localStorage is unavailable
   function setPopupClosedTime(ts) {
     try {
       localStorage.setItem("casibaseChatClosedTime", ts);
@@ -10,10 +10,11 @@
   // Get the last close timestamp, fallback to cookie if localStorage is unavailable
   function getPopupClosedTime() {
     try {
-      return localStorage.getItem("casibaseChatClosedTime");
+      const v = localStorage.getItem("casibaseChatClosedTime");
+      return v !== null ? v : "0";
     } catch (e) {
       const match = document.cookie.match(/(?:^|; )casibaseChatClosedTime=(\d+)/);
-      return match ? match[1] : null;
+      return match ? match[1] : "0";
     }
   }
 
@@ -23,7 +24,7 @@
   // Get the last closed timestamp, support both localStorage and cookie
   lastClosed = parseInt(getPopupClosedTime(), 10) || 0;
   const now = Date.now();
-  // If the last close time is within 24h, do not auto popup chat window
+  // If the last close time is within 24 hours, do not auto popup chat window
   if (now - lastClosed < 86400000) {
     chatClosed = true;
   }
@@ -35,10 +36,10 @@
     w[c]("init", {
       endpoint: "https://ai.casbin.com",
       themeColor: "rgb(64,59,121)",
-      // Only popup once in 24h, if chatClosed is true do not auto popup
+      // Only popup once in 24 hours, if chatClosed is true do not auto popup
       popupTime: chatClosed ? -1 : 5,
       onClose: function() {
-        // Record current timestamp when closed, do not popup again within 24h
+        // Record current timestamp when closed, do not popup again within 24 hours
         setPopupClosedTime(Date.now().toString());
       },
     });
