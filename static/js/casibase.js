@@ -3,36 +3,39 @@
   script.async = false;
   script.src = "https://tcdn.casibase.org/casibase.js";
 
-  // Check if popup should be displayed
+  // Determine whether to show the popup: first visit or more than 24 hours since last visit
   function shouldShowPopup() {
-    const visited = localStorage.getItem("casibase_visited");
-    const closedTime = localStorage.getItem("casibase_closed");
-
-    if (visited) {
-      if (closedTime) {
-        const hoursSinceClose = (Date.now() - closedTime) / (1000 * 60 * 60);
-        if (hoursSinceClose < 24) {return false;} // Less than 24 hours since close
-      }
-      return false; // Already visited
+    const lastVisitTime = localStorage.getItem("casibase_visited");
+    
+    // If visited before, check if within 24 hours
+    if (lastVisitTime && Date.now() - lastVisitTime < 24 * 60 * 60 * 1000) {
+      return false;
     }
-
-    // First visit, show popup
-    localStorage.setItem("casibase_visited", "true");
+    
+    // First visit or more than 24 hours have passed, update visit time and show popup
+    localStorage.setItem("casibase_visited", Date.now());
     return true;
   }
 
   script.onload = function() {
-    if (shouldShowPopup()) {
-      w[c]("init", {
-        endpoint: "https://ai.casbin.com",
-        themeColor: "rgb(64,59,121)",
-        popupTime: 5,
-        onClose: () => localStorage.setItem("casibase_closed", Date.now()),
-      });
-    }
+    // Reverse conditional check to reduce indentation
+    if (!shouldShowPopup()) return;
+
+    // Initialize popup component
+    w[c]("init", {
+      endpoint: "https://ai.casbin.com",
+      themeColor: "rgb(64,59,121)",
+      popupTime: 5,
+      onClose: () => localStorage.setItem("casibase_visited", Date.now())
+    });
   };
 
-  const firstScript = d.getElementsByTagName(s)[0];
-  firstScript.parentNode.insertBefore(script, firstScript);
-  w[c] = w[c] || function() {(w[c].q = w[c].q || []).push(arguments);};
+  // Insert script into document
+  const f = d.getElementsByTagName(s)[0];
+  f.parentNode.insertBefore(script, f);
+  
+  // Initialize global function
+  w[c] = w[c] || function() {
+    (w[c].q = w[c].q || [])?.push(arguments);
+  };
 })(window, document, "script", "casibaseChat");
