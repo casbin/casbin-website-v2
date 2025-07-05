@@ -32,4 +32,4 @@
   w[c] = w[c] || function() {
     (w[c].q = w[c].q || []).push(arguments);
   };
-})(window,document,"script","casibaseChat");
+})(window, document, "script", "casibaseChat");
