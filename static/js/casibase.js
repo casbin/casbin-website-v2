@@ -1,4 +1,4 @@
-(function(w, d, s, c, i){  
+(function(w, d, s, c, i) {
   const j = d.createElement(s);
   j.async = false;
   j.src = "https://tcdn.casibase.org/casibase.js";
@@ -7,11 +7,10 @@
     const lastVisitTime = localStorage.getItem("casibase_visited");
     if (lastVisitTime) {
       const parsedTime = Number(lastVisitTime);
-      if (!isNaN(parsedTime) && Date.now() - parsedTime < 86400000) {
+      if (Date.now() - parsedTime < 24 * 60 * 60 * 1000) {
         return false;
       }
     }
-    localStorage.setItem("casibase_visited", Date.now().toString());
     return true;
   }
 
@@ -24,10 +23,8 @@
       onClose: () => localStorage.setItem("casibase_visited", Date.now().toString())
     });
   };
-
   const f = d.getElementsByTagName(s)[0];
   f.parentNode.insertBefore(j, f);
-
   w[c] = w[c] || function() {
     (w[c].q = w[c].q || []).push(arguments);
   };
