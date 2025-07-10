@@ -31,4 +31,4 @@
   w[c] = w[c] || function() {
     (w[c].q = w[c].q || []).push(arguments);
   };
-})(window, document, "script", "casibaseChat");  // 仅保留一次正确的调用
+})(window, document, "script", "casibaseChat");
