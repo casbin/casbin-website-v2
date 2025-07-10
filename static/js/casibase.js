@@ -1,1 +1,38 @@
-(function(w,d,s,c){const j=d.createElement(s);j.async=!1;j.src="https://tcdn.casibase.org/casibase.js";function a(){const b=localStorage.getItem("casibase_visited");if(b&&Date.now()-Number(b)<864e5)return!1;localStorage.setItem("casibase_visited",Date.now().toString());return!0}j.onload=function(){a()&&w[c]("init",{endpoint:"https://ai.casbin.com",themeColor:"rgb(64,59,121)",popupTime:5,onClose:()=>localStorage.setItem("casibase_visited",Date.now().toString())})};const f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f);w[c]=w[c]||function(){(w[c].q=w[c].q||[]).push(arguments)}})(window,document,"script","casibaseChat");
+(function(w, d, s, c) {
+  const j = d.createElement(s);
+  j.async = false;
+  j.src = "https://tcdn.casibase.org/casibase.js";
+
+  function shouldShowPopup() {
+    const lastVisitTime = localStorage.getItem("casibase_visited");
+    
+  
+    if (lastVisitTime) {
+      const parsedTime = Number(lastVisitTime);
+      if (!isNaN(parsedTime) && Date.now() - parsedTime < 86400000) {
+        return false;
+      }
+    }
+    
+    localStorage.setItem("casibase_visited", Date.now().toString());
+    return true;
+  }
+
+  j.onload = function() {
+    if (!shouldShowPopup()) return;
+
+    w[c]("init", {
+      endpoint: "https://ai.casbin.com",
+      themeColor: "rgb(64,59,121)",
+      popupTime: 5,
+      onClose: () => localStorage.setItem("casibase_visited", Date.now().toString())
+    });
+  };
+
+  const f = d.getElementsByTagName(s)[0];
+  f.parentNode.insertBefore(j, f);
+
+  w[c] = w[c] || function() {
+    (w[c].q = w[c].q || []).push(arguments);
+  };
+})(window, document, "script", "casibaseChat");
