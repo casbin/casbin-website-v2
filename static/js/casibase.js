@@ -1,4 +1,4 @@
-(function(w, d, s, c, i) {  
+(function(w, d, s, c, i){  
   const j = d.createElement(s);
   j.async = false;
   j.src = "https://tcdn.casibase.org/casibase.js";
