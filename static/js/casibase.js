@@ -1,4 +1,4 @@
-(function(w, d, s, c,i) {
+(function(w, d, s, c, i) {
   const j = d.createElement(s);
   j.async = false;
   j.src = "https://tcdn.casibase.org/casibase.js";
@@ -35,4 +35,4 @@
   w[c] = w[c] || function() {
     (w[c].q = w[c].q || []).push(arguments);
   };
-   })(window, document, "script", "casibaseChat");
+})(window, document, "script", "casibaseChat");
