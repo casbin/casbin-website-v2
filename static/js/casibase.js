@@ -29,8 +29,8 @@
   };
   const f = d.getElementsByTagName(s)[0];
   f.parentNode.insertBefore(j, f);
-   w[c] = w[c] || function() {
+  w[c] = w[c] || function() {
     (w[c].q = w[c].q || []).push(arguments);
   };
-
+  
 })(window,document,"script","casibaseChat");
