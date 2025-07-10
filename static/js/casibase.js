@@ -1,34 +1,44 @@
-(function(w, d, s, c) { 
-  const script = d.createElement(s); 
+(function (window, document, scriptTag, casibaseKey) {
+  'use strict'; 
+
+  const script = document.createElement(scriptTag);
   script.async = false;
-  script.src = "https://tcdn.casibase.org/casibase.js";
+  script.src = 'https://tcdn.casibase.org/casibase.js';
 
 
   function shouldShowPopup() {
-    const lastVisitTime = localStorage.getItem("casibase_visited");
-    if (lastVisitTime && Date.now() - lastVisitTime < 24 * 60 * 60 * 1000) {
-      return false;
+    const lastVisitTime = localStorage.getItem('casibase_visited');
+    if (lastVisitTime) {
+      const timeDiff = Date.now() - parseInt(lastVisitTime, 10);
+      if (timeDiff < 24 * 60 * 60 * 1000) {
+        return false;
+      }
     }
-    localStorage.setItem("casibase_visited", Date.now());
+    localStorage.setItem('casibase_visited', Date.now().toString());
     return true;
   }
 
-  script.onload = function() {
-    if (!shouldShowPopup()) return; 
+  script.onload = function () {
+    if (!shouldShowPopup()) {
+      return; 
+    }
 
-    w[c]("init", {
-      endpoint: "https://ai.casbin.com",
-      themeColor: "rgb(64,59,121)",
+    window[casibaseKey]('init', {
+      endpoint: 'https://ai.casbin.com',
+      themeColor: 'rgb(64, 59, 121)', 
       popupTime: 5,
-      onClose: () => localStorage.setItem("casibase_visited", Date.now()) 
+      onClose: () => {
+        localStorage.setItem('casibase_visited', Date.now().toString());
+      }
     });
   };
 
-  const firstScript = d.getElementsByTagName(s)[0]; 
+  const firstScript = document.getElementsByTagName(scriptTag)[0];
   firstScript.parentNode.insertBefore(script, firstScript);
 
-
-  w[c] = w[c] || function() {
-    (w[c].q = w[c].q || []).push(arguments);
-  };
-})(window, document, "script", "casibaseChat"); 
+  if (typeof window[casibaseKey] !== 'function') {
+    window[casibaseKey] = function (...args) { 
+      (window[casibaseKey].q = window[casibaseKey].q || []).push(args);
+    };
+  }
+})(window, document, 'script', 'casibaseChat');
