@@ -10,7 +10,7 @@ Casbin is a powerful and efficient open-source access control library that suppo
 [access control models](https://en.wikipedia.org/wiki/Access_control#Access_control_models)
 for enforcing authorization across the board.
 
-Enforcing a set of rules is as simple as listing subjects, objects, and the desired allowed action (or any other format as per your needs) in a **_policy_** file. This is synonymous across all flows in which Casbin is used. The developer/administrator has complete control over the layout, execution, and conditions for authorization, which are set via the **_model_** file. Casbin provides an **_Enforcer_** for validating an incoming request based on the policy and model files given to the Enforcer.
+Enforcing access control rules is as simple as listing subjects, objects, and permitted actions (or custom formats) in a **_policy_** file. This pattern is consistent across all Casbin usage scenarios. Developers/administrators maintain full control over authorization logic, including rule structure, execution flow, and conditional checks, through the **_model_** file. Casbin provides an **_Enforcer_** for validating an incoming request based on the policy and model files given to the Enforcer.
 
 ## Languages Supported by Casbin
 
@@ -51,10 +51,7 @@ Multi-Threading         | ✅   | ✅    | ✅      | ❌   | ✅      | ❌   |
 
 ## What is Casbin?
 
-Casbin is an authorization library that can be used in flows where we want a certain
-`object` or entity to be accessed by a specific user or `subject`. The type of access, i.e. `action`,
-can be _read_, _write_, _delete_, or any other action as set by the developer. This is how Casbin is most widely used, and it's called the "standard"
-or classic `{ subject, object, action }` flow.
+Casbin is an authorization library for controlling access to resources (objects) by users (subjects) through specific operations (actions). Common actions include _read_, _write_, and _delete_, though developers can define custom actions. This fundamental usage pattern is known as the classic `{ subject, object, action }` authorization flow.
 
 Casbin is capable of handling many complex authorization scenarios other than the standard flow. There can be the addition of [roles (RBAC)](/docs/rbac), [attributes (ABAC)](/docs/abac), etc.
 

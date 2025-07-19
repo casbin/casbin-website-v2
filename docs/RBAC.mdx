@@ -8,7 +8,7 @@ authors: [hsluoyz]
 
 ## Role Definition
 
-The `[role_definition]` is used to define the RBAC role inheritance relations. Casbin supports multiple instances of RBAC systems, where users can have roles and their inheritance relations, and resources can have roles and their inheritance relations too. These two RBAC systems won't interfere with each other.
+The `[role_definition]` section defines RBAC role inheritance relationships. Casbin supports multiple independent RBAC systems – users can have roles with inheritance relationships, and resources can similarly have their own role hierarchies. These two RBAC systems won't interfere with each other.
 
 This section is optional. If you don't use RBAC roles in the model, then omit this section.
 
@@ -66,7 +66,7 @@ ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an erro
 
 ## Role Hierarchy
 
-Casbin's RBAC supports RBAC1's role hierarchy feature, which means that if `alice` has `role1`, and `role1` has `role2`, then `alice` will also have `role2` and inherit its permissions.
+Casbin's RBAC supports role hierarchies (RBAC1). If `alice` has `role1` and `role1` has `role2`, then `alice` inherits `role2` and its permissions.
 
 Here, we have a concept called a hierarchy level. So, in this example, the hierarchy level is 2. For the built-in role manager in Casbin, you can specify the maximum hierarchy level. The default value is 10. This means that an end user like `alice` can only inherit 10 levels of roles.
 

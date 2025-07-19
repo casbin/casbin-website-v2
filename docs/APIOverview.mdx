@@ -6,7 +6,7 @@ keywords: [API overview, API, API usage]
 authors: [hsluoyz]
 ---
 
-This overview only shows you how to use Casbin APIs and doesn't explain how Casbin is installed or how it works. You can find those tutorials here: [Installation of Casbin](/docs/get-started) and [How Casbin Works](/docs/how-it-works). So, when you start reading this tutorial, we assume that you have fully installed and imported Casbin into your code.
+This overview demonstrates how to use Casbin APIs without explaining installation or underlying mechanisms. You can find those tutorials here: [Installation of Casbin](/docs/get-started) and [How Casbin Works](/docs/how-it-works). So, when you start reading this tutorial, we assume that you have fully installed and imported Casbin into your code.
 
 ## Enforce API
 
@@ -55,7 +55,7 @@ if err != nil {
 ok, err := enforcer.Enforce("alice", "data1", "read")
 ```
 
-This code loads the access control model and policies from local files. The function `casbin.NewEnforcer()` will return an enforcer. It will recognize its two parameters as file paths and load the files from there. Errors occurred in the process are stored in the variable `err`. This code uses the default adapter to load the model and policies, and of course, you can achieve the same result by using a third-party adapter.
+This code loads the access control model and policies from local files. The `casbin.NewEnforcer()` function returns an enforcer by loading the model and policy files from the specified paths. Errors occurred in the process are stored in the variable `err`. This code uses the default adapter to load the model and policies, and of course, you can achieve the same result by using a third-party adapter.
 
 The code `ok, err := enforcer.Enforce("alice", "data1", "read")` is used to confirm access permissions. If Alice can access data1 with the read operation, the returned value of `ok` will be `true`; otherwise, it will be `false`. In this example, the value of `ok` is `true`.
 
@@ -70,7 +70,7 @@ fmt.Println(ok, reason) // true [admin data1 read]
 
 The `EnforceEx()` function will return the exact policy string in the return value `reason`. In this example, `amber` is an `admin` role, so the policy `p, admin, data1, read` allowed this request to be `true`. The output of this code is in the comment.
 
-Casbin has provided many APIs similar to this one. These APIs add some extra functions to the basic ones. They include:
+Casbin offers several extended APIs that add functionality to the basic ones. They include:
 
 - `ok, err := enforcer.EnforceWithMatcher(matcher, request)`
 
