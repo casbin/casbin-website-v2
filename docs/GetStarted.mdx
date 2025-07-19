@@ -100,10 +100,10 @@ cmake --build . --config Release --target casbin install -j 10
 cargo install cargo-edit
 cargo add casbin
 
-// If you use async-std as async executor
+// If you use async-std as your async executor
 cargo add async-std
 
-// If you use tokio as async executor, make sure you activate its `macros` feature
+// If you use tokio as your async executor, ensure you activate its `macros` feature
 cargo add tokio
 ```
 
@@ -134,17 +134,17 @@ luarocks install casbin --local
 </Tabs>
 ```
 
-## New a Casbin enforcer
+## Create a Casbin Enforcer
 
-Casbin uses configuration files to define the access control model.
+Casbin utilizes configuration files to define the access control model.
 
-There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. The usage of Casbin is very straightforward. We only need to create one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
+There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. Using Casbin is very straightforward. You only need to create one main structure: the **enforcer**. When constructing this structure, you'll load `model.conf` and `policy.csv`.
 
 In other words, to create a Casbin enforcer, you need to provide a [Model](supported-models) and an [Adapter](adapters).
 
-Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use. See [Adapter](adapters) for more information.
+Casbin offers a built-in [FileAdapter](adapters#file-adapter-built-in) for basic file-based policy storage. Refer to the [Adapter documentation](adapters) for additional storage options.
 
-- Example of using the Model file and the default [FileAdapter](adapters#file-adapter-built-in):
+- Example: Creating an enforcer with a model file and the default [FileAdapter](adapters#file-adapter-built-in):
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -227,7 +227,7 @@ int main() {
     // Create an Enforcer
     casbin::Enforcer e("path/to/model.conf", "path/to/policy.csv");
 
-    // your code ..
+    // Your authorization logic here..
 }
 ```
 
@@ -253,7 +253,7 @@ end
 ```rust
 use casbin::prelude::*;
 
-// If you use async_td as async executor
+// If you use async-std as async executor
 #[cfg(feature = "runtime-async-std")]
 #[async_std::main]
 async fn main() -> Result<()> {
@@ -397,7 +397,10 @@ if ok == true {
 
 // You could use BatchEnforce() to enforce some requests in batches.
 // This method returns a bool slice, and this slice's index corresponds to the row index of the two-dimensional array.
-// e.g. results[0] is the result of {"alice", "data1", "read"}
+// Example:
+// requests = [["alice", "data1", "read"], ["bob", "data2", "write"]]
+// results = e.BatchEnforce(requests)
+// results[0] will be the enforcement result for the first request
 results, err := e.BatchEnforce([][]interface{}{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"jack", "data3", "read"}})
 ```
 
@@ -476,9 +479,9 @@ else:
 ```
 
 ```csharp
-var sub = "alice";  # the user that wants to access a resource.
-var obj = "data1";  # the resource that is going to be accessed.
-var act = "read";  # the operation that the user performs on the resource.
+var sub = "alice";  // the user that wants to access a resource.
+var obj = "data1";  // the resource that is going to be accessed.
+var act = "read";  // the operation that the user performs on the resource.
 
 if (await e.EnforceAsync(sub, obj, act)) 
 {
@@ -501,7 +504,7 @@ else
     if (e.Enforce({"alice", "/alice_data/hello", "GET"})) {
         std::cout << "Enforce OK" << std::endl;
     } else {
-        std::cout << "Enforce NOT Good" << std::endl;
+        std::cout << "Access denied" << std::endl;
     }
 
     if (e.Enforce({"alice", "/alice_data/hello", "POST"})) {
@@ -517,10 +520,10 @@ else
 ```
 
 ```delphi
-if casbin.enforce(['alice,data1,read']) then
-  // Alice is super happy as she can read data1
+if casbin.enforce(['alice', 'data1', 'read']) then
+  // permit alice to read data1
 else
-  // Alice is sad
+  // deny the request, show an error
 ```
 
 ```mdx-code-block
@@ -536,7 +539,7 @@ else
   if e.enforce((sub, obj, act)).await? {
       // permit alice to read data1
   } else {
-      // error occurs
+      // deny the request, show an error
   }
 ```
 
@@ -559,7 +562,7 @@ end
 </Tabs>
 ```
 
-Casbin also provides API for permission management at run-time. For example, You can get all the roles assigned to a user as below:
+Casbin also provides APIs for permission management at runtime. For example, you can retrieve all roles assigned to a user as shown below:
 
 ```mdx-code-block
 <Tabs groupId="langs">
