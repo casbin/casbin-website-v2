@@ -1,0 +1,61 @@
+---
+id: rebac
+title: ReBAC
+description: ReBAC based on Casbin
+keywords: [ReBAC, ReBAC model]
+authors: [D0000M]
+---
+## What is the ReBAC Model?
+
+ReBAC (Relationship-Based Access Control) is a modern access control model that focuses on relationships between entities for permission management. Compared to traditional RBAC (Role-Based Access Control) or ABAC (Attribute-Based Access Control), ReBAC is better suited for systems with complex relationship networks, such as social networks, collaboration platforms, and multi-tenant systems.
+
+In ReBAC, authorization decisions are based on relationships between entities, such as:
+
+- Is the user the "owner" of the resource?
+- Is the user a "friend" of the resource's "creator"?
+- Does the user belong to an organization associated with the resource?
+- Is the user an "admin" of a certain "project"?
+
+These relationships are typically modeled as graph structures or paths.
+
+## ReBAC Support in Casbin
+
+Casbin provides the following mechanisms to implement ReBAC:
+
+- User-Resource-Role Relationships
+- Resource-Type Relationships
+
+A single policy rule can cover multiple users and multiple resources of the same type, enabling flexible and scalable permission control through relationship combinations.
+
+Casbin uses `.conf` files to define access control models. Below is an official ReBAC model example:
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = role, obj_type, act
+
+[role_definition]
+g = _, _, _
+g2 = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, r.obj, p.role) && g2(r.obj, p.obj_type) && r.act == p.act
+```
+
+```csv
+# Permission definition: The "collaborator" role can read files of type "doc"
+p, collaborator, doc, read
+
+# User-Resource-Role Relationship: alice is a collaborator of doc1
+g, alice, doc1, collaborator
+
+# Resource-Type Relationship: doc1 is of type "doc"
+g2, doc1, doc
+```
+
+By checking whether a user has a specific role for a given resource and whether the resource belongs to a specified type, permissions are automatically derived through **role relationships + type relationships + permission definitions**.
