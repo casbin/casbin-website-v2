@@ -6,7 +6,7 @@ keywords: [filtered policies, policy subset, performance optimization]
 authors: [hsluoyz]
 ---
 
-Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy stored in the database, based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments where parsing the entire policy becomes a performance bottleneck.
+Some adapters support filtered policy management. This means the policy loaded by Casbin is a subset of the policy stored in the database, based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments where parsing the entire policy becomes a performance bottleneck.
 
 To use filtered policies with a supported adapter, call the `LoadFilteredPolicy` method. The valid format for the filter parameter depends on the adapter used. To prevent accidental data loss, the `SavePolicy` method is disabled when a filtered policy is loaded.
 

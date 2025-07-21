@@ -140,7 +140,7 @@ Casbin requires two core configuration files to define the access control system
 - `model.conf`: Defines the access control model structure
 - `policy.csv`: Stores specific user permission rules
 
-Using Casbin involves a simple workflow: initialize an **Enforcer** instance with these two configuration files during setup. Technically, an Enforcer requires two components: a [Model](supported-models) definition (access control structure) and an [Adapter](adapters) (policy storage mechanism).
+The typical Casbin workflow is to initialize an **Enforcer** instance with these two configuration files. Technically, an Enforcer requires two components: a [Model](supported-models) definition (access control structure) and an [Adapter](adapters) (policy storage mechanism).
 
 Casbin provides a built-in [FileAdapter](adapters#built-in-file-adapter-example) for basic file-based policy storage. Refer to the [Adapter documentation](adapters) for additional storage options.
 

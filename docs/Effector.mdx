@@ -6,7 +6,7 @@ keywords: [effector, policy effect, MergeEffects, authorization decision, policy
 authors: [ErikQQY]
 ---
 
-The `Effect` type represents the result of individual policy rule evaluations, while the `Effector` interface coordinates merging these results into a final authorization decision.
+The `Effect` type represents the result of evaluating individual policy rules, while the `Effector` interface merges these results into a final authorization decision.
 
 ## `MergeEffects()`
 
@@ -39,7 +39,7 @@ In this example:
 - `policyIndex` is the current evaluation position within the policy rule list (used for incremental evaluation).
 - `policyLength` is the total number of policy rules being evaluated.
 
-The code above demonstrates parameter usage for `MergeEffects()`, which processes effects and matches according to the `expr`.
+The code above demonstrates how to use the parameters for `MergeEffects()`, which processes effects and matches according to the `expr`.
 
 To use an `Effector`, follow these steps:
 

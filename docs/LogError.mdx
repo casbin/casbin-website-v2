@@ -8,20 +8,20 @@ authors: [hsluoyz]
 
 ## Logging
 
-Casbin uses the built-in `log` package to print logs to the console by default, for example:
+Casbin uses the built-in `log` package to print logs to the console by default. For example:
 
 ```log
 2017/07/15 19:43:56 [Request: alice, data1, read ---> true]
 ```
 
-Logging is not enabled by default. You can toggle it via `Enforcer.EnableLog()` or the last parameter of `NewEnforcer()`.
+Logging is not enabled by default. You can enable it via `Enforcer.EnableLog()` or the last parameter of `NewEnforcer()`.
 
 :::note
-For Golang: Casbin supports logging the model, enforce request, role, and policy. You can define your own logger for Casbin.
+For Golang: Casbin supports logging the model, enforce requests, roles, and policies. You can define your own logger for Casbin.
 :::
 
 :::note
-For Python: PyCasbin uses the default Python logging mechanism. PyCasbin calls `logging.getLogger()` to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is initialized, you will not see log messages from PyCasbin. When you enable logs in PyCasbin, you can specify the logging configuration through the `logging_config` parameter. If not specified, it uses the [default log configuration](https://github.com/casbin/pycasbin/blob/c33cabfa0ac65cd09cf812a65e71794d64cb5132/casbin/util/log.py#L6C1-L6C1). For Django users, refer to the [Django logging docs](https://docs.djangoproject.com/en/4.2/topics/logging/). For other Python users, refer to the [Python logging docs](https://docs.python.org/3/library/logging.config.html).
+For Python: PyCasbin uses the default Python logging mechanism. PyCasbin calls `logging.getLogger()` to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is initialized, you will not see log messages from PyCasbin. When you enable logs in PyCasbin, you can specify the logging configuration through the `logging_config` parameter. If not specified, it uses the [default log configuration](https://github.com/casbin/pycasbin/blob/c33cabfa0ac65cd09cf812a65e71794d64cb5132/casbin/util/log.py#L6C1-L6C1). For Django users, refer to the [Django logging docs](https://docs.djangoproject.com/en/4.2/topics/logging/). For other Python users, refer to the [Python logging docs](https://python.org/3/library/logging.config.html).
 :::
 
 ### Use Different Loggers for Different Enforcers

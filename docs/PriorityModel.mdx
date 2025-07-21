@@ -8,9 +8,7 @@ authors: [hsluoyz]
 
 Casbin supports loading policies with priority.
 
-## Load Policy with Implicit Priority
-
-It's quite simple: the order determines the priority; policies that appear earlier have higher priority.
+It's simple: the order determines the priority; policies that appear earlier have higher priority.
 
 model.conf:
 
@@ -23,7 +21,7 @@ e = priority(p.eft) || deny
 
 > Also see: [casbin#550](https://github.com/casbin/casbin/issues/550)
 
-A smaller priority value indicates a higher priority. If there's a non-numerical character in the priority, it will be placed last instead of throwing an error.
+A smaller priority value indicates a higher priority. If there's a non-numeric character in the priority, it will be placed last instead of throwing an error.
 
 :::info Token name convention
 
@@ -54,7 +52,7 @@ ok, err := e.Enforce("bob", "data2", "read") // the result will be `false, nil`
 
 :::
 
-Currently, explicit priority only supports `AddPolicy` & `AddPolicies`. If `UpdatePolicy` has been called, you shouldn't change the priority attribute.
+Currently, explicit priority only supports `AddPolicy` and `AddPolicies`. If `UpdatePolicy` has been called, you shouldn't change the priority attribute.
 
 model.conf:
 
@@ -102,7 +100,7 @@ bob, data2, write --> true // because bob has the role of `data2_allow_group` wh
 
 ## Load Policy with Priority Based on Role and User Hierarchy
 
-The inherited structure of roles and users can only be multiple trees, not graphs. If a user has multiple roles, you have to make sure the user has the same level in different trees. If two roles have the same level, the policy (associated with the role) that appeared earlier has higher priority. For more details, also see [casbin#833](https://github.com/casbin/casbin/pull/833) and [casbin#831](https://github.com/casbin/casbin/issues/831).
+The inherited structure of roles and users can only be multiple trees, not graphs. If a user has multiple roles, you have to make sure the user has the same level in different trees. If two roles have the same level, the policy (associated with the role) that appeared earlier has higher priority. For more details, see [casbin#833](https://github.com/casbin/casbin/pull/833) and [casbin#831](https://github.com/casbin/casbin/issues/831).
 
 model.conf:
 

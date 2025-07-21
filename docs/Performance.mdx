@@ -16,7 +16,7 @@ Throughput exceeding 10,000 authorization requests per second can overwhelm a si
 2. **Distributed cluster** – Implement a Casbin cluster with Watcher synchronization for consistency across nodes. See: [Watchers](/docs/watchers).
 
 :::note
-These optimization strategies can be combined. For example, deploy a 10-server cluster with 5 threads per machine to handle extreme load scenarios.
+These optimization strategies can be combined. For example, you can deploy a 10-server cluster with 5 threads per machine to handle extreme load scenarios.
 :::
 
 ## Large Policy Datasets
@@ -32,5 +32,5 @@ Multi-tenant environments with millions of policy rules often experience slow en
 3. **RBAC optimization** – Assign permissions to roles rather than individual users. Casbin's RBAC implementation maintains role relationships in an in-memory cache, enabling O(1) lookup performance. See the [RBAC performance discussion](https://github.com/casbin/casbin/issues/681#issuecomment-763801583) for technical details.
 
 :::note
-These techniques work synergistically—combine model optimization with sharding for maximum scalability.
+These techniques work together—combine model optimization with sharding for maximum scalability.
 :::

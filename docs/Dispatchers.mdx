@@ -6,7 +6,7 @@ keywords: [dispatcher]
 authors: [dovics]
 ---
 
-Dispatchers synchronize incremental policy changes using consistency algorithms like Raft, ensuring consistency across all Enforcer instances. They enable easy creation of distributed Casbin clusters.
+Dispatchers synchronize incremental policy changes using consistency algorithms such as Raft, ensuring all Enforcer instances remain consistent. This enables easy creation of distributed Casbin clusters.
 
 Dispatcher functionality consists of two parts: Casbin-integrated methods called internally by Casbin, and dispatcher-specific methods for initialization, dynamic membership, and configuration changes.
 
@@ -16,7 +16,7 @@ Dispatchers ensure consistency of Casbin Enforcers during runtime operations. Al
 
 :::
 
-Below is a complete list of Casbin dispatchers. Third-party contributions of new dispatchers are welcome – please notify us to have your implementation added.
+Below is a list of Casbin dispatchers. Third-party contributions are welcome—please notify us to have your implementation added.
 
 ```mdx-code-block
 <Tabs groupId="langs">

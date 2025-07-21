@@ -13,6 +13,8 @@ authors: [hsluoyz]
 
 Casbin policy enforcement overhead has been benchmarked in [model_b_test.go](https://github.com/casbin/casbin/blob/master/model_b_test.go). The testbed configuration is as follows:
 
+The following hardware was used for benchmarking:
+
 ```text
 Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 2601 Mhz, 4 Core(s), 8 Logical Processor(s)
 ```
@@ -118,11 +120,10 @@ Here are the benchmarking results obtained by executing `luajit bench.lua` (op =
 ```mdx-code-block
 </TabItem>
 </Tabs>
-```
 
 ## Benchmark monitoring
 
-In the embedded web page below, you can see the performance changes of Casbin for each commit.
+The embedded web page below shows the performance changes of Casbin for each commit.
 
 You can also directly browse it at: [https://v1.casbin.org/casbin/benchmark-monitoring](https://v1.casbin.org/casbin/benchmark-monitoring)
 

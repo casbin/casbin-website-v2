@@ -9,13 +9,15 @@ authors: [hsluoyz]
 ## Functions in matchers
 
 You can even specify functions in a matcher to make it more powerful. You can use built-in functions or specify your own function.
+
+You can specify functions in a matcher to make it more powerful. You can use built-in functions or define your own custom function.
 The built-in key-matching functions take the following format:
 
 ```c
 bool function_name(string url, string pattern)
 ```
 
-They return a boolean indicating whether the `url` matches the `pattern`.
+These functions return a boolean indicating whether the `url` matches the `pattern`.
 
 The supported built-in functions are:
 
@@ -51,7 +53,7 @@ See details for the above functions at: [https://github.com/casbin/casbin/blob/m
 
 ## How to add a customized function
 
-First, prepare your function. It takes several parameters and returns a bool:
+First, define your function. It takes several parameters and returns a bool:
 
 ```go
 func KeyMatch(key1 string, key2 string) bool {
@@ -67,7 +69,7 @@ func KeyMatch(key1 string, key2 string) bool {
 }
 ```
 
-Then, wrap it with `interface{}` types:
+Then, wrap it with `interface{}` types so it can be registered with Casbin:
 
 ```go
 func KeyMatchFunc(args ...interface{}) (interface{}, error) {
@@ -78,7 +80,7 @@ func KeyMatchFunc(args ...interface{}) (interface{}, error) {
 }
 ```
 
-Finally, register the function to the Casbin enforcer:
+Finally, register the function with the Casbin enforcer:
 
 ```go
 e.AddFunction("my_func", KeyMatchFunc)
