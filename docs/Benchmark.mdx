@@ -19,13 +19,13 @@ Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 2601 Mhz, 4 Core(s), 8 Logical Proces
 
 Following are the benchmarking results obtained by running ``go test -bench=. -benchmem`` (op = an ``Enforce()`` call, ms = millisecond, KB = kilobytes):
 
-| Test case                 | Rule size                                | Time overhead (ms/op) | Memory overhead (KB) |
+| Test case                 | Rule size                                | Time overhead (ms/op) | Memory overhead per operation (KB) |
 |---------------------------|------------------------------------------|-----------------------|----------------------|
 | ACL                       | 2 rules (2 users)                        | 0.015493              | 5.649                |
 | RBAC                      | 5 rules (2 users, 1 role)                | 0.021738              | 7.522                |
 | RBAC (small)              | 1100 rules (1000 users, 100 roles)       | 0.164309              | 80.620               |
 | RBAC (medium)             | 11000 rules (10000 users, 1000 roles)    | 2.258262              | 765.152              |
-| RBAC (large)              | 110000 rules (100000 users, 10000 roles) | 23.916776             | 7,606                |
+| RBAC (large)              | 110000 rules (100000 users, 10000 roles) | 23.916776             | 7606                 |
 | RBAC with resource roles  | 6 rules (2 users, 2 roles)               | 0.021146              | 7.906                |
 | RBAC with domains/tenants | 6 rules (2 users, 1 role, 2 domains)     | 0.032696              | 10.755               |
 | ABAC                      | 0 rule (0 user)                          | 0.007510              | 2.328                |
@@ -41,8 +41,8 @@ Following are the benchmarking results obtained by running ``go test -bench=. -b
 The overhead of policy enforcement in [Pycasbin](https://github.com/casbin/pycasbin) has been benchmarked in the [`tests/benchmarks`](https://github.com/casbin/pycasbin/tree/master/tests/benchmarks) directory. The testbed configuration is as follows:
 
 ```text
-Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz (Runned by Github actions)
-platform linux -- Python 3.11.4, pytest-7.0.1, pluggy-1.2.0
+Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz (Run by GitHub Actions)
+Platform: Linux -- Python 3.11.4, pytest-7.0.1, pluggy-1.2.0
 ```
 
 Here are the benchmarking results obtained from executing `casbin_benchmark` (op = an `enforce()` call, ms = millisecond):
@@ -57,8 +57,8 @@ Here are the benchmarking results obtained from executing `casbin_benchmark` (op
 | RBAC with resource roles  | 6 rules (2 users, 2 roles)               | 0.106090              |
 | RBAC with domains/tenants | 6 rules (2 users, 1 role, 2 domains)     | 0.103628              |
 | ABAC                      | 0 rule (0 user)                          | 0.053213              |
-| RESTful                   | 5 rules (3 users)                        | NA                    |
-| Deny-override             | 6 rules (2 users, 1 role)                | NA                    |
+| RESTful                   | 5 rules (3 users)                        | N/A                   |
+| Deny-override             | 6 rules (2 users, 1 role)                | N/A                   |
 | Priority                  | 9 rules (2 users, 2 roles)               | 0.084684              |
 
 ```mdx-code-block
@@ -69,7 +69,7 @@ Here are the benchmarking results obtained from executing `casbin_benchmark` (op
 The overhead of policy enforcement in [Casbin CPP](https://github.com/casbin/casbin-cpp) has been benchmarked in the [`tests/benchmarks`](https://github.com/casbin/casbin-cpp/tree/master/tests/benchmarks) directory using [Google's benchmarking tool](https://github.com/google/benchmark). The testbed configuration is as follows:
 
 ```text
-Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz, 4 cores, 4 threads
+Intel(R) Core(TM) i5-6300HQ CPU @ 2.30GHz, 4 cores and 4 threads
 ```
 
 Here are the benchmarking results obtained from executing the `casbin_benchmark` target built in the `Release` configuration (op = an `enforce()` call, ms = millisecond):
@@ -96,7 +96,7 @@ Here are the benchmarking results obtained from executing the `casbin_benchmark`
 The overhead of policy enforcement in [Lua Casbin](https://github.com/casbin/lua-casbin) has been benchmarked in [bench.lua](https://github.com/casbin/lua-casbin/blob/master/bench.lua). The testbed configuration is as follows:
 
 ```text
-AMD Ryzen(TM) 5 4600H CPU @ 3.0GHz, 6 Cores, 12 Threads
+AMD Ryzen(TM) 5 4600H CPU @ 3.0 GHz, 6 Cores, 12 Threads
 ```
 
 Here are the benchmarking results obtained by running ``luajit bench.lua`` (op = an ``enforce()`` call, ms = millisecond):

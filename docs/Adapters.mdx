@@ -1,25 +1,23 @@
 ---
 id: adapters
 title: Adapters
-description: Supported adapters and usage
-keywords: [adapters, MySQL adapter, storage adapter]
+description: Comprehensive guide to Casbin policy storage adapters, including supported databases, implementation examples, and integration best practices
+keywords: [Casbin adapters, storage adapters, database adapters, policy persistence, third-party adapters]
 authors: [hsluoyz]
 ---
 
+In Casbin, policy storage is managed by adapters—middleware components that handle policy rule loading (`LoadPolicy()`) and persistence (`SavePolicy()`). To keep the core library lightweight, adapter implementations are maintained as separate packages.
 
+## Supported Adapters
 
-In Casbin, the policy storage is implemented as an adapter (aka middleware for Casbin). A Casbin user can use an adapter to load policy rules from a storage (aka ``LoadPolicy()``), or save policy rules to it (aka ``SavePolicy()``). To keep light-weight, we don't put adapter code in the main library.
-
-## Supported adapters
-
-A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and we will put it in this list:
+Below is a comprehensive list of Casbin adapters. Third-party contributions of new adapters are welcome—please notify us to have your implementation added to this list:
 
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 
 import {AdapterDotNETData} from "@site/src/tableData/AdapterData/AdapterDotNETData";
-import {  AdapterGoData} from "@site/src/tableData/AdapterData/AdapterGoData";
+import {AdapterGoData} from "@site/src/tableData/AdapterData/AdapterGoData";
 import {AdapterJavaData} from "@site/src/tableData/AdapterData/AdapterJavaData";
 import {AdapterLuaData} from "@site/src/tableData/AdapterData/AdapterLuaData";
 import AdapterMDTable from "@site/src/tableData/AdapterData/AdapterMDTable";
@@ -103,19 +101,17 @@ import {AdapterSwiftData} from "@site/src/tableData/AdapterData/AdapterSwiftData
 
 :::note
 
-1. If ``casbin.NewEnforcer()`` is called with an explicit or implicit adapter, the policy will be loaded automatically.
-2. You can call ``e.LoadPolicy()`` to reload the policy rules from the storage.
-3. If the adapter does not support the ``Auto-Save`` feature, The policy rules cannot be automatically saved back to the storage when you add or remove policies. You have to call ``SavePolicy()`` manually to save all policy rules.
+1. When `casbin.NewEnforcer()` is called with an explicit or implicit adapter, policies load automatically during initialization.
+2. Use `e.LoadPolicy()` to manually reload policies from storage after making external changes.
+3. Adapters may not support automatic policy persistence. After modifying policies (e.g., via `AddPolicy()`), call `e.SavePolicy()` explicitly to persist changes.
 
 :::
 
 ## Examples
 
-Here we provide several examples:
+### Built-in File Adapter Example
 
-### File adapter (built-in)
-
-Below shows how to initialize an enforcer from the built-in file adapter:
+Here's how to initialize an Enforcer using the built-in file adapter:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -123,9 +119,16 @@ Below shows how to initialize an enforcer from the built-in file adapter:
 ```
 
 ```go
-import "github.com/casbin/casbin"
+import (
+    "fmt"
+    "github.com/casbin/casbin"
+)
 
-e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+e, err := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+if err != nil {
+    fmt.Printf("Failed to create enforcer: %v", err)
+    return
+}
 ```
 
 ```mdx-code-block
@@ -155,7 +158,7 @@ let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.cs
 </Tabs>
 ```
 
-This is the same with:
+This is equivalent to:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -192,9 +195,9 @@ $e = new Enforcer('examples/basic_model.conf', $a);
 
 ```rust
 use casbin::prelude::*;
+use casbin::file_adapter::FileAdapter;
 
 let a = FileAdapter::new("examples/basic_policy.csv");
-let e = Enforcer::new("examples/basic_model.conf", a).await?;
 ```
 
 ```mdx-code-block
@@ -202,9 +205,9 @@ let e = Enforcer::new("examples/basic_model.conf", a).await?;
 </Tabs>
 ```
 
-### [MySQL adapter](https://github.com/casbin/mysql-adapter)
+### [MySQL Adapter](https://github.com/casbin/mysql-adapter)
 
-Below shows how to initialize an enforcer from MySQL database. it connects to a MySQL DB on 127.0.0.1:3306 with root and blank password.
+The following example initializes an enforcer from a MySQL database, connecting to 127.0.0.1:3306 with username `root` and empty password:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -228,7 +231,7 @@ e := casbin.NewEnforcer("examples/basic_model.conf", a)
 
 ```rust
 // https://github.com/casbin-rs/diesel-adapter
-// make sure you activate feature `mysql`
+// Make sure to activate the `mysql` feature
 
 use casbin::prelude::*;
 use diesel_adapter::{ConnOptions, DieselAdapter};
@@ -237,7 +240,7 @@ let mut conn_opts = ConnOptions::default();
 conn_opts
     .set_hostname("127.0.0.1")
     .set_port(3306)
-    .set_host("127.0.0.1:3306") // overwrite hostname, port config
+    .set_host("127.0.0.1:3306") // Overwrites hostname and port configuration
     .set_database("casbin")
     .set_auth("casbin_rs", "casbin_rs");
 
@@ -277,9 +280,9 @@ $e = new Enforcer('examples/basic_model.conf', $a);
 </Tabs>
 ```
 
-## Use your own storage adapter
+## Use Your Own Storage Adapter
 
-You can use your own adapter like below:
+You can use a custom adapter like this:
 
 ```go
 import (
@@ -291,65 +294,58 @@ a := yourpackage.NewAdapter(params)
 e := casbin.NewEnforcer("examples/basic_model.conf", a)
 ```
 
-## Migrate/Convert between different adapter
+## Migrate/Convert Between Different Adapters
 
-If you want to convert adapter from ``A`` to ``B``, you can do like this:
+To convert policies between adapters (from Adapter A to Adapter B):
 
-1.Load policy from A to memory
-
-```go
-e, _ := NewEnforcer(m, A)
+1. Load policies from Adapter A into memory:
+   ```go
+   e, _ := NewEnforcer(m, A)
+   ```
+   or
+   ```go
+   e.SetAdapter(A)
+   e.LoadPolicy()
    ```
 
-or
-
-```go
-e.SetAdapter(A)
-e.LoadPolicy()
+2. Switch to Adapter B:
+   ```go
+   e.SetAdapter(B)
    ```
 
-2.convert your adapter from A to B
-
-```go
-e.SetAdapter(B)
-```
-
-3.Save policy from memory to B
-
-```go
-e.SavePolicy()
+3. Save policies from memory to Adapter B:
+   ```go
+   e.SavePolicy()
    ```
 
-## Load/Save at run-time
+## Load/Save at Runtime
 
-You may also want to reload the model, reload the policy or save the policy after initialization:
+You may need to reload the model, reload policies, or save policies after initialization:
 
 ```go
 // Reload the model from the model CONF file.
 e.LoadModel()
 
-// Reload the policy from file/database.
+// Reload policies from file/database.
 e.LoadPolicy()
 
-// Save the current policy (usually after changed with Casbin API) back to file/database.
+// Save current policies (usually after changes via Casbin API) back to storage.
 e.SavePolicy()
 ```
 
-## AutoSave
+## Auto-Save Feature
 
-There is a feature called ``Auto-Save`` for adapters. When an adapter supports ``Auto-Save``, it means it can support adding a single policy rule to the storage, or removing a single policy rule from the storage. This is unlike ``SavePolicy()``, because the latter will delete all policy rules in the storage and save all policy rules from Casbin enforcer to the storage. So it may suffer performance issue when the number of policy rules is large.
-
-When the adapter supports ``Auto-Save``, you can switch this option via ``Enforcer.EnableAutoSave()`` function. The option is enabled by default (if the adapter supports it).
+The **Auto-Save** feature allows adapters to automatically persist individual policy changes (add/remove) instead of requiring a full `SavePolicy()` call. This improves performance for large policy sets by avoiding full policy overwrites.
 
 :::note
 
-1. The ``Auto-Save`` feature is optional. An adapter can choose to implement it or not.
-2. ``Auto-Save`` only works for a Casbin enforcer when the adapter the enforcer uses supports it.
-3. See the ``AutoSave`` column in the above adapter list to see if ``Auto-Save`` is supported by an adapter.
+1. Auto-Save is optional—adapters may choose to implement it or not.
+2. Auto-Save only works when the enforcer's adapter supports it.
+3. Check the **AutoSave** column in the adapter list above to verify support.
 
 :::
 
-Here's an example about how to use ``Auto-Save``:
+Here's how to use Auto-Save:
 
 ```go
 import (
@@ -358,46 +354,42 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-// By default, the AutoSave option is enabled for an enforcer.
+// Auto-Save is enabled by default for supporting adapters.
 a := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
 e := casbin.NewEnforcer("examples/basic_model.conf", a)
 
-// Disable the AutoSave option.
+// Disable Auto-Save.
 e.EnableAutoSave(false)
 
-// Because AutoSave is disabled, the policy change only affects the policy in Casbin enforcer,
-// it doesn't affect the policy in the storage.
+// Policy changes only affect in-memory policies (not storage).
 e.AddPolicy(...)
 e.RemovePolicy(...)
 
-// Enable the AutoSave option.
+// Re-enable Auto-Save.
 e.EnableAutoSave(true)
 
-// Because AutoSave is enabled, the policy change not only affects the policy in Casbin enforcer,
-// but also affects the policy in the storage.
+// Policy changes now persist to storage automatically.
 e.AddPolicy(...)
 e.RemovePolicy(...)
 ```
 
-For more examples, please see: [https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go](https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go)
+For more examples, see the [xorm-adapter tests](https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go).
 
-### How to write an adapter
+### How to Write an Adapter
 
-All adapters should implement the [Adapter](https://github.com/casbin/casbin/blob/master/persist/adapter.go) interface by providing at least two mandatory methods:``LoadPolicy(model model.Model) error`` and ``SavePolicy(model model.Model) error``.
+All adapters must implement the [Adapter](https://github.com/casbin/casbin/blob/master/persist/adapter.go) interface with these methods:
 
-The other three functions are optional. They should be implemented if the adapter supports the ``Auto-Save`` feature.
-
-| Method                 | Type      | Description                                                |
-|------------------------|-----------|------------------------------------------------------------|
-| LoadPolicy()           | mandatory | Load all policy rules from the storage                     |
-| SavePolicy()           | mandatory | Save all policy rules to the storage                       |
-| AddPolicy()            | optional  | Add a policy rule to the storage                           |
-| RemovePolicy()         | optional  | Remove a policy rule from the storage                      |
-| RemoveFilteredPolicy() | optional  | Remove policy rules that match the filter from the storage |
+| Method                 | Required | Description                                                |
+|------------------------|----------|------------------------------------------------------------|
+| `LoadPolicy()`         | Yes      | Load all policy rules from storage                          |
+| `SavePolicy()`         | Yes      | Save all policy rules to storage                            |
+| `AddPolicy()`          | No       | Add a single policy rule to storage (for Auto-Save)        |
+| `RemovePolicy()`       | No       | Remove a single policy rule from storage (for Auto-Save)   |
+| `RemoveFilteredPolicy()`| No       | Remove policy rules matching a filter (for Auto-Save)      |
 
 :::note
 
-If an adapter doesn't support ``Auto-Save``, it should provide an empty implementation for the three optional functions. Here's an example for Golang:
+Adapters not supporting Auto-Save should provide empty implementations for optional methods:
 
 :::
 
@@ -418,44 +410,43 @@ func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int,
 }
 ```
 
-Casbin enforcer will ignore the ``not implemented`` error when calling these three optional functions.
+Casbin ignores "not implemented" errors for optional methods.
 
-There're details about how to write an adapter.
+### Adapter Implementation Guidelines
 
-* Data Structure. Adapter should support reading at ***least*** six columns.
-* Database Name. The default database name should be `casbin`.
-* Table Name. The default table name should be `casbin_rule`.
-* Ptype Column. Name of this column should be `ptype` instead of `p_type` or `Ptype`.
-* Table definition should be `(id int primary key, ptype varchar, v0 varchar, v1 varchar, v2 varchar, v3 varchar, v4 varchar, v5 varchar)`.
-* The unique key index should be built on columns `ptype,v0,v1,v2,v3,v4,v5`.
-* `LoadFilteredPolicy` requires a `filter` as parameter. The filter should be something like this.
+When creating an adapter, follow these conventions:
 
-```json
-{
-    "p":[ [ "alice" ], [ "bob" ] ],
-    "g":[ [ "", "book_group" ], [ "", "pen_group" ] ],
-    "g2":[ [ "alice" ] ]
-}
-```
+- **Data Structure**: Support at least six columns for policy rules.
+- **Database Name**: Use `casbin` as the default database name.
+- **Table Name**: Use `casbin_rule` as the default table name.
+- **Ptype Column**: Name this column `ptype` (not `p_type` or `Ptype`).
+- **Table Schema**: Use `(id int primary key, ptype varchar, v0 varchar, v1 varchar, v2 varchar, v3 varchar, v4 varchar, v5 varchar)`.
+- **Unique Index**: Create a unique index on `(ptype, v0, v1, v2, v3, v4, v5)`.
+- **Filtered Loading**: Implement `LoadFilteredPolicy` with filter parameters like:
+  ```json
+  {
+      "p": [ ["alice"], ["bob"] ],
+      "g": [ ["", "book_group"], ["", "pen_group"] ],
+      "g2": [ ["alice"] ]
+  }
+  ```
 
-### Who is responsible to create the DB?
+### Database Creation Responsibility
 
-As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: [https://github.com/casbin/xorm-adapter](https://github.com/casbin/xorm-adapter)
+Adapters should automatically create the `casbin` database if it doesn't exist. Refer to the [Xorm adapter](https://github.com/casbin/xorm-adapter) for a reference implementation.
 
-## Context Adapter
+## Context-Aware Adapters
 
-[ContextAdapter](https://github.com/casbin/casbin/blob/master/persist/adapter_context.go) provides a context-aware interface for Casbin adapters.
+[ContextAdapter](https://github.com/casbin/casbin/blob/master/persist/adapter_context.go) provides context support for adapters, enabling features like timeout control for database operations.
 
-Through context, you can implement features such as timeout control for the Adapter API
+### Example Usage
 
-### Example
-
-[gormadapter](https://github.com/casbin/gorm-adapter) supports adapter with context, the following is a timeout control implemented using context
+The [gorm-adapter](https://github.com/casbin/gorm-adapter) supports context-aware operations. Here's a timeout example:
 
 ```go
 ca, _ := NewContextAdapter("mysql", "root:@tcp(127.0.0.1:3306)/", "casbin")
-// Limited time 300s
-ctx, cancel := context.WithTimeout(context.Background(), 300*time.Microsecond)
+// Set 300ms timeout
+ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
 defer cancel()
 
 err := ca.AddPolicyCtx(ctx, "p", "p", []string{"alice", "data1", "read"})
@@ -464,9 +455,6 @@ if err != nil {
 }
 ```
 
-### How to write an context adapter
+### How to Implement a Context-Aware Adapter
 
-`ContextAdapter` API only has an extra layer of context processing than ordinary `Adapter` API,
-and on the basis of implementing ordinary Adapter API, you can encapsulate your own processing logic for context
-
-A simple reference to the `gormadapter`: [adapter.go](https://github.com/casbin/gorm-adapter/blob/master/adapter.go)
+ContextAdapter extends the basic Adapter interface with context parameters for all methods. Implement context handling logic (like timeouts) while maintaining compatibility with the core Adapter interface. See [gorm-adapter's implementation](https://github.com/casbin/gorm-adapter/blob/master/adapter.go) for reference.
