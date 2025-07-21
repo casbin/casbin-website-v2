@@ -8,7 +8,7 @@ authors: [hsluoyz]
 
 ## What is the ABAC model?
 
-ABAC (Attribute-Based Access Control) determines access based on attributes of subjects, objects, and actions rather than static string identifiers. Unlike XACML's comprehensive but complex ABAC implementation, Casbin provides a lightweight approach using struct or class instances and reflection. In Casbin's ABAC model, request entities (subjects, objects, actions) can be struct or class instances containing attributes, enabling dynamic authorization decisions based on these attributes.
+ABAC stands for Attribute-Based Access Control. It allows you to control access using the attributes (properties) of the subject, object, or action, rather than just string values. You may have heard of XACML, a complicated ABAC access control language. Casbin's ABAC, however, is much simpler. In Casbin's ABAC, you can use structs or class instances for model elements instead of strings.
 
 Let's look at the official ABAC example:
 
