@@ -1,29 +1,93 @@
 ---
 id: command-line-tools
-title: Command-line Tools
-description: Command-line Tools
-keywords: [command-line tools, casbin, cli]
+title: Command Line Tools
+description: Casbin command line tools usage guide, supporting multi-language implementation of policy management CLI tools
+keywords: [Casbin CLI, command line tools, policy management, permission checking, multi-language support]
 authors: [liulifox233]
 ---
 
-**Casbin CLIs** are command-line tools that provide a command-line interface for Casbin, enabling you to use all of Casbin APIs in the shell. This documentation covers the usage of Casbin CLI for various languages including Rust, Java, Go, and NodeJs.
+**Casbin Command Line Tools (CLIs) provide a command line interface for Casbin, enabling you to use all Casbin APIs in the shell. This document covers Casbin CLI usage for multiple languages including Rust, Java, Go, and Node.js.
 
 ## Installation
 
+### Rust (casbin-rust-cli)
+
+#### Installation Steps
+
+1. Install via cargo
+
+    ```bash
+cargo install casbin-cli
+```
+
+2. Verify installation
+
+    ```bash
+casbin-cli --help
+```
+
+### Node.js (casbin-nodejs-cli)
+
+#### Installation Steps
+
+1. Install via npm
+
+    ```bash
+npm install -g casbin-nodejs-cli
+```
+
+2. Verify installation
+
+    ```bash
+casbin-cli --help
+```
+
+### Java (casbin-java-cli)
+
+#### Installation Steps
+
+1. Download the latest JAR package
+
+    ```bash
+wget https://github.com/casbin/casbin-java-cli/releases/latest/download/casbin-java-cli.jar
+```
+
+2. Verify installation
+
+    ```bash
+java -jar casbin-java-cli.jar --help
+```
+
 ### Go (casbin-go-cli)
 
-1. Clone project from repository
+1. Install Go version CLI
 
     ```bash
-    git clone https://github.com/casbin/casbin-go-cli.git
-    ```
+go install github.com/casbin/casbin-go-cli/v2@latest
+```
 
-2. Build project
+2. Verify installation
 
     ```bash
-    cd casbin-go-cli
-    go build -o casbin
-    ```
+casbin-cli --help
+```
+
+### Go (casbin-go-cli)
+
+1. Clone repository
+
+    ```bash
+git clone https://github.com/casbin/casbin-go-cli.git
+```
+
+2. Enter directory and build
+
+    ```bash
+cd casbin-go-cli
+go build -o casbin-cli
+# Verify installation
+casbin-cli --help
+```
 
 ### Rust (casbin-rust-cli)
 
@@ -35,84 +99,88 @@ cargo install casbin-rust-cli
 
 #### From source
 
-1. Clone project from repository
+1. Clone repository
 
     ```bash
-    git clone https://github.com/casbin-rs/casbin-rust-cli.git
-    ```
+git clone https://github.com/casbin/casbin-rust-cli.git
+```
 
-2. Build project
+2. Enter directory and build
 
     ```bash
-    cd casbin-rust-cli
-    cargo build --release
-    ```
+cd casbin-rust-cli
+cargo build --release
+# Verify installation
+./target/release/casbin-rust-cli --help
+```
 
 ### Java (casbin-java-cli)
 
-1. Clone project from repository
+1. Clone repository
 
     ```bash
-    git clone https://github.com/jcasbin/casbin-java-cli.git
-    ```
+git clone https://github.com/jcasbin/casbin-java-cli.git
+```
 
-2. Build project, the jar package will be generated in the target directory
+2. Build project (JAR package will be generated in target directory)
 
     ```bash
-    cd casbin-java-cli
-    mvn clean install
-    ```
+cd casbin-java-cli
+mvn clean install
+# Verify installation
+java -jar target/casbin-java-cli.jar --help
+```
 
-## Usage
+## Usage Instructions
+
+Casbin CLI tools provide core functions such as policy checking and policy management, supporting specification of model files, policy files, and operation instructions through command line parameters. CLI tools implemented in different languages have consistent basic usage. The following is a general operation guide.
 
 ## Options
 
-| options               | description                                                          | must | remark                                                    |
-|-----------------------|----------------------------------------------------------------------|------|-----------------------------------------------------------|
-| `-m, --model`         | The path of the model file or model text                             | y    | Please wrap it with `""` and separate each line with `\|` |
-| `-p, --policy`        | The path of the policy file or policy text                           | y    | Please wrap it with `""` and separate each line with `\|` |
-| `-e, --enforce`       | Check permissions                                                    | n    | Please wrap it with `""`                                  |
-| `-ex, --enforceEx`    | Check permissions and get which policy it is                         | n    | Please wrap it with `""`                                  |
-| `-AF, --addFuntion`   | Add custom funtion ( casbin-java-cli only )                          | n    | Please wrap it with `""` and separate each line with `\|` |
-| `-ap, --addPolicy`    | Add a policy rule to the policy file ( casbin-java-cli only )        | n    | Please wrap it with `""`                                  |
-| `-rp, --removePolicy` | Remove a policy rule from the policy file ( casbin-java-cli only )   | n    | Please wrap it with `""`                                  |
+| Option                 | Description                                                         | Required | Notes (Parameter Format Example) |
+|------------------------|----------------------------------------------------------------------|----------|----------------------------------|
+| `-m, --model`          | Model file path or inline model text                                | Yes      | Use `""` to wrap parameter values, multi-line content separated by `\|` (e.g., `"line1\|line2"`) |
+| `-p, --policy`         | Policy file path or inline policy text                              | Yes      | Use `""` to wrap parameter values, multi-line content separated by `\|` (e.g., `"line1\|line2"`) |
+| `-e, --enforce`        | Check permissions                                                    | No       | Use `""` to wrap parameter values |
+| `-ex, --enforceEx`     | Check permissions and return matching policies                      | No       | Use `""` to wrap parameter values |
+| `-AF, --addFunction`   | Add custom functions (only supported by casbin-java-cli)            | No       | Use `""` to wrap parameter values, multi-line content separated by `\|` (e.g., `"line1\|line2"`) |
+| `-ap, --addPolicy`     | Add policy rules to policy file (only supported by casbin-java-cli) | No       | Use `""` to wrap parameter values, multi-line content separated by `\|` (e.g., `"line1\|line2"`) |
+| `-rp, --removePolicy`  | Remove policy rules from policy file (only supported by casbin-java-cli) | No    | Use `""` to wrap parameter values, multi-line content separated by `\|` (e.g., `"line1\|line2"`) |
 
-## Get started
+## Getting Started
 
-- Check whether Alice has read permission on data1
+> The following examples are categorized by language to demonstrate basic usage of different CLI versions. Command parameters are universal. For specific functions, please refer to the options table.
 
-    ```shell
-    ./casbin enforce -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data1" "read"
-    ```
+### Go CLI Example
 
-    > `{"allow":true,"explain":null}`
+### Node.js CLI Example
 
-    ```shell
-    ./casbin enforce -m "[request_definition]\nr = sub, obj, act\n[policy_definition]\np = sub, obj, act\n[role_definition]\ng = _, _\n[policy_effect]\ne = some(where (p.eft == allow))\n[matchers]\nm = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act" -p "p, alice, data1, read\np, bob, data2, write\np, data2_admin, data2, read\np, data2_admin, data2, write\ng, alice, data2_admin" "alice" "data1" "read"
-    ```
-
-    > `{"allow":true,"explain":null}`
-
-- Check whether Alice has write permission for data2. If so, display the effective policy.
+- Check if user Bob has write permission for data2
 
     ```shell
-    ./casbin enforceEx -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    casbin-cli enforce -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "bob" "data2" "write"
     ```
 
-    > `{"allow":true,"explain":["data2_admin","data2","write"]}`
+### Rust CLI Example
 
-- Add a policy to the policy file ( casbin-java-cli only )
+- Check if user Charlie has execute permission for data3
 
     ```shell
-    ./casbin addPolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    casbin-cli enforce -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "charlie" "data3" "execute"
     ```
 
-    > `{"allow":true,"explain":null}`
+### Java CLI Example
 
-- Delete a policy from the policy file ( casbin-java-cli only )
+- Check if user Dave has manage permission for data4
 
     ```shell
-    ./casbin removePolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    java -jar casbin-java-cli.jar enforceEx -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "dave" "data4" "manage"
     ```
 
-    > `{"allow":true,"explain":null}`
+- Add policy rules to policy file
+
+    ```shell
+    java -jar casbin-java-cli.jar addPolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    ```
+
+- Remove policy rules from policy file

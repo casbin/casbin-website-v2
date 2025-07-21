@@ -10,7 +10,7 @@ authors: [PokIsemaine]
 
 `ConditionalRoleManager` supports custom condition functions at the policy level.
 
-For example, when we need a temporary role policy, we can follow the following approach:
+For example, to implement a temporary role policy, you can use the following approach:
 
 `model.conf`
 
@@ -31,8 +31,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-`g = _, _, (_, _)` uses `(_, _)` to contain a list of arguments to pass to the condition function
-and `_` as a parameter placeholder
+`g = _, _, (_, _)` uses `(_, _)` to contain a list of arguments to pass to the condition function, and `_` as a parameter placeholder.
 
 `policy.csv`
 
@@ -57,10 +56,7 @@ g, alice, data8_admin, 9999-12-30 00:00:00, _
 
 ### Basic Usage
 
-Add a conditional function for the role policy(`g`type policy)  through `AddNamedLinkConditionFunc`,
-and when enforcing is executed, the corresponding parameters will be automatically obtained
-and passed in the conditional function for checking.
-If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+Add a conditional function for the role policy (`g` type policy) through `AddNamedLinkConditionFunc`. When enforcement is executed, the corresponding parameters are automatically obtained and passed to the conditional function for checking. If the check passes, the corresponding role policy (`g` type policy) is valid; otherwise, it is invalid.
 
 ```go
 e.AddNamedLinkConditionFunc("g", "alice", "data2_admin", util.TimeMatchFunc)
@@ -84,7 +80,7 @@ e.enforce("alice", "data8", "write")    // except: false
 
 ### Custom condition functions
 
-Custom conditional functions need to conform to the following function types
+Custom condition functions must conform to the following function type:
 
 ```go
 type LinkConditionFunc = func(args ...string) (bool, error)
@@ -169,10 +165,7 @@ g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
 
 ### Basic Usage
 
-Add a conditional function for the role policy(`g`type policy)  through `AddNamedDomainLinkConditionFunc`,
-and when enforcing is executed, the corresponding parameters will be automatically obtained
-and passed in the conditional function for checking.
-If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+Add a conditional function for the role policy (`g` type policy) through `AddNamedDomainLinkConditionFunc`. When enforcement is executed, the corresponding parameters are automatically obtained and passed to the conditional function for checking. If the check passes, the corresponding role policy (`g` type policy) is valid; otherwise, it is invalid.
 
 ```go
 e.AddNamedDomainLinkConditionFunc("g", "alice", "data2_admin", "domain2", util.TimeMatchFunc)
@@ -204,8 +197,8 @@ e.enforce("alice", "domain_not_exist", "data8", "read")     // except: false
 
 ### Custom condition functions
 
-Like the basic `Conditional RoleManager`, custom functions are supported, and there is no difference in use.
+As with the basic `ConditionalRoleManager`, custom functions are supported, and there is no difference in usage.
 
-Note that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` are at different levels and are used in different situations.
+Note that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` are at different levels and are used in different scenarios.
 
 ![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)

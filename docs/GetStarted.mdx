@@ -1,7 +1,7 @@
 ---
 id: get-started
 title: Get Started
-description: Getting started with Casbin
+description: Step-by-step guide to installing and using Casbin
 keywords: [Casbin, get started, installation, usage]
 authors: [nodece]
 ---
@@ -51,7 +51,7 @@ yarn add casbin
 <TabItem value="PHP" label="PHP">
 ```
 
-Require this package in the `composer.json` of your project to download the package:
+Add this package to your project's `composer.json` to download the package:
 
 ```bash
 composer require casbin/casbin
@@ -100,10 +100,10 @@ cmake --build . --config Release --target casbin install -j 10
 cargo install cargo-edit
 cargo add casbin
 
-// If you use async-std as async executor
+// If using async-std as your async executor
 cargo add async-std
 
-// If you use tokio as async executor, make sure you activate its `macros` feature
+// If using tokio as your async executor, activate its `macros` feature
 cargo add tokio
 ```
 
@@ -112,7 +112,7 @@ cargo add tokio
 <TabItem value="Delphi" label="Delphi">
 ```
 
-Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components which means that you can use the units independently of packages. Just import the units in your project (assuming you do not mind the number of them).
+Casbin4D is available as a package (currently for Delphi 10.3 Rio) and can be installed in the IDE. However, there are no visual components, which means you can use the units independently of packages. Simply import the units in your project (assuming you do not mind the number of them).
 
 ```mdx-code-block
 </TabItem>
@@ -123,7 +123,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 luarocks install casbin  
 ```
 
-If you receive an error message: "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", you may want to run the command as a privileged user or use your local tree with `--local`. To fix the error, you can add `--local` behind your command like this:
+If you receive an error message: "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", you may want to run the command as a privileged user or use your local tree with `--local`. To fix the error, you can add `--local` to your command like this:
 
 ```bash
 luarocks install casbin --local
@@ -134,17 +134,17 @@ luarocks install casbin --local
 </Tabs>
 ```
 
-## New a Casbin enforcer
+## Create a Casbin Enforcer
 
-Casbin uses configuration files to define the access control model.
+Casbin requires two core configuration files to define the access control system:
+- `model.conf`: Defines the access control model structure
+- `policy.csv`: Stores specific user permission rules
 
-There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. The usage of Casbin is very straightforward. We only need to create one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
+Using Casbin involves a simple workflow: initialize an **Enforcer** instance with these two configuration files during setup. Technically, an Enforcer requires two components: a [Model](supported-models) definition (access control structure) and an [Adapter](adapters) (policy storage mechanism).
 
-In other words, to create a Casbin enforcer, you need to provide a [Model](supported-models) and an [Adapter](adapters).
+Casbin provides a built-in [FileAdapter](adapters#built-in-file-adapter-example) for basic file-based policy storage. Refer to the [Adapter documentation](adapters) for additional storage options.
 
-Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use. See [Adapter](adapters) for more information.
-
-- Example of using the Model file and the default [FileAdapter](adapters#file-adapter-built-in):
+### Example: Initialize an Enforcer with a model file and the default [FileAdapter](adapters#built-in-file-adapter-example) for policy storage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -227,7 +227,7 @@ int main() {
     // Create an Enforcer
     casbin::Enforcer e("path/to/model.conf", "path/to/policy.csv");
 
-    // your code ..
+    // Your authorization logic here..
 }
 ```
 
@@ -253,7 +253,7 @@ end
 ```rust
 use casbin::prelude::*;
 
-// If you use async_td as async executor
+// If you use async-std as async executor
 #[cfg(feature = "runtime-async-std")]
 #[async_std::main]
 async fn main() -> Result<()> {
@@ -285,7 +285,7 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 </Tabs>
 ```
 
-- Use the Model text with other Adapter:
+### Use the Model text with other Adapters:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -341,7 +341,7 @@ import casbin
 import casbin_sqlalchemy_adapter
 
 
-# Use SQLAlchemy Casbin adapter with SQLLite DB
+# Use SQLAlchemy Casbin adapter with SQLite DB
 adapter = casbin_sqlalchemy_adapter.Adapter('sqlite:///test.db')
 
 # Create a config model policy
@@ -369,7 +369,7 @@ e = casbin.Enforcer('rbac_example_model.conf', adapter)
 </Tabs>
 ```
 
-### Check permissions
+### Check Permissions
 
 Add an enforcement hook into your code right before the access happens:
 
@@ -397,7 +397,10 @@ if ok == true {
 
 // You could use BatchEnforce() to enforce some requests in batches.
 // This method returns a bool slice, and this slice's index corresponds to the row index of the two-dimensional array.
-// e.g. results[0] is the result of {"alice", "data1", "read"}
+// Example:
+// requests = [["alice", "data1", "read"], ["bob", "data2", "write"]]
+// results = e.BatchEnforce(requests)
+// results[0] will be the enforcement result for the first request
 results, err := e.BatchEnforce([][]interface{}{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"jack", "data3", "read"}})
 ```
 
@@ -476,9 +479,9 @@ else:
 ```
 
 ```csharp
-var sub = "alice";  # the user that wants to access a resource.
-var obj = "data1";  # the resource that is going to be accessed.
-var act = "read";  # the operation that the user performs on the resource.
+var sub = "alice";  // the user that wants to access a resource.
+var obj = "data1";  // the resource that is going to be accessed.
+var act = "read";  // the operation that the user performs on the resource.
 
 if (await e.EnforceAsync(sub, obj, act)) 
 {
@@ -501,13 +504,13 @@ else
     if (e.Enforce({"alice", "/alice_data/hello", "GET"})) {
         std::cout << "Enforce OK" << std::endl;
     } else {
-        std::cout << "Enforce NOT Good" << std::endl;
+        std::cout << "Access denied" << std::endl;
     }
 
     if (e.Enforce({"alice", "/alice_data/hello", "POST"})) {
         std::cout << "Enforce OK" << std::endl;
     } else {
-        std::cout << "Enforce NOT Good" << std::endl;
+        std::cout << "Access denied" << std::endl;
     }
 ```
 
@@ -517,10 +520,10 @@ else
 ```
 
 ```delphi
-if casbin.enforce(['alice,data1,read']) then
-  // Alice is super happy as she can read data1
+if casbin.enforce(['alice', 'data1', 'read']) then
+  // permit alice to read data1
 else
-  // Alice is sad
+  // deny the request, show an error
 ```
 
 ```mdx-code-block
@@ -536,7 +539,7 @@ else
   if e.enforce((sub, obj, act)).await? {
       // permit alice to read data1
   } else {
-      // error occurs
+      // deny the request, show an error
   }
 ```
 
@@ -559,7 +562,7 @@ end
 </Tabs>
 ```
 
-Casbin also provides API for permission management at run-time. For example, You can get all the roles assigned to a user as below:
+Casbin also provides APIs for permission management at runtime. For example, you can retrieve all roles assigned to a user as shown below:
 
 ```mdx-code-block
 <Tabs groupId="langs">

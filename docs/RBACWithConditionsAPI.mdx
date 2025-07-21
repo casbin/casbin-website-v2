@@ -12,8 +12,7 @@ A more user-friendly API for [RBAC with conditions](RBACWithConditions.mdx).
 
 ### AddNamedLinkConditionFunc
 
-`AddNamedLinkConditionFunc` Add condition function fn for Link `userName->roleName`,
-when fn returns true, Link is valid, otherwise invalid
+`AddNamedLinkConditionFunc` adds a condition function fn for the link `userName->roleName`. When fn returns true, the link is valid; otherwise, it is invalid.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -31,8 +30,7 @@ e.AddNamedLinkConditionFunc("g", "userName", "roleName", YourLinkConditionFunc)
 
 ### AddNamedDomainLinkConditionFunc
 
-`AddNamedDomainLinkConditionFunc` Add condition function fn for Link `userName-> {roleName, domain}`,
-when fn returns true, Link is valid, otherwise invalid
+`AddNamedDomainLinkConditionFunc` adds a condition function fn for the link `userName-> {roleName, domain}`. When fn returns true, the link is valid; otherwise, it is invalid.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -50,7 +48,7 @@ e.AddNamedDomainLinkConditionFunc("g", "userName", "roleName", "domainName", You
 
 ### SetNamedLinkConditionFuncParams
 
-`SetNamedLinkConditionFuncParams` Sets the parameters of the condition function fn for Link `userName->roleName`
+`SetNamedLinkConditionFuncParams` sets the parameters of the condition function fn for the link `userName->roleName`.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -69,8 +67,7 @@ e.SetNamedLinkConditionFuncParams("g", "userName2", "roleName2", "YourConditionF
 
 ### SetNamedDomainLinkConditionFuncParams
 
-`SetNamedDomainLinkConditionFuncParams` Sets the parameters of the condition function fn
-for Link `userName->{roleName, domain}`
+`SetNamedDomainLinkConditionFuncParams` sets the parameters of the condition function fn for the link `userName->{roleName, domain}`.
 
 ```mdx-code-block
 <Tabs groupId="langs">

@@ -6,13 +6,11 @@ keywords: [management, Filtered API]
 authors: [nodece]
 ---
 
-
-
 The primitive API that provides full support for Casbin policy management.
 
 ## Filtered API
 
-Almost all filtered api has the same parameters ``(fieldIndex int, fieldValues ...string)``. `fieldIndex` is the index where matching start, `fieldValues` denotes the values result should have. Note that empty string in fieldValues could be any word.
+Almost all filtered APIs have the same parameters `(fieldIndex int, fieldValues ...string)`. `fieldIndex` specifies the starting index for matching, `fieldValues` specifies the values that results must contain. Note: An empty string in `fieldValues` matches any value.
 
 Example:
 
@@ -25,7 +23,7 @@ p, bob, pen ,get
 ```
 
 ```go
-e.GetFilteredPolicy(1, "book") // will return: [[alice book read] [bob book read] [bob book write]]
+e.GetFilteredPolicy(1, "book") // Returns: [[alice book read] [bob book read] [bob book write]]
 
 e.GetFilteredPolicy(1, "book", "read") // will return: [[alice book read] [bob book read]]
 
@@ -36,7 +34,7 @@ e.GetFilteredPolicy(0, "alice") // will return: [[alice book read] [alice pen ge
 
 ## Reference
 
-global variable `e` is Enforcer instance.
+Global variable `e` is Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -108,7 +106,7 @@ Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv"
 
 ### `Enforce()`
 
-Enforce decides whether a "subject" can access a "object" with the operation "action", input parameters are usually: (sub, obj, act).
+Enforce decides whether a "subject" can access an "object" with the operation "action", input parameters are usually: (sub, obj, act).
 
 For example:
 
@@ -164,7 +162,7 @@ boolean ok = e.enforce(request);
 
 ### `EnforceWithMatcher()`
 
-EnforceWithMatcher use a custom matcher to decides whether a "subject" can access a "object" with the operation "action", input parameters are usually: (matcher, sub, obj, act), use model matcher by default when matcher is "".
+EnforceWithMatcher uses a custom matcher to decide whether a "subject" can access an "object" with the operation "action", input parameters are usually: (matcher, sub, obj, act), use model matcher by default when matcher is "".
 
 For example:
 
@@ -3434,7 +3432,7 @@ let rules = vec![
     vec!["jack".to_owned(), "data5_admin".to_owned()],
 ];
 
-let are_rules_removed = e.remove_named_grouping_policies("g", rules).await?;
+let areRulesRemoved = e.remove_named_grouping_policies("g", rules).await?;
 ```
 
 ```mdx-code-block

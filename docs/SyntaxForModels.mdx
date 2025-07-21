@@ -1,31 +1,39 @@
 ---
 id: syntax-for-models
 title: Syntax for Models
-description: Syntax for Models
-keywords: [syntax]
+description: Comprehensive guide to Casbin model configuration syntax and structure
+keywords: [model syntax, configuration, policy definition, matchers, access control]
 authors: [nodece]
 ---
 
-- A model configuration (CONF) should have at least four sections: `[request_definition]`, `[policy_definition]`, `[policy_effect]`, and `[matchers]`.
+A Casbin model configuration (`.conf` file) must include at least four core sections: `[request_definition]`, `[policy_definition]`, `[policy_effect]`, and `[matchers]`.
 
-- If a model uses Role-Based Access Control (RBAC), it should also include the `[role_definition]` section.
+Role-Based Access Control (RBAC) models require an additional `[role_definition]` section.
 
-- A model configuration (CONF) can contain comments. Comments start with the `#` symbol, and everything after the `#` symbol will be commented out.
+Model configurations support comments, which begin with the `#` symbol. Example:
 
-## Request definition
+```ini
+# This is a comment
+[request_definition]
+r = sub, obj, act  # Parameters for enforcement request
+```
 
-The `[request_definition]` section defines the arguments in the `e.Enforce(...)` function.
+All text following `#` is treated as a comment and ignored during parsing.
+
+## Request Definition
+
+The `[request_definition]` section defines the parameter structure for the enforcement function call `e.Enforce(...)`.
 
 ```ini
 [request_definition]
 r = sub, obj, act
 ```
 
-In this example, `sub`, `obj`, and `act` represent the classic access triple: the subject (accessing entity), the object (accessed resource), and the action (access method). However, you can customize your own request format. For example, you can use `sub, act` if you don't need to specify a particular resource, or `sub, sub2, obj, act` if you have two accessing entities.
+In this example, `sub`, `obj`, and `act` represent the classic access control triple: subject (accessing entity), object (target resource), and action (operation type). The request format can be customized to include additional parameters as needed. For example, you can use `sub, act` if you don't need to specify a particular resource, or `sub, sub2, obj, act` if you have two accessing entities.
 
 ## Policy Definition
 
-The `[policy_definition]` is the definition for a policy. It defines the meaning of the policy. For example, we have the following model:
+The `[policy_definition]` section defines the structure and format of policy rules. For example, we have the following model:
 
 ```ini
 [policy_definition]
@@ -40,7 +48,7 @@ p, alice, data1, read
 p2, bob, write-all-objects
 ```
 
-Each line in a policy is called a policy rule. Each policy rule starts with a `policy type`, such as `p` or `p2`. It is used to match the policy definition if there are multiple definitions. The above policy shows the following binding. The binding can be used in the matcher.
+Each line in a policy is called a policy rule. Each policy rule starts with a `policy type`, such as `p` or `p2`. It is used to match the policy definition if there are multiple definitions. The above policy shows the following binding. These bindings are used in the matchers.
 
 ```text
 (alice, data1, read) -> (p.sub, p.obj, p.act)
@@ -49,20 +57,20 @@ Each line in a policy is called a policy rule. Each policy rule starts with a `p
 
 :::tip
 
-The elements in a policy rule are always regarded as `strings`. If you have any questions about this, please refer to the discussion at: [https://github.com/casbin/casbin/issues/113](https://github.com/casbin/casbin/issues/113)
+All elements in policy rules are treated as string values. This includes numbers and special characters, which will be processed as string literals. If you have any questions about this, please refer to the discussion at: [https://github.com/casbin/casbin/issues/113](https://github.com/casbin/casbin/issues/113)
 
 :::
 
 ## Policy Effect
 
-``[policy_effect]`` is the definition for the policy effect. It determines whether the access request should be approved if multiple policy rules match the request. For example, one rule permits and the other denies.
+`[policy_effect]` is the definition for the policy effect. It determines whether the access request should be approved if multiple policy rules match the request. For example, one rule permits and the other denies.
 
 ```ini
 [policy_effect]
 e = some(where (p.eft == allow))
 ```
 
-The above policy effect means that if there's any matched policy rule of ``allow``, the final effect is ``allow`` (also known as allow-override). ``p.eft`` is the effect for a policy, and it can be either ``allow`` or ``deny``. It is optional, and the default value is ``allow``. Since we didn't specify it above, it uses the default value.
+This policy effect implements an allow-override mechanism: if any matched policy rule grants `allow`, access is permitted. `p.eft` represents the policy effect, which can be either `allow` or `deny` (default: `allow`). It is optional, and the default value is `allow`. Since we didn't specify it above, it uses the default value.
 
 Another example for the policy effect is:
 
@@ -71,34 +79,34 @@ Another example for the policy effect is:
 e = !some(where (p.eft == deny))
 ```
 
-This means that if there are no matched policy rules of ``deny``, the final effect is ``allow`` (also known as deny-override). ``some`` means that there exists one matched policy rule. ``any`` means that all matched policy rules (not used here). The policy effect can even be connected with logical expressions:
+This means that if there are no matched policy rules of `deny`, the final effect is `allow` (also known as deny-override). `some` means that there exists one matched policy rule. `any` means that all matched policy rules (not used here). The policy effect can even be connected with logical expressions:
 
 ```ini
 [policy_effect]
 e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
 ```
 
-This means that there must be at least one matched policy rule of ``allow``, and there cannot be any matched policy rule of ``deny``. Therefore, in this way, both allow and deny authorizations are supported, and the deny overrides.
+This means that there must be at least one matched policy rule of `allow`, and there cannot be any matched policy rule of `deny`. Therefore, in this way, both allow and deny authorizations are supported, and the deny overrides.
 
 :::note
 
-Although we designed the syntax of the policy effect as above, the current implementations only use hard-coded policy effects. This is because we found that there isn't much need for that level of flexibility. So for now, you must use one of the built-in policy effects instead of customizing your own.
+Although we designed the syntax of the policy effect as above, the current implementations primarily use predefined policy effects. This is because we found that there isn't much need for that level of flexibility. So for now, you must use one of the built-in policy effects instead of customizing your own.
 
 :::
 
 The supported built-in policy effects are:
 
-| Policy Effect                                                | Meaning               | Example                                             |
+| Policy Effect Expression                                    | Behavior              | Example                                             |
 |--------------------------------------------------------------|-----------------------|-----------------------------------------------------|
-| some(where (p.eft == allow))                                 | allow-override        | [ACL, RBAC, etc.](/docs/supported-models#examples)  |
-| !some(where (p.eft == deny))                                 | deny-override         | [Deny-override](/docs/supported-models#examples)    |
-| some(where (p.eft == allow)) && !some(where (p.eft == deny)) | allow-and-deny        | [Allow-and-deny](/docs/supported-models#examples)   |
-| priority(p.eft) &#124;&#124; deny                            | priority              | [Priority](/docs/supported-models#examples)         |
-| subjectPriority(p.eft)                                       | priority based on role| [Subject-Priority](/docs/supported-models#examples) |
+| `some(where (p.eft == allow))`                             | Allow-override        | [ACL, RBAC models](/docs/supported-models#examples)  |
+| `!some(where (p.eft == deny))`                             | Deny-override         | [Deny-override](/docs/supported-models#examples)    |
+| `some(where (p.eft == allow)) && !some(where (p.eft == deny))` | Allow-and-deny        | [Allow-and-deny](/docs/supported-models#examples)      |
+| `priority(p.eft) || deny`                                   | Priority-based        | [Priority](/docs/supported-models#examples)         |
+| `subjectPriority(p.eft)`                                   | Role-based priority   | [Subject-Priority](/docs/supported-models#examples) |
 
 ## Matchers
 
-``[matchers]`` is the definition for policy matchers. The matchers are expressions that define how the policy rules are evaluated against the request.
+`[matchers]` is the definition for policy matchers. The matchers are expressions that define how the policy rules are evaluated against the request.
 
 ```ini
 [matchers]
@@ -107,14 +115,18 @@ m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 
 The above matcher is the simplest and means that the subject, object, and action in a request should match the ones in a policy rule.
 
-Arithmetic operators like ``+, -, *, /`` and logical operators like ``&&, ||, !`` can be used in matchers.
+Arithmetic operators (+, -, *, /) and logical operators like `&&`, `||`, `!` can be used in matchers. For optimal performance:
+- Place frequently matching conditions first
+- Order expressions from most specific to most general
+- Avoid expensive operations in matchers for high-throughput scenarios
 
 ### Order of expressions in matchers
 
 The order of expressions can greatly affect performance. Take a look at the following example for more details:
 
 ```go
-const rbac_models = `
+// Example demonstrating performance impact of matcher expression order
+const rbacModels = `
 [request_definition]
 r = sub, obj, act
 
@@ -133,27 +145,30 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 
 func TestManyRoles(t *testing.T) {
 
-    m, _ := model.NewModelFromString(rbac_models)
+    m, _ := model.NewModelFromString(rbacModel)
     e, _ := NewEnforcer(m, false)
 
     roles := []string{"admin", "manager", "developer", "tester"}
 
-    // 2500 projects
-    for nbPrj := 1; nbPrj < 2500; nbPrj++ {
-        // 4 objects and 1 role per object (so 4 roles)
+    // Create 2500 project-specific roles and resources
+    for projectNumber := 1; projectNumber < 2500; projectNumber++ {
+        // Create role-resource permission mappings for each project
         for _, role := range roles {
-            roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
-            objectDB := fmt.Sprintf("/projects/%d", nbPrj)
-            e.AddPolicy(roleDB, objectDB, "GET")
+            roleName := fmt.Sprintf("%s_project:%d", role, projectNumber)
+            resourcePath := fmt.Sprintf("/projects/%d", projectNumber)
+            e.AddPolicy(roleName, resourcePath, "GET")  // Grant GET permission for the role on the resource
         }
-        jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
-        e.AddGroupingPolicy("jasmine", jasmineRole)
+        jasmineRoleName := fmt.Sprintf("%s_project:%d", roles[1], projectNumber)
+        e.AddGroupingPolicy("jasmine", jasmineRoleName)  // Assign project-specific role to user
     }
 
     e.AddGroupingPolicy("abu", "manager_project:1")
     e.AddGroupingPolicy("abu", "manager_project:2499")
 
-    // With same number of policies
+    // Performance test scenario:
+    // - User 'abu' has minimal roles (2 total)
+    // - User 'jasmine' has extensive role assignments (2500 total)
+    // This demonstrates how matcher expression ordering significantly impacts performance with large role sets. The first evaluation suffers from O(n) complexity with many role assignments, while subsequent calls leverage caching for better performance.
     // User 'abu' has only two roles
     // User 'jasmine' has many roles (1 role per policy, here 2500 roles)
 
@@ -180,10 +195,11 @@ func TestManyRoles(t *testing.T) {
 }
 ```
 
-The enforcement time may be very long, up to 6 seconds.
+The matcher expression order significantly impacts performance. In this example, the first evaluation for user 'jasmine' takes over 6 seconds due to the large number of role assignments, while subsequent requests benefit from internal caching mechanisms.
 
 ```bash
-go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+# Execute the performance test
+GODEBUG=cgocheck=0 go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
 
 === RUN   TestManyRoles
     rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs

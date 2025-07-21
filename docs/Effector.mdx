@@ -1,16 +1,16 @@
 ---
 id: effector
 title: Effector
-description: The Effector interface in Casbin
-keywords: [effector, Effect, MergeEffects]
+description: Interface for merging policy evaluation results into final authorization decisions
+keywords: [effector, policy effect, MergeEffects, authorization decision, policy evaluation]
 authors: [ErikQQY]
 ---
 
-The `Effect` represents the result of a policy rule, and the `Effector` is the interface for handling effects in Casbin.
+The `Effect` type represents the result of individual policy rule evaluations, while the `Effector` interface coordinates merging these results into a final authorization decision.
 
 ## `MergeEffects()`
 
-The `MergeEffects()` function is used to merge all matching results collected by the enforcer into a single decision.
+The `MergeEffects()` function combines all matching policy results collected by the Enforcer into a single authorization decision.
 
 For example:
 
@@ -20,7 +20,7 @@ For example:
 ```
 
 ```go
-Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+effect, explainIndex, err := e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
 ```
 
 ```mdx-code-block
@@ -30,18 +30,18 @@ Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, 
 
 In this example:  
 
-- `Effect` is the final decision that is merged by this function (initialized as `Indeterminate`).
-- `explainIndex` is the index of `eft` (`Allow` or `Deny`), and it is initialized as `-1`.
-- `err` is used to check if the effect is supported.
-- `expr` is the string representation of the policy effects.
+- `effect` is the final authorization decision produced by merging results (initialized as `Indeterminate`).
+- `explainIndex` indicates the index of the policy rule that determined the final decision (initialized to `-1` when no rule applies).
+- `err` indicates if an unsupported effect type was encountered.
+- `expr` is the policy effect expression string from the model configuration.
 - `effects` is an array of effects, which can be `Allow`, `Indeterminate`, or `Deny`.
-- `matches` is an array that indicates whether the result matches the policy.
-- `policyIndex` is the index of the policy in the model.
-- `policyLength` is the length of the policy.
+- `matches` is an array indicating which policy rules matched the request conditions.
+- `policyIndex` is the current evaluation position within the policy rule list (used for incremental evaluation).
+- `policyLength` is the total number of policy rules being evaluated.
 
-The code above illustrates how to pass the parameters to the `MergeEffects()` function, and the function will process the effects and matches based on the `expr`.
+The code above demonstrates parameter usage for `MergeEffects()`, which processes effects and matches according to the `expr`.
 
-To use the `Effector`, follow these steps:
+To use an `Effector`, follow these steps:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -50,7 +50,7 @@ To use the `Effector`, follow these steps:
 
 ```go
 var e Effector
-Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+effect, explainIndex, err := e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
 ```
 
 ```mdx-code-block
@@ -58,10 +58,10 @@ Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, 
 </Tabs>
 ```
 
-The basic idea of `MergeEffects()` is that if the `expr` can match the results, indicating that the `p_eft` is `allow`, then all effects can be merged. If no deny rules are matched, then the decision is allow.
+The core logic of `MergeEffects()` is: if the `expr` matches results where `p.eft` is `allow`, all effects are merged. If no deny rules match, the decision is allow.
 
 :::note
 
-If the `expr` does not match the condition `"priority(p_eft) || deny"`, and the `policyIndex` is shorter than `policyLength-1`, it will **short-circuit** some effects in the middle.
+Short-circuit evaluation occurs when the `expr` doesn't use `priority(p.eft) || deny` and `policyIndex` < `policyLength-1`. This optimization stops evaluating subsequent policy rules once a definitive decision can be made, improving performance for large policy sets.
 
 :::

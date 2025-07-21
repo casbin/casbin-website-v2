@@ -72,10 +72,10 @@ g, alice, admin
 
 **Meaning of each column**
 
-- ``id``: The primary key in the database. It does not exist as part of the ``casbin policy``. The way it is generated depends on the specific adapter.
+- `id`: The primary key in the database. It does not exist as part of the Casbin policy. The way it is generated depends on the specific adapter.
 
-- ``ptype``: It corresponds to ``p``, ``g``, ``g2``, etc.
-- ``v0-v5``: The column names have no specific meaning and correspond to the values in the ``policy csv`` from left to right. The number of columns depends on how many you define yourself. In theory, there can be an infinite number of columns, but generally only **6** columns are implemented in the adapter. If this is not enough for you, please submit an issue to the corresponding adapter repository.
+- `ptype`: It corresponds to `p`, `g`, `g2`, etc.
+- `v0-v5`: The column names have no specific meaning and correspond to the values in the policy CSV from left to right. The number of columns depends on how many you define yourself. In theory, there can be an infinite number of columns, but generally only **6** columns are implemented in the adapter. If this is not enough for you, please submit an issue to the corresponding adapter repository.
 
 ## Adapter Details
 

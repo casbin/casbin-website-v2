@@ -6,7 +6,7 @@ keywords: [Menu Permissions, example]
 authors: [amikecoXu]
 ---
 
-We begin by introducing a Spring Boot example featuring a menu system. This example leverages jCasbin to manage menu permissions. Ultimately, it aims to abstract a middleware, specifically for menu permissions, which could be extended to other languages supported by Casbin, such as Go and Python.
+We begin by introducing a Spring Boot example featuring a menu system. This example leverages jCasbin to manage menu permissions. Ultimately, it aims to abstract a middleware specifically for menu permissions, which could be extended to other languages supported by Casbin, such as Go and Python.
 
 ### 1. Configuration Files
 
@@ -71,39 +71,4 @@ Conversely, if a role's denial of access to a menu item (e.g., `UserSubMenu_deny
 
 policy:
 
-```csv
-p, ROLE_ROOT, SystemMenu, read, allow
-p, ROLE_ROOT, AdminMenu, read, allow
-p, ROLE_ROOT, UserMenu, read, deny
-p, ROLE_ADMIN, UserMenu, read, allow
-p, ROLE_ADMIN, AdminMenu, read, allow
-p, ROLE_ADMIN, AdminSubMenu_deny, read, deny
-p, ROLE_USER, UserSubMenu_allow, read, allow
-
-g, user, ROLE_USER
-g, admin, ROLE_ADMIN
-g, root, ROLE_ROOT
-g, ROLE_ADMIN, ROLE_USER
-
-g2, UserSubMenu_allow, UserMenu
-g2, UserSubMenu_deny, UserMenu
-g2, UserSubSubMenu, UserSubMenu_allow
-g2, AdminSubMenu_allow, AdminMenu
-g2, AdminSubMenu_deny, AdminMenu
-g2, (NULL), SystemMenu
 ```
-
-| MenuName           | ROLE_ROOT | ROLE_ADMIN | ROLE_USER |
-|:-------------------|:---------:|:----------:|:---------:|
-| SystemMenu         |     ✅     |     ❌      |     ❌     |
-| UserMenu           |     ❌     |     ✅      |     ❌     |
-| UserSubMenu_allow  |     ❌     |     ✅      |     ✅     |
-| UserSubSubMenu     |     ❌     |     ✅      |     ✅     |
-| UserSubMenu_deny   |     ❌     |     ✅      |     ❌     |
-| AdminMenu          |     ✅     |     ✅      |     ❌     |
-| AdminSubMenu_allow |     ✅     |     ✅      |     ❌     |
-| AdminSubMenu_deny  |     ✅     |     ❌      |     ❌     |
-
-### 2. Menu Permission Control
-
-The list of all menu items accessible by a given username can be identified through the `findAccessibleMenus()` function available in the [MenuService](https://github.com/jcasbin/jcasbin-menu-permission/blob/master/src/main/java/org/casbin/service/MenuService.java). To check whether a specific user has the rights to access a designated menu item, the `checkMenuAccess()` method can be utilized. This approach ensures that menu permissions are effectively controlled, leveraging jCasbin's capabilities to manage access rights efficiently.

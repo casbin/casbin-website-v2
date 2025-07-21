@@ -8,11 +8,11 @@ authors: [closetool, kiloson-c]
 
 ## RoleManager
 
-The RoleManager provides an interface for defining operations to manage roles. The addition of a matching function to the RoleManager allows the use of wildcards in role names and domains.
+The RoleManager provides an interface for defining operations to manage roles. Adding a matching function to the RoleManager enables the use of wildcards in role names and domains.
 
 ### `AddNamedMatchingFunc()`
 
-The `AddNamedMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `MatchingFunc` will be used when performing role matching.
+The `AddNamedMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `MatchingFunc` is used when performing role matching.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -70,7 +70,7 @@ For example:
 
 ### `AddNamedDomainMatchingFunc()`
 
-The `AddNamedDomainMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `DomainMatchingFunc` is similar to the `MatchingFunc` listed above.
+The `AddNamedDomainMatchingFunc` function adds a `DomainMatchingFunc` by Ptype to the RoleManager. The `DomainMatchingFunc` is similar to the `MatchingFunc` above.
 
 For example:
 
@@ -101,7 +101,7 @@ For example:
 
 ### `GetRoleManager()`
 
-The `GetRoleManager` function gets the current role manager for `g`.
+The `GetRoleManager` function retrieves the current role manager for `g`.
 
 For example:
 
@@ -139,7 +139,7 @@ For example:
 
 ### `GetNamedRoleManager()`
 
-The `GetNamedRoleManager` function gets the role manager by named Ptype.
+The `GetNamedRoleManager` function retrieves the role manager by named Ptype.
 
 For example:
 
@@ -244,7 +244,7 @@ For example:
 
 ### `Clear()`
 
-The `Clear` function clears all stored data and resets the role manager to its initial state.
+The `Clear` function removes all stored data and resets the role manager to its initial state.
 
 For example:
 
