@@ -47,6 +47,7 @@ module.exports = {
         "rbac-with-domains",
         "rbac-with-conditions",
         "rbac-96",
+        "rebac",
         "abac",
         "priority-model",
         "superadmin",
