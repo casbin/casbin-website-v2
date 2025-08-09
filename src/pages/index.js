@@ -32,7 +32,7 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
+        <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Priority, RESTful, IP Match for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
         <div>
           <Link className="button button--secondary button--lg"
             style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
@@ -180,8 +180,8 @@ function OpenCollective() {
 export default function Home() {
   return (
     <Layout
-      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
-      description="An authorization library that supports access control models like ACL, RBAC, ABAC for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
+      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Priority, RESTful, IP Match for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
+      description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Priority, RESTful, IP Match for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

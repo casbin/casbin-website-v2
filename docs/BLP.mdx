@@ -1,0 +1,80 @@
+---
+id: blp
+title: BLP (Bell-LaPadula)
+description: Bell-LaPadula model in Casbin
+keywords: [blp, bell-lapadula, security model]
+authors: [nodece]
+---
+
+## Overview
+
+The Bell-LaPadula (BLP) model is a formal state transition model of computer security policy that describes a set of access control rules which use security labels on objects and clearances for subjects. It was developed by David Elliott Bell and Leonard J. LaPadula in 1973.
+
+## Model
+
+```conf
+[request_definition]
+r = sub, sub_level, obj, obj_level, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = (r.act == "read" && r.sub_level >= r.obj_level) || (r.act == "write" && r.sub_level <= r.obj_level)
+```
+
+## Policy
+
+BLP model typically doesn't require explicit policy rules as the access control is determined by the security levels of subjects and objects. The matcher function implements the BLP rules:
+
+- **No Read Up**: A subject cannot read an object with a higher security level
+- **No Write Down**: A subject cannot write to an object with a lower security level
+
+## Examples
+
+### Request Examples
+
+```
+alice, 3, data1, 1, read    # alice (level 3) reads data1 (level 1) - ALLOWED
+bob, 2, data2, 2, read      # bob (level 2) reads data2 (level 2) - ALLOWED
+charlie, 1, data1, 1, read  # charlie (level 1) reads data1 (level 1) - ALLOWED
+bob, 2, data3, 3, read      # bob (level 2) reads data3 (level 3) - DENIED (No Read Up)
+charlie, 1, data2, 2, read  # charlie (level 1) reads data2 (level 2) - DENIED (No Read Up)
+
+alice, 3, data3, 3, write   # alice (level 3) writes data3 (level 3) - ALLOWED
+bob, 2, data3, 3, write     # bob (level 2) writes data3 (level 3) - DENIED (No Write Down)
+charlie, 1, data2, 2, write # charlie (level 1) writes data2 (level 2) - DENIED (No Write Down)
+alice, 3, data1, 1, write   # alice (level 3) writes data1 (level 1) - ALLOWED
+bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - ALLOWED
+```
+
+## Security Levels
+
+In the BLP model, security levels are typically represented as integers where higher numbers indicate higher security levels:
+
+- Level 1: Public/Unclassified
+- Level 2: Confidential
+- Level 3: Secret
+- Level 4: Top Secret
+
+## Use Cases
+
+BLP model is commonly used in:
+
+- Military and government systems
+- Financial institutions
+- Healthcare systems
+- Any environment requiring strict information flow control
+
+## Implementation Notes
+
+- The model enforces mandatory access control (MAC)
+- Security levels are assigned by system administrators
+- Access decisions are based purely on security levels, not user identity
+- The model prevents information leakage through read/write operations 
