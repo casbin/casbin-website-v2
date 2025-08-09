@@ -40,7 +40,7 @@ BLP model typically doesn't require explicit policy rules as the access control 
 
 ### Request Examples
 
-```
+```text
 alice, 3, data1, 1, read    # alice (level 3) reads data1 (level 1) - ALLOWED
 bob, 2, data2, 2, read      # bob (level 2) reads data2 (level 2) - ALLOWED
 charlie, 1, data1, 1, read  # charlie (level 1) reads data1 (level 1) - ALLOWED
@@ -77,4 +77,4 @@ BLP model is commonly used in:
 - The model enforces mandatory access control (MAC)
 - Security levels are assigned by system administrators
 - Access decisions are based purely on security levels, not user identity
-- The model prevents information leakage through read/write operations 
+- The model prevents information leakage through read/write operations
