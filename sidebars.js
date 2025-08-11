@@ -50,6 +50,7 @@ module.exports = {
         "rebac",
         "abac",
         "blp",
+        "biba",
         "priority-model",
         "superadmin",
       ],

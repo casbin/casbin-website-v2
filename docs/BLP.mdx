@@ -48,10 +48,10 @@ bob, 2, data3, 3, read      # bob (level 2) reads data3 (level 3) - DENIED (No R
 charlie, 1, data2, 2, read  # charlie (level 1) reads data2 (level 2) - DENIED (No Read Up)
 
 alice, 3, data3, 3, write   # alice (level 3) writes data3 (level 3) - ALLOWED
-bob, 2, data3, 3, write     # bob (level 2) writes data3 (level 3) - DENIED (No Write Down)
-charlie, 1, data2, 2, write # charlie (level 1) writes data2 (level 2) - DENIED (No Write Down)
-alice, 3, data1, 1, write   # alice (level 3) writes data1 (level 1) - ALLOWED
-bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - ALLOWED
+bob, 2, data3, 3, write     # bob (level 2) writes data3 (level 3) - ALLOWED
+charlie, 1, data2, 2, write # charlie (level 1) writes data2 (level 2) - ALLOWED
+alice, 3, data1, 1, write   # alice (level 3) writes data1 (level 1) - DENIED (No Write Down)
+bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - DENIED (No Write Down)
 ```
 
 ## Security Levels
