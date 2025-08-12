@@ -1,0 +1,103 @@
+---
+id: lbac
+title: LBAC
+description: Lattice-Based Access Control model in Casbin
+keywords: [lbac, lattice-based access control, security model, confidentiality, integrity]
+authors: [nodece]
+---
+
+## What is the LBAC model?
+
+LBAC stands for Lattice-Based Access Control. It is a formal access control model that can be implemented in various ways. The example shown below demonstrates one possible implementation in Casbin that combines confidentiality and integrity controls.
+
+## Model Definition
+
+Here is an example LBAC model implementation in Casbin:
+
+```conf
+[request_definition]
+r = sub, subject_confidentiality, subject_integrity, obj, object_confidentiality, object_integrity, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = (r.act == "read" && r.subject_confidentiality >= r.object_confidentiality && r.subject_integrity >= r.object_integrity) || (r.act == "write" && r.subject_confidentiality <= r.object_confidentiality && r.subject_integrity <= r.object_integrity)
+```
+
+## How it works
+
+In this example implementation, the matcher function implements access control rules based on two security properties:
+
+- **Confidentiality Control**: Prevents unauthorized disclosure of information
+- **Integrity Control**: Prevents unauthorized modification of information
+
+The access control decisions are made by comparing the security levels of subjects and objects in both dimensions.
+
+## Examples
+
+### Request Examples
+
+The following are example requests to demonstrate how this LBAC implementation works:
+
+```text
+# Normal read operations (ALLOWED)
+admin, 5, 5, file_topsecret, 3, 3, read      # admin (conf:5, int:5) reads file_topsecret (conf:3, int:3) - ALLOWED
+manager, 4, 4, file_secret, 4, 2, read       # manager (conf:4, int:4) reads file_secret (conf:4, int:2) - ALLOWED
+staff, 3, 3, file_internal, 2, 3, read       # staff (conf:3, int:3) reads file_internal (conf:2, int:3) - ALLOWED
+guest, 2, 2, file_public, 2, 2, read         # guest (conf:2, int:2) reads file_public (conf:2, int:2) - ALLOWED
+
+# Read operation violations (DENIED)
+staff, 3, 3, file_secret, 4, 2, read         # staff (conf:3, int:3) reads file_secret (conf:4, int:2) - DENIED (conf < obj.conf)
+manager, 4, 4, file_sensitive, 3, 5, read    # manager (conf:4, int:4) reads file_sensitive (conf:3, int:5) - DENIED (int < obj.int)
+guest, 2, 2, file_internal, 3, 1, read       # guest (conf:2, int:2) reads file_internal (conf:3, int:1) - DENIED (conf < obj.conf)
+staff, 3, 3, file_protected, 1, 4, read      # staff (conf:3, int:3) reads file_protected (conf:1, int:4) - DENIED (int < obj.int)
+
+# Normal write operations (ALLOWED)
+guest, 2, 2, file_public, 2, 2, write        # guest (conf:2, int:2) writes file_public (conf:2, int:2) - ALLOWED
+staff, 3, 3, file_internal, 5, 4, write      # staff (conf:3, int:3) writes file_internal (conf:5, int:4) - ALLOWED
+manager, 4, 4, file_secret, 4, 5, write      # manager (conf:4, int:4) writes file_secret (conf:4, int:5) - ALLOWED
+admin, 5, 5, file_archive, 5, 5, write       # admin (conf:5, int:5) writes file_archive (conf:5, int:5) - ALLOWED
+
+# Write operation violations (DENIED)
+manager, 4, 4, file_internal, 3, 5, write    # manager (conf:4, int:4) writes file_internal (conf:3, int:5) - DENIED (conf > obj.conf)
+staff, 3, 3, file_public, 2, 2, write        # staff (conf:3, int:3) writes file_public (conf:2, int:2) - DENIED (both > obj)
+admin, 5, 5, file_secret, 5, 4, write        # admin (conf:5, int:5) writes file_secret (conf:5, int:4) - DENIED (int > obj.int)
+guest, 2, 2, file_private, 1, 3, write       # guest (conf:2, int:2) writes file_private (conf:1, int:3) - DENIED (conf > obj.conf)
+```
+
+## Security Levels
+
+In this example implementation, both confidentiality and integrity levels are represented as integers where higher numbers indicate higher security levels:
+
+### Confidentiality Levels
+- Level 1: Public/Unclassified
+- Level 2: Confidential
+- Level 3: Secret
+- Level 4: Top Secret
+
+### Integrity Levels
+- Level 1: Low integrity (e.g., public data, user-generated content)
+- Level 2: Medium integrity (e.g., verified data, trusted sources)
+- Level 3: High integrity (e.g., system data, administrative content)
+- Level 4: Critical integrity (e.g., security policies, system configuration)
+
+## Use Cases
+
+This LBAC implementation example is suitable for:
+
+- Multi-level security environments
+- Applications where data protection and data accuracy are both important
+
+## Implementation Notes
+
+- The model enforces mandatory access control (MAC) with dual security properties
+- Security levels are assigned by system administrators
+- Access decisions are based on both confidentiality and integrity levels
+- The model prevents both information leakage and data corruption 

@@ -14,12 +14,13 @@ authors: [nodece]
 6. **RBAC with resource roles**: Both users and resources can have roles (or groups) at the same time.
 7. **RBAC with domains/tenants**: Users can have different sets of roles for different domains/tenants.
 8. **[ABAC (Attribute-Based Access Control)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: Syntax sugar like "resource.Owner" can be used to get the attribute for a resource.
-9. **[BLP (Bell-LaPadula)](https://en.wikipedia.org/wiki/Bell%E2%80%93LaPadula_model)**: A formal state transition model of computer security policy that describes a set of access control rules which use security labels on objects and clearances for subjects.
+9. **[BLP (Bell-LaPadula)](https://en.wikipedia.org/wiki/Bell%E2%80%93LaPadula_model)**: A formal state transition model of computer security policy that describes a set of access control rules which use security labels on objects and clearances for subjects. Implements "No Read Up" and "No Write Down" principles for confidentiality.
 10. **[Biba (Biba Integrity Model)](https://en.wikipedia.org/wiki/Biba_Model)**: A computer security model that restricts information flow in a system to prevent unauthorized disclosure of classified information.
-11. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: Supports paths like "/res/*", "/res/:id", and HTTP methods like "GET", "POST", "PUT", "DELETE".
-12. **IP Match**: Supports IP address matching for network-based access control.
-13. **Deny-override**: Both allow and deny authorizations are supported, where deny overrides allow.
-14. **Priority**: The policy rules can be prioritized, similar to firewall rules.
+11. **[LBAC (Lattice-Based Access Control)](./LBAC)**: A formal access control model that combines confidentiality and integrity controls in a unified framework, implementing a lattice structure for granular access control decisions.
+12. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: Supports paths like "/res/*", "/res/:id", and HTTP methods like "GET", "POST", "PUT", "DELETE".
+13. **IP Match**: Supports IP address matching for network-based access control.
+14. **Deny-override**: Both allow and deny authorizations are supported, where deny overrides allow.
+15. **Priority**: The policy rules can be prioritized, similar to firewall rules.
 
 ## Examples
 
@@ -36,6 +37,7 @@ authors: [nodece]
 | ABAC                      | [abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                         | N/A                                                                                                                              |
 | BLP                       | [blp_model.conf](https://github.com/casbin/casbin/blob/master/examples/blp_model.conf)                                           | N/A                                                                                                                              |
 | Biba                      | [biba_model.conf](https://github.com/casbin/casbin/blob/master/examples/biba_model.conf)                                         | N/A                                                                                                                              |
+| LBAC                      | [lbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/lbac_model.conf)                                         | N/A                                                                                                                              |
 | IP Match                  | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)                                   | [ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)                                   |
 | RESTful                   | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                                 | [keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                 |
 | Deny-override             | [rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)             | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                     |
