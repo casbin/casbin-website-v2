@@ -180,9 +180,9 @@ function OpenCollective() {
 export default function Home() {
   return (
     <Layout
-      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP (Bell-LaPadula), Biba, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
+      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Biba, LBAC, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
 
-      description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP (Bell-LaPadula), Biba, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
+      description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Biba, LBAC, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
