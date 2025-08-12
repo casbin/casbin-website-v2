@@ -77,12 +77,14 @@ guest, 2, 2, file_private, 1, 3, write       # guest (conf:2, int:2) writes file
 In this example implementation, both confidentiality and integrity levels are represented as integers where higher numbers indicate higher security levels:
 
 ### Confidentiality Levels
+
 - Level 1: Public/Unclassified
 - Level 2: Confidential
 - Level 3: Secret
 - Level 4: Top Secret
 
 ### Integrity Levels
+
 - Level 1: Low integrity (e.g., public data, user-generated content)
 - Level 2: Medium integrity (e.g., verified data, trusted sources)
 - Level 3: High integrity (e.g., system data, administrative content)
@@ -100,4 +102,4 @@ This LBAC implementation example is suitable for:
 - The model enforces mandatory access control (MAC) with dual security properties
 - Security levels are assigned by system administrators
 - Access decisions are based on both confidentiality and integrity levels
-- The model prevents both information leakage and data corruption 
+- The model prevents both information leakage and data corruption
