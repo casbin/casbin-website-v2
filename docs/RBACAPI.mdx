@@ -1661,3 +1661,32 @@ ImplicitUsers, err := e.GetImplicitUsersForResource("data2")
 Only users will be returned, roles (2nd arg in "g") will be excluded.
 
 :::
+
+### `GetNamedImplicitUsersForResource()`
+
+GetNamedImplicitUsersForResource return implicit user based on resource with named policy support.
+This function handles resource role relationships through named policies (e.g., g2, g3, etc.).
+
+For example:
+
+```csv
+p, admin_group, admin_data, *
+g, admin, admin_group
+g2, app, admin_data
+```
+
+GetNamedImplicitUsersForResource("g2", "app") will return users who have access to admin_data through g2 relationship.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetNamedImplicitUsersForResource("g2", "app")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
