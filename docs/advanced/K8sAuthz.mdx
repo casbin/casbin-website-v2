@@ -1,0 +1,82 @@
+---
+id: k8s
+title: Using Casbin with Kubernetes
+description: How to enforce fine-grained access control in Kubernetes using Casbin with a validating admission webhook.
+keywords: [Kubernetes, k8s, authorization, RBAC, ABAC, K8s-authz, Admission Webhook]
+authors: [hsluoyz]
+---
+
+[K8s-authz](https://github.com/casbin/k8s-authz) is a middleware that integrates Casbin with Kubernetes to enforce fine-grained access control for your cluster resources. It functions as a [Validating Admission Webhook](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook), allowing you to manage permissions with Casbin's RBAC and ABAC models.
+
+## How It Works
+
+When a request is made to the Kubernetes API server, the following process occurs:
+
+1.  The `ValidatingAdmissionWebhook` is configured to intercept requests for specified resources.
+2.  The API server forwards the request object to the `k8s-authz` service.
+3.  The `k8s-authz` service uses a Casbin enforcer to check if the action is permitted by your defined policies.
+4.  Based on the Casbin policy evaluation, the service returns an `allow` or `deny` response to the API server, which then accepts or rejects the request.
+
+## Requirements
+
+:::info Prerequisites
+
+- A running Kubernetes cluster.
+  - For local setup, see the official [Kubernetes Basics tutorial](https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/).
+  - For a server setup on Linux, see this [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04).
+- The `kubectl` command-line tool.
+  - [Installation guide for Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+  - [Installation guide for Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
+- OpenSSL for generating certificates.
+
+:::
+
+## Setup and Usage
+
+### 1. Generate Certificates
+
+The webhook requires TLS certificates. A helper script is provided to generate them.
+
+```bash
+./gen_cert.sh
+```
+
+### 2. Define Casbin Policies
+
+Define your authorization rules in `model.conf` and `policy.csv`. For more details on policy syntax, refer to the [How It Works](/docs/basics/HowItWorks) guide.
+
+### 3. Build the Docker Image
+
+Build the `k8s-authz` Docker image. Remember to update the version tag in the command below and in the `deployment.yaml` file.
+
+```bash
+docker build -t casbin/k8s_authz:0.1 .
+```
+
+:::caution
+Ensure the Docker image is pushed to a registry that your Kubernetes cluster can access.
+:::
+
+### 4. Deploy the Webhook
+
+Deploy the admission controller and the webhook to your cluster.
+
+```bash
+kubectl apply -f manifests/deployment.yaml
+```
+
+### 5. Production Configuration
+
+For production environments, it is highly recommended to store TLS certificates in a Kubernetes `secret`.
+
+First, create the secret:
+
+```bash
+kubectl create secret generic casbin-tls -n default \
+  --from-file=key.pem=certs/casbin-key.pem \
+  --from-file=cert.pem=certs/casbin-crt.pem
+```
+
+Next, you must update the `deployment.yaml` manifest to mount this secret as a volume and modify `main.go` to load the certificates from the specified mount path.
+
+After applying these changes, the `k8s-authz` server will be running and enforcing your Casbin policies on requests to Kubernetes resources.

@@ -1,0 +1,185 @@
+---
+id: api-overview
+title: API Overview
+description: An overview of Casbin's core APIs for enforcement, policy management, and RBAC.
+keywords: [API, Enforce, Management, RBAC, Go]
+authors: [hsluoyz]
+---
+
+This document provides an overview of Casbin's core APIs. It assumes you have already installed Casbin and are familiar with its basic concepts.
+
+:::note Prerequisites
+Before proceeding, please ensure you understand how to install Casbin and how it works. You can find this information in the [Get Started](/docs/basics/get-started) and [How It Works](/docs/basics/how-it-works) guides.
+:::
+
+For the examples below, we will use the following model and policy files:
+
+**`model.conf`**
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+**`policy.csv`**
+```csv
+p, admin, data1, read
+p, admin, data1, write
+p, admin, data2, read
+p, admin, data2, write
+p, alice, data1, read
+p, bob, data2, write
+g, amber, admin
+```
+
+## Core Enforcement APIs
+
+Enforcement APIs are used to check whether a request is permitted.
+
+### `Enforce()`
+
+The `Enforce()` function is the primary method for checking permissions. It takes a request (e.g., a user, resource, and action) and returns `true` if permitted and `false` otherwise.
+
+```go
+import "github.com/casbin/casbin/v2"
+
+// Initialize an enforcer from model and policy files.
+enforcer, err := casbin.NewEnforcer("./model.conf", "./policy.csv")
+if err != nil {
+    // handle error
+}
+
+// Check if "alice" can "read" "data1".
+ok, err := enforcer.Enforce("alice", "data1", "read")
+if ok {
+    // access granted
+} else {
+    // access denied
+}
+```
+
+### `EnforceEx()`
+
+The `EnforceEx()` function works like `Enforce()` but also returns the specific policy rule that matched the request, if any.
+
+```go
+// Check permissions for "amber".
+ok, reason, err := enforcer.EnforceEx("amber", "data1", "read")
+
+// ok is true
+// reason is ["admin", "data1", "read"], because "amber" has the "admin" role.
+fmt.Println(ok, reason)
+```
+
+### Other Enforcement Variations
+
+Casbin also provides other enforcement APIs for more advanced use cases:
+-   `EnforceWithMatcher()`: Uses a custom matcher for enforcement.
+-   `BatchEnforce()`: Checks multiple requests at once and returns an array of boolean results.
+
+## Policy Management APIs
+
+These APIs allow you to read and modify policy rules at runtime.
+
+### Retrieving Policies (Getters)
+
+You can retrieve parts of your policy, such as subjects, objects, or entire rules.
+
+-   `GetAllSubjects()`: Gets a list of all unique subjects.
+-   `GetAllObjects()`: Gets a list of all unique objects.
+-   `GetAllActions()`: Gets a list of all unique actions.
+-   `GetAllRoles()`: Gets a list of all unique roles.
+-   `GetPolicy()`: Gets all authorization rules.
+-   `GetGroupingPolicy()`: Gets all role inheritance rules.
+
+```go
+// Get all subjects from the policy.
+allSubjects := enforcer.GetAllSubjects()
+// Expected output: [admin alice bob amber]
+fmt.Println(allSubjects)
+
+// Get all authorization rules.
+policy := enforcer.GetPolicy()
+```
+
+Filtered versions like `GetFilteredPolicy()` and `GetFilteredGroupingPolicy()` are also available to retrieve a subset of rules.
+
+### Modifying Policies (CRUD)
+
+You can dynamically add, remove, or update policy rules.
+
+-   `AddPolicy()`: Adds an authorization rule.
+-   `RemovePolicy()`: Removes an authorization rule.
+-   `UpdatePolicy()`: Updates an existing authorization rule with a new one.
+-   `HasPolicy()`: Checks if an authorization rule exists.
+
+```go
+// Add a new rule.
+enforcer.AddPolicy("new_user", "data3", "read")
+
+// Check if the rule was added.
+has, _ := enforcer.HasPolicy("new_user", "data3", "read") // true
+
+// Remove an existing rule.
+enforcer.RemovePolicy("alice", "data1", "read")
+
+// Update a rule.
+enforcer.UpdatePolicy(
+    []string{"new_user", "data3", "read"}, 
+    []string{"new_user", "data3", "write"},
+)
+```
+
+Batch operations like `AddPolicies()`, `RemovePolicies()`, and `UpdatePolicies()` are available for modifying multiple rules at once.
+
+### Idempotent Batch Additions (`*Ex` APIs)
+
+The `AddPoliciesEx` function and its variants (`AddGroupingPoliciesEx`, etc.) add multiple rules but skip any that already exist, preventing errors and ensuring the operation is idempotent.
+
+```go
+// This will return false because the first rule already exists.
+// The second rule will not be added.
+e.AddPolicies([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+
+// This will return true. It skips the existing rule and adds the new one.
+e.AddPoliciesEx([][]string{{"user1", "data1", "read"}, {"user2", "data2", "read"}})
+```
+
+## RBAC APIs
+
+Casbin provides a dedicated set of APIs for managing roles and user-role mappings in an RBAC model.
+
+-   `GetRolesForUser()`: Gets the roles that a user has.
+-   `GetUsersForRole()`: Gets the users that have a role.
+-   `HasRoleForUser()`: Checks if a user has a role.
+-   `AddRoleForUser()`: Adds a role for a user.
+-   `DeleteRoleForUser()`: Deletes a role for a user.
+-   `DeleteRolesForUser()`: Deletes all roles for a user.
+
+```go
+// Get roles for "amber".
+roles, err := enforcer.GetRolesForUser("amber")
+// Expected output: [admin]
+fmt.Println(roles)
+
+// Get users in the "admin" role.
+users, err := enforcer.GetUsersForRole("admin")
+// Expected output: [amber]
+fmt.Println(users)
+
+// Check if "amber" has the "admin" role.
+has, _ := enforcer.HasRoleForUser("amber", "admin") // true
+```
+
+For more details on these functions, refer to the specific API documentation pages.

@@ -1,0 +1,72 @@
+---
+id: envoy
+title: Using Casbin with Envoy
+description: How to authorize service mesh traffic using Casbin with Envoy Proxy.
+keywords: [Envoy, Envoy-authz, Istio, Service Mesh]
+authors: [ashish493]
+---
+
+[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware for Envoy that enables external authorization for your service mesh using Casbin for RBAC and ABAC. It integrates with Envoy's [external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server and can be deployed in any Envoy-based service mesh, such as Istio.
+
+## Requirements
+
+:::info Prerequisites
+- Envoy 1.17 or newer
+- An Envoy-based service mesh (e.g., Istio)
+- A Go environment with gRPC dependencies
+:::
+
+Dependencies are managed using `go.mod`.
+
+## How It Works
+
+The authorization flow is as follows:
+1. A client sends an HTTP request to a service within the mesh.
+2. The Envoy proxy intercepts the request and sends an authorization check to the `envoy-authz` gRPC server.
+3. The `envoy-authz` server evaluates the request against the Casbin policies you have defined.
+4. If the request is authorized, it is forwarded to the upstream service. Otherwise, the request is denied.
+
+The gRPC server is based on the `Authorization` service definition from Envoy's `external_auth.proto`:
+
+```protobuf
+// A generic interface for performing authorization checks on incoming
+// requests to a networked service.
+service Authorization {
+  // Performs an authorization check based on the attributes associated with the
+  // incoming request and returns a status of `OK` or not `OK`.
+  rpc Check(v2.CheckRequest) returns (v2.CheckResponse);
+}
+```
+
+The `envoy-authz` middleware implements the `Check()` method to perform the authorization logic.
+
+## Usage
+
+### 1. Define Policies
+
+First, define your Casbin policies. For more details on policy syntax, refer to the [How It Works](/docs/basics/HowItWorks) guide. You can test your policies using the online [Casbin Editor](/editor).
+
+### 2. Start the Authorization Server
+
+Compile and run the `envoy-authz` server:
+
+```bash
+go build .
+./authz
+```
+
+### 3. Configure Envoy
+
+Load the Envoy configuration. This tells Envoy to use the external authorization filter.
+
+```bash
+envoy -c authz.yaml -l info
+```
+
+Once Envoy starts with this configuration, it will begin intercepting requests and sending them to your `envoy-authz` server for authorization.
+
+## Integrating with Istio
+
+To integrate `envoy-authz` with Istio, you need to pass user identity information (e.g., from a JWT) to the authorization service. This is typically done by configuring Istio to add custom headers to the request.
+
+For detailed instructions on modifying request headers in Istio, refer to the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/).

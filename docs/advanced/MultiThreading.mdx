@@ -1,0 +1,32 @@
+---
+id: multi-threading
+title: Multi-threading
+description: Learn how to safely use Casbin in a multi-threaded environment and automatically keep policies up-to-date.
+keywords: [multi-threading, thread-safety, auto-load, concurrency]
+authors: [hsluoyz]
+---
+
+When using a single Casbin enforcer instance across multiple threads or goroutines, it's crucial to manage concurrent access to prevent race conditions. Casbin provides built-in solutions to ensure thread safety and keep policies synchronized.
+
+## Thread Safety
+
+To safely use a Casbin enforcer in a multi-threaded environment, you should use a synchronized enforcer wrapper. This wrapper ensures that all method calls to the enforcer are thread-safe.
+
+Most Casbin implementations provide a synchronized or thread-safe version of the enforcer. For example:
+
+-   **Go**: [`SyncedEnforcer`](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)
+-   **C++**: [`SyncedEnforcer`](https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp)
+
+You typically create a standard enforcer and then wrap it with the synchronized version for use in your application.
+
+## Automatic Policy Loading (AutoLoad)
+
+Casbin supports automatic loading of policy rules from the storage (e.g., a database) whenever the policy is updated. This feature ensures that your enforcer instance always has the latest rules without requiring a manual reload or application restart.
+
+To enable this feature, you can use the `StartAutoLoadPolicy()` function. This will start a periodic check for policy changes in the background.
+
+To stop the automatic loading, you can call `StopAutoLoadPolicy()`.
+
+:::info Watcher Required
+The AutoLoad feature requires a [Watcher](/docs/watchers) to be configured with your enforcer. The watcher is responsible for detecting changes in the policy storage and notifying the enforcer to reload.
+:::
