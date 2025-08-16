@@ -1,32 +1,29 @@
 ---
 id: envoy
-title: Using Casbin with Envoy
-description: How to authorize service mesh traffic using Casbin with Envoy Proxy.
-keywords: [Envoy, Envoy-authz, Istio, Service Mesh]
+title: Authorization of Service Mesh through Envoy
+description: Authorization of Service Mesh through Envoy
+keywords: [Envoy, Envoy-authz, Istio]
 authors: [ashish493]
 ---
 
-[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware for Envoy that enables external authorization for your service mesh using Casbin for RBAC and ABAC. It integrates with Envoy's [external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server and can be deployed in any Envoy-based service mesh, such as Istio.
+[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware for Envoy that performs external RBAC & ABAC authorization through casbin. This middleware uses [Envoy's external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server. This proxy can be deployed on any type of Envoy-based service mesh, such as Istio.
 
 ## Requirements
 
-:::info Prerequisites
-- Envoy 1.17 or newer
-- An Envoy-based service mesh (e.g., Istio)
-- A Go environment with gRPC dependencies
-:::
+- Envoy 1.17+
+- Istio or any other type of service mesh
+- grpc dependencies
 
 Dependencies are managed using `go.mod`.
 
-## How It Works
+## Working of the Middleware
 
-The authorization flow is as follows:
-1. A client sends an HTTP request to a service within the mesh.
-2. The Envoy proxy intercepts the request and sends an authorization check to the `envoy-authz` gRPC server.
-3. The `envoy-authz` server evaluates the request against the Casbin policies you have defined.
-4. If the request is authorized, it is forwarded to the upstream service. Otherwise, the request is denied.
+- A client makes an HTTP request.
+- The Envoy proxy sends the request to the gRPC server.
+- The gRPC server authorizes the request based on casbin policies.
+- If authorized, the request is forwarded; otherwise, it is denied.
 
-The gRPC server is based on the `Authorization` service definition from Envoy's `external_auth.proto`:
+The gRPC server is based on protocol buffer from [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) in Envoy.
 
 ```protobuf
 // A generic interface for performing authorization checks on incoming
@@ -38,35 +35,29 @@ service Authorization {
 }
 ```
 
-The `envoy-authz` middleware implements the `Check()` method to perform the authorization logic.
+From the above proto file, we need to use the `Check()` service in the authorization server.
 
 ## Usage
 
-### 1. Define Policies
+- Define the Casbin policies in the config files following this [guide](/docs/how-it-works).
 
-First, define your Casbin policies. For more details on policy syntax, refer to the [How It Works](/docs/basics/HowItWorks) guide. You can test your policies using the online [Casbin Editor](/editor).
+You can verify/test your policies using the online [casbin-editor](/editor).
 
-### 2. Start the Authorization Server
-
-Compile and run the `envoy-authz` server:
+- Start the authentication server by running:
 
 ```bash
 go build .
 ./authz
 ```
 
-### 3. Configure Envoy
-
-Load the Envoy configuration. This tells Envoy to use the external authorization filter.
+- Load the Envoy configuration:
 
 ```bash
 envoy -c authz.yaml -l info
 ```
 
-Once Envoy starts with this configuration, it will begin intercepting requests and sending them to your `envoy-authz` server for authorization.
+Once Envoy starts, it will intercept requests for the authorization process.
 
 ## Integrating with Istio
 
-To integrate `envoy-authz` with Istio, you need to pass user identity information (e.g., from a JWT) to the authorization service. This is typically done by configuring Istio to add custom headers to the request.
-
-For detailed instructions on modifying request headers in Istio, refer to the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/).
+To make this middleware work, you need to send custom headers containing usernames in the JWT token or headers. You can refer to the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) for more information on modifying `Request Headers`.
