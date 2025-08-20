@@ -1489,6 +1489,86 @@ e.get_named_implicit_permissions_for_user("p2", "alice")
 </Tabs>
 ```
 
+### `GetNamedPermissionsForUser()`
+
+GetNamedPermissionsForUser gets permissions for a user or role by named policy.
+
+For example:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p2, admin, create
+g, alice, admin
+```
+
+GetNamedPermissionsForUser("p", "alice") will return `[["alice", "data1", "read"]]`.
+GetNamedPermissionsForUser("p2", "alice") will return `[["admin", "create"]]`.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+permissions, err := e.GetNamedPermissionsForUser("p", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<Tabs groupId="langs">
+<TabItem value="Python" label="Python">
+```
+
+```python
+permissions = e.get_named_permissions_for_user("p", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedImplicitRolesForUser()`
+
+GetNamedImplicitRolesForUser gets implicit roles that a user has by named policy.
+
+For example:
+
+```csv
+g, alice, admin
+g, admin, super_admin
+g2, alice, user
+g2, user, guest
+```
+
+GetNamedImplicitRolesForUser("g", "alice") will return `["admin", "super_admin"]`.
+GetNamedImplicitRolesForUser("g2", "alice") will return `["user", "guest"]`.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+roles, err := e.GetNamedImplicitRolesForUser("g", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<Tabs groupId="langs">
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_named_implicit_roles_for_user("g", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ### `GetDomainsForUser()`
 
 GetDomainsForUser gets all domains which a user has.
