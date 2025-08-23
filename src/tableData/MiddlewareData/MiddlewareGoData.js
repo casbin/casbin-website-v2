@@ -42,6 +42,11 @@ export const MiddlewareGoData = [
     image: "/img/ecosystem/fiber.png",
   },
   {
+    title: "[FastHTTP](https://github.com/valyala/fasthttp)",
+    description:
+      "Fast HTTP package for Go. Tuned for high performance. Zero memory allocations in hot paths. Up to 10x faster than net/http, via plugin: [fasthttp-auth](https://github.com/casbin/fasthttp-auth)",
+  },
+  {
     title: "[Revel](https://github.com/revel/revel)",
     description:
       "A high productivity, full-stack web framework for the Go language, via plugin: [auth/casbin](https://github.com/revel/modules/tree/master/auth/casbin)",
