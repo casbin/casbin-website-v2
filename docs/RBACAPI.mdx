@@ -1661,6 +1661,90 @@ users, err := e.GetImplicitUsersForPermission("data1", "read")
 </Tabs>
 ```
 
+### `GetImplicitObjectPatternsForUser()`
+
+GetImplicitObjectPatternsForUser returns all object patterns (with wildcards) that a user has for a given domain and action.
+
+For example:
+
+```csv
+p, admin, chronicle/123, location/*, read
+p, user, chronicle/456, location/789, read
+g, alice, admin
+g, bob, user
+```
+
+GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read") will return `["location/*"]`.
+GetImplicitObjectPatternsForUser("bob", "chronicle/456", "read") will return `["location/789"]`.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+patterns, err := e.GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const patterns = await e.getImplicitObjectPatternsForUser("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$patterns = $e->getImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+patterns = e.get_implicit_object_patterns_for_user("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var patterns = e.GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let patterns = e.get_implicit_object_patterns_for_user("alice", "chronicle/123", "read").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> patterns = e.getImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ### `GetAllowedObjectConditions()`
 
 GetAllowedObjectConditions returns a string array of object conditions that the user can access.
