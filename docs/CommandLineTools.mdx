@@ -6,7 +6,7 @@ keywords: [command-line tools, casbin, cli]
 authors: [liulifox233]
 ---
 
-**Casbin CLIs** are command-line tools that provide a command-line interface for Casbin, enabling you to use all of Casbin APIs in the shell. This documentation covers the usage of Casbin CLI for various languages including Rust, Java, Go, and NodeJs.
+**Casbin CLIs** are command-line tools that provide a command-line interface for Casbin, enabling you to use all of Casbin APIs in the shell. This documentation covers the usage of Casbin CLI for various languages including Rust, Java, Go, Python, .NET, and NodeJs.
 
 ## Installation
 
@@ -61,6 +61,42 @@ cargo install casbin-rust-cli
     ```bash
     cd casbin-java-cli
     mvn clean install
+    ```
+
+### Python (casbin-python-cli)
+
+1. Clone project from repository
+
+    ```bash
+    git clone https://github.com/casbin/casbin-python-cli.git
+    ```
+
+2. Install dependencies
+
+    ```bash
+    cd casbin-python-cli
+    pip install -r requirements.txt
+    ```
+
+3. Run CLI
+
+    ```bash
+    python -m casbin_cli.client [command] [options] [args]
+    ```
+
+### .NET (casbin-dotnet-cli)
+
+1. Clone project from repository
+
+    ```bash
+    git clone https://github.com/casbin-net/casbin-dotnet-cli.git
+    ```
+
+2. Build project
+
+    ```bash
+    cd casbin-dotnet-cli
+    dotnet build
     ```
 
 ## Usage
