@@ -53,6 +53,7 @@ module.exports = {
         "biba",
         "lbac",
         "priority-model",
+        "ucon",
         "superadmin",
       ],
     },
