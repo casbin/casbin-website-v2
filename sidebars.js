@@ -49,6 +49,7 @@ module.exports = {
         "rbac-96",
         "rebac",
         "abac",
+        "pbac",
         "blp",
         "biba",
         "lbac",
