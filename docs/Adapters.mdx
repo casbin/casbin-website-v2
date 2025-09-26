@@ -299,14 +299,14 @@ If you want to convert adapter from ``A`` to ``B``, you can do like this:
 
 ```go
 e, _ := NewEnforcer(m, A)
-   ```
+```
 
 or
 
 ```go
 e.SetAdapter(A)
 e.LoadPolicy()
-   ```
+```
 
 2.convert your adapter from A to B
 
@@ -318,7 +318,7 @@ e.SetAdapter(B)
 
 ```go
 e.SavePolicy()
-   ```
+```
 
 ## Load/Save at run-time
 
@@ -470,3 +470,35 @@ if err != nil {
 and on the basis of implementing ordinary Adapter API, you can encapsulate your own processing logic for context
 
 A simple reference to the `gormadapter`: [adapter.go](https://github.com/casbin/gorm-adapter/blob/master/adapter.go)
+
+## Transaction
+
+Casbin now supports Transactions. Here's an example about how to use ``Transaction`` in `gormadapter`:
+
+```go
+db, _ := gorm.Open(...)
+adapter, _ := gormadapter.NewTransactionalAdapterByDB(db)
+e, _ := casbin.NewTransactionalEnforcer("examples/rbac_model.conf", adapter)
+
+ctx := context.Background()
+
+// WithTransaction executes a function within a transaction.
+// If the function returns an error, the transaction is rolled back.
+// Otherwise, it's committed automatically.
+err := e.WithTransaction(ctx, func(tx *casbin.Transaction) error {
+    tx.AddPolicy("alice", "data1", "read")
+    tx.AddPolicy("alice", "data1", "write")
+    return nil
+})
+
+// If you wish to manually handle the transaction
+tx, _ := e.BeginTransaction(ctx)
+tx.AddPolicy("alice", "data1", "write")
+if err := tx.Commit(); err != nil {
+    // handle if transaction failed
+}
+```
+
+To add this capability to your adapter, you need to implement `TransactionalAdapter` and `TransactionContext` in [persist/transaction.go](https://github.com/casbin/casbin/blob/master/persist/transaction.go).
+
+Code reference to the `gormadapter`: [adapter.go](https://github.com/casbin/gorm-adapter/blob/master/adapter.go)
