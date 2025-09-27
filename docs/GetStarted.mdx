@@ -33,6 +33,42 @@ For Maven:
 </dependency>
 ```
 
+### GraalVM Native Image Support
+
+If you're building a native application with GraalVM (e.g., using Quarkus or Spring Native), jCasbin requires special configuration due to its use of the [Aviator expression engine](https://github.com/killme2008/aviatorscript).
+
+By default, Aviator uses dynamic class generation via ASM, which is not supported in GraalVM native images. To resolve this, you must configure Aviator to use interpreter mode instead of compilation mode.
+
+#### For Quarkus applications:
+
+Add the following to your `application.properties` or `pom.xml`:
+
+```xml
+<properties>
+    <quarkus.native.additional-build-args>
+        -J-Daviator.eval.mode=INTERPRETER
+    </quarkus.native.additional-build-args>
+</properties>
+```
+
+#### For other GraalVM native builds:
+
+Set the system property when building the native image:
+
+```bash
+-Daviator.eval.mode=INTERPRETER
+```
+
+Or configure it programmatically before initializing jCasbin:
+
+```java
+System.setProperty("aviator.eval.mode", "INTERPRETER");
+```
+
+:::note
+This configuration switches Aviator from its default compilation mode to interpreter mode. While this may have a slight performance impact, it enables full compatibility with GraalVM native images by avoiding runtime class generation.
+:::
+
 ```mdx-code-block
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
@@ -120,7 +156,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 ```
 
 ```bash
-luarocks install casbin  
+luarocks install casbin
 ```
 
 If you receive an error message: "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", you may want to run the command as a privileged user or use your local tree with `--local`. To fix the error, you can add `--local` behind your command like this:
@@ -209,7 +245,7 @@ e = casbin.Enforcer("path/to/model.conf", "path/to/policy.csv")
 ```
 
 ```csharp
-using NetCasbin; 
+using NetCasbin;
 
 var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
 ```
@@ -418,6 +454,10 @@ if (e.enforce(sub, obj, act) == true) {
 }
 ```
 
+:::info GraalVM Native Image Note
+If you're running jCasbin in a GraalVM native image environment, make sure you've configured Aviator to use interpreter mode as described in the installation section above. Without this configuration, you'll encounter an `UnsupportedFeatureError` due to runtime class generation attempts.
+:::
+
 ```mdx-code-block
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
@@ -480,7 +520,7 @@ var sub = "alice";  # the user that wants to access a resource.
 var obj = "data1";  # the resource that is going to be accessed.
 var act = "read";  # the operation that the user performs on the resource.
 
-if (await e.EnforceAsync(sub, obj, act)) 
+if (await e.EnforceAsync(sub, obj, act))
 {
     // permit alice to read data1
 }
