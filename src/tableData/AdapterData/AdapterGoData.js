@@ -399,19 +399,17 @@ export const AdapterGoData = [
     image: "/img/ecosystem/file.png",
   },
   {
-    title:
-      "[NATS JetStream Adapter](https://github.com/grepplabs/casbin-jetstream)",
+    title: "[NATS JetStream Adapter](https://github.com/grepplabs/casbin-jetstream)",
     type: "KV store",
-    author: "[@everesio](https://github.com/everesio)",
+    author: "[@grepplabs](https://github.com/grepplabs)",
     autoSave: "✅",
     description: "For [NATS JetStream](https://docs.nats.io/nats-concepts/jetstream)",
     image: "/img/ecosystem/nats.png",
   },
   {
-    title:
-      "[Kubernetes Adapter](https://github.com/grepplabs/casbin-kube)",
+    title: "[Kubernetes Adapter](https://github.com/grepplabs/casbin-kube)",
     type: "CRD",
-    author: "[@everesio](https://github.com/everesio)",
+    author: "[@grepplabs](https://github.com/grepplabs)",
     autoSave: "✅",
     description: "For [Kubernetes](https://kubernetes.io)",
     image: "/img/ecosystem/kubernetes.png",
