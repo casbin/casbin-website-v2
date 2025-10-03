@@ -398,6 +398,24 @@ export const AdapterGoData = [
       "For [fs.FS](https://pkg.go.dev/io/fs) and [embed.FS](https://pkg.go.dev/embed)",
     image: "/img/ecosystem/file.png",
   },
+  {
+    title:
+      "[NATS JetStream Adapter](https://github.com/grepplabs/casbin-jetstream)",
+    type: "KV store",
+    author: "[@everesio](https://github.com/everesio)",
+    autoSave: "✅",
+    description: "For [NATS JetStream](https://docs.nats.io/nats-concepts/jetstream)",
+    image: "/img/ecosystem/nats.png",
+  },
+  {
+    title:
+      "[Kubernetes Adapter](https://github.com/grepplabs/casbin-kube)",
+    type: "CRD",
+    author: "[@everesio](https://github.com/everesio)",
+    autoSave: "✅",
+    description: "For [Kubernetes](https://kubernetes.io)",
+    image: "/img/ecosystem/kubernetes.png",
+  },
 ].map((item) => {
   return {
     ...item,
