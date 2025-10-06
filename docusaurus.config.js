@@ -96,6 +96,16 @@ module.exports = {
           position: "left",
         },
         {
+          href: "https://casdoor.com",
+          label: "For Enterprise",
+          position: "left",
+        },
+        {
+          href: "https://casdoor.com",
+          label: "Hosting Plan (SaaS)",
+          position: "left",
+        },
+        {
           type: "localeDropdown",
           position: "right",
           dropdownItemsAfter: [
@@ -287,10 +297,6 @@ var _hmt = _hmt || [];
     },
     {
       src: "/js/clarity.js",
-      async: true,
-    },
-    {
-      src: "/js/casibase.js",
       async: true,
     },
   ],
