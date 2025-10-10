@@ -149,14 +149,14 @@ m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 `policy.csv`
 
 ```csv
-p, alice, data1, read
-p, data2_admin, data2, write
-p, data3_admin, data3, read
-p, data4_admin, data4, write
-p, data5_admin, data5, read
-p, data6_admin, data6, write
-p, data7_admin, data7, read
-p, data8_admin, data8, write
+p, alice, domain1, data1, read
+p, data2_admin, domain2, data2, write
+p, data3_admin, domain3, data3, read
+p, data4_admin, domain4, data4, write
+p, data5_admin, domain5, data5, read
+p, data6_admin, domain6, data6, write
+p, data7_admin, domain7, data7, read
+p, data8_admin, domain8, data8, write
 
 g, alice, data2_admin, domain2, 0000-01-01 00:00:00, 0000-01-02 00:00:00
 g, alice, data3_admin, domain3, 0000-01-01 00:00:00, 9999-12-30 00:00:00
