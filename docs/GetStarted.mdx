@@ -39,7 +39,7 @@ If you're building a native application with GraalVM (e.g., using Quarkus or Spr
 
 By default, Aviator uses dynamic class generation via ASM, which is not supported in GraalVM native images. To resolve this, you must configure Aviator to use interpreter mode instead of compilation mode.
 
-#### For Quarkus applications:
+#### For Quarkus applications
 
 Add the following to your `application.properties` or `pom.xml`:
 
@@ -51,7 +51,7 @@ Add the following to your `application.properties` or `pom.xml`:
 </properties>
 ```
 
-#### For other GraalVM native builds:
+#### For other GraalVM native builds
 
 Set the system property when building the native image:
 
