@@ -442,6 +442,88 @@ There're details about how to write an adapter.
 
 As a convention, the adapter should be able to automatically create a database named ``casbin``  if it doesn't exist and use it for policy storage. Please use the Xorm adapter as a reference implementation: [https://github.com/casbin/xorm-adapter](https://github.com/casbin/xorm-adapter)
 
+## Update Adapter
+
+The ``UpdateAdapter`` interface extends the basic ``Adapter`` interface to support updating policies directly in the storage. This is more efficient than removing and re-adding policies when you need to modify existing rules.
+
+An adapter that implements the ``UpdateAdapter`` interface should provide the following methods:
+
+| Method                   | Type     | Description                                                      |
+|--------------------------|----------|------------------------------------------------------------------|
+| UpdatePolicy()           | optional | Update a single policy rule in the storage                       |
+| UpdatePolicies()         | optional | Update multiple policy rules in the storage                      |
+| UpdateFilteredPolicies() | optional | Update policy rules that match the filter in the storage         |
+
+### Example
+
+Here's an example of using the update adapter methods:
+
+```go
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/gorm-adapter/v3"
+)
+
+a, _ := gormadapter.NewAdapter("mysql", "root:@tcp(127.0.0.1:3306)/")
+e, _ := casbin.NewEnforcer("examples/rbac_model.conf", a)
+
+// Update a single policy
+// Change: p, alice, data1, read -> p, alice, data1, write
+e.UpdatePolicy(
+    []string{"alice", "data1", "read"},
+    []string{"alice", "data1", "write"},
+)
+
+// Update multiple policies at once
+e.UpdatePolicies(
+    [][]string{{"alice", "data1", "write"}, {"bob", "data2", "read"}},
+    [][]string{{"alice", "data1", "read"}, {"bob", "data2", "write"}},
+)
+
+// Update all policies matching a filter
+e.UpdateFilteredPolicies(
+    [][]string{{"alice", "data1", "write"}},
+    0,
+    "alice", "data1", "read",
+)
+```
+
+### How to write an update adapter
+
+To implement the ``UpdateAdapter`` interface, your adapter needs to implement the update methods in addition to the basic ``Adapter`` interface:
+
+```go
+// UpdatePolicy updates a policy rule from storage.
+// This is part of the UpdateAdapter interface.
+func (a *Adapter) UpdatePolicy(sec string, ptype string, oldRule, newRule []string) error {
+    // Implementation to update the policy in storage
+    // For example, in SQL: UPDATE casbin_rule SET v0=?, v1=?, v2=? WHERE ptype=? AND v0=? AND v1=? AND v2=?
+    return nil
+}
+
+// UpdatePolicies updates multiple policy rules in the storage.
+// This is part of the UpdateAdapter interface.
+func (a *Adapter) UpdatePolicies(sec string, ptype string, oldRules, newRules [][]string) error {
+    // Implementation to update multiple policies in storage
+    // This should be done in a transaction for consistency
+    return nil
+}
+
+// UpdateFilteredPolicies updates policy rules that match the filter from the storage.
+// This is part of the UpdateAdapter interface.
+func (a *Adapter) UpdateFilteredPolicies(sec string, ptype string, newRules [][]string, fieldIndex int, fieldValues ...string) error {
+    // Implementation to update filtered policies in storage
+    // First find policies matching the filter, then update them
+    return nil
+}
+```
+
+:::note
+
+If an adapter doesn't support the ``UpdateAdapter`` interface, Casbin will automatically fall back to using the combination of ``RemovePolicy()`` and ``AddPolicy()`` operations.
+
+:::
+
 ## Context Adapter
 
 [ContextAdapter](https://github.com/casbin/casbin/blob/master/persist/adapter_context.go) provides a context-aware interface for Casbin adapters.
