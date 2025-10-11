@@ -1,19 +1,19 @@
 [
     {
         "caption": "Intel RMD",
-        "image": "users/intel.png",
+        "image": "users/intel.svg",
         "infolink": "https://github.com/intel/rmd",
         "pinned": true
     },
     {
         "caption": "Vmware Harbor",
-        "image": "users/vmware.png",
+        "image": "users/vmware.svg",
         "infolink": "https://github.com/goharbor/harbor",
         "pinned": true
     },
     {
         "caption": "Docker",
-        "image": "users/docker.png",
+        "image": "users/docker.svg",
         "infolink": "https://docs.docker.com/engine/extend/legacy_plugins/#authorization-plugins",
         "pinned": true
     },
@@ -31,31 +31,31 @@
     },
     {
         "caption": "Microsoft",
-        "image": "users/microsoft.png",
+        "image": "users/microsoft.svg",
         "infolink": "https://github.com/microsoft/mouselog",
         "pinned": true
     },
     {
         "caption": "Verizon",
-        "image": "users/verizon.png",
+        "image": "users/verizon.svg",
         "infolink": "https://github.com/casbin/casbin/pull/56",
         "pinned": true
     },
     {
         "caption": "Alibaba",
-        "image": "users/alibaba.png",
+        "image": "users/alibaba.svg",
         "infolink": "https://github.com/dragonflyoss/Dragonfly2/search?q=casbin&type=code",
         "pinned": true
     },
     {
         "caption": "Redhat",
-        "image": "users/redhat.png",
+        "image": "users/redhat.svg",
         "infolink": "https://github.com/skydive-project/skydive",
         "pinned": true
     },
     {
         "caption": "Tencent",
-        "image": "users/tencent.png",
+        "image": "users/tencent.svg",
         "infolink": "https://github.com/tkestack/tke",
         "pinned": true
     },
@@ -73,7 +73,7 @@
     },
     {
         "caption": "IBM",
-        "image": "users/ibm.png",
+        "image": "users/ibm.svg",
         "infolink": "https://loopback.io/doc/en/lb4/migration-auth-access-control-example.html#using-casbin",
         "pinned": true
     },
