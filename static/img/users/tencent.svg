@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
-  <g fill="#0088FF">
-    <path d="M30,10 Q40,5 50,10 Q55,15 55,25 Q55,35 50,40 Q40,45 30,40 Q25,35 25,25 Q25,15 30,10 Z"/>
-    <text x="65" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold">Tencent</text>
-  </g>
-</svg>

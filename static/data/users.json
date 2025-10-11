@@ -43,7 +43,7 @@
     },
     {
         "caption": "Alibaba",
-        "image": "users/alibaba.svg",
+        "image": "users/alibaba.png",
         "infolink": "https://github.com/dragonflyoss/Dragonfly2/search?q=casbin&type=code",
         "pinned": true
     },
@@ -55,7 +55,7 @@
     },
     {
         "caption": "Tencent",
-        "image": "users/tencent.svg",
+        "image": "users/tencent.png",
         "infolink": "https://github.com/tkestack/tke",
         "pinned": true
     },
