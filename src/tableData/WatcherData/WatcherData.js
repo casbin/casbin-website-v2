@@ -5,6 +5,7 @@ import {WatcherPythonData} from "@site/src/tableData/WatcherData/WatcherPythonDa
 import {WatcherDotNETData} from "@site/src/tableData/WatcherData/WatcherDotNETData";
 import {WatcherRubyData} from "@site/src/tableData/WatcherData/WatcherRubyData";
 import {WatcherPhpData} from "@site/src/tableData/WatcherData/WatcherPhpData";
+import {WatcherRustData} from "@site/src/tableData/WatcherData/WatcherRustData";
 
 export const WatcherData = [
   ...WatcherGoData,
@@ -14,4 +15,5 @@ export const WatcherData = [
   ...WatcherDotNETData,
   ...WatcherRubyData,
   ...WatcherPhpData,
+  ...WatcherRustData,
 ];
