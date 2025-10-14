@@ -54,7 +54,7 @@ export const MiddlewareNodejsData = [
     description:
       "Authorization middleware that uses stateless JWT token to validate ACL rules using Casbin",
     image: "/img/ecosystem/jwt.png",
-  },  
+  },
   {
     title:
       "[Hono](https://github.com/honojs/hono) ",

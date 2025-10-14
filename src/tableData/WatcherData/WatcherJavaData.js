@@ -44,6 +44,13 @@ export const WatcherJavaData = [
     description: "Watcher for [Apache Kafka](https://kafka.apache.org/)",
     image: "/img/ecosystem/kafka.png",
   },
+  {
+    title: "[ZooKeeper Watcher](https://github.com/jcasbin/zookeeper-watcher)",
+    type: "Messaging system",
+    author: "Casbin",
+    description: "Watcher for [Apache ZooKeeper](https://zookeeper.apache.org/)",
+    image: "/img/ecosystem/zookeeper.png",
+  },
 ].map((item) => {
   return {
     ...item,
