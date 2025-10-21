@@ -50,10 +50,91 @@ If you need to use a customized matching function (e.g. "RBAC with Patterns"), y
 
 If you want to write the equivalent code, you need to specify the pattern matching function through the relevant API. Refer to [RBAC with Pattern](/docs/rbac-with-pattern) for more information.
 
+## How the Editor Works
+
+The Casbin online editor is a web-based tool built with TypeScript and React that allows you to write and test Casbin models and policies directly in your browser. Understanding how it works will help you make better use of its features and troubleshoot any issues you may encounter.
+
+### Architecture Overview
+
+The editor follows a client-server architecture:
+
+1. **Frontend (Browser)**: The web interface where you write your model and policy
+2. **Backend Services**: Remote CLI services for each supported language
+3. **Communication**: The frontend sends your model, policy, and enforcement requests to the appropriate backend service
+
+### Language-Specific Implementations
+
+The editor supports multiple Casbin implementations, each powered by its own CLI service:
+
+| Language | Implementation | CLI Tool | Repository |
+|----------|----------------|----------|------------|
+| Go | Casbin | casbin-go-cli | [casbin/casbin-go-cli](https://github.com/casbin/casbin-go-cli) |
+| Java | JCasbin | casbin-java-cli | [jcasbin/casbin-java-cli](https://github.com/jcasbin/casbin-java-cli) |
+| Node.js | Node-Casbin | casbin-node-cli | [casbin/node-casbin](https://github.com/casbin/node-casbin) |
+| Python | PyCasbin | casbin-python-cli | [casbin/casbin-python-cli](https://github.com/casbin/casbin-python-cli) |
+| Rust | Casbin-rs | casbin-rust-cli | [casbin-rs/casbin-rust-cli](https://github.com/casbin-rs/casbin-rust-cli) |
+| .NET | Casbin.NET | casbin-dotnet-cli | [casbin-net/casbin-dotnet-cli](https://github.com/casbin-net/casbin-dotnet-cli) |
+
+### How It Works Step-by-Step
+
+1. **User Input**: You write or modify your Casbin model and policy in the editor interface
+2. **Engine Selection**: You select which language implementation to use from the dropdown menu
+3. **Validation Request**: When you click "Run" or test enforcement, the editor sends your model and policy to the selected language's CLI service
+4. **Remote Execution**: The backend service runs the appropriate CLI tool with your input
+5. **Result Display**: The enforcement result is returned and displayed in the editor
+
+### Communication Protocol
+
+The editor communicates with remote CLI services using HTTP/HTTPS requests. Here's what gets sent:
+
+- **Model Definition**: Your PERM model configuration (request, policy, matchers, effect)
+- **Policy Rules**: Your CSV or text-based policy rules
+- **Enforcement Request**: The subject, object, and action to check (e.g., "alice", "data1", "read")
+- **Custom Functions**: Any custom matching functions you've configured (like RBAC with patterns)
+
+The CLI service processes your request and returns:
+
+- **Enforcement Result**: `true` or `false` indicating whether the request is allowed
+- **Explanation**: Which policy rule(s) matched (if using `enforceEx`)
+- **Error Messages**: Any syntax errors or validation issues
+
+### Why Use Remote CLIs?
+
+The editor validates through remote CLI services rather than running entirely in the browser for several important reasons:
+
+1. **Language Fidelity**: Each CLI uses the actual production-ready Casbin library for that language, ensuring your results match what you'll get in your application
+2. **Full Feature Support**: Language-specific features and optimizations are preserved
+3. **No Compilation Required**: You don't need to install or compile anything locally to test different implementations
+4. **Security**: Model and policy validation happens in controlled server environments
+
+### Important Considerations
+
+:::caution
+
+While the editor strives to provide accurate results, there are some important limitations to be aware of:
+
+- **Environment Differences**: Due to environment differences between the remote CLI and your local environment, validation results may differ slightly in some edge cases
+- **Network Dependency**: The editor requires an internet connection to communicate with the backend services
+- **Custom Functions**: If you use highly customized matching functions in your local application, results may differ from the editor
+- **Version Variations**: The editor may use different versions of Casbin libraries than your local installation
+
+If you encounter any issues or unexpected behavior, please submit them to the corresponding Casbin implementation repository.
+
+:::
+
+### Testing Your Configuration
+
+To ensure your configuration works correctly in your target environment:
+
+1. **Test in the Editor**: Use the online editor for rapid prototyping and initial validation
+2. **Verify Locally**: Always test your final model and policy in your actual application environment
+3. **Use the Right Engine**: Make sure to test with the same language implementation you'll use in production
+4. **Check CLI Tools**: For additional debugging, you can use the [command-line tools](/docs/command-line-tools) directly
+
+For more information about using Casbin CLIs locally, see the [Command-line Tools](/docs/command-line-tools) documentation.
+
 :::note
 
 The editor supports multiple Casbin implementations, including [Node-Casbin (Node.js)](https://github.com/casbin/node-casbin), [JCasbin (Java)](https://github.com/casbin/jcasbin), [Casbin (Go)](https://github.com/casbin/casbin), [Casbin-rs (Rust)](https://github.com/casbin/casbin-rs), [PyCasbin (Python)](https://github.com/casbin/pycasbin), and [Casbin.NET (C#)](https://github.com/casbin/Casbin.NET). You can switch between different implementations in the upper right corner to test your model and policy.
-
-Although the editor validates through a remote CLI, due to environment differences, the validation results may differ slightly from the results you get in your local environment. If you encounter any issues, please submit them to the corresponding Casbin implementation repository.
 
 :::
