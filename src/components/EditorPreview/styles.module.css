@@ -2,12 +2,7 @@
 
 .editorSection {
   padding: 60px 0;
-  background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, var(--ifm-color-primary-light) 100%);
   background-color: var(--ifm-color-emphasis-100);
-}
-
-html[data-theme="dark"] .editorSection {
-  background: linear-gradient(135deg, rgb(179 136 255 / 10%) 0%, rgb(179 136 255 / 5%) 100%);
 }
 
 .editorHeader {
@@ -16,16 +11,16 @@ html[data-theme="dark"] .editorSection {
 }
 
 .editorTitle {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 16px;
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
   color: var(--ifm-heading-color);
 }
 
 .editorDescription {
-  font-size: 1.2rem;
-  color: var(--ifm-font-color-base);
-  max-width: 800px;
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-700);
+  max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -36,9 +31,10 @@ html[data-theme="dark"] .editorSection {
 }
 
 .editorWrapper {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgb(0 0 0 / 10%);
+  background: var(--ifm-background-color);
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
   overflow: hidden;
   margin-bottom: 30px;
   height: 600px;
@@ -47,7 +43,8 @@ html[data-theme="dark"] .editorSection {
 
 html[data-theme="dark"] .editorWrapper {
   background: var(--ifm-background-surface-color);
-  box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
 }
 
 .editorIframe {
