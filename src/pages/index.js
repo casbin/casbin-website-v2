@@ -187,10 +187,10 @@ export default function Home() {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <EditorPreview />
         <PolicyPersistence />
         <PolicyEnforcement />
         <RoleManager />
-        <EditorPreview />
         <Showcase />
         <OpenCollective />
       </main>
