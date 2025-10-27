@@ -35,7 +35,8 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
         <div>
-          <Link className={`button button--secondary button--lg ${styles.getStartedButton}`}
+          <Link className="button button--secondary button--lg"
+            style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
             to="/docs/get-started"
           >
             <Translate>Get Started</Translate>
@@ -81,7 +82,7 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}."}
+              {"Casbin implements policy storage through adapters (middleware components). To maintain a lightweight core, adapter code is not included in the main library (except for the default file adapter). We welcome third-party adapter contributions. For a complete list of available adapters and detailed documentation, please refer to: {adaptersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -103,7 +104,7 @@ function PolicyEnforcement() {
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy enforcement at scale</Translate></h3>
-            <Translate>Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.</Translate>
+            <Translate>Some adapters support filtered policy management, meaning Casbin loads only a subset of policies from storage based on specified filters. This enables efficient policy enforcement in large, multi-tenant environments where loading the entire policy set would create a performance bottleneck.</Translate>
           </div>
         </div>
       </div>
@@ -127,7 +128,7 @@ function RoleManager() {
                 ),
               }}
             >
-              {"The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: {rolemanagersLink} ."}
+              {"The role manager handles RBAC role hierarchies (user-role mappings) in Casbin. It can retrieve role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, and others. We support multiple role manager implementations. To maintain a lightweight core, role manager code is not included in the main library (except for the default implementation). View the complete list of available {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -141,32 +142,24 @@ function RoleManager() {
 
 function Showcase() {
   return (
-    <div className="hero text--center showcase" style={{
-      padding: "80px 0",
-      background: "linear-gradient(to bottom, #f8f9fa, #ffffff)",
-    }}>
+    <div className="hero text--center showcase">
       <div className="container">
-        <h1 className={styles.showcaseHeading}>
-          <Translate>Who&apos;s using Casbin?</Translate>
-        </h1>
+        <h1><Translate>Who&apos;s using Casbin?</Translate></h1>
         <p style={{
-          fontSize: "1.2rem",
-          lineHeight: "1.8",
-          width: "70vw",
-          maxWidth: "800px",
-          margin: "0 auto 3rem",
-          color: "#666",
+          width: "50vw",
+          margin: "auto",
         }}>
           <Translate values={{
             UsersPage: (
-              <Link to="/users" style={{fontWeight: "600", color: "var(--ifm-color-primary)"}}>
+              <Link to="/users">
                 <Translate>check out these apps</Translate>
               </Link>
             ),
           }}>
-            {"Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups.If you're curious to see what can be accomplished Casbin, {UsersPage}!"}
+            {"Hundreds of projects use Casbin, from established Fortune 500 companies to innovative startups. If you're curious to see what can be accomplished with Casbin, {UsersPage}!"}
           </Translate>
         </p>
+        <br /><br />
         <UserList />
       </div>
     </div>
