@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {useColorMode} from "@docusaurus/theme-common";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Link from "@docusaurus/Link";
@@ -9,11 +9,9 @@ function EditorPreview() {
   const {colorMode} = useColorMode();
   const {i18n} = useDocusaurusContext();
   const currentLanguage = i18n.currentLocale;
-  const [editorUrl, setEditorUrl] = useState("");
 
-  useEffect(() => {
-    setEditorUrl(`https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`);
-  }, [colorMode, currentLanguage]);
+  // Compute editor URL reactively to avoid unnecessary reloads
+  const editorUrl = `https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`;
 
   return (
     <div className={styles.editorSection}>
