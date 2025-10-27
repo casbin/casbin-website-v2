@@ -96,6 +96,11 @@ module.exports = {
           position: "left",
         },
         {
+          href: "/gallery",
+          label: "Gallery",
+          position: "left",
+        },
+        {
           href: "https://casdoor.com",
           label: "For Enterprise",
           position: "left",
