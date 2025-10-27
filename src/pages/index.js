@@ -103,7 +103,7 @@ function PolicyEnforcement() {
             <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" />
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3><Translate>Policy enforcement at scale</Translate></h3>
+            <h3><Translate>Policy Enforcement at Scale</Translate></h3>
             <Translate>Some adapters support filtered policy management, meaning Casbin loads only a subset of policies from storage based on specified filters. This enables efficient policy enforcement in large, multi-tenant environments where loading the entire policy set would create a performance bottleneck.</Translate>
           </div>
         </div>
@@ -118,7 +118,7 @@ function RoleManager() {
       <div className="container text--center">
         <div className="row">
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3><Translate>Role manager</Translate></h3>
+            <h3><Translate>Role Manager</Translate></h3>
             <Translate
               values={{
                 rolemanagersLink: (
