@@ -1,50 +1,62 @@
 /* stylelint-disable docusaurus/copyright-header */
 
 .editorSection {
-  padding: 60px 0;
-  background-color: var(--ifm-color-emphasis-100);
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8edf2 100%);
 }
 
 .editorHeader {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .editorTitle {
-  font-size: 2.25rem;
-  font-weight: 600;
+  font-size: 2.8rem;
+  font-weight: 700;
   margin-bottom: 20px;
-  color: var(--ifm-heading-color);
+  color: var(--ifm-color-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .editorDescription {
-  font-size: 1.1rem;
-  color: var(--ifm-color-emphasis-700);
-  max-width: 700px;
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 800px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .editorContainer {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .editorWrapper {
-  background: var(--ifm-background-color);
-  border-radius: 8px;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid rgb(102 126 234 / 20%);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 10%);
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   height: 600px;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.editorWrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 50px rgb(0 0 0 / 15%);
+  border-color: rgb(102 126 234 / 40%);
 }
 
 html[data-theme="dark"] .editorWrapper {
   background: var(--ifm-background-surface-color);
   border-color: var(--ifm-color-emphasis-300);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
 }
 
 .editorIframe {
@@ -58,10 +70,27 @@ html[data-theme="dark"] .editorWrapper {
   text-align: center;
 }
 
+.editorFooter a {
+  font-size: 1.1rem;
+  padding: 0.9rem 2.5rem !important;
+  border-radius: 50px !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgb(102 126 234 / 30%);
+}
+
+.editorFooter a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgb(102 126 234 / 40%);
+}
+
 /* Mobile responsiveness */
 @media screen and (max-width: 996px) {
+  .editorSection {
+    padding: 60px 0;
+  }
+
   .editorTitle {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 
   .editorDescription {
@@ -71,25 +100,21 @@ html[data-theme="dark"] .editorWrapper {
 
   .editorWrapper {
     height: 500px;
-    border-radius: 8px;
-  }
-
-  .editorSection {
-    padding: 40px 0;
+    border-radius: 12px;
   }
 }
 
 @media screen and (max-width: 600px) {
+  .editorSection {
+    padding: 40px 0;
+  }
+
   .editorTitle {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .editorWrapper {
     height: 400px;
-    border-radius: 6px;
-  }
-
-  .editorSection {
-    padding: 30px 0;
+    border-radius: 8px;
   }
 }

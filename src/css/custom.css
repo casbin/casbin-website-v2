@@ -202,6 +202,7 @@ html[data-theme="dark"] .header-community-wechat::before {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  gap: 1.5rem;
 }
 
 .showcaseLogo {
@@ -209,8 +210,23 @@ html[data-theme="dark"] .header-community-wechat::before {
   height: 150px;
   display: flex;
   align-items: center;
-  margin: 10px;
   justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 8%);
+  transition: all 0.3s ease;
+  padding: 1rem;
+}
+
+.showcaseLogo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgb(0 0 0 / 15%);
+}
+
+.showcaseLogo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 div[class^="announcementBar_"] {

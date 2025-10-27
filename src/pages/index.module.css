@@ -6,57 +6,155 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 6rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
 
-  /* color: var(--ifm-font-color-base); */
-  color: #e3e3e3;
+.heroBanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgb(255 255 255 / 10%) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgb(255 255 255 / 10%) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.heroBanner .container {
+  position: relative;
+  z-index: 1;
+}
+
+.heroBanner h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 10px rgb(0 0 0 / 10%);
+}
+
+.heroBanner .hero__subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  opacity: 0.95;
 }
 
 @media screen and (max-width: 966px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 3rem 1rem;
+  }
+
+  .heroBanner h1 {
+    font-size: 2.5rem;
+  }
+
+  .heroBanner .hero__subtitle {
+    font-size: 1rem;
   }
 }
 
 .buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+}
+
+.buttons a {
+  transition: all 0.3s ease;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  background: rgb(255 255 255 / 95%) !important;
+  color: #333 !important;
+  font-weight: 600;
+  padding: 0.6rem 1rem !important;
+}
+
+.buttons a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+  background: #fff !important;
+}
+
+@media screen and (max-width: 966px) {
+  .buttons {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.6rem;
+  }
 }
 
 .policypersistence {
-  padding: 60px 0;
-  font-size: 1.3rem;
-  justify-content: center;
-  line-height: 40px;
-  background-color: var(--ifm-color-emphasis-100);
+  padding: 80px 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  background: linear-gradient(to bottom, #f8f9fa, #fff);
+}
+
+.policypersistence h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-primary);
 }
 
 .policyenforcement {
-  padding: 60px 0;
-  font-size: 1.3rem;
-  justify-content: center;
-  line-height: 40px;
+  padding: 80px 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  background: #fff;
+}
+
+.policyenforcement h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-primary);
 }
 
 .rolemanager {
-  padding: 60px 0;
-  font-size: 1.3rem;
-  justify-content: center;
-  line-height: 40px;
-  background-color: var(--ifm-color-emphasis-100);
+  padding: 80px 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  background: linear-gradient(to bottom, #fff, #f8f9fa);
+}
+
+.rolemanager h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-primary);
+}
+
+.policypersistence img,
+.policyenforcement img,
+.rolemanager img {
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgb(0 0 0 / 10%);
+  transition: transform 0.3s ease;
+}
+
+.policypersistence img:hover,
+.policyenforcement img:hover,
+.rolemanager img:hover {
+  transform: scale(1.05);
 }
 
 .embedbutton {
   display: inline-block;
-  margin-right: 0.2em;
+  margin-right: 0.4em;
   margin-top: 0.2rem;
   stroke-width: 0;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 20%));
 }

@@ -36,8 +36,31 @@ function HomepageHeader() {
         <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
         <div>
           <Link className="button button--secondary button--lg"
-            style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
+            style={{
+              marginTop: "1rem",
+              marginRight: "1rem",
+              marginLeft: "1rem",
+              padding: "0.9rem 2.5rem",
+              borderRadius: "50px",
+              fontSize: "1.1rem",
+              fontWeight: "700",
+              boxShadow: "0 4px 15px rgba(255, 255, 255, 0.3)",
+              border: "2px solid #ffffff",
+              backgroundColor: "rgba(255, 255, 255, 0.15)",
+              backdropFilter: "blur(10px)",
+              transition: "all 0.3s ease",
+            }}
             to="/docs/get-started"
+            onMouseEnter={(e) => {
+              e.target.style.transform = "translateY(-2px)";
+              e.target.style.boxShadow = "0 6px 20px rgba(255, 255, 255, 0.4)";
+              e.target.style.backgroundColor = "rgba(255, 255, 255, 0.25)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 4px 15px rgba(255, 255, 255, 0.3)";
+              e.target.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+            }}
           >
             <Translate>Get Started</Translate>
           </Link>
@@ -142,16 +165,33 @@ function RoleManager() {
 
 function Showcase() {
   return (
-    <div className="hero text--center showcase">
+    <div className="hero text--center showcase" style={{
+      padding: "80px 0",
+      background: "linear-gradient(to bottom, #f8f9fa, #ffffff)",
+    }}>
       <div className="container">
-        <h1><Translate>Who&apos;s using Casbin?</Translate></h1>
+        <h1 style={{
+          fontSize: "2.8rem",
+          fontWeight: "700",
+          marginBottom: "1.5rem",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}>
+          <Translate>Who&apos;s using Casbin?</Translate>
+        </h1>
         <p style={{
-          width: "50vw",
-          margin: "auto",
+          fontSize: "1.2rem",
+          lineHeight: "1.8",
+          width: "70vw",
+          maxWidth: "800px",
+          margin: "0 auto 3rem",
+          color: "#666",
         }}>
           <Translate values={{
             UsersPage: (
-              <Link to="/users">
+              <Link to="/users" style={{fontWeight: "600", color: "var(--ifm-color-primary)"}}>
                 <Translate>check out these apps</Translate>
               </Link>
             ),
@@ -159,7 +199,6 @@ function Showcase() {
             {"Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups.If you're curious to see what can be accomplished Casbin, {UsersPage}!"}
           </Translate>
         </p>
-        <br /><br />
         <UserList />
       </div>
     </div>
