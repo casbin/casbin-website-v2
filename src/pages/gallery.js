@@ -36,7 +36,7 @@ function GalleryContent() {
           emitMetadata="0"
           inputPosition="top"
           theme={colorMode}
-          lang="en"
+          lang={currentLanguage}
           loading="lazy"
         />
       </div>
