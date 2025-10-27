@@ -8,6 +8,7 @@ import HomepageFeatures from "../components/HomepageFeatures";
 import {UserList} from "@site/src/components/UserList";
 import Translate from "@docusaurus/Translate";
 import {useWindowSize} from "@docusaurus/theme-common";
+import EditorPreview from "../components/EditorPreview";
 
 class Button extends React.Component {
   render() {
@@ -189,6 +190,7 @@ export default function Home() {
         <PolicyPersistence />
         <PolicyEnforcement />
         <RoleManager />
+        <EditorPreview />
         <Showcase />
         <OpenCollective />
       </main>
