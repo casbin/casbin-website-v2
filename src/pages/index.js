@@ -82,7 +82,7 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"In Casbin, the policy storage is implemented as an adapter(aka middleware for Casbin). To keep light-weight, we don't put adapter code in the main library (except the default file adapter). A complete list of Casbin adapters is provided as below. Any 3rd-party contribution on a new adapter is welcomed, please inform us and I will put it in this list:) For details of adapters, please refer to the documentation: {adaptersLink}."}
+              {"Casbin implements policy storage through adapters (middleware components). To maintain a lightweight core, adapter code is not included in the main library (except for the default file adapter). We welcome third-party adapter contributions. For a complete list of available adapters and detailed documentation, please refer to: {adaptersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -103,8 +103,8 @@ function PolicyEnforcement() {
             <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" />
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3><Translate>Policy enforcement at scale</Translate></h3>
-            <Translate>Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy in storage based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments when parsing the entire policy becomes a performance bottleneck.</Translate>
+            <h3><Translate>Policy Enforcement at Scale</Translate></h3>
+            <Translate>Some adapters support filtered policy management, meaning Casbin loads only a subset of policies from storage based on specified filters. This enables efficient policy enforcement in large, multi-tenant environments where loading the entire policy set would create a performance bottleneck.</Translate>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@ function RoleManager() {
       <div className="container text--center">
         <div className="row">
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3><Translate>Role manager</Translate></h3>
+            <h3><Translate>Role Manager</Translate></h3>
             <Translate
               values={{
                 rolemanagersLink: (
@@ -128,7 +128,7 @@ function RoleManager() {
                 ),
               }}
             >
-              {"The role manager is used to manage the RBAC role hierarchy (user-role mapping) in Casbin. A role manager can retrieve the role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, etc. We support different implementations of a role manager. To keep light-weight, we don't put role manager code in the main library (except the default role manager). A complete list of Casbin role managers is provided as: {rolemanagersLink} ."}
+              {"The role manager handles RBAC role hierarchies (user-role mappings) in Casbin. It can retrieve role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, and others. We support multiple role manager implementations. To maintain a lightweight core, role manager code is not included in the main library (except for the default implementation). View the complete list of available {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -156,7 +156,7 @@ function Showcase() {
               </Link>
             ),
           }}>
-            {"Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups.If you're curious to see what can be accomplished Casbin, {UsersPage}!"}
+            {"Hundreds of projects use Casbin, from established Fortune 500 companies to innovative startups. If you're curious to see what can be accomplished with Casbin, {UsersPage}!"}
           </Translate>
         </p>
         <br /><br />
