@@ -45,6 +45,15 @@ export const AdapterDotNETData = [
       "For [Microsoft Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction)",
     image: "/img/ecosystem/cosmosDB.png",
   },
+  {
+    title: "[Redis Adapter](https://github.com/casbin-net/redis-adapter)",
+    type: "KV store",
+    author: "Casbin",
+    autoSave: "✅",
+    description:
+      "For [Redis](https://redis.io/)",
+    image: "/img/ecosystem/redis.png",
+  },
 ].map((item) => {
   return {
     ...item,

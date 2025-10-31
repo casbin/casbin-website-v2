@@ -408,6 +408,18 @@ roles.map((role) => e.addRoleForUser("alice", role));
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = new List<string> { "data1_admin", "data2_admin" };
+var allAdded = e.AddRolesForUser("alice", roles);
+or
+var allAdded = await e.AddRolesForUserAsync("alice", roles);
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Rust" label="Rust">
 ```
 
@@ -917,6 +929,26 @@ permissions.map((permission) => e.addPermissionForUser("bob", ...permission));
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = new List<List<string>>
+{
+    new List<string> { "data1", "read" },
+    new List<string> { "data2", "write" }
+};
+
+foreach (var permission in permissions)
+{
+    var added = e.AddPermissionForUser("bob", permission.ToArray());
+    or
+    var added = await e.AddPermissionForUserAsync("bob", permission.ToArray());
+}
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Rust" label="Rust">
 ```
 
@@ -1180,6 +1212,15 @@ permissions, err := e.GetNamedPermissionsForUser("p", "alice")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetNamedPermissionsForUser("p", "alice");
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Python" label="Python">
 ```
 
@@ -1378,6 +1419,15 @@ roles, err := e.GetNamedImplicitRolesForUser("g", "alice")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = e.GetNamedImplicitRolesForUser("g", "alice");
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Python" label="Python">
 ```
 
@@ -1555,6 +1605,15 @@ e.GetNamedImplicitPermissionsForUser("p2","alice")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetNamedImplicitPermissionsForUser("p2", "alice");
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Python" label="Python">
 ```
 
@@ -1596,6 +1655,15 @@ result, err := e.GetDomainsForUser("alice")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var result = e.GetDomainsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
 
@@ -1628,6 +1696,15 @@ resources, err := e.GetImplicitResourcesForUser("alice")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var resources = e.GetImplicitResourcesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
 
@@ -1654,6 +1731,15 @@ Note: only users will be returned, roles (2nd arg in "g") will be excluded.
 
 ```go
 users, err := e.GetImplicitUsersForPermission("data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var users = e.GetImplicitUsersForPermission("data1", "read");
 ```
 
 ```mdx-code-block
@@ -1783,6 +1869,15 @@ conditions, err := e.GetAllowedObjectConditions("alice", "read", "r.obj.")
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var conditions = e.GetAllowedObjectConditions("alice", "read", "r.obj.");
+```
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
 
@@ -1811,6 +1906,15 @@ GetImplicitUsersForResource("data1") will return `[["alice", "data1", "read"]], 
 
 ```go
 ImplicitUsers, err := e.GetImplicitUsersForResource("data2")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitUsers = e.GetImplicitUsersForResource("data2");
 ```
 
 ```mdx-code-block
@@ -1846,6 +1950,15 @@ GetNamedImplicitUsersForResource("g2", "app") will return users who have access 
 
 ```go
 ImplicitUsers, err := e.GetNamedImplicitUsersForResource("g2", "app")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitUsers = e.GetNamedImplicitUsersForResource("g2", "app");
 ```
 
 ```mdx-code-block
