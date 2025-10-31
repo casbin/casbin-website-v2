@@ -155,7 +155,7 @@ ok = e.enforcer(request)
 
 ```csharp
 var ok = e.Enforce(request);
-or
+// or async
 var ok = await e.EnforceAsync(request);
 ```
 
@@ -213,7 +213,7 @@ ok = e.enforce_with_matcher(matcher, request)
 
 ```csharp
 var ok = e.EnforceWithMatcher(matcher, request);
-or
+// or async
 var ok = await e.EnforceWithMatcherAsync(matcher, request);
 ```
 
@@ -271,7 +271,7 @@ list($ok, $reason) = $e->enforceEx($request);
 
 ```csharp
 var (ok, explain) = e.EnforceEx(request);
-or
+// or async
 var (ok, explain) = await e.EnforceExAsync(request);
 ```
 
@@ -311,7 +311,7 @@ ok, reason, err := e.EnforceExWithMatcher(matcher, request)
 
 ```csharp
 var (ok, explain) = e.EnforceExWithMatcher(matcher, request);
-or
+// or async
 var (ok, explain) = await e.EnforceExWithMatcherAsync(matcher, request);
 ```
 
@@ -351,7 +351,7 @@ const boolArray = await e.batchEnforce(requests);
 
 ```csharp
 var boolArray = e.BatchEnforce(requests);
-or
+// or async
 var boolArray = await e.BatchEnforceAsync(requests);
 ```
 

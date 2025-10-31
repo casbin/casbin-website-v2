@@ -414,7 +414,7 @@ roles.map((role) => e.addRoleForUser("alice", role));
 ```csharp
 var roles = new List<string> { "data1_admin", "data2_admin" };
 var allAdded = e.AddRolesForUser("alice", roles);
-or
+// or async
 var allAdded = await e.AddRolesForUserAsync("alice", roles);
 ```
 
@@ -942,7 +942,7 @@ var permissions = new List<List<string>>
 foreach (var permission in permissions)
 {
     var added = e.AddPermissionForUser("bob", permission.ToArray());
-    or
+    // or async
     var added = await e.AddPermissionForUserAsync("bob", permission.ToArray());
 }
 ```
