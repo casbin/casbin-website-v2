@@ -150,6 +150,17 @@ ok = e.enforcer(request)
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var ok = e.Enforce(request);
+// or async
+var ok = await e.EnforceAsync(request);
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Java" label="Java">
 ```
 
@@ -193,6 +204,17 @@ $ok = $e->enforceWithMatcher($matcher, $request);
 
 ```python
 ok = e.enforce_with_matcher(matcher, request)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var ok = e.EnforceWithMatcher(matcher, request);
+// or async
+var ok = await e.EnforceWithMatcherAsync(matcher, request);
 ```
 
 ```mdx-code-block
@@ -244,6 +266,17 @@ list($ok, $reason) = $e->enforceEx($request);
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var (ok, explain) = e.EnforceEx(request);
+// or async
+var (ok, explain) = await e.EnforceExAsync(request);
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="Python" label="Python">
 ```
 
@@ -273,6 +306,17 @@ ok, reason, err := e.EnforceExWithMatcher(matcher, request)
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var (ok, explain) = e.EnforceExWithMatcher(matcher, request);
+// or async
+var (ok, explain) = await e.EnforceExWithMatcherAsync(matcher, request);
+```
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
 
@@ -298,6 +342,17 @@ boolArray, err := e.BatchEnforce(requests)
 
 ```typescript
 const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var boolArray = e.BatchEnforce(requests);
+// or async
+var boolArray = await e.BatchEnforceAsync(requests);
 ```
 
 ```mdx-code-block
