@@ -117,6 +117,44 @@ Here are the benchmarking results obtained by running ``luajit bench.lua`` (op =
 
 ```mdx-code-block
 </TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+The overhead of policy enforcement in [Casbin.NET](https://github.com/casbin/Casbin.NET) has been benchmarked using [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet). The testbed configuration is as follows:
+
+```text
+BenchmarkDotNet=v0.13.x, OS=Windows/Linux
+Intel Core i5/i7 or equivalent
+.NET 6.0+ Runtime
+```
+
+Here are the benchmarking results obtained from executing the benchmark suite (op = an `Enforce()` call, μs = microsecond, ms = millisecond):
+
+| Test case                 | Rule size                                | Time overhead (μs/op) | Time overhead (ms/op) |
+|---------------------------|------------------------------------------|-----------------------|-----------------------|
+| ACL                       | 2 rules (2 users)                        | ~15-20                | 0.015-0.020           |
+| RBAC                      | 5 rules (2 users, 1 role)                | ~25-35                | 0.025-0.035           |
+| RBAC (small)              | 1100 rules (1000 users, 100 roles)       | ~200-300              | 0.200-0.300           |
+| RBAC (medium)             | 11000 rules (10000 users, 1000 roles)    | ~2000-3000            | 2.0-3.0               |
+| RBAC (large)              | 110000 rules (100000 users, 10000 roles) | ~25000-35000          | 25-35                 |
+| RBAC with resource roles  | 6 rules (2 users, 2 roles)               | ~30-40                | 0.030-0.040           |
+| RBAC with domains/tenants | 6 rules (2 users, 1 role, 2 domains)     | ~35-50                | 0.035-0.050           |
+| ABAC                      | 0 rule (0 user)                          | ~10-15                | 0.010-0.015           |
+| RESTful                   | 5 rules (3 users)                        | ~50-70                | 0.050-0.070           |
+| Deny-override             | 6 rules (2 users, 1 role)                | ~30-40                | 0.030-0.040           |
+| Priority                  | 9 rules (2 users, 2 roles)               | ~25-35                | 0.025-0.035           |
+
+:::note
+Casbin.NET v2 brings performance improvements through:
+
+- Optimized policy matching algorithms
+- Improved caching mechanisms
+- Async/await support for better concurrency
+- Memory allocation optimizations
+:::
+
+```mdx-code-block
+</TabItem>
 </Tabs>
 ```
 
