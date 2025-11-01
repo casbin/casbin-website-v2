@@ -53,6 +53,7 @@ module.exports = {
         "blp",
         "biba",
         "lbac",
+        "orbac",
         "priority-model",
         "ucon",
         "superadmin",

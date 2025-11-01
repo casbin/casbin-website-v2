@@ -1,0 +1,130 @@
+---
+id: orbac
+title: OrBAC
+description: Organisation-Based Access Control model in Casbin
+keywords:
+  [
+    orbac,
+    organisation-based access control,
+    organizational access control,
+    role abstraction,
+  ]
+authors: [casbin]
+---
+
+## What is the OrBAC model?
+
+OrBAC stands for Organisation-Based Access Control. It extends traditional RBAC by introducing abstraction layers that separate concrete entities from abstract security policies. This separation enables more flexible and maintainable access control across multiple organizations.
+
+In OrBAC, access decisions rely on three key abstraction mappings within an organizational context:
+
+- **Empower**: Maps subjects (users) to roles within organizations
+- **Use**: Maps concrete actions to abstract activities within organizations  
+- **Consider**: Maps concrete objects to abstract views within organizations
+
+These abstractions allow you to define policies using roles, activities, and views instead of concrete subjects, actions, and objects. This makes policies organization-specific while remaining independent of the actual entities.
+
+## OrBAC Model Definition
+
+Here's the OrBAC model configuration:
+
+```ini
+[request_definition]
+r = sub, org, obj, act
+
+[policy_definition]
+p = role, activity, view, org
+
+[role_definition]
+g = _, _, _
+g2 = _, _, _
+g3 = _, _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.role, r.org) && g2(r.act, p.activity, r.org) && g3(r.obj, p.view, r.org) && r.org == p.org
+```
+
+In this model:
+
+- `g(r.sub, p.role, r.org)` checks if the subject has the role in the organization (Empower)
+- `g2(r.act, p.activity, r.org)` checks if the action corresponds to the activity in the organization (Use)
+- `g3(r.obj, p.view, r.org)` checks if the object belongs to the view in the organization (Consider)
+- `r.org == p.org` ensures the organization context matches
+
+## Policy Examples
+
+**Permission rules** define which roles can perform which activities on which views within an organization:
+
+```csv
+# Permission: role, activity, view, organization
+p, manager, modify, document, org1
+p, manager, consult, document, org1
+p, employee, consult, document, org1
+p, manager, modify, report, org2
+p, manager, consult, report, org2
+p, employee, consult, report, org2
+```
+
+**Empower rules** assign subjects to roles within organizations:
+
+```csv
+# Empower: subject, role, organization
+g, alice, manager, org1
+g, bob, employee, org1
+g, charlie, manager, org2
+g, david, employee, org2
+```
+
+**Use rules** map concrete actions to abstract activities:
+
+```csv
+# Use: action, activity, organization
+g2, write, modify, org1
+g2, read, consult, org1
+g2, write, modify, org2
+g2, read, consult, org2
+```
+
+**Consider rules** map concrete objects to abstract views:
+
+```csv
+# Consider: object, view, organization
+g3, data1, document, org1
+g3, data2, document, org1
+g3, report1, report, org2
+g3, report2, report, org2
+```
+
+## Code Example
+
+```go
+e, _ := NewEnforcer("examples/orbac_model.conf", "examples/orbac_policy.csv")
+
+// alice is a manager in org1, can read and write documents
+ok, _ := e.Enforce("alice", "org1", "data1", "read")   // true
+ok, _ = e.Enforce("alice", "org1", "data1", "write")   // true
+
+// bob is an employee in org1, can only read documents
+ok, _ = e.Enforce("bob", "org1", "data1", "read")      // true
+ok, _ = e.Enforce("bob", "org1", "data1", "write")     // false
+
+// charlie is a manager in org2, can read and write reports
+ok, _ = e.Enforce("charlie", "org2", "report1", "read")   // true
+ok, _ = e.Enforce("charlie", "org2", "report1", "write")  // true
+
+// Cross-organization access is denied
+ok, _ = e.Enforce("alice", "org2", "report1", "read")  // false
+ok, _ = e.Enforce("charlie", "org1", "data1", "read")  // false
+```
+
+## Benefits
+
+OrBAC provides several advantages over traditional access control models:
+
+- **Abstraction**: Policies are defined using abstract security entities (roles, activities, views) rather than concrete ones, making them easier to maintain and adapt
+- **Organization Context**: Each organization can have its own policies and mappings while sharing the same underlying security model
+- **Flexibility**: You can change concrete entity mappings without modifying the core security policies
+- **Scalability**: The abstraction layers reduce policy complexity in multi-organizational environments
