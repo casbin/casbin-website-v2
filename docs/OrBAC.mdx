@@ -101,7 +101,9 @@ g3, report2, report, org2
 ## Code Example
 
 ```go
-e, _ := NewEnforcer("examples/orbac_model.conf", "examples/orbac_policy.csv")
+import "github.com/casbin/casbin/v2"
+
+e, _ := casbin.NewEnforcer("examples/orbac_model.conf", "examples/orbac_policy.csv")
 
 // alice is a manager in org1, can read and write documents
 ok, _ := e.Enforce("alice", "org1", "data1", "read")   // true
