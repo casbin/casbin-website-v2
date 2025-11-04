@@ -20,7 +20,7 @@ export const MiddlewareGoData = [
   {
     title: "[Traefik](https://github.com/traefik/traefik)",
     description:
-      "The cloud native application proxy, via plugin: [traefik-auth-plugin](https://github.com/Knight-7/auth-plugin)",
+      "The cloud native application proxy, via plugin: [traefik-auth-plugin](https://github.com/Knight-7/auth-plugin) or [casbin-traefik-forward-auth](https://github.com/grepplabs/casbin-traefik-forward-auth)",
     image: "/img/ecosystem/traefik.png",
   },
   {
