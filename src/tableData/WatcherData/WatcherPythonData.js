@@ -44,6 +44,14 @@ export const WatcherPythonData = [
     description: "Watcher for [RabbitMQ](https://www.rabbitmq.com/)",
     image: "/img/ecosystem/rabbitMQ.png",
   },
+  {
+    title:
+      "[MongoDB Watcher](https://github.com/sanguinedab/pycasbin-mongo-watcher)",
+    type: "Database",
+    author: "[@sanguinedab](https://github.com/sanguinedab)",
+    description: "Watcher for [MongoDB](https://www.mongodb.com/)",
+    image: "/img/ecosystem/monogoDB.png",
+  },
 ].map((item) => {
   return {
     ...item,
