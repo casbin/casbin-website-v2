@@ -64,6 +64,15 @@ export const AdapterNodejsData = [
     image: "/img/ecosystem/SQL.png",
   },
   {
+    title: "[Drizzle Adapter](https://github.com/node-casbin/drizzle-adapter)",
+    type: "ORM",
+    author: "Casbin",
+    autoSave: "✅",
+    description:
+      "PostgreSQL, MySQL, SQLite, Turso, Neon, PlanetScale, Vercel Postgres, Xata are supported by [Drizzle ORM](https://orm.drizzle.team/)",
+    image: "/img/ecosystem/SQL.png",
+  },
+  {
     title: "[Knex Adapter](https://github.com/knex/casbin-knex-adapter)",
     type: "ORM",
     author: "[knex](https://github.com/knex)",
