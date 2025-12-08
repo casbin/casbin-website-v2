@@ -1,9 +1,9 @@
 ---
-id: understanding-casbin-detail
 title: Understanding How Casbin Matching Works in Detail
-description: Casbin Website Refund Policy
-keywords: [RBAC, ACL]
-authors: [aravindarc]
+author: Aravind Ramalingam
+authorTitle: Member of Casbin
+authorURL: "http://github.com/aravindarc"
+authorImageURL: "https://avatars.githubusercontent.com/aravindarc"
 ---
 
 In this post, I will explain the design and implementation of RBAC using the [Casbin](https://casbin.org/) library. For a SaaS platform dealing with multiple resource hierarchies and roles that inherit permissions from higher levels, Casbin provides a performant alternative to consider.
