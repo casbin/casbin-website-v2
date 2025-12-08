@@ -1,7 +1,6 @@
 ---
 title: Understanding How Casbin Matching Works in Detail
-author: Aravind Ramalingam
-authorTitle: Member of Casbin
+author: Aravinda Kumar
 authorURL: "http://github.com/aravindarc"
 authorImageURL: "https://avatars.githubusercontent.com/aravindarc"
 ---
