@@ -25,3 +25,4 @@ yarn-error.log*
 
 # temp floder for test
 /temp/
+package-lock.json
