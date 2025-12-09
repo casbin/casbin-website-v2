@@ -1,0 +1,22 @@
+name: Data Links Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * 6" # runs every saturday at 13:00 UTC (1 hour after docs check)
+
+jobs:
+  data-links-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Check Links in Data Files 🔎
+        run: node scripts/check-data-links.js
+        continue-on-error: true
