@@ -19,4 +19,3 @@ jobs:
 
       - name: Check Links in Data Files 🔎
         run: node scripts/check-data-links.js
-        continue-on-error: true

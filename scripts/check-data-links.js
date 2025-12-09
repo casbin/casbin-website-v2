@@ -52,7 +52,17 @@ function extractUrls(content) {
     matches.forEach(url => {
       // Clean up trailing characters
       url = url.replace(/[,;:)}\]]+$/, '');
-      urls.add(url);
+      
+      // Validate URL to ensure it's safe
+      try {
+        const parsedUrl = new URL(url);
+        // Only allow http and https protocols for security
+        if (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') {
+          urls.add(url);
+        }
+      } catch (e) {
+        // Invalid URL, skip it
+      }
     });
   }
   
@@ -65,9 +75,10 @@ function shouldIgnore(url) {
 }
 
 // Check URL availability with retries
-function checkUrl(url, retries = 2) {
-  return new Promise((resolve) => {
-    const protocol = url.startsWith('https') ? https : http;
+async function checkUrl(url, retries = 2) {
+  try {
+    const parsedUrl = new URL(url);
+    const protocol = parsedUrl.protocol === 'https:' ? https : http;
     
     const options = {
       method: 'HEAD',
@@ -77,43 +88,36 @@ function checkUrl(url, retries = 2) {
       timeout: 10000,
     };
     
-    const req = protocol.request(url, options, (res) => {
-      // Accept 2xx, 3xx status codes as success
-      if (res.statusCode >= 200 && res.statusCode < 400) {
-        resolve({ url, status: 'ok', statusCode: res.statusCode });
-      } else if (res.statusCode === 429 && retries > 0) {
-        // Rate limited, retry after delay
-        setTimeout(() => {
-          checkUrl(url, retries - 1).then(resolve);
-        }, 2000);
-      } else {
-        resolve({ url, status: 'error', statusCode: res.statusCode });
-      }
+    return await new Promise((resolve, reject) => {
+      const req = protocol.request(url, options, (res) => {
+        // Accept 2xx, 3xx status codes as success
+        if (res.statusCode >= 200 && res.statusCode < 400) {
+          resolve({ url, status: 'ok', statusCode: res.statusCode });
+        } else {
+          reject({ statusCode: res.statusCode });
+        }
+      });
+      
+      req.on('error', (err) => {
+        reject({ error: err.message });
+      });
+      
+      req.on('timeout', () => {
+        req.destroy();
+        reject({ error: 'timeout' });
+      });
+      
+      req.end();
     });
-    
-    req.on('error', (err) => {
-      if (retries > 0) {
-        setTimeout(() => {
-          checkUrl(url, retries - 1).then(resolve);
-        }, 1000);
-      } else {
-        resolve({ url, status: 'error', error: err.message });
-      }
-    });
-    
-    req.on('timeout', () => {
-      req.destroy();
-      if (retries > 0) {
-        setTimeout(() => {
-          checkUrl(url, retries - 1).then(resolve);
-        }, 1000);
-      } else {
-        resolve({ url, status: 'error', error: 'timeout' });
-      }
-    });
-    
-    req.end();
-  });
+  } catch (err) {
+    // Retry logic
+    if (retries > 0) {
+      // Add delay before retry
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return checkUrl(url, retries - 1);
+    }
+    return { url, status: 'error', error: err.error || err.message, statusCode: err.statusCode };
+  }
 }
 
 // Main function
