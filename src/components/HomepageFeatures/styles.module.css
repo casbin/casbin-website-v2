@@ -3,11 +3,55 @@
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 4rem 0;
   width: 100%;
+  background: linear-gradient(135deg, #1a1f3a 0%, #0f1419 100%);
+  position: relative;
+}
+
+.features::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgb(99 102 241 / 5%) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.features .container {
+  position: relative;
+  z-index: 1;
+}
+
+.features .col {
+  padding: 1rem;
+}
+
+.featureCard {
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+  padding: 2rem;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  border-color: rgb(179 136 255 / 30%);
+  box-shadow: 0 12px 48px rgb(179 136 255 / 15%);
 }
 
 .featureSvg {
   height: 200px;
   width: 200px;
+  transition: transform 0.3s ease;
+}
+
+.featureCard:hover .featureSvg {
+  transform: scale(1.05);
 }

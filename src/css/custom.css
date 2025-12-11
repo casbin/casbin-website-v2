@@ -78,6 +78,9 @@
   --site-color-checkbox-checked-bg: hsl(167deg 56% 73% / 25%);
   --site-color-tooltip: #fff;
   --site-color-tooltip-background: #353738;
+
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 html[data-theme="dark"] {
@@ -92,11 +95,31 @@ html[data-theme="dark"] {
 }
 
 html .hero--primary {
-  --ifm-hero-background-color: #413b7d;
+  --ifm-hero-background-color: #1a1f3a;
 }
 
 html[data-theme="dark"] .hero--primary {
-  --ifm-hero-background-color: #2b3137;
+  --ifm-hero-background-color: #1a1f3a;
+}
+
+/* Enhanced button styles */
+.button--secondary {
+  background: rgb(255 255 255 / 8%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 15%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button--secondary:hover {
+  background: rgb(255 255 255 / 15%);
+  border-color: rgb(179 136 255 / 50%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgb(179 136 255 / 20%);
+}
+
+.button--lg {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 /*
@@ -202,6 +225,7 @@ html[data-theme="dark"] .header-community-wechat::before {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  gap: 1rem;
 }
 
 .showcaseLogo {
@@ -209,8 +233,20 @@ html[data-theme="dark"] .header-community-wechat::before {
   height: 150px;
   display: flex;
   align-items: center;
-  margin: 10px;
   justify-content: center;
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.showcaseLogo:hover {
+  transform: translateY(-4px);
+  border-color: rgb(179 136 255 / 30%);
+  box-shadow: 0 8px 24px rgb(179 136 255 / 15%);
+  background: rgb(255 255 255 / 5%);
 }
 
 div[class^="announcementBar_"] {

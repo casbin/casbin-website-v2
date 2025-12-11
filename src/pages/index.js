@@ -33,7 +33,7 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
+        <p className="hero__subtitle"><Translate>A powerful authorization library supporting ACL, RBAC, ABAC, ReBAC, PBAC, and more access control models for Golang, Java, C/C++, Node.js, JavaScript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift, Lua, Dart, and Elixir</Translate></p>
         <div>
           <Link className="button button--secondary button--lg"
             style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
@@ -72,7 +72,7 @@ function PolicyPersistence() {
       <div className="container text--center">
         <div className="row">
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3> <Translate>Policy Persistence</Translate></h3>
+            <h3><Translate>Flexible Policy Storage</Translate></h3>
             <Translate
               values={{
                 adaptersLink: (
@@ -82,11 +82,11 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"Casbin implements policy storage through adapters (middleware components). To maintain a lightweight core, adapter code is not included in the main library (except for the default file adapter). We welcome third-party adapter contributions. For a complete list of available adapters and detailed documentation, please refer to: {adaptersLink}."}
+              {"Casbin provides flexible policy storage through adapter middleware. Our lightweight core architecture keeps adapter code separate from the main library (except for the default file adapter). We support dozens of storage backends including MySQL, PostgreSQL, Oracle, MongoDB, Redis, Cassandra, and AWS S3. Third-party contributions are always welcome. For a complete list of available adapters, see our {adaptersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/store.png" alt="Policy Persistence" width="500" height="500" />
+            <img src="/img/store.png" alt="Policy Persistence" width="500" height="500" style={{borderRadius: "16px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)"}} />
           </div>
         </div>
       </div>
@@ -100,11 +100,11 @@ function PolicyEnforcement() {
       <div className="container text--center">
         <div className="row">
           <div style={{marginInline: "auto"}}>
-            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" />
+            <img src="/img/scale.png" alt="Policy enforcement at scale" width="500" height="500" style={{borderRadius: "16px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)"}} />
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy Enforcement at Scale</Translate></h3>
-            <Translate>Some adapters support filtered policy management, meaning Casbin loads only a subset of policies from storage based on specified filters. This enables efficient policy enforcement in large, multi-tenant environments where loading the entire policy set would create a performance bottleneck.</Translate>
+            <Translate>Casbin supports filtered policy management through specialized adapters, enabling selective policy loading based on custom filters. This feature is essential for high-performance authorization in large-scale, multi-tenant environments where loading the complete policy set would impact system performance.</Translate>
           </div>
         </div>
       </div>
@@ -118,21 +118,21 @@ function RoleManager() {
       <div className="container text--center">
         <div className="row">
           <div className="col" style={{marginBlock: "auto"}}>
-            <h3><Translate>Role Manager</Translate></h3>
+            <h3><Translate>Advanced Role Management</Translate></h3>
             <Translate
               values={{
                 rolemanagersLink: (
                   <Link to="/docs/role-managers">
-                    <Translate>role-managers</Translate>
+                    <Translate>role managers</Translate>
                   </Link>
                 ),
               }}
             >
-              {"The role manager handles RBAC role hierarchies (user-role mappings) in Casbin. It can retrieve role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, and others. We support multiple role manager implementations. To maintain a lightweight core, role manager code is not included in the main library (except for the default implementation). View the complete list of available {rolemanagersLink}."}
+              {"Casbin's role manager handles RBAC role hierarchies and user-role mappings with ease. It integrates seamlessly with policy rules and supports external identity providers like LDAP, Okta, Auth0, and Azure AD. Multiple implementations are available to suit different needs. Our lightweight core keeps role manager code modular (except for the default implementation). Explore our complete list of {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
-            <img src="/img/role.png" alt="Role manager" width="500" height="500" />
+            <img src="/img/role.png" alt="Role manager" width="500" height="500" style={{borderRadius: "16px", boxShadow: "0 8px 32px rgba(0,0,0,0.3)"}} />
           </div>
         </div>
       </div>
@@ -142,8 +142,21 @@ function RoleManager() {
 
 function Showcase() {
   return (
-    <div className="hero text--center showcase">
-      <div className="container">
+    <div className="hero text--center showcase" style={{
+      background: "linear-gradient(135deg, #1a1f3a 0%, #2d1b4e 50%, #1a1f3a 100%)",
+      padding: "80px 0",
+      position: "relative",
+    }}>
+      <div style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)",
+        pointerEvents: "none",
+      }}></div>
+      <div className="container" style={{position: "relative", zIndex: 1}}>
         <h1><Translate>Who&apos;s using Casbin?</Translate></h1>
         <p style={{
           width: "50vw",
@@ -156,7 +169,7 @@ function Showcase() {
               </Link>
             ),
           }}>
-            {"Hundreds of projects use Casbin, from established Fortune 500 companies to innovative startups. If you're curious to see what can be accomplished with Casbin, {UsersPage}!"}
+            {"Hundreds of organizations trust Casbin, from Fortune 500 enterprises to innovative startups. Curious to see what can be built with Casbin? {UsersPage}!"}
           </Translate>
         </p>
         <br /><br />
