@@ -6,19 +6,52 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 6rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-
-  /* color: var(--ifm-font-color-base); */
   color: #e3e3e3;
+  background: linear-gradient(135deg, #1a1f3a 0%, #2d1b4e 50%, #1a1f3a 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 30%);
+}
+
+.heroBanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgb(99 102 241 / 10%) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgb(168 85 247 / 10%) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 @media screen and (max-width: 966px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 3rem 2rem;
   }
+}
+
+.heroBanner .hero__title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #b388ff 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+}
+
+.heroBanner .hero__subtitle {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgb(255 255 255 / 85%);
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  font-weight: 400;
 }
 
 .buttons {
@@ -26,30 +59,125 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 2rem;
+  gap: 0.75rem;
+}
+
+.buttons a {
+  background: rgb(255 255 255 / 8%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 15%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+}
+
+.buttons a:hover {
+  background: rgb(255 255 255 / 15%);
+  border-color: rgb(179 136 255 / 50%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgb(179 136 255 / 20%);
 }
 
 .policypersistence {
-  padding: 60px 0;
+  padding: 80px 0;
   font-size: 1.3rem;
   justify-content: center;
-  line-height: 40px;
-  background-color: var(--ifm-color-emphasis-100);
+  line-height: 1.8;
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 100%);
+  position: relative;
+}
+
+.policypersistence::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 70% 30%, rgb(99 102 241 / 5%) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.policypersistence .container {
+  position: relative;
+  z-index: 1;
+}
+
+.policypersistence .col {
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
 }
 
 .policyenforcement {
-  padding: 60px 0;
+  padding: 80px 0;
   font-size: 1.3rem;
   justify-content: center;
-  line-height: 40px;
+  line-height: 1.8;
+  background: linear-gradient(135deg, #1a1f3a 0%, #2d1b4e 50%, #1a1f3a 100%);
+  position: relative;
+}
+
+.policyenforcement::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%, rgb(168 85 247 / 5%) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.policyenforcement .container {
+  position: relative;
+  z-index: 1;
+}
+
+.policyenforcement .col {
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
 }
 
 .rolemanager {
-  padding: 60px 0;
+  padding: 80px 0;
   font-size: 1.3rem;
   justify-content: center;
-  line-height: 40px;
-  background-color: var(--ifm-color-emphasis-100);
+  line-height: 1.8;
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 100%);
+  position: relative;
+}
+
+.rolemanager::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgb(99 102 241 / 5%) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.rolemanager .container {
+  position: relative;
+  z-index: 1;
+}
+
+.rolemanager .col {
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
 }
 
 .embedbutton {

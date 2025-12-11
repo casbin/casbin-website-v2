@@ -1,40 +1,60 @@
 /* stylelint-disable docusaurus/copyright-header */
 
 .editorSection {
-  padding: 60px 0;
-  background-color: var(--ifm-color-emphasis-100);
+  padding: 80px 0;
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 100%);
+  position: relative;
+}
+
+.editorSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 30%, rgb(168 85 247 / 5%) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .editorHeader {
   text-align: center;
   margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
 }
 
 .editorTitle {
-  font-size: 2.25rem;
-  font-weight: 600;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin-bottom: 20px;
-  color: var(--ifm-heading-color);
+  background: linear-gradient(135deg, #fff 0%, #b388ff 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .editorDescription {
   font-size: 1.1rem;
-  color: var(--ifm-color-emphasis-700);
+  color: rgb(255 255 255 / 80%);
   max-width: 700px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .editorContainer {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .editorWrapper {
-  background: var(--ifm-background-color);
-  border-radius: 8px;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+  background: rgb(255 255 255 / 3%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 20%);
   overflow: hidden;
   margin-bottom: 30px;
   height: 600px;
@@ -42,9 +62,9 @@
 }
 
 html[data-theme="dark"] .editorWrapper {
-  background: var(--ifm-background-surface-color);
-  border-color: var(--ifm-color-emphasis-300);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+  background: rgb(255 255 255 / 3%);
+  border-color: rgb(255 255 255 / 8%);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 30%);
 }
 
 .editorIframe {
@@ -56,6 +76,19 @@ html[data-theme="dark"] .editorWrapper {
 
 .editorFooter {
   text-align: center;
+}
+
+.editorFooter .button {
+  background: rgb(179 136 255 / 20%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(179 136 255 / 30%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.editorFooter .button:hover {
+  background: rgb(179 136 255 / 30%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgb(179 136 255 / 20%);
 }
 
 /* Mobile responsiveness */
@@ -71,11 +104,11 @@ html[data-theme="dark"] .editorWrapper {
 
   .editorWrapper {
     height: 500px;
-    border-radius: 8px;
+    border-radius: 12px;
   }
 
   .editorSection {
-    padding: 40px 0;
+    padding: 60px 0;
   }
 }
 
@@ -86,10 +119,10 @@ html[data-theme="dark"] .editorWrapper {
 
   .editorWrapper {
     height: 400px;
-    border-radius: 6px;
+    border-radius: 8px;
   }
 
   .editorSection {
-    padding: 30px 0;
+    padding: 40px 0;
   }
 }
