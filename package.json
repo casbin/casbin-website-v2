@@ -22,16 +22,16 @@
   },
   "dependencies": {
     "@crowdin/cli": "^3.7.10",
-    "@docusaurus/core": "^2.4.3",
-    "@docusaurus/preset-classic": "^2.4.3",
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
     "@giscus/react": "^2.2.4",
-    "@mdx-js/react": "^1.6.21",
+    "@mdx-js/react": "^3.0.0",
     "@popperjs/core": "^2.11.8",
     "clsx": "^1.1.1",
     "markdown-to-jsx": "^7.4.0",
-    "prism-react-renderer": "^1.2.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "prism-react-renderer": "^2.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-popper": "^2.3.0"
   },
   "devDependencies": {
