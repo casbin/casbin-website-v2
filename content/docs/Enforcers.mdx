@@ -1,0 +1,45 @@
+---
+id: enforcers
+title: Enforcers
+description: The Enforcer is the main structure in Casbin that acts as an interface for users to perform operations on policy rules and models.
+keywords: [enforcer, supported enforcers]
+authors: [Abingcbc]
+---
+
+The `Enforcer` is the main structure in Casbin. It acts as an interface for users to perform operations on policy rules and models.
+
+## Supported Enforcers
+
+A complete list of Casbin enforcers is provided below. Any 3rd-party contribution on a new enforcer is welcomed. Please inform us, and we will add it to this list :)
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| Enforcer                                                                                    | Author | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go)                        | Casbin | The `Enforcer` is the basic structure for users to interact with Casbin policies and models. You can find more details about the `Enforcer` API [here](/docs/management-api).                                                                                                                                                                                                            |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go)           | Casbin | The `CachedEnforcer` is based on the `Enforcer` and supports caching the evaluation result of a request in memory using a map. It provides the ability to clear caches within a specified expiration time. Moreover, it guarantees thread safety with a Read-Write lock. You can use `EnableCache` to enable caching of evaluation results (default is enabled). The other API methods of `CachedEnforcer` are the same as `Enforcer`. |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go) | Casbin | The `DistributedEnforcer` supports multiple instances in distributed clusters. It wraps the `SyncedEnforcer` for the dispatcher. You can find more details about the dispatcher [here](/docs/dispatchers#distributedenforcer).                                                                                                                                                                   |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)           | Casbin | The `SyncedEnforcer` is based on the `Enforcer` and provides synchronized access. It is thread-safe.                                                                                                                                                                                                                                                                               |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go)| Casbin | The `SyncedCachedEnforcer` wraps the `Enforcer` and provides decision sync cache.                                                                                                                                                                                                                                                                                                 |
+| [ContextEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_context.go)         | Casbin | The `ContextEnforcer` implements the `IEnforcerContext` interface and provides context-aware API methods. Currently, only operations that utilize `ContextAdapter` have corresponding context versions, such as `LoadPolicyCtx()`, `SavePolicyCtx()`, `AddPolicyCtx()`, `RemovePolicyCtx()`, etc. This enforcer allows using context for more precise control over adapter operations. The interface is designed to support future expansion of context-aware functionality across more Casbin operations. |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python" default>
+```
+
+| Enforcer                                                                                    | Author | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Enforcer](https://github.com/casbin/pycasbin/blob/master/casbin/enforcer.py)                        | Casbin | The `Enforcer` is the basic structure for users to interact with Casbin policies and models. You can find more details about the `Enforcer` API [here](/docs/management-api).                                                                                                                                                                                                            |
+| [DistributedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/distributed_enforcer.py) | Casbin | The `DistributedEnforcer` supports multiple instances in distributed clusters. It wraps the `SyncedEnforcer` for the dispatcher. You can find more details about the dispatcher [here](/docs/dispatchers#distributedenforcer).                                                                                                                                                                   |
+| [SyncedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/synced_enforcer.py)           | Casbin | The `SyncedEnforcer` is based on the `Enforcer` and provides synchronized access. It is thread-safe.                                                                                                                                                                                                                                                                               |
+| [AsyncEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/async_enforcer.py)| Casbin | The `AsyncEnforcer` provides async API.                                                                                                                                                                                                                                                                                                 |
+| [FastEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/fast_enforcer.py)| Casbin | The `FastEnforcer` uses a new model which is 50x faster than the normal model. You can find more [here](https://github.com/wakemaster39/fastbin)                                                                                                                                                                                                                                                                                                 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

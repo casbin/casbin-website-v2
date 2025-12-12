@@ -2,3 +2,7 @@ node_modules
 build
 .docusaurus
 static/js/probe.js
+.next
+out
+src_old
+content

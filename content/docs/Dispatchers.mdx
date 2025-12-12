@@ -1,0 +1,54 @@
+---
+id: dispatchers
+title: Dispatchers
+description: Dispatchers provide a way to synchronize incremental changes of policy.
+keywords: [dispatcher]
+authors: [dovics]
+---
+
+Dispatchers provide a way to synchronize incremental changes of policy. They should be based on consistency algorithms such as Raft to ensure the consistency of all enforcer instances. Through dispatchers, users can easily establish distributed clusters.
+
+The dispatcher's method is divided into two parts. The first part is the method combined with Casbin. These methods should be called inside Casbin. Users can use the more complete API provided by Casbin itself.
+
+The other part is the method defined by the dispatcher itself, including the dispatcher initialization method, and different functions provided by different algorithms, such as dynamic membership and config changes.
+
+:::note
+
+We hope dispatchers only ensure the consistency of the Casbin enforcer at runtime. So if the policy is inconsistent during initialization, the dispatchers will not work properly. Users need to ensure that the state of all instances is consistent before using dispatchers.
+
+:::
+
+A complete list of Casbin dispatchers is provided below. Any 3rd-party contributions on a new dispatcher are welcomed. Please inform us, and we will add it to this list.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+
+import DispatcherMDTable from "@site/src/tableData/DispatcherData/DispatcherMDTable";
+import {DispatcherGoData} from "@site/src/tableData/DispatcherData/DispatcherGoData";
+
+<DispatcherMDTable data={DispatcherGoData}></DispatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DistributedEnforcer
+
+DistributedEnforcer wraps SyncedEnforcer for the dispatcher.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+    e, _ := casbin.NewDistributedEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

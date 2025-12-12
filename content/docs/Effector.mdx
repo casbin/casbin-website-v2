@@ -1,0 +1,67 @@
+---
+id: effector
+title: Effector
+description: The Effector interface in Casbin
+keywords: [effector, Effect, MergeEffects]
+authors: [ErikQQY]
+---
+
+The `Effect` represents the result of a policy rule, and the `Effector` is the interface for handling effects in Casbin.
+
+## `MergeEffects()`
+
+The `MergeEffects()` function is used to merge all matching results collected by the enforcer into a single decision.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+In this example:  
+
+- `Effect` is the final decision that is merged by this function (initialized as `Indeterminate`).
+- `explainIndex` is the index of `eft` (`Allow` or `Deny`), and it is initialized as `-1`.
+- `err` is used to check if the effect is supported.
+- `expr` is the string representation of the policy effects.
+- `effects` is an array of effects, which can be `Allow`, `Indeterminate`, or `Deny`.
+- `matches` is an array that indicates whether the result matches the policy.
+- `policyIndex` is the index of the policy in the model.
+- `policyLength` is the length of the policy.
+
+The code above illustrates how to pass the parameters to the `MergeEffects()` function, and the function will process the effects and matches based on the `expr`.
+
+To use the `Effector`, follow these steps:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+The basic idea of `MergeEffects()` is that if the `expr` can match the results, indicating that the `p_eft` is `allow`, then all effects can be merged. If no deny rules are matched, then the decision is allow.
+
+:::note
+
+If the `expr` does not match the condition `"priority(p_eft) || deny"`, and the `policyIndex` is shorter than `policyLength-1`, it will **short-circuit** some effects in the middle.
+
+:::

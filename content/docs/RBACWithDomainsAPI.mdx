@@ -1,0 +1,432 @@
+---
+id: rbac-with-domains-api
+title: RBAC with Domains API
+description: A more user-friendly API for RBAC with domains. This API is a subset of the Management API. RBAC users can use this API to simplify their code.
+keywords: [RBAC with domains, API]
+authors: [hsluoyz]
+---
+
+A more user-friendly API for RBAC with domains. This API is a subset of the Management API. RBAC users can use this API to simplify their code.
+
+## Reference
+
+The global variable `e` represents the Enforcer instance.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforcer::new("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsersForRoleInDomain()`
+
+The `GetUsersForRoleInDomain()` function retrieves the users that have a role within a domain.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_users_for_role_in_domain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRolesForUserInDomain()`
+
+The `GetRolesForUserInDomain()` function retrieves the roles that a user has within a domain.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetRolesForUserInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_roles_for_user_in_domain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getRolesForUserInDomain("admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetPermissionsForUserInDomain()`
+
+The `GetPermissionsForUserInDomain()` function retrieves the permissions for a user or role within a domain.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetPermissionsForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddRoleForUserInDomain()`
+
+The `AddRoleForUserInDomain()` function adds a role for a user within a domain. It returns `false` if the user already has the role (no changes made).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok = e.add_role_for_user_in_domain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRoleForUserInDomain()`
+
+The `DeleteRoleForUserInDomain()` function removes a role for a user within a domain. It returns `false` if the user does not have the role (no changes made).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRolesForUserInDomain()`
+
+The `DeleteRolesForUserInDomain()` function removes all roles for a user within a domain. It returns `false` if the user does not have any roles (no changes made).
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllUsersByDomain()`
+
+The `GetAllUsersByDomain()` function retrieves all users associated with the given domain. It returns an empty string array if no domain is defined in the model.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteAllUsersByDomain()`
+
+The `DeleteAllUsersByDomain()` function deletes all users associated with the given domain. It returns `false` if no domain is defined in the model.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteDomains()`
+
+DeleteDomains would delete all associated users and roles.
+It would delete all domains if parameter is not provided.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteDomains("domain1", "domain2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllDomains()`
+
+GetAllDomains would get all domains.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res, _ := e.GetAllDomains()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+If you are handling a domain like ```name::domain```, it may lead to unexpected behavior. In Casbin, ```::``` is a reserved keyword, just like ```for```, ```if``` in a programming language, we should never put ```::``` in a domain.
+
+:::
+
+### `GetAllRolesByDomain()`
+
+GetAllRolesByDomain would get all roles associated with the domain.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllRolesByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+This method does not apply to domains that have an inheritance relationship, also known as implicit roles.
+
+:::
+
+### `GetImplicitUsersForResourceByDomain()`
+
+GetImplicitUsersForResourceByDomain return implicit user based on resource and domain.
+
+For example:
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+g, alice, admin, domain1
+g, bob, admin, domain2
+```
+
+GetImplicitUsersForResourceByDomain("data1", "domain1") will return `[["alice", "domain1", "data1", "read"],["alice", "domain1", "data1", "write"]], nil`
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResourceByDomain("data1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+Only users will be returned, roles (2nd arg in "g") will be excluded.
+
+:::

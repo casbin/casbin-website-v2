@@ -1,0 +1,51 @@
+---
+id: data-permissions
+title: Data Permissions
+description: Solutions for Data Permissions
+keywords: [Data Permissions, implicit]
+authors: [ErikQQY]
+---
+
+We have two solutions for data permissions (filtering): using implicit assignment APIs or using the `BatchEnforce()` API.
+
+### 1. Query Implicit Roles or Permissions
+
+When a user inherits a role or permission via an RBAC hierarchy instead of being directly assigned them in a policy rule, we refer to this type of assignment as "implicit". To query such implicit relations, you need to use the following two APIs: `GetImplicitRolesForUser()` and `GetImplicitPermissionsForUser()`, instead of `GetRolesForUser()` and `GetPermissionsForUser()`. For more details, please refer to [this GitHub issue](https://github.com/casbin/casbin/issues/137).
+
+### 2. Use `BatchEnforce()`
+
+`BatchEnforce()` enforces each request and returns the results in a boolean array.
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

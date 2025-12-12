@@ -1,0 +1,80 @@
+---
+id: contributing
+title: Contributing
+description: Contributing to Casbin
+keywords: [Contributing]
+authors: [Selflocking, EmperorYP7]
+---
+
+Casbin is a powerful authorization library that supports access control models with implementations in many programming languages. If you are proficient in any programming language, you can contribute to the development of Casbin. New contributors are always welcome.
+
+Currently, there are two main types of projects:
+
+* **Algorithms-oriented projects** - These projects involve implementing algorithms in different programming languages. Casbin supports a wide range of languages, including Golang, Java, C++, Elixir, Dart, and Rust, along with their related products.
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+|----------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| Production-ready                                                     | Production-ready                                                  | Production-ready                                                          | Production-ready                                                       |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+|------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------|
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
+| Production-ready                                                       | Production-ready                                                         | Production-ready                                                   | Production-ready                                                    |
+
+* **Application-oriented projects** - These projects are related to applications built on top of Casbin.
+
+| Project | Demo | Details | Skill Stacks |
+| -- | -- | -- | -- |
+| [Casdoor](https://github.com/casdoor/casdoor) | [Casdoor](https://casdoor.org/) | Casdoor is a UI-first centralized authentication/Single-Sign-On (SSO) platform based on OAuth 2.0/OIDC. | JavaScript + React and Golang + Beego + SQL |
+| [Casnode](https://github.com/casbin/casnode) | [Casbin Forum](https://forum.casbin.com) | Casnode is a next-generation forum software. | JavaScript + React and Golang + Beego + SQL |
+| [Casbin OA](https://github.com/casbin/casbin-oa) | [OA system](https://oa.casbin.com) | Casbin-OA is an official manuscript processing, evaluation, and display system for Casbin technical writers. | JavaScript + React and Golang + Beego + MySQL |
+| [Casbin Editor](https://github.com/casbin/casbin-editor) | [Casbin Editor](https://editor.casbin.org) | Casbin-editor is a web-based editor for Casbin models and policies. | TypeScript + React |
+
+## Getting Involved
+
+There are many ways to contribute to Casbin. Here are some ideas to get started:
+
+* **Use Casbin and report issues!** When using Casbin, report any issues you encounter to help promote the development of Casbin. Whether it's a bug or a proposal, filing an issue on [GitHub](https://github.com/casbin/casbin) is recommended. However, it would be better to have a discussion first on [Discord](https://discord.gg/S5UjpzGZjN) or [GitHub Discussions](https://github.com/casbin/casbin/discussions) before filing an issue.
+
+  > Note: When reporting an issue, please use English to describe the details of your problem.
+
+* **Help with documentation!** Contributing to the documentation is a good starting point for your contribution.
+
+* **Help solve issues!** We have prepared a table containing easy tasks suitable for beginners, with different levels of challenges labeled with different tags. You can check the table [here](https://github.com/orgs/casbin/projects/2).
+
+## Pull Requests
+
+Casbin uses GitHub as its development platform, so pull requests are the main way to contribute.
+
+Before opening a pull request, there are a few things you need to know:
+
+* Explain why you are sending the pull request and what it will do for the repository.
+
+* Make sure the pull request does only one thing. If there are multiple changes, please split them into separate pull requests.
+
+* If you are adding new files, please include the Casbin license at the top of the new file(s).
+
+  ```text
+  // Copyright 2021 The casbin Authors. All Rights Reserved.
+  //
+  // Licensed under the Apache License, Version 2.0 (the "License");
+  // you may not use this file except in compliance with the License.
+  // You may obtain a copy of the License at
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  // Unless required by applicable law or agreed to in writing, software
+  // distributed under the License is distributed on an "AS IS" BASIS,
+  // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  // See the License for the specific language governing permissions and
+  // limitations under the License.
+  ```
+
+* In projects like [Casdoor](https://github.com/casdoor/casdoor), [Casnode](https://github.com/casbin/casnode), and [Casbin OA](https://github.com/casbin/casbin-oa), you may need to set up a demo to show the maintainer how your pull request helps with the development of the project.
+
+* When opening a pull request and committing your contribution, it is recommended to use semantic commits with the following format: ```<type>(<scope>): <subject>```. The ```<scope>``` is optional. For more detailed usage, please refer to [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+## License
+
+By contributing to Casbin, you agree that your contributions will be licensed under the Apache License.

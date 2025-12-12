@@ -1,0 +1,99 @@
+---
+id: biba
+title: Biba
+description: Biba Integrity Model in Casbin
+keywords: [biba, integrity model, security model, data integrity]
+authors: [nodece]
+---
+
+## Overview
+
+The Biba Model (also known as Biba Integrity Model) is a formal state transition model of computer security policy developed by Kenneth J. Biba in 1975. It describes a set of access control rules designed to ensure data integrity. Unlike the Bell-LaPadula model which focuses on confidentiality, the Biba model is specifically designed to protect data integrity and prevent unauthorized modification of data.
+
+## Model
+
+```conf
+[request_definition]
+r = sub, sub_level, obj, obj_level, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = (r.act == "read" && r.sub_level <= r.obj_level) || (r.act == "write" && r.sub_level >= r.obj_level)
+```
+
+## Policy
+
+The Biba model typically doesn't require explicit policy rules as the access control is determined by the integrity levels of subjects and objects. The matcher function implements the Biba integrity rules:
+
+- **No Read Down (Simple Integrity Property)**: A subject cannot read an object with a lower integrity level
+- **No Write Up (Star Integrity Property)**: A subject cannot write to an object with a higher integrity level
+
+## Core Principles
+
+The Biba model is characterized by the phrase "read up, write down", which is the inverse of the Bell-LaPadula model's "read down, write up". This approach ensures:
+
+1. **Data Integrity Protection**: Prevents corruption of high-integrity data by lower-integrity sources
+2. **Controlled Information Flow**: Ensures that information flows only from higher to lower integrity levels for writes
+3. **Trust Preservation**: Maintains the trustworthiness of data at each integrity level
+
+## Examples
+
+### Request Examples
+
+```text
+alice, 3, data1, 1, read    # alice (level 3) reads data1 (level 1) - DENIED (No Read Down)
+bob, 2, data2, 2, read      # bob (level 2) reads data2 (level 2) - ALLOWED
+charlie, 1, data1, 1, read  # charlie (level 1) reads data1 (level 1) - ALLOWED
+bob, 2, data3, 3, read      # bob (level 2) reads data3 (level 3) - ALLOWED
+charlie, 1, data2, 2, read  # charlie (level 1) reads data2 (level 2) - ALLOWED
+
+alice, 3, data3, 3, write   # alice (level 3) writes data3 (level 3) - ALLOWED
+bob, 2, data3, 3, write     # bob (level 2) writes data3 (level 3) - DENIED (No Write Up)
+charlie, 1, data2, 2, write # charlie (level 1) writes data2 (level 2) - DENIED (No Write Up)
+alice, 3, data1, 1, write   # alice (level 3) writes data1 (level 1) - ALLOWED
+bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - ALLOWED
+```
+
+## Integrity Levels
+
+In the Biba model, integrity levels are typically represented as integers where higher numbers indicate higher integrity levels:
+
+- Level 1: Low integrity (e.g., public data, user-generated content)
+- Level 2: Medium integrity (e.g., verified data, trusted sources)
+- Level 3: High integrity (e.g., system data, administrative content)
+- Level 4: Critical integrity (e.g., security policies, system configuration)
+
+## Use Cases
+
+The Biba model is commonly used in:
+
+- Financial systems where data accuracy is paramount
+- Healthcare records management
+- Database systems requiring data integrity
+- Any environment where preventing data corruption is more important than preventing data disclosure
+- Systems where the accuracy and reliability of information is critical
+
+## Implementation Notes
+
+- The model enforces mandatory access control (MAC) focused on integrity
+- Integrity levels are assigned by system administrators based on data trustworthiness
+- Access decisions are based on integrity levels rather than user identity
+- The model prevents data corruption through controlled read/write operations
+- Unlike Bell-LaPadula, most Biba applications use only a small number of integrity levels
+
+## Comparison with Bell-LaPadula
+
+| Aspect        | Bell-LaPadula         | Biba                  |
+| ------------- | --------------------- | --------------------- |
+| Primary Focus | Confidentiality       | Integrity             |
+| Read Rule     | No Read Up            | No Read Down          |
+| Write Rule    | No Write Down         | No Write Up           |
+| Phrase        | "Read down, write up" | "Read up, write down" |

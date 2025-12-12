@@ -1,0 +1,172 @@
+---
+id: ucon
+title: Usage Control (UCON)
+description: Usage Control Model in Casbin
+keywords:
+  [ucon, usage control, access control, authorization, obligations, conditions]
+authors: [nodece]
+---
+
+## Overview
+
+The Usage Control (UCON) model is an extension of traditional access control models that integrates authorizations, obligations, and conditions. Developed by Sandhu and Park, UCON provides a comprehensive framework for controlling access to and usage of digital resources in distributed systems. Unlike traditional access control models that focus only on authorization decisions at access time, UCON introduces continuous enforcement and attribute mutability.
+
+## Model & Policy
+
+> **Note**: Casbin does not directly support UCON in its core library. Instead, UCON functionality is provided through the extension library [casbin-ucon](https://github.com/casbin/casbin-ucon), which adds session-based access control with conditions, obligations, and continuous monitoring capabilities. It can use the same models and policies supported by the Casbin core.
+
+### model
+
+```conf
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+### policy
+
+```csv
+p, alice, document1, read
+```
+
+> **Note**: In UCON, Conditions and Obligations are not written in policy.csv; they are added and managed in code through the casbin-ucon API.
+
+## Core Components
+
+The UCON model consists of three core components:
+
+1. **Authorizations (A)**: Traditional access control rules based on subject and object attributes
+2. **oBligations (B)**: Requirements that must be fulfilled by subjects before or during resource usage
+3. **Conditions (C)**: Environmental or system factors independent of subjects and objects
+
+## Key Features
+
+1. **Continuity**: Unlike traditional models that check permissions only at access time, UCON enables ongoing enforcement during the entire usage session
+2. **Mutability**: Subject and object attributes can be updated as a consequence of usage
+3. **Pre-decisions**: Authorizations, obligations, and conditions checked before access
+4. **Ongoing-decisions**: Continuous checking during resource usage
+5. **Post-decisions**: Updates to attributes after usage completion
+
+## Use Cases
+
+The UCON model is particularly useful in:
+
+- Digital Rights Management (DRM) systems
+- Healthcare information systems
+- Cloud computing environments
+- IoT device access control
+- Data sharing in collaborative environments
+- Financial systems with complex compliance requirements
+
+## Implementation with casbin-ucon
+
+To implement UCON in your Casbin-based application, you need to use the [casbin-ucon](https://github.com/casbin/casbin-ucon) extension library:
+
+```bash
+go get github.com/casbin/casbin-ucon
+```
+
+```go
+// Import the required packages
+import (
+    "github.com/casbin/casbin/v2"
+    "github.com/casbin/casbin-ucon"
+    "fmt"
+    "time"
+)
+
+func main() {
+    // Create standard Casbin enforcer
+    e, _ := casbin.NewEnforcer("model.conf", "policy.csv")
+
+    // Wrap with UCON functionality
+    uconE := ucon.NewUconEnforcer(e)
+
+    // Add conditions
+    condition := &ucon.Condition{
+        ID:   "location_condition",
+        Name: "location",
+        Kind: "always",
+        Expr: "office",
+    }
+    uconE.AddCondition(condition)
+
+    // Add obligations
+    obligation := &ucon.Obligation{
+        ID:   "post_log",
+        Name: "access_logging",
+        Kind: "post",
+        Expr: "log_level:detailed",
+    }
+    uconE.AddObligation(obligation)
+
+    // Create a session
+    sessionID, _ := uconE.CreateSession("alice", "read", "document1", map[string]interface{}{
+        "location":      "office",
+        "log_level":     "detailed",
+    })
+
+    // UCON session-based enforcement
+    session, err := uconE.EnforceWithSession(sessionID)
+    if session == nil {
+        // refused
+        fmt.Println("session refused because: ", err)
+    }
+
+    // Monitor session status
+    go func() {
+        for {
+            if !session.IfActive() {
+                if session.GetStopReason() == ucon.NormalStopReason {
+                    break
+                }
+                //TODO
+                //decide how to handle session termination yourself
+                // For example, clean up resources, close connections, write logs, notify the frontend, etc.
+                fmt.Printf("%s %s %s is stopped because: %s\n",
+                          session.GetSubject(), session.GetAction(),
+                          session.GetObject(), session.GetStopReason())
+                break
+            }
+            time.Sleep(200 * time.Millisecond)
+        }
+    }()
+
+    // You can update attributes during the session
+    // session.UpdateAttribute("location", "home")
+
+    // Stop the session when done
+    _ = uconE.StopMonitoring(sessionID)
+}
+```
+
+## Implementation Notes
+
+- UCON encompasses traditional access control models like MAC, DAC, and RBAC
+- Implementation requires a reference monitor capable of continuous monitoring
+- Attribute updates (mutability) should be handled atomically to maintain consistency
+- Obligations may require integration with external monitoring systems
+- Conditions evaluation may depend on environmental factors outside the access control system
+- When using casbin-ucon, you need to properly manage session lifecycle and monitoring
+
+## Comparison with Traditional Models
+
+| Aspect               | Traditional Access Control | UCON                                        |
+| -------------------- | -------------------------- | ------------------------------------------- |
+| Decision Time        | Pre-access only            | Pre, ongoing, and post access               |
+| Attribute Mutability | Static                     | Dynamic (can change during usage)           |
+| Decision Factors     | Authorizations only        | Authorizations, obligations, and conditions |
+| Enforcement          | One-time check             | Continuous monitoring                       |
+| Revocation           | Explicit                   | Can be automatic based on attribute changes |
+
+## References
+
+For complete API documentation, detailed usage, and latest updates about casbin-ucon, please refer to [casbin-ucon](https://github.com/casbin/casbin-ucon) .

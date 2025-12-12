@@ -1,0 +1,35 @@
+import { DocsPage, DocsBody } from 'fumadocs-ui/page';
+import { notFound } from 'next/navigation';
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const { slug } = await params;
+
+  // For now, return a simple placeholder
+  if (!slug || slug.length === 0) {
+    return (
+      <DocsPage>
+        <DocsBody>
+          <h1>Documentation</h1>
+          <p>Welcome to Casbin documentation.</p>
+        </DocsBody>
+      </DocsPage>
+    );
+  }
+
+  return notFound();
+}
+
+export async function generateStaticParams() {
+  return [];
+}
+
+export async function generateMetadata() {
+  return {
+    title: 'Documentation',
+    description: 'Casbin Documentation',
+  };
+}

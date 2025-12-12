@@ -1,0 +1,127 @@
+---
+id: rbac-with-pattern
+title: RBAC with Pattern
+description: RBAC with Pattern
+keywords: [RBAC with pattern, pattern matching]
+authors: [hsluoyz]
+---
+
+## Quick Start
+
+- Use pattern in `g(_, _)`.
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+  ```
+
+- Use pattern with domain.
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+  ```
+
+- Use all patterns.
+
+  Just combine the use of both APIs.
+
+As shown above, after you create the `enforcer` instance, you need to activate pattern matching via the `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` APIs, which determine how the pattern matches.
+
+:::note
+
+If you use the online editor, You can add a pattern matching function by clicking the "Add Role Matching" button in the lower left corner.
+![editor-tips](/img/editor-tips.png)
+
+:::
+
+## Use pattern matching in RBAC
+
+Sometimes, you want certain subjects, objects, or domains/tenants with a specific pattern to be automatically granted a role. Pattern matching functions in RBAC can help you do that. A pattern matching function shares the same parameters and return value as the previous [matcher function](/docs/syntax-for-models#functions-in-matchers).
+
+The pattern matching function supports each parameter of `g`.
+
+We know that normally RBAC is expressed as `g(r.sub, p.sub)` in a matcher. Then we can use a policy like:
+
+```csv
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+So `alice` can read all books including `book 1` and `book 2`. But there can be thousands of books, and it's very tedious to add each book to the book role (or group) with one `g` policy rule.
+
+But with pattern matching functions, you can write the policy with only one line:
+
+```csv
+g, /book/:id, book_group
+```
+
+Casbin will automatically match `/book/1` and `/book/2` into the pattern `/book/:id` for you. You only need to register the function with the enforcer like:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+When using a pattern matching function in domains/tenants, you need to register the function with the enforcer and model.
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+If you don't understand what `g(r.sub, p.sub, r.dom)` means, please read [rbac-with-domains](/docs/rbac-with-domains). In short, `g(r.sub, p.sub, r.dom)` will check whether the user `r.sub` has a role `p.sub` in the domain `r.dom`. So this is how the matcher works. You can see the full example [here](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
+
+Apart from the pattern matching syntax above, we can also use pure domain pattern.
+
+For example, if we want `sub` to have access in different domains, `domain1` and `domain2`, we can use the pure domain pattern:
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+In this example, we want `alice` to read and write `data` in domain1 and domain2. Pattern matching `*` in `g` makes `alice` have access to two domains.
+
+By using pattern matching, especially in scenarios that are more complicated and have a lot of domains or objects to consider, we can implement the `policy_definition` in a more elegant and effective way.

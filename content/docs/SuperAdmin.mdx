@@ -1,0 +1,27 @@
+---
+id: superadmin
+title: Super Admin
+description: The Super Admin is the administrator of the entire system. It can be used in models such as RBAC, ABAC, and RBAC with domains. 
+keywords: [Super Admin]
+authors: [ErikQQY]
+---
+
+The Super Admin is the administrator of the entire system. It can be used in models such as RBAC, ABAC, and RBAC with domains. The detailed example is as follows:
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act || r.sub == "root"
+```
+
+This example illustrates that, with the defined ```request_definition```, ```policy_definition```, ```policy_effect```, and ```matchers```, Casbin determines whether the request can match the policy. One important aspect is checking if the ```sub``` is root. If the judgment is correct, authorization is granted, and the user has permission to perform all actions.
+
+Similar to the root user in Linux systems, being authorized as root grants access to all files and settings. If we want a ```sub``` to have full access to the entire system, we can assign it the role of Super Admin, granting the ```sub``` permission to perform all actions.
