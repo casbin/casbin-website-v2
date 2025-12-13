@@ -1,6 +1,9 @@
 import { DocsPage, DocsBody } from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-static';
+export const dynamicParams = false;
+
 export default async function Page({
   params,
 }: {
@@ -23,8 +26,9 @@ export default async function Page({
   return notFound();
 }
 
-export async function generateStaticParams() {
-  return [];
+export function generateStaticParams() {
+  // Return an empty array to generate only the root docs page
+  return [{ slug: [] }];
 }
 
 export async function generateMetadata() {
