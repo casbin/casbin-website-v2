@@ -83,6 +83,7 @@ module.exports = {
         "dispatchers",
         "role-managers",
         "middlewares",
+        "kong-authz",
         "graphql-middlewares",
         "cloud-native",
       ],
