@@ -24,7 +24,7 @@ const languages = [
     url: "https://github.com/casbin/node-casbin",
   },
   {
-    name: "JavaScript",
+    name: "Front-end JavaScript",
     icon: "https://cdn.casbin.org/language/logo-javascript.svg",
     url: "https://github.com/casbin/casbin.js",
   },
@@ -64,17 +64,17 @@ const languages = [
     url: "https://github.com/CasbinRuby/casbin-ruby",
   },
   {
-    name: "Swift",
+    name: "Swift (Objective-C)",
     icon: "https://cdn.casbin.org/language/swift-15.svg",
     url: "https://github.com/casbin/SwiftCasbin",
   },
   {
-    name: "Lua",
+    name: "Lua (OpenResty, Kong, APISIX)",
     icon: "https://cdn.casbin.org/language/lua-5.svg",
     url: "https://github.com/casbin/lua-casbin",
   },
   {
-    name: "Dart",
+    name: "Dart (Flutter)",
     icon: "https://cdn.casbin.org/language/dart.svg",
     url: "https://github.com/casbin/dart-casbin",
   },
