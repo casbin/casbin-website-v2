@@ -84,7 +84,9 @@ const languages = [
     url: "https://github.com/casbin/casbin-ex",
   },
   {
-    name: "Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)",
+    name: "Cloud Native",
+    displayName: "Cloud Native",
+    fullName: "Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)",
     icon: "https://cdn.casbin.org/language/kubernets.svg",
     url: "/docs/cloud-native",
   },
@@ -108,13 +110,14 @@ export default function LanguageIntegration() {
               key={language.name}
               to={language.url}
               className={styles.iconLink}
-              onMouseEnter={() => setHoveredLanguage(language.name)}
+              onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
               onMouseLeave={() => setHoveredLanguage(null)}
+              aria-label={language.fullName || language.name}
             >
-              <div className={`${styles.iconContainer} ${hoveredLanguage === language.name ? styles.iconHovered : ""}`}>
+              <div className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}>
                 <img
                   src={language.icon}
-                  alt={language.name}
+                  alt={language.fullName || language.name}
                   className={styles.icon}
                 />
               </div>
