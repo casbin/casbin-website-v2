@@ -82,8 +82,14 @@ module.exports = {
         "watchers",
         "dispatchers",
         "role-managers",
-        "middlewares",
-        "kong-authz",
+        {
+          type: "category",
+          label: "Middlewares",
+          link: {type: "doc", id: "middlewares"},
+          items: [
+            "kong-authz",
+          ],
+        },
         "graphql-middlewares",
         "cloud-native",
       ],
