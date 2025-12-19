@@ -83,6 +83,11 @@ const languages = [
     icon: "https://cdn.casbin.org/language/elixir-lang-icon.svg",
     url: "https://github.com/casbin/casbin-ex",
   },
+  {
+    name: "Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)",
+    icon: "https://cdn.casbin.org/language/kubernets.svg",
+    url: "/docs/cloud-native",
+  },
 ];
 
 export default function LanguageIntegration() {
@@ -91,9 +96,12 @@ export default function LanguageIntegration() {
   return (
     <div className={styles.languageIntegration}>
       <div className="container">
-        <h2 className={styles.headline}>
-          Native Support for <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
-        </h2>
+        <div className={styles.headlineContainer}>
+          <h2 className={styles.headlineStatic}>Native Support for</h2>
+          <h2 className={styles.headlineDynamic}>
+            <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
+          </h2>
+        </div>
         <div className={styles.iconGrid}>
           {languages.map((language) => (
             <Link

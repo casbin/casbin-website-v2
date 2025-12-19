@@ -167,8 +167,8 @@ export default function Home() {
       description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
         <LanguageIntegration />
+        <HomepageFeatures />
         <EditorPreview />
         <PolicyPersistence />
         <PolicyEnforcement />
