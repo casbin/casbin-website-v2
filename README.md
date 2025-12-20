@@ -110,7 +110,7 @@ content
 
 [Crowdin](https://crowdin.com/project/casbin-website) and [Docusaurus i18n](https://docusaurus.io/docs/i18n/introduction) is used for Casbin website's translation.
 
-Note: Please do not translate strings like `:::note`, `:::tip`, wrong translation may cause typographical error([casdoor-website#305](https://github.com/casdoor/casdoor-website/issues/305)).
+Note: Please do not translate strings like `:::note`, `:::tip`, wrong translation may cause typographical error.
 
 You may see some sentences containing `{}`, like:
 
@@ -120,7 +120,7 @@ At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find o
 
 Please do not translate `{repoLink}` or `{issueLink}` or any similar words, they are [interpolation placeholders](https://docusaurus.io/docs/docusaurus-core#translate-props).
 
-Please don't translate sentences like `authors: [casdoor]`.
+Please don't translate sentences like `authors: [casbin]`.
 
 ### Website Development
 
