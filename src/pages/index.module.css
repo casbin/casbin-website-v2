@@ -68,3 +68,12 @@
 html[data-theme="light"] .highlightedKeyword {
   color: #4c00ff;
 }
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}

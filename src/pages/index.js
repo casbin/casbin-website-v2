@@ -34,7 +34,7 @@ function HomepageHeader() {
           <Translate>Open-source</Translate> <span className={styles.highlightedKeyword}><Translate>authorization</Translate></span> <Translate>for applications and services</Translate>
         </h1>
         <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: "1rem", marginTop: "1rem"}}>
+        <div className={styles.actionButtons}>
           <Link className="button button--secondary button--lg"
             to="/docs/get-started"
           >
