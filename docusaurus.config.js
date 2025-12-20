@@ -78,7 +78,17 @@ module.exports = {
         },
         {
           to: "/ecosystem",
-          label: "Ecosystem",
+          label: "Plugins",
+          position: "left",
+        },
+        {
+          href: "/gallery",
+          label: "Authorization Models",
+          position: "left",
+        },
+        {
+          href: "/editor",
+          label: "GUI Policy Editor",
           position: "left",
         },
         {
@@ -89,16 +99,6 @@ module.exports = {
         {
           to: "/help",
           label: "Help",
-          position: "left",
-        },
-        {
-          href: "/editor",
-          label: "Editor",
-          position: "left",
-        },
-        {
-          href: "/gallery",
-          label: "Gallery",
           position: "left",
         },
         {

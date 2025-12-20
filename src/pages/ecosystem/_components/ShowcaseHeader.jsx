@@ -15,7 +15,7 @@ export default function ShowcaseHeader() {
       <p>{DESCRIPTION}</p>
       <Tooltip anchorEl="#__docusaurus" text={tooltipText}>
         <Link className="button button--primary" to={SUBMIT_URL}>
-          <Translate id="showcase.header.button">🚀 add new one</Translate>
+          <Translate id="showcase.header.button">🚀 Want to contribute a new plugin ?</Translate>
         </Link>
       </Tooltip>
     </section>
