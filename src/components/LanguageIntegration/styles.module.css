@@ -1,0 +1,140 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+.languageIntegration {
+  padding: 60px 0;
+  background-color: var(--ifm-color-emphasis-100);
+  text-align: center;
+}
+
+.headlineContainer {
+  margin-bottom: 3rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4rem;
+}
+
+.headline {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin: 0;
+  line-height: 1.2;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.languageName {
+  color: #443d80;
+  display: inline-block;
+  width: 300px;
+  text-align: center;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.iconGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.iconLink {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.75rem;
+}
+
+.iconLink:hover {
+  text-decoration: none;
+}
+
+.iconContainer {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background-color: var(--ifm-background-color);
+  padding: 1rem;
+}
+
+.iconContainer:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgb(76 0 255 / 20%);
+}
+
+.iconHovered {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgb(76 0 255 / 20%);
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.iconContainer:hover .icon {
+  transform: scale(1.1);
+}
+
+/* Dark mode adjustments */
+html[data-theme="dark"] .iconContainer:hover {
+  box-shadow: 0 8px 16px rgb(179 136 255 / 30%);
+}
+
+html[data-theme="dark"] .iconHovered {
+  box-shadow: 0 8px 16px rgb(179 136 255 / 30%);
+}
+
+/* Responsive design */
+@media screen and (max-width: 996px) {
+  .headline {
+    font-size: 2rem;
+  }
+
+  .languageName {
+    width: 250px;
+  }
+
+  .iconContainer {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .headline {
+    font-size: 1.5rem;
+    white-space: normal;
+  }
+
+  .languageName {
+    width: 200px;
+  }
+
+  .iconGrid {
+    gap: 0.25rem;
+  }
+
+  .iconLink {
+    padding: 0.25rem;
+  }
+
+  .iconContainer {
+    width: 60px;
+    height: 60px;
+    padding: 0.75rem;
+  }
+}

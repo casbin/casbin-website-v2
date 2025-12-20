@@ -8,6 +8,7 @@ import {UserList} from "@site/src/components/UserList";
 import Translate from "@docusaurus/Translate";
 import {useWindowSize} from "@docusaurus/theme-common";
 import EditorPreview from "../components/EditorPreview";
+import LanguageIntegration from "../components/LanguageIntegration";
 
 class Button extends React.Component {
   render() {
@@ -40,30 +41,6 @@ function HomepageHeader() {
           >
             <Translate>Get Started</Translate>
           </Link>
-          <Link className={`button button--outline button--lg ${styles.tryEditorBtn}`}
-            to="https://editor.casbin.org/"
-          >
-            <Translate>Try Online Editor</Translate>
-          </Link>
-          <div className={styles.buttons}>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/go-logo-1.svg" />Golang</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/jcasbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/jee-3.svg" />Java</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin-cpp"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/c.svg" />C/C++</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/node-casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/nodejs-1.svg" />Node.js</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin.js"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/logo-javascript.svg" />Front-end js</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/php-casbin/php-casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/PHP-logo.svg" />PHP</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/php-casbin/laravel-authz"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/laravel-2.svg" />Laravel</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/pycasbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/python-5.svg" />Python</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/Casbin.NET"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/dotnet-logo.svg" />.Net (C#)</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin4d/Casbin4D"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/delphi-2.svg" />Delphi</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin-rs"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/rust.svg" />Rust</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/CasbinRuby/casbin-ruby"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/ruby.svg" />Ruby</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/SwiftCasbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/swift-15.svg" />Swift (Objective-C)</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/lua-casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/lua-5.svg" />Lua (OpenResty, Kong, APISIX)</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/dart-casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/dart.svg" />Dart (Flutter)</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin/casbin-ex"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/elixir-lang-icon.svg" />Elixir</Link>
-            <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="/docs/cloud-native"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/kubernets.svg" />Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)</Link>
-          </div>
         </div>
       </div>
     </header>
@@ -190,6 +167,7 @@ export default function Home() {
       description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <HomepageHeader />
       <main>
+        <LanguageIntegration />
         <HomepageFeatures />
         <EditorPreview />
         <PolicyPersistence />
