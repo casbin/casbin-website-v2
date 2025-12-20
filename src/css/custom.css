@@ -61,13 +61,13 @@
   --site-primary-hue-saturation: 210 68%; /* announcementBar */
 
   /* https://docusaurus.io/docs/styling-layout#styling-your-site-with-infima */
-  --ifm-color-primary: #4c00ff;
-  --ifm-color-primary-dark: #4400e6;
-  --ifm-color-primary-darker: #4100d9;
-  --ifm-color-primary-darkest: #3500b3;
-  --ifm-color-primary-light: #5e1aff;
-  --ifm-color-primary-lighter: #6726ff;
-  --ifm-color-primary-lightest: #5108ff;
+  --ifm-color-primary: #443d80;
+  --ifm-color-primary-dark: #443d80;
+  --ifm-color-primary-darker: #443d80;
+  --ifm-color-primary-darkest: #443d80;
+  --ifm-color-primary-light: #443d80;
+  --ifm-color-primary-lighter: #443d80;
+  --ifm-color-primary-lightest: #443d80;
 
   /* Docs sidebar Collapse&Expand button */
   --docs-color: #dadde1;
@@ -81,18 +81,18 @@
 }
 
 html[data-theme="dark"] {
-  --ifm-color-primary: #b388ff;
-  --ifm-color-primary-dark: #fefdff;
-  --ifm-color-primary-darker: #d8c3ff;
-  --ifm-color-primary-darkest: #ccafff;
-  --ifm-color-primary-light: #ccafff;
-  --ifm-color-primary-lighter: #d8c3ff;
-  --ifm-color-primary-lightest: #fefdff;
+  --ifm-color-primary: #443d80;
+  --ifm-color-primary-dark: #443d80;
+  --ifm-color-primary-darker: #443d80;
+  --ifm-color-primary-darkest: #443d80;
+  --ifm-color-primary-light: #443d80;
+  --ifm-color-primary-lighter: #443d80;
+  --ifm-color-primary-lightest: #443d80;
   --docs-color: #2e2e2e;
 }
 
 html .hero--primary {
-  --ifm-hero-background-color: #413b7d;
+  --ifm-hero-background-color: #443d80;
 }
 
 html[data-theme="dark"] .hero--primary {

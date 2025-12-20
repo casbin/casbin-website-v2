@@ -2,7 +2,6 @@ import React from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./index.module.css";
 import HomepageFeatures from "../components/HomepageFeatures";
 import {UserList} from "@site/src/components/UserList";
@@ -28,18 +27,23 @@ Button.defaultProps = {
 };
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle"><Translate>An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir</Translate></p>
-        <div>
-          <Link className="button button--secondary button--lg"
-            style={{marginTop: "1rem", marginRight: "3rem", marginLeft: "3rem"}}
+        <h1 className="hero__title">
+          <Translate>Open-source authorization for applications</Translate>
+        </h1>
+        <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
+        <div className={styles.actionButtons}>
+          <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
           >
             <Translate>Get Started</Translate>
+          </Link>
+          <Link className={`button button--outline button--lg ${styles.tryEditorBtn}`}
+            to="https://editor.casbin.org/"
+          >
+            <Translate>Try Online Editor</Translate>
           </Link>
           <div className={styles.buttons}>
             <Link className="button button--secondary button--lg" style={{marginTop: "1rem", marginRight: ".5rem", marginLeft: ".5rem", display: "flex"}} to="https://github.com/casbin"><img className={styles.embedbutton} src="https://cdn.casbin.org/language/go-logo-1.svg" />Golang</Link>
