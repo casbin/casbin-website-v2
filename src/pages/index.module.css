@@ -60,3 +60,11 @@
   width: 22px;
   height: 22px;
 }
+
+.highlightedKeyword {
+  color: #b388ff;
+}
+
+html[data-theme="light"] .highlightedKeyword {
+  color: #4c00ff;
+}
