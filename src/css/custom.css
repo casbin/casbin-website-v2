@@ -72,6 +72,9 @@
   /* Docs sidebar Collapse&Expand button */
   --docs-color: #dadde1;
 
+  /* Docs page link color */
+  --ifm-link-color: #0366d6;
+
   /* ecosystem */
   --site-color-favorite-background: #f6fdfd;
   --site-color-svg-icon-favorite: #e9669e;
@@ -92,7 +95,7 @@ html[data-theme="dark"] {
 }
 
 html .hero--primary {
-  --ifm-hero-background-color: #413b7d;
+  --ifm-hero-background-color: #443d80;
 }
 
 html[data-theme="dark"] .hero--primary {

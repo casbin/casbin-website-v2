@@ -58,6 +58,16 @@ html[data-theme="dark"] .editorWrapper {
   text-align: center;
 }
 
+.editorFooter .button--primary {
+  --ifm-color-primary: #443d80;
+  --ifm-color-primary-dark: #3a3470;
+  --ifm-color-primary-darker: #363168;
+  --ifm-color-primary-darkest: #2c2756;
+  --ifm-color-primary-light: #4e4690;
+  --ifm-color-primary-lighter: #524998;
+  --ifm-color-primary-lightest: #5c53aa;
+}
+
 /* Mobile responsiveness */
 @media screen and (max-width: 996px) {
   .editorTitle {
