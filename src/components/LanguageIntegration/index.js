@@ -99,9 +99,8 @@ export default function LanguageIntegration() {
     <div className={styles.languageIntegration}>
       <div className="container">
         <div className={styles.headlineContainer}>
-          <h2 className={styles.headlineStatic}>Native Support for</h2>
-          <h2 className={styles.headlineDynamic}>
-            <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
+          <h2 className={styles.headline}>
+            Native Support for <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
         <div className={styles.iconGrid}>
@@ -114,7 +113,11 @@ export default function LanguageIntegration() {
               onMouseLeave={() => setHoveredLanguage(null)}
               aria-label={language.fullName || language.name}
             >
-              <div className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}>
+              <div
+                className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}
+                onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
+                onMouseLeave={() => setHoveredLanguage(null)}
+              >
                 <img
                   src={language.icon}
                   alt={language.fullName || language.name}
