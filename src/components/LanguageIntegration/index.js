@@ -103,20 +103,17 @@ export default function LanguageIntegration() {
             Use Casbin with <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
-        <div className={styles.iconGrid}>
+        <div className={styles.iconGrid} onMouseLeave={() => setHoveredLanguage(null)}>
           {languages.map((language) => (
             <Link
               key={language.name}
               to={language.url}
               className={styles.iconLink}
               onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
-              onMouseLeave={() => setHoveredLanguage(null)}
               aria-label={language.fullName || language.name}
             >
               <div
                 className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}
-                onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
-                onMouseLeave={() => setHoveredLanguage(null)}
               >
                 <img
                   src={language.icon}

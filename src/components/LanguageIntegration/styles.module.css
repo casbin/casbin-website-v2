@@ -26,18 +26,18 @@
 }
 
 .languageName {
-  color: var(--ifm-color-primary);
+  color: #443d80;
   display: inline-block;
-  min-width: 200px;
-  text-align: left;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 300px;
+  text-align: center;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .iconGrid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.1rem;
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 1rem;
@@ -46,7 +46,7 @@
 .iconLink {
   text-decoration: none;
   display: inline-block;
-  padding: 0.5rem;
+  padding: 0.75rem;
 }
 
 .iconLink:hover {
@@ -105,7 +105,7 @@ html[data-theme="dark"] .iconHovered {
   }
 
   .languageName {
-    min-width: 160px;
+    width: 250px;
   }
 
   .iconContainer {
@@ -121,7 +121,7 @@ html[data-theme="dark"] .iconHovered {
   }
 
   .languageName {
-    min-width: 120px;
+    width: 200px;
   }
 
   .iconGrid {
