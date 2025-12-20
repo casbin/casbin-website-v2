@@ -17,18 +17,6 @@ function Hello() {
         <br />
         <div className="row">
           <div className="col">
-            <h2><Translate>Forum</Translate></h2>
-            <Translate description="Help page forum" values={{
-              forumLink: (
-                <a href="https://forum.casbin.com">
-                  <Translate>Casbin Forum</Translate>
-                </a>
-              ),
-            }}>
-              {"Discuss with maintainers or share your experience about Casbin on {forumLink}."}
-            </Translate>
-          </div>
-          <div className="col">
             <h2>Discord</h2>
             <Translate values={{
               discordLink: (
@@ -39,23 +27,6 @@ function Hello() {
             }}
             >
               {"You can join the conversation on {discordLink} for contributing help."}
-            </Translate>
-          </div>
-          <div className="col">
-            <h2><Translate>Tencent QQ</Translate></h2>
-            <Translate values={{
-              qqLink: (
-                <a href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/qq_casbin.png" target="_blank" rel="noreferrer">
-                  546057381
-                </a>
-              ),
-              WeChat_group: (
-                <a href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/wechat.jpg" target="_blank" rel="noreferrer">
-                  WeChat group
-                </a>
-              ),
-            }}>
-              {"You can contact us by joining the QQ group: {qqLink} or {WeChat_group}."}
             </Translate>
           </div>
           <div className="col">
@@ -80,6 +51,30 @@ function Hello() {
               }}
             >
               {"At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented."}
+            </Translate>
+          </div>
+          <div className="col">
+            <h2><Translate>Google Groups</Translate></h2>
+            <Translate values={{
+              googleGroupsLink: (
+                <a href="https://groups.google.com/g/casbin">
+                  <Translate>Google Groups</Translate>
+                </a>
+              ),
+            }}>
+              {"Discuss with maintainers or share your experience about Casbin on {googleGroupsLink}."}
+            </Translate>
+          </div>
+          <div className="col">
+            <h2><Translate>Stack Overflow</Translate></h2>
+            <Translate values={{
+              stackOverflowLink: (
+                <a href="https://stackoverflow.com/search?q=casbin">
+                  <Translate>Stack Overflow</Translate>
+                </a>
+              ),
+            }}>
+              {"Ask questions about Casbin on {stackOverflowLink}."}
             </Translate>
           </div>
         </div>
