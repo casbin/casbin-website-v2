@@ -101,7 +101,6 @@ module.exports = {
           label: "Gallery",
           position: "left",
         },
-
         {
           type: "localeDropdown",
           position: "right",
@@ -263,7 +262,6 @@ var _hmt = _hmt || [];
         "rust",
       ],
     },
-
     docs: {
       sidebar: {
         hideable: true,
