@@ -100,7 +100,7 @@ export default function LanguageIntegration() {
       <div className="container">
         <div className={styles.headlineContainer}>
           <h2 className={styles.headline}>
-            Native Support for <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
+            Use Casbin with <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
         <div className={styles.iconGrid}>
