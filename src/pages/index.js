@@ -41,6 +41,11 @@ function HomepageHeader() {
           >
             <Translate>Get Started</Translate>
           </Link>
+          <Link className={`button button--lg ${styles.tryEditorBtn}`}
+            to="/editor"
+          >
+            <Translate>Try Online Editor</Translate>
+          </Link>
         </div>
       </div>
     </header>
