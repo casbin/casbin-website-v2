@@ -31,16 +31,16 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">
-          <Translate>Open-source</Translate> <span className={styles.highlightedKeyword}><Translate>authorization</Translate></span> <Translate>for applications and services</Translate>
+          <Translate>Open-source authorization for applications</Translate>
         </h1>
         <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
         <div className={styles.actionButtons}>
-          <Link className="button button--secondary button--lg"
+          <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
           >
             <Translate>Get Started</Translate>
           </Link>
-          <Link className="button button--secondary button--lg"
+          <Link className={`button button--outline button--lg ${styles.tryEditorBtn}`}
             to="https://editor.casbin.org/"
           >
             <Translate>Try Online Editor</Translate>

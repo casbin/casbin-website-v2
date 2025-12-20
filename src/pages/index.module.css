@@ -15,6 +15,58 @@
   color: #e3e3e3;
 }
 
+.heroBanner .hero__title {
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+/* Action button hover styles for hero */
+.actionButtons .button {
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 120ms ease,
+    border-color 150ms ease,
+    box-shadow 180ms ease;
+  will-change: transform, box-shadow;
+}
+
+/* Base styles for the buttons (scoped via CSS module) */
+.actionButtons .getStartedBtn {
+  background-color: #fff;
+  color: #443d80;
+  border: 2px solid #fff;
+  border-radius: 6px;
+}
+
+.actionButtons .tryEditorBtn {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 6px;
+}
+
+/* Toned-down hover: subtle lift + faint background change for Get Started */
+.actionButtons .getStartedBtn:hover {
+  background-color: #f6f5fb; /* very light purple tint */
+  color: #443d80;
+  border-color: #e9e6fb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgb(68 61 128 / 12%) !important;
+}
+
+/* Slightly toned hover for Try Online Editor */
+.actionButtons .tryEditorBtn:hover {
+  background-color: transparent;
+  color: #fff;
+  border-color: #fff;
+  transform: translateY(-1px);
+}
+
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
