@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import NavbarNavLink from "@theme/NavbarItem/NavbarNavLink";
-import {useEffect, useState} from "react";
 
 function DefaultNavbarItemDesktop({
   className,
@@ -36,49 +35,16 @@ export default function DefaultNavbarItem({
   ...props
 }) {
   const Comp = mobile ? DefaultNavbarItemMobile : DefaultNavbarItemDesktop;
-  const [mainland, setMainland] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem("mainland") === "true") {
-      setMainland(true);
-    }
-  }, []);
-  if (mainland) {
-    return (
-      <>
-        <Comp
-          href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/qq_casbin.png"
-          className="header-community-qq"
-          {...props}
-          activeClassName={
-            props.activeClassName ??
-            (mobile ? "menu__link--active" : "navbar__link--active")
-          }
-        />
-        <Comp
-          href="https://cdn.casdoor.com/casdoor/resource/built-in/admin/wechat.jpg"
-          target="_blank"
-          className="header-community-wechat"
-          {...props}
-          activeClassName={
-            props.activeClassName ??
-            (mobile ? "menu__link--active" : "navbar__link--active")
-          }
-        />
-      </>
-    );
-  } else {
-    return (
-      <Comp
-        href="https://discord.gg/S5UjpzGZjN"
-        className="header-community-discord"
-        {...props}
-        activeClassName={
-          props.activeClassName ??
-          (mobile ? "menu__link--active" : "navbar__link--active")
-        }
-      />
-    );
-  }
-
+  return (
+    <Comp
+      href="https://discord.gg/S5UjpzGZjN"
+      className="header-community-discord"
+      {...props}
+      activeClassName={
+        props.activeClassName ??
+        (mobile ? "menu__link--active" : "navbar__link--active")
+      }
+    />
+  );
 }
