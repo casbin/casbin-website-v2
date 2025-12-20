@@ -101,16 +101,7 @@ module.exports = {
           label: "Gallery",
           position: "left",
         },
-        {
-          href: "https://casdoor.com",
-          label: "For Enterprise",
-          position: "left",
-        },
-        {
-          href: "https://casdoor.com",
-          label: "Hosting Plan (SaaS)",
-          position: "left",
-        },
+
         {
           type: "localeDropdown",
           position: "right",
@@ -169,20 +160,16 @@ module.exports = {
           title: "Community",
           items: [
             {
-              label: "Forum",
-              href: "https://forum.casbin.com/",
+              label: "Discord",
+              href: "https://discord.gg/S5UjpzGZjN",
             },
             {
               label: "Stack Overflow",
               href: "https://stackoverflow.com/search?q=casbin",
             },
             {
-              label: "Discord",
-              href: "https://discord.gg/S5UjpzGZjN",
-            },
-            {
-              label: "QQ Group",
-              href: "https://cdn.casdoor.com/casdoor/resource/built-in/admin/qq_casbin.png",
+              label: "Google Groups",
+              href: "https://groups.google.com/g/casbin",
             },
           ],
         },
@@ -276,12 +263,7 @@ var _hmt = _hmt || [];
         "rust",
       ],
     },
-    announcementBar: {
-      id: "announcement", // ID of the announcement bar
-      content:
-          "<a target=\"_blank\" href=\"https://github.com/casibase/casibase/\">💖 Looking for an open-source LangChain-like AI knowledge database & chat bot with admin UI and multi-model support (ChatGPT, Claude, Llama 3, DeepSeek R1, HuggingFace, etc.) ? Learn more about: Casibase</a>",
-      isCloseable: false,
-    },
+
     docs: {
       sidebar: {
         hideable: true,
@@ -289,10 +271,6 @@ var _hmt = _hmt || [];
     },
   },
   scripts: [
-    {
-      src: "/js/isMainland.js",
-      async: true,
-    },
     {
       src: "/js/hotjar.js",
       async: true,
