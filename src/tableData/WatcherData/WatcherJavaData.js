@@ -51,6 +51,13 @@ export const WatcherJavaData = [
     description: "Watcher for [Apache ZooKeeper](https://zookeeper.apache.org/)",
     image: "/img/ecosystem/zookeeper.png",
   },
+  {
+    title: "[RabbitMQ Watcher](https://github.com/jcasbin/jcasbin-rabbitmq-watcher)",
+    type: "Messaging system",
+    author: "Casbin",
+    description: "Watcher for [RabbitMQ](https://www.rabbitmq.com/)",
+    image: "/img/ecosystem/rabbitMQ.png",
+  },
 ].map((item) => {
   return {
     ...item,
