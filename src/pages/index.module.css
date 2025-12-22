@@ -5,6 +5,32 @@
  * and scoped locally.
  */
 
+:root {
+  /* Pill-related tokens for easy tuning */
+  --pill-glow-color-1: rgb(255 255 255 / 28%);
+  --pill-glow-color-2: rgb(255 255 255 / 16%);
+  --pill-glow-color-3: rgb(255 255 255 / 6%);
+  --pill-glow:
+    radial-gradient(
+      ellipse at center bottom,
+      var(--pill-glow-color-1) 0%,
+      var(--pill-glow-color-2) 40%,
+      var(--pill-glow-color-3) 60%,
+      rgb(255 255 255 / 0%) 75%
+    );
+  --pill-blur: 6px;
+  --pill-hover-blur: 4px;
+  --pill-bg: rgb(255 255 255 / 4%);
+  --pill-border: rgb(255 255 255 / 8%);
+  --pill-after-bg: linear-gradient(90deg, rgb(255 255 255 / 12%), rgb(255 255 255 / 8%), rgb(255 255 255 / 12%));
+  --pill-base-opacity: 0.6;
+  --pill-hover-opacity: 0.98;
+  --pill-after-opacity: 0.55;
+  --pill-new-border: rgb(255 255 255 / 90%);
+  --pill-new-inset: rgb(255 255 255 / 2%);
+  --pill-new-bg: rgb(255 255 255 / 6%);
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
@@ -15,7 +41,7 @@
   color: #e3e3e3;
 }
 
-.heroBanner .hero__title {
+.hero__title {
   font-size: clamp(2.2rem, 6vw, 4.2rem);
   font-weight: 700;
   line-height: 1.05;
@@ -128,4 +154,89 @@ html[data-theme="light"] .highlightedKeyword {
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+/* Hero pill above the title */
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.05rem;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  backdrop-filter: blur(var(--pill-blur));
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.heroPill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px; /* Border width */
+  background: linear-gradient(45deg, #7c3aed, #a855f7, #ec4899); /* Purple to pink gradient */
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  mask-composite: xor;
+  clip-path: inset(0 50% 0 50%);
+  transition: clip-path 0.8s ease;
+  z-index: -1;
+}
+
+.heroPill:hover::before {
+  clip-path: inset(0);
+}
+
+/* Ensure pill children sit above */
+.heroPill > * {
+  position: relative;
+  z-index: 3;
+}
+
+/* Prevent underline on hover and force white text for pill and its children */
+.heroPill,
+.heroPill:hover,
+.heroPill:focus,
+.heroPill:active,
+.heroPill * {
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+.pillNew {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: 6px;
+  background: var(--pill-new-bg);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.78rem;
+  border: 1px solid var(--pill-new-border);
+  box-shadow: 0 1px 0 var(--pill-new-inset) inset;
+  backdrop-filter: blur(var(--pill-blur));
+}
+
+.pillText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pillArrow {
+  opacity: 0.95;
+}
+
+@media screen and (max-width: 640px) {
+  .heroPill { display: none; }
 }
