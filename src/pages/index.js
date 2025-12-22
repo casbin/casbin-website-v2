@@ -46,7 +46,7 @@ function HomepageHeader() {
           playsInline
           poster="/img/hero-poster.svg"
         >
-          <source src="http://cdn.casbin.org/video/background.mp4" type="video/mp4" />
+          <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
         </video>
       )}
       <div className={styles.heroOverlay}></div>

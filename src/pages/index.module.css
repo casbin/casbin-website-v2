@@ -129,13 +129,6 @@
     padding: 2rem;
   }
 
-  /* On smaller screens, reduce video quality demand or hide it */
-  .heroVideo {
-    /* Video continues to display but with optimized performance */
-    min-width: 100%;
-    min-height: 100%;
-  }
-
   /* Stronger overlay on mobile for better text readability */
   .heroOverlay {
     background: linear-gradient(135deg, rgb(68 61 128 / 80%) 0%, rgb(100 80 160 / 75%) 100%);
