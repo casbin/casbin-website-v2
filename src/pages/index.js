@@ -28,24 +28,25 @@ function HomepageHeader() {
   useEffect(() => {
     // Load video after page mount to avoid blocking initial render
     // Using requestIdleCallback for better performance, with setTimeout fallback
-    if (typeof window !== "undefined") {
-      const loadVideo = () => {
-        setVideoLoaded(true);
-      };
-
-      if ("requestIdleCallback" in window) {
-        const idleCallback = requestIdleCallback(loadVideo);
-        return () => {
-          cancelIdleCallback(idleCallback);
-        };
-      } else {
-        const timer = setTimeout(loadVideo, 100);
-        return () => {
-          clearTimeout(timer);
-        };
-      }
+    if (typeof window === "undefined") {
+      return;
     }
-    return undefined;
+
+    const loadVideo = () => {
+      setVideoLoaded(true);
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleCallback = requestIdleCallback(loadVideo);
+      return () => {
+        cancelIdleCallback(idleCallback);
+      };
+    }
+
+    const timer = setTimeout(loadVideo, 100);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
