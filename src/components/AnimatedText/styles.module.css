@@ -1,0 +1,57 @@
+/* Animated Text Component Styles */
+
+.animatedTextContainer {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.animatedText {
+  display: inline-block;
+  position: relative;
+  animation: fade-in-up 0.6s ease-in-out;
+  color: #fff;
+  font-weight: 700;
+}
+
+.wavyUnderline {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  color: #a855f7; /* Purple color for the wavy line */
+  animation: draw-wave 0.8s ease-in-out;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw-wave {
+  0% {
+    stroke-dasharray: 0 1000;
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dasharray: 1000 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .wavyUnderline {
+    bottom: -5px;
+    height: 8px;
+  }
+}
