@@ -12,6 +12,8 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const {siteConfig} = useDocusaurusContext();
   const {customFields} = siteConfig;
 
@@ -22,12 +24,55 @@ function HomepageHeader() {
       .catch(() => setLatestVersion("v3.4.1"));
   }, []);
 
+  useEffect(() => {
+    // Load video after page mount to avoid blocking initial render
+    // Using requestIdleCallback for better performance, with setTimeout fallback
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const loadVideo = () => {
+      setVideoLoaded(true);
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleCallback = requestIdleCallback(loadVideo);
+      return () => {
+        cancelIdleCallback(idleCallback);
+      };
+    }
+
+    const timer = setTimeout(loadVideo, 100);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
   const link = customFields?.customLink || `https://github.com/casbin/casbin/releases/tag/${latestVersion}`;
 
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
+      {videoLoaded && !videoError && (
+        <video
+          className={styles.heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/img/hero-poster.svg"
+          aria-hidden="true"
+          onError={() => setVideoError(true)}
+          onEnded={(e) => {
+            e.target.currentTime = 0;
+            e.target.play();
+          }}
+        >
+          <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
+        </video>
+      )}
+      <div className={styles.heroOverlay}></div>
+      <div className={clsx("container", styles.heroContent)}>
         <Link href={link} target="_blank" rel="noopener noreferrer" className={styles.heroPill}>
           <span className={styles.pillNew}>NEW</span>
           <span className={styles.pillText}>{pillText}</span>
