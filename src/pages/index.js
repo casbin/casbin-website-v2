@@ -26,10 +26,20 @@ function HomepageHeader() {
 
   useEffect(() => {
     // Load video after page mount to avoid blocking initial render
-    const timer = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 100);
-    return () => clearTimeout(timer);
+    // Using requestIdleCallback for better performance, with setTimeout fallback
+    if (typeof window !== "undefined") {
+      const loadVideo = () => {
+        setVideoLoaded(true);
+      };
+
+      if ("requestIdleCallback" in window) {
+        const idleCallback = requestIdleCallback(loadVideo);
+        return () => cancelIdleCallback(idleCallback);
+      } else {
+        const timer = setTimeout(loadVideo, 100);
+        return () => clearTimeout(timer);
+      }
+    }
   }, []);
 
   const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
@@ -45,6 +55,7 @@ function HomepageHeader() {
           loop
           playsInline
           poster="/img/hero-poster.svg"
+          aria-hidden="true"
         >
           <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
         </video>
