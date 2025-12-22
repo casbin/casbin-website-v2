@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -10,27 +10,26 @@ import {useWindowSize} from "@docusaurus/theme-common";
 import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 
-class Button extends React.Component {
-  render() {
-    return (
-      <div>
-        <a style={{marginRight: "8px", marginBottom: "8px"}} className="button" href={this.props.href} target={this.props.target} icon={this.props.icon}>
-          <img className="icon" src={this.props.icon} height={"20px"} width={"20px"} />
-          {this.props.children}
-        </a>
-      </div>
-    );
-  }
-}
-
-Button.defaultProps = {
-  target: "_self",
-};
-
 function HomepageHeader() {
+  const [latestVersion, setLatestVersion] = useState("...");
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/casbin/casbin/releases/latest")
+      .then(res => res.json())
+      .then(data => setLatestVersion(data.tag_name || "v3.4.1"))
+      .catch(() => setLatestVersion("v3.4.1"));
+  }, []);
+
+  const pillText = latestVersion === "..." ? "Loading latest release..." : `Casbin ${latestVersion} Released`;
+
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
+        <a href="https://github.com/casbin/casbin" className={styles.heroPill} target="_blank" rel="noopener noreferrer" aria-label="Casbin GitHub repository">
+          <span className={styles.pillNew}>NEW</span>
+          <span className={styles.pillText}>{pillText}</span>
+          <span className={styles.pillArrow}>→</span>
+        </a>
         <h1 className="hero__title">
           <Translate>Open-source authorization for applications</Translate>
         </h1>
@@ -167,11 +166,10 @@ function OpenCollective() {
 export default function Home() {
   return (
     <Layout
-      title="Casbin · An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir"
-
+      title="Casbin · An authorization library"
       description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
-      <HomepageHeader />
       <main>
+        <HomepageHeader />
         <LanguageIntegration />
         <HomepageFeatures />
         <EditorPreview />
