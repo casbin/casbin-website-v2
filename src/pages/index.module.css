@@ -89,12 +89,6 @@
   .heroBanner {
     padding: 2rem;
   }
-
-  .heroVideo {
-    /* On mobile, ensure video still covers the area properly */
-    min-width: 100%;
-    min-height: 100%;
-  }
 }
 
 .buttons {

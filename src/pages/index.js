@@ -52,7 +52,7 @@ function HomepageHeader() {
           playsInline
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23443d80' width='1920' height='1080'/%3E%3C/svg%3E"
         >
-          <source src="http://cdn.casbin.org/video/background.mp4" type="video/mp4" />
+          <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
         </video>
       )}
       <div className={clsx("container", styles.heroContent)}>
