@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 const AnimatedText = ({words = [], interval = 3000}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fixedWidth, setFixedWidth] = useState(0);
+  const [underlineWidth, setUnderlineWidth] = useState(0);
   const measureRef = useRef(null);
 
   useEffect(() => {
@@ -44,6 +45,8 @@ const AnimatedText = ({words = [], interval = 3000}) => {
     document.body.removeChild(measurer);
     // Add extra space for the underline padding
     setFixedWidth(maxWidth + 20);
+    // Set underline width to 70% of the text width (30% reduction)
+    setUnderlineWidth((maxWidth + 20) * 0.7);
   }, [words]);
 
   // Return empty if no words provided
@@ -64,13 +67,13 @@ const AnimatedText = ({words = [], interval = 3000}) => {
         viewBox="0 0 200 10"
         preserveAspectRatio="none"
         aria-hidden="true"
-        style={{width: fixedWidth > 0 ? `${fixedWidth}px` : "100%"}}
+        style={{width: underlineWidth > 0 ? `${underlineWidth}px` : "70%"}}
       >
         <path
           d="M0,5 Q10,0 20,5 T40,5 T60,5 T80,5 T100,5 T120,5 T140,5 T160,5 T180,5 T200,5"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="3"
         />
       </svg>
     </span>
