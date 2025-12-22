@@ -9,9 +9,12 @@ import Translate from "@docusaurus/Translate";
 import {useWindowSize} from "@docusaurus/theme-common";
 import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 function HomepageHeader() {
-  const [latestVersion, setLatestVersion] = useState("...");
+  const [latestVersion, setLatestVersion] = useState("v3.4.1");
+  const {siteConfig} = useDocusaurusContext();
+  const {customFields} = siteConfig;
 
   useEffect(() => {
     fetch("https://api.github.com/repos/casbin/casbin/releases/latest")
@@ -20,16 +23,17 @@ function HomepageHeader() {
       .catch(() => setLatestVersion("v3.4.1"));
   }, []);
 
-  const pillText = latestVersion === "..." ? "Loading latest release..." : `Casbin ${latestVersion} Released`;
+  const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
+  const link = customFields?.customLink || `https://github.com/casbin/casbin/releases/tag/${latestVersion}`;
 
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        <a href="https://github.com/casbin/casbin" className={styles.heroPill} target="_blank" rel="noopener noreferrer" aria-label="Casbin GitHub repository">
+        <Link href={link} target="_blank" rel="noopener noreferrer" className={styles.heroPill}>
           <span className={styles.pillNew}>NEW</span>
           <span className={styles.pillText}>{pillText}</span>
           <span className={styles.pillArrow}>→</span>
-        </a>
+        </Link>
         <h1 className="hero__title">
           <Translate>Open-source authorization for applications</Translate>
         </h1>

@@ -170,60 +170,35 @@ html[data-theme="light"] .highlightedKeyword {
   font-weight: 600;
   font-size: 1rem;
   backdrop-filter: blur(var(--pill-blur));
-  transition: background-color 0.16s ease;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 .heroPill::before {
   content: "";
   position: absolute;
-  left: 50%;
-  bottom: 8px;
-  width: 60%;
-  height: 26px;
-  transform: translateX(-50%) scaleY(1);
-  transform-origin: bottom center;
-
-  /* radial gradient that is wide at bottom and narrows upward */
-  background: var(--pill-glow);
-  border-radius: 999px;
-  filter: blur(var(--pill-blur));
-  transition: opacity 0.22s ease, filter 0.18s ease;
-  opacity: 0.6; /* stronger faint state */
-  z-index: 2;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px; /* Border width */
+  background: linear-gradient(45deg, #7c3aed, #a855f7, #ec4899); /* Purple to pink gradient */
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  mask-composite: xor;
+  clip-path: inset(0 50% 0 50%);
+  transition: clip-path 0.8s ease;
+  z-index: -1;
 }
 
 .heroPill:hover::before {
-  /* no scale change — only deepen */
-  opacity: 0.98;
-  filter: blur(var(--pill-hover-blur));
+  clip-path: inset(0);
 }
 
-.heroPill::after {
-  /* thin full-width base glow along the very bottom */
-  content: "";
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: 4px;
-  height: 6px;
-  background: var(--pill-after-bg);
-  border-radius: 999px;
-  filter: blur(var(--pill-blur));
-  opacity: 0.55; /* stronger base glow */
-  transition: opacity 0.22s ease, transform 0.22s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.heroPill:hover::after {
-  opacity: 0.95;
-  transform: translateY(-3px);
-}
-
-/* Ensure pill children sit above the glow overlay */
+/* Ensure pill children sit above */
 .heroPill > * {
   position: relative;
   z-index: 3;

@@ -318,4 +318,8 @@ var _hmt = _hmt || [];
     defaultLocale: "en",
     locales: ["en", "zh", "ko", "ru", "fr", "de", "ja", "es", "pt", "uk", "th", "ar", "id", "vi", "it", "ms", "tr"],
   },
+  customFields: {
+    customMessage: "", // Set any custom message here; leave empty to show the latest version message
+    customLink: "", // Set a custom link here; leave empty to link to the latest release
+  },
 };
