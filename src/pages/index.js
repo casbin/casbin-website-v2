@@ -64,6 +64,10 @@ function HomepageHeader() {
           poster="/img/hero-poster.svg"
           aria-hidden="true"
           onError={() => setVideoError(true)}
+          onEnded={(e) => {
+            e.target.currentTime = 0;
+            e.target.play();
+          }}
         >
           <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
         </video>
