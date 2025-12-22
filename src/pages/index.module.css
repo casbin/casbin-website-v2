@@ -119,6 +119,7 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   animation: border-gradient-shift 3s linear infinite;
+  animation-play-state: paused;
 }
 
 @keyframes border-gradient-shift {
@@ -133,6 +134,7 @@
 
 .actionButtons .tryEditorBtn:hover::before {
   opacity: 1;
+  animation-play-state: running;
 }
 
 /* Enhanced hover effects for Get Started button */
@@ -157,17 +159,31 @@
 .actionButtons .getStartedBtn:active {
   transform: translateY(0) scale(0.98);
   box-shadow: 0 2px 8px rgb(68 61 128 / 15%) !important;
-  animation: pulse-effect 0.4s ease;
+  animation: pulse-effect-primary 0.4s ease;
 }
 
 /* Active/Click state with pulse effect for Try Online Editor */
 .actionButtons .tryEditorBtn:active {
   transform: translateY(0) scale(0.98);
   box-shadow: 0 2px 8px rgb(168 85 247 / 20%);
-  animation: pulse-effect 0.4s ease;
+  animation: pulse-effect-secondary 0.4s ease;
 }
 
-@keyframes pulse-effect {
+@keyframes pulse-effect-primary {
+  0% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 40%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgb(68 61 128 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 0%);
+  }
+}
+
+@keyframes pulse-effect-secondary {
   0% {
     box-shadow: 0 0 0 0 rgb(168 85 247 / 40%);
   }
