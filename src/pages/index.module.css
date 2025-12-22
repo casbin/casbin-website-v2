@@ -91,10 +91,36 @@
 
 /* Base styles for the buttons (scoped via CSS module) */
 .actionButtons .getStartedBtn {
-  background-color: #fff;
+  background: linear-gradient(135deg, #fff 0%, #f0eeff 100%);
   color: #443d80;
   border: 2px solid #fff;
   border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgb(68 61 128 / 15%);
+}
+
+/* Animated gradient shine effect for Get Started button */
+.actionButtons .getStartedBtn::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    linear-gradient(
+      45deg,
+      transparent 30%,
+      rgb(255 255 255 / 60%) 50%,
+      transparent 70%
+    );
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  transition: transform 0.6s ease;
+}
+
+.actionButtons .getStartedBtn:hover::before {
+  transform: translateX(100%) translateY(100%) rotate(45deg);
 }
 
 .actionButtons .tryEditorBtn {
@@ -102,23 +128,102 @@
   color: #fff;
   border: 2px solid #fff;
   border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgb(255 255 255 / 10%);
 }
 
-/* Toned-down hover: subtle lift + faint background change for Get Started */
+/* Animated border gradient for Try Online Editor button */
+.actionButtons .tryEditorBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(90deg, #a855f7, #ec4899, #f97316, #a855f7);
+  background-size: 200% 100%;
+  mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: border-gradient-shift 3s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes border-gradient-shift {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.actionButtons .tryEditorBtn:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+/* Enhanced hover effects for Get Started button */
 .actionButtons .getStartedBtn:hover {
-  background-color: #f6f5fb; /* very light purple tint */
+  background: linear-gradient(135deg, #fff 0%, #e6e0ff 100%);
   color: #443d80;
   border-color: #e9e6fb;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgb(68 61 128 / 12%) !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgb(68 61 128 / 20%) !important;
 }
 
-/* Slightly toned hover for Try Online Editor */
+/* Enhanced hover effect for Try Online Editor button */
 .actionButtons .tryEditorBtn:hover {
-  background-color: transparent;
+  background-color: rgb(168 85 247 / 10%);
   color: #fff;
-  border-color: #fff;
-  transform: translateY(-1px);
+  border-color: transparent;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgb(168 85 247 / 25%);
+}
+
+/* Active/Click state with pulse effect for Get Started */
+.actionButtons .getStartedBtn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgb(68 61 128 / 15%);
+  animation: pulse-effect-primary 0.4s ease;
+}
+
+/* Active/Click state with pulse effect for Try Online Editor */
+.actionButtons .tryEditorBtn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgb(168 85 247 / 20%);
+  animation: pulse-effect-secondary 0.4s ease;
+}
+
+@keyframes pulse-effect-primary {
+  0% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 40%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgb(68 61 128 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 0%);
+  }
+}
+
+@keyframes pulse-effect-secondary {
+  0% {
+    box-shadow: 0 0 0 0 rgb(168 85 247 / 40%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgb(168 85 247 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(168 85 247 / 0%);
+  }
 }
 
 @media screen and (max-width: 966px) {
