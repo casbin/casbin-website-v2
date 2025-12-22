@@ -21,7 +21,6 @@
   width: 100%;
   height: 10px;
   color: #a855f7; /* Purple color for the wavy line */
-  animation: draw-wave 0.8s ease-in-out;
 }
 
 @keyframes fade-in-up {
@@ -36,27 +35,10 @@
   }
 }
 
-@keyframes draw-wave {
-  0% {
-    stroke-dasharray: 0 1000;
-    stroke-dashoffset: 0;
-  }
-
-  100% {
-    stroke-dasharray: 1000 0;
-    stroke-dashoffset: 0;
-  }
-}
-
 /* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .animatedText {
     animation: none;
-  }
-
-  .wavyUnderline {
-    animation: none;
-    stroke-dasharray: 1000 0;
   }
 }
 
