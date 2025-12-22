@@ -4,6 +4,7 @@
   display: inline-block;
   position: relative;
   vertical-align: baseline;
+  text-align: left;
 }
 
 .animatedText {
@@ -12,15 +13,16 @@
   animation: fade-in-up 0.6s ease-in-out;
   color: #fff;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .wavyUnderline {
   position: absolute;
   bottom: -8px;
   left: 0;
-  width: 100%;
   height: 10px;
   color: #a855f7; /* Purple color for the wavy line */
+  pointer-events: none;
 }
 
 @keyframes fade-in-up {
