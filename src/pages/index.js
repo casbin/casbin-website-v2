@@ -9,6 +9,7 @@ import Translate from "@docusaurus/Translate";
 import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import AnimatedText from "../components/AnimatedText";
 
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
@@ -79,7 +80,8 @@ function HomepageHeader() {
           <span className={styles.pillArrow}>→</span>
         </Link>
         <h1 className="hero__title">
-          <Translate>Open-source authorization for applications</Translate>
+          <Translate>Open-source authorization for </Translate>
+          <AnimatedText words={["applications", "clouds", "web apps", "AI gateway", "MCP"]} interval={3000} />
         </h1>
         <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
         <div className={styles.actionButtons}>
