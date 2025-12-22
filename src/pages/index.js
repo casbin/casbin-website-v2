@@ -6,7 +6,6 @@ import styles from "./index.module.css";
 import HomepageFeatures from "../components/HomepageFeatures";
 import {UserList} from "@site/src/components/UserList";
 import Translate from "@docusaurus/Translate";
-import {useWindowSize} from "@docusaurus/theme-common";
 import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -155,18 +154,6 @@ function Showcase() {
   );
 }
 
-function OpenCollective() {
-  if (useWindowSize() === "mobile") {
-    return (
-      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "1100px", display: "block"}}></iframe>
-    );
-  } else {
-    return (
-      <iframe title="Sponsors" src="https://opencollective.com/casbin/banner.html" style={{width: "100%", height: "650px", display: "block"}}></iframe>
-    );
-  }
-}
-
 export default function Home() {
   return (
     <Layout
@@ -181,7 +168,6 @@ export default function Home() {
         <PolicyEnforcement />
         <RoleManager />
         <Showcase />
-        <OpenCollective />
       </main>
     </Layout>
   );
