@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -28,9 +28,34 @@ Button.defaultProps = {
 };
 
 function HomepageHeader() {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    // Load video after component mount to avoid blocking initial render
+    const timer = setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
+      {isVideoLoaded && (
+        <video
+          ref={videoRef}
+          className={styles.heroVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23443d80' width='1920' height='1080'/%3E%3C/svg%3E"
+        >
+          <source src="http://cdn.casbin.org/video/background.mp4" type="video/mp4" />
+        </video>
+      )}
+      <div className={clsx("container", styles.heroContent)}>
         <h1 className="hero__title">
           <Translate>Open-source authorization for applications</Translate>
         </h1>

@@ -15,6 +15,24 @@
   color: #e3e3e3;
 }
 
+.heroVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  object-fit: cover;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
 .heroBanner .hero__title {
   font-size: clamp(2.2rem, 6vw, 4.2rem);
   font-weight: 700;
@@ -70,6 +88,12 @@
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
+  }
+
+  .heroVideo {
+    /* On mobile, ensure video still covers the area properly */
+    min-width: 100%;
+    min-height: 100%;
   }
 }
 
