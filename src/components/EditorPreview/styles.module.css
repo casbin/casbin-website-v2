@@ -58,6 +58,80 @@ html[data-theme="dark"] .editorWrapper {
   text-align: center;
 }
 
+/* Dynamic button styles with animations */
+.editorFooter :global(.button--primary) {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #443d80 0%, #5a4fa8 100%);
+  border: 2px solid #443d80;
+  box-shadow: 0 4px 12px rgb(68 61 128 / 20%);
+  transition: all 0.3s ease;
+}
+
+/* Animated gradient shine effect */
+.editorFooter :global(.button--primary::before) {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    linear-gradient(
+      45deg,
+      transparent 30%,
+      rgb(255 255 255 / 30%) 50%,
+      transparent 70%
+    );
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  transition: transform 0.6s ease;
+}
+
+.editorFooter :global(.button--primary:hover::before) {
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+/* Enhanced hover effect */
+.editorFooter :global(.button--primary:hover) {
+  background: linear-gradient(135deg, #5a4fa8 0%, #6b5fc7 100%);
+  border-color: #5a4fa8;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgb(68 61 128 / 30%);
+}
+
+/* Active/Click state with pulse effect */
+.editorFooter :global(.button--primary:active) {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgb(68 61 128 / 20%);
+  animation: pulse-effect-editor 0.4s ease;
+}
+
+@keyframes pulse-effect-editor {
+  0% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 40%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgb(68 61 128 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(68 61 128 / 0%);
+  }
+}
+
+html[data-theme="dark"] .editorFooter :global(.button--primary) {
+  background: linear-gradient(135deg, #5a4fa8 0%, #6b5fc7 100%);
+  border-color: #6b5fc7;
+  box-shadow: 0 4px 12px rgb(90 79 168 / 25%);
+}
+
+html[data-theme="dark"] .editorFooter :global(.button--primary:hover) {
+  background: linear-gradient(135deg, #6b5fc7 0%, #7c6fd6 100%);
+  border-color: #7c6fd6;
+  box-shadow: 0 8px 24px rgb(90 79 168 / 35%);
+}
+
 /* Mobile responsiveness */
 @media screen and (max-width: 996px) {
   .editorTitle {
