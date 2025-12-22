@@ -35,12 +35,17 @@ function HomepageHeader() {
 
       if ("requestIdleCallback" in window) {
         const idleCallback = requestIdleCallback(loadVideo);
-        return () => cancelIdleCallback(idleCallback);
+        return () => {
+          cancelIdleCallback(idleCallback);
+        };
       } else {
         const timer = setTimeout(loadVideo, 100);
-        return () => clearTimeout(timer);
+        return () => {
+          clearTimeout(timer);
+        };
       }
     }
+    return undefined;
   }, []);
 
   const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
