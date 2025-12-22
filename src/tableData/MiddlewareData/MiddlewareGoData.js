@@ -71,6 +71,12 @@ export const MiddlewareGoData = [
     image: "/img/ecosystem/goframe.png",
   },
   {
+    title: "[go-zero](https://github.com/zeromicro/go-zero)",
+    description:
+      "A cloud-native Go microservices framework with cli tool for productivity, via plugin: [casbin in zero-contrib](https://github.com/zeromicro/zero-contrib/tree/main/auth/casbin)",
+    image: null,
+  },
+  {
     title: "[Negroni](https://github.com/urfave/negroni)",
     description:
       "Idiomatic HTTP Middleware for Golang, via plugin: [negroni-authz](https://github.com/casbin/negroni-authz)",
