@@ -5,3 +5,10 @@
 .tabItem {
   margin-top: 0 !important;
 }
+
+.tabIcon {
+  height: 24px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+}

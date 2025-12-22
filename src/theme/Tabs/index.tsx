@@ -10,6 +10,7 @@ import {
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import type {Props} from '@theme/Tabs';
 import styles from './styles.module.css';
+import {getLanguageIcon} from '@site/src/utils/languageIconMapping';
 
 function TabList({
   className,
@@ -74,30 +75,42 @@ function TabList({
         },
         className,
       )}>
-      {tabValues.map(({value, label, attributes}) => (
-        <li
-          // TODO extract TabListItem
-          role="tab"
-          tabIndex={selectedValue === value ? 0 : -1}
-          aria-selected={selectedValue === value}
-          key={value}
-          ref={(tabControl) => {
-            tabRefs.push(tabControl);
-          }}
-          onKeyDown={handleKeydown}
-          onClick={handleTabChange}
-          {...attributes}
-          className={clsx(
-            'tabs__item',
-            styles.tabItem,
-            attributes?.className as string,
-            {
-              'tabs__item--active': selectedValue === value,
-            },
-          )}>
-          {label ?? value}
-        </li>
-      ))}
+      {tabValues.map(({value, label, attributes}) => {
+        const languageIcon = getLanguageIcon(label ?? value);
+        return (
+          <li
+            // TODO extract TabListItem
+            role="tab"
+            tabIndex={selectedValue === value ? 0 : -1}
+            aria-selected={selectedValue === value}
+            key={value}
+            ref={(tabControl) => {
+              tabRefs.push(tabControl);
+            }}
+            onKeyDown={handleKeydown}
+            onClick={handleTabChange}
+            {...attributes}
+            className={clsx(
+              'tabs__item',
+              styles.tabItem,
+              attributes?.className as string,
+              {
+                'tabs__item--active': selectedValue === value,
+              },
+            )}>
+            {languageIcon ? (
+              <img 
+                src={languageIcon} 
+                alt={label ?? value} 
+                className={styles.tabIcon}
+                title={label ?? value}
+              />
+            ) : (
+              label ?? value
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }
