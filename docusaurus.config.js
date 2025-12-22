@@ -34,10 +34,10 @@ module.exports = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "Casbin",
+      title: "",
       logo: {
-        alt: "My Site Logo",
-        src: "img/casbin.svg",
+        alt: "Casbin Logo",
+        src: "https://cdn.casbin.org/img/casbin_logo_1024x256.png",
       },
       hideOnScroll: true,
       items: [
