@@ -14,6 +14,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const {siteConfig} = useDocusaurusContext();
   const {customFields} = siteConfig;
 
@@ -47,7 +48,7 @@ function HomepageHeader() {
 
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      {videoLoaded && (
+      {videoLoaded && !videoError && (
         <video
           className={styles.heroVideo}
           autoPlay
@@ -56,6 +57,7 @@ function HomepageHeader() {
           playsInline
           poster="/img/hero-poster.svg"
           aria-hidden="true"
+          onError={() => setVideoError(true)}
         >
           <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
         </video>
