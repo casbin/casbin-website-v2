@@ -175,6 +175,12 @@ div[class^="announcementBar_"] {
   margin-top: 1rem;
 }
 
+/* navbar logo */
+.navbar__logo {
+  height: 2rem;
+  max-width: 8rem;
+}
+
 /* navbar items */
 .navbar__item {
   font-size: 14px;
