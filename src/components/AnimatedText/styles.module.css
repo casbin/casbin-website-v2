@@ -4,14 +4,14 @@
   display: inline-block;
   position: relative;
   vertical-align: baseline;
-  text-align: left;
+  text-align: center;
 }
 
 .animatedText {
   display: inline-block;
   position: relative;
   animation: fade-in-up 0.6s ease-in-out;
-  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 700;
@@ -21,9 +21,10 @@
 .wavyUnderline {
   position: absolute;
   bottom: -8px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   height: 12px;
-  color: #06b6d4; /* Cyan color for the wavy line */
+  color: #a855f7; /* Purple color for the wavy line */
   pointer-events: none;
 }
 
