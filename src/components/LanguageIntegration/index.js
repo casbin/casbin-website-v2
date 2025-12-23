@@ -109,11 +109,11 @@ export default function LanguageIntegration() {
               key={language.name}
               to={language.url}
               className={styles.iconLink}
-              onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
               aria-label={language.fullName || language.name}
             >
               <div
                 className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}
+                onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
               >
                 <img
                   src={language.icon}
