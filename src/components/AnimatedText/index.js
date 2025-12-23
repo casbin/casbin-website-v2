@@ -44,9 +44,9 @@ const AnimatedText = ({words = [], interval = 3000}) => {
 
     document.body.removeChild(measurer);
     // Add extra space for the underline padding
-    setFixedWidth(maxWidth + 20);
-    // Set underline width to 70% of the text width (30% reduction)
-    setUnderlineWidth((maxWidth + 20) * 0.7);
+    setFixedWidth(maxWidth - 50);
+    // Set underline width to 100% of the text width
+    setUnderlineWidth(maxWidth - 50);
   }, [words]);
 
   // Return empty if no words provided
@@ -67,7 +67,7 @@ const AnimatedText = ({words = [], interval = 3000}) => {
         viewBox="0 0 200 10"
         preserveAspectRatio="none"
         aria-hidden="true"
-        style={{width: underlineWidth > 0 ? `${underlineWidth}px` : "70%"}}
+        style={{width: `${underlineWidth}px`}}
       >
         <path
           d="M0,5 Q10,0 20,5 T40,5 T60,5 T80,5 T100,5 T120,5 T140,5 T160,5 T180,5 T200,5"
