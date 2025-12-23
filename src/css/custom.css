@@ -291,7 +291,6 @@ footer a[href*="github.com"]:hover img,
 footer a[href*="twitter.com"]:hover img {
   filter: drop-shadow(0 6px 12px rgb(59 130 246 / 35%)) brightness(1.15);
   transform: scale(1.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Active/Click state with bounce effect */
