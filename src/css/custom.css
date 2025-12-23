@@ -271,82 +271,38 @@ footer a[href*="github.com"],
 footer a[href*="twitter.com"] {
   display: inline-block;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Animated border gradient effect */
-footer a[href*="github.com"]::before,
-footer a[href*="twitter.com"]::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 4px;
-  padding: 3px;
-  background: linear-gradient(90deg, #a855f7, #ec4899, #f97316, #a855f7);
-  background-size: 200% 100%;
-  mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
-  mask-clip: content-box, border-box;
-  mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  animation: border-gradient-shift 3s linear infinite;
-  animation-play-state: paused;
-  pointer-events: none;
-}
-
-@keyframes border-gradient-shift {
-  0% {
-    background-position: 0% 0%;
-  }
-
-  100% {
-    background-position: 200% 0%;
-  }
-}
-
-/* Hover effects for footer buttons */
-footer a[href*="github.com"]:hover,
-footer a[href*="twitter.com"]:hover {
-  transform: translateY(-2px) scale(1.05);
-  filter: brightness(1.1);
-}
-
-footer a[href*="github.com"]:hover::before,
-footer a[href*="twitter.com"]:hover::before {
-  opacity: 1;
-  animation-play-state: running;
-}
-
-/* Active/Click state with pulse effect */
-footer a[href*="github.com"]:active,
-footer a[href*="twitter.com"]:active {
-  transform: translateY(0) scale(0.98);
-  animation: pulse-effect-footer 0.4s ease;
-}
-
-@keyframes pulse-effect-footer {
-  0% {
-    box-shadow: 0 0 0 0 rgb(168 85 247 / 40%);
-  }
-
-  50% {
-    box-shadow: 0 0 0 10px rgb(168 85 247 / 0%);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgb(168 85 247 / 0%);
-  }
-}
-
-/* Shine effect for footer buttons */
+/* Subtle animation for footer images */
 footer a[href*="github.com"] img,
 footer a[href*="twitter.com"] img {
-  position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, filter;
+}
+
+/* Hover effects for footer buttons - simple glow and lift */
+footer a[href*="github.com"]:hover,
+footer a[href*="twitter.com"]:hover {
+  transform: translateY(-3px) scale(1.08) rotate(2deg);
 }
 
 footer a[href*="github.com"]:hover img,
 footer a[href*="twitter.com"]:hover img {
-  filter: drop-shadow(0 4px 8px rgb(168 85 247 / 30%));
+  filter: drop-shadow(0 6px 12px rgb(59 130 246 / 35%)) brightness(1.15);
+  transform: scale(1.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Active/Click state with bounce effect */
+footer a[href*="github.com"]:active,
+footer a[href*="twitter.com"]:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+footer a[href*="github.com"]:active img,
+footer a[href*="twitter.com"]:active img {
+  transform: scale(0.95);
+  filter: drop-shadow(0 2px 4px rgb(59 130 246 / 25%)) brightness(1.1);
 }
