@@ -271,3 +271,43 @@ html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"]
   margin: 0 auto;
   padding-top: 20px;
 }
+
+/* Footer "More" section button animations */
+footer a[href*="github.com"],
+footer a[href*="twitter.com"] {
+  display: inline-block;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle animation for footer images */
+footer a[href*="github.com"] img,
+footer a[href*="twitter.com"] img {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, filter;
+}
+
+/* Hover effects for footer buttons - simple glow and lift */
+footer a[href*="github.com"]:hover,
+footer a[href*="twitter.com"]:hover {
+  transform: translateY(-3px) scale(1.08) rotate(2deg);
+}
+
+footer a[href*="github.com"]:hover img,
+footer a[href*="twitter.com"]:hover img {
+  filter: drop-shadow(0 6px 12px rgb(59 130 246 / 35%)) brightness(1.15);
+  transform: scale(1.05);
+}
+
+/* Active/Click state with bounce effect */
+footer a[href*="github.com"]:active,
+footer a[href*="twitter.com"]:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+footer a[href*="github.com"]:active img,
+footer a[href*="twitter.com"]:active img {
+  transform: scale(0.95);
+  filter: drop-shadow(0 2px 4px rgb(59 130 246 / 25%)) brightness(1.1);
+}
