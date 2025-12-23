@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -13,8 +13,13 @@ import AnimatedText from "../components/AnimatedText";
 
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
+  const headerRef = useRef(null);
+  const haloRef = useRef(null);
   const {siteConfig} = useDocusaurusContext();
   const {customFields} = siteConfig;
+
+  // Activate halo behavior for this header
+  useHeroCursorHalo(headerRef, haloRef);
 
   useEffect(() => {
     fetch("https://api.github.com/repos/casbin/casbin/releases/latest")
@@ -27,7 +32,7 @@ function HomepageHeader() {
   const link = customFields?.customLink || `https://github.com/casbin/casbin/releases/tag/${latestVersion}`;
 
   return (
-    <header className={clsx("hero hero--primary", styles.heroBanner)}>
+    <header ref={headerRef} className={clsx("hero hero--primary", styles.heroBanner)}>
       <video
         className={styles.heroVideo}
         autoPlay
@@ -44,6 +49,9 @@ function HomepageHeader() {
         <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
       </video>
       <div className={styles.heroOverlay}></div>
+
+      {/* Cursor halo element - placed after overlay so it sits above overlay but below content */}
+      <div className={styles.cursorHalo} ref={haloRef} aria-hidden="true" />
       <div className={clsx("container", styles.heroContent)}>
         <Link href={link} target="_blank" rel="noopener noreferrer" className={styles.heroPill}>
           <span className={styles.pillNew}>NEW</span>
@@ -71,6 +79,49 @@ function HomepageHeader() {
       </div>
     </header>
   );
+}
+
+// Cursor halo logic: position the halo inside the hero and show/hide on enter/leave
+// Attach listeners in an effect so it only runs in browser
+function useHeroCursorHalo(headerRef, haloRef) {
+  useEffect(() => {
+    if (typeof window === "undefined") {return;}
+    const headerEl = headerRef.current;
+    const haloEl = haloRef.current;
+    if (!headerEl || !haloEl) {return;}
+
+    let rafId = null;
+
+    const onMove = (e) => {
+      const rect = headerEl.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (rafId) {cancelAnimationFrame(rafId);}
+      rafId = requestAnimationFrame(() => {
+        // compute half width/height to center halo exactly at cursor
+        const hw = (haloEl.offsetWidth || 100) / 2;
+        const hh = (haloEl.offsetHeight || 100) / 2;
+        // use translate3d for smoother GPU-assisted movement
+        haloEl.style.transform = `translate3d(${x - hw}px, ${y - hh}px, 0)`;
+        // subtle visible alpha when active
+        haloEl.style.opacity = "0.25";
+      });
+    };
+
+    const onLeave = () => {
+      if (rafId) {cancelAnimationFrame(rafId);}
+      haloEl.style.opacity = "0";
+    };
+
+    headerEl.addEventListener("mousemove", onMove);
+    headerEl.addEventListener("mouseleave", onLeave);
+
+    return () => {
+      headerEl.removeEventListener("mousemove", onMove);
+      headerEl.removeEventListener("mouseleave", onLeave);
+      if (rafId) {cancelAnimationFrame(rafId);}
+    };
+  }, [headerRef, haloRef]);
 }
 
 function PolicyPersistence() {
