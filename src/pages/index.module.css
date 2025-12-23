@@ -22,7 +22,13 @@
   --pill-hover-blur: 4px;
   --pill-bg: rgb(255 255 255 / 4%);
   --pill-border: rgb(255 255 255 / 8%);
-  --pill-after-bg: linear-gradient(90deg, rgb(255 255 255 / 12%), rgb(255 255 255 / 8%), rgb(255 255 255 / 12%));
+  --pill-after-bg:
+    linear-gradient(
+      90deg,
+      rgb(255 255 255 / 12%),
+      rgb(255 255 255 / 8%),
+      rgb(255 255 255 / 12%)
+    );
   --pill-base-opacity: 0.6;
   --pill-hover-opacity: 0.98;
   --pill-after-opacity: 0.55;
@@ -323,7 +329,14 @@ html[data-theme="light"] .highlightedKeyword {
   bottom: 0;
   border-radius: inherit;
   padding: 2px; /* Border width */
-  background: linear-gradient(45deg, #7c3aed, #a855f7, #ec4899); /* Purple to pink gradient */
+  background:
+    linear-gradient(
+      45deg,
+      #7c3aed,
+      #a855f7,
+      #ec4899
+    ); /* Purple to pink gradient */
+
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   mask-composite: xor;
@@ -377,4 +390,38 @@ html[data-theme="light"] .highlightedKeyword {
 
 @media screen and (max-width: 640px) {
   .heroPill { display: none; }
+}
+
+/* Cursor halo that follows mouse only inside hero header */
+.cursorHalo {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  /* smaller and very subtle */
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  pointer-events: none;
+
+  /* very soft, subtle white radial glow (lower alpha) */
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(255 255 255 / 50%) 0%,
+      rgb(255 255 255 / 22%) 25%,
+      rgb(255 255 255 / 6%) 50%,
+      rgb(255 255 255 / 0%) 100%
+    );
+
+  /* stronger blur for very soft appearance */
+  filter: blur(18px);
+
+  /* start off-screen; will be moved by JS */
+  transform: translate(-9999px, -9999px);
+  transition: opacity 180ms linear, transform 100ms ease;
+  opacity: 0;
+  z-index: 1; /* sits above overlay (same stacking context order) and below content */
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
 }
