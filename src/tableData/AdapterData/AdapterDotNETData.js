@@ -54,6 +54,15 @@ export const AdapterDotNETData = [
       "For [Redis](https://redis.io/)",
     image: "/img/ecosystem/redis.png",
   },
+  {
+    title: "[SqlSugar Adapter](https://github.com/SharpFort/sqlsugar-adapter)",
+    type: "ORM",
+    author: "[@SharpFort](https://github.com/SharpFort)",
+    autoSave: "✅",
+    description:
+      "MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, etc. are supported by [SqlSugar](https://github.com/donet5/SqlSugar)",
+    image: "/img/ecosystem/SQL.png",
+  },
 ].map((item) => {
   return {
     ...item,
