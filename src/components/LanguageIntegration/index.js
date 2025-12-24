@@ -126,16 +126,10 @@ export default function LanguageIntegration() {
     }
   }, [currentLanguageIndex, isPaused]);
 
-  const handleMouseEnter = (language) => {
+  const handleMouseEnter = (languageName, index) => {
     setIsPaused(true);
-    setHoveredLanguage(language.displayName || language.name);
-    // Update currentLanguageIndex to match the hovered language
-    const index = languages.findIndex(lang =>
-      (lang.displayName || lang.name) === (language.displayName || language.name)
-    );
-    if (index !== -1) {
-      setCurrentLanguageIndex(index);
-    }
+    setHoveredLanguage(languageName);
+    setCurrentLanguageIndex(index);
   };
 
   const handleMouseLeave = () => {
@@ -163,7 +157,7 @@ export default function LanguageIntegration() {
               >
                 <div
                   className={`${styles.iconContainer} ${isSelected ? styles.iconHovered : ""}`}
-                  onMouseEnter={() => handleMouseEnter(language)}
+                  onMouseEnter={() => handleMouseEnter(language.displayName || language.name, index)}
                 >
                   <img
                     src={language.icon}
