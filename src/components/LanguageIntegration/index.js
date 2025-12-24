@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 
@@ -94,6 +94,54 @@ const languages = [
 
 export default function LanguageIntegration() {
   const [hoveredLanguage, setHoveredLanguage] = useState(null);
+  const [currentLanguageIndex, setCurrentLanguageIndex] = useState(-1);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef(null);
+
+  // Auto-carousel logic
+  useEffect(() => {
+    if (isPaused) {
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      setCurrentLanguageIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % languages.length;
+        return nextIndex;
+      });
+    }, 5000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPaused]);
+
+  // Update hoveredLanguage based on currentLanguageIndex
+  useEffect(() => {
+    if (currentLanguageIndex >= 0 && !isPaused) {
+      const language = languages[currentLanguageIndex];
+      setHoveredLanguage(language.displayName || language.name);
+    }
+  }, [currentLanguageIndex, isPaused]);
+
+  const handleMouseEnter = (language) => {
+    setIsPaused(true);
+    setHoveredLanguage(language.displayName || language.name);
+    // Update currentLanguageIndex to match the hovered language
+    const index = languages.findIndex(lang =>
+      (lang.displayName || lang.name) === (language.displayName || language.name)
+    );
+    if (index !== -1) {
+      setCurrentLanguageIndex(index);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+    // Keep the current language displayed and resume from current position
+  };
 
   return (
     <div className={styles.languageIntegration}>
@@ -103,26 +151,29 @@ export default function LanguageIntegration() {
             Use Casbin with <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
-        <div className={styles.iconGrid} onMouseLeave={() => setHoveredLanguage(null)}>
-          {languages.map((language) => (
-            <Link
-              key={language.name}
-              to={language.url}
-              className={styles.iconLink}
-              aria-label={language.fullName || language.name}
-            >
-              <div
-                className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}
-                onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
+        <div className={styles.iconGrid} onMouseLeave={handleMouseLeave}>
+          {languages.map((language, index) => {
+            const isSelected = currentLanguageIndex === index;
+            return (
+              <Link
+                key={language.name}
+                to={language.url}
+                className={styles.iconLink}
+                aria-label={language.fullName || language.name}
               >
-                <img
-                  src={language.icon}
-                  alt={language.fullName || language.name}
-                  className={styles.icon}
-                />
-              </div>
-            </Link>
-          ))}
+                <div
+                  className={`${styles.iconContainer} ${isSelected ? styles.iconHovered : ""}`}
+                  onMouseEnter={() => handleMouseEnter(language)}
+                >
+                  <img
+                    src={language.icon}
+                    alt={language.fullName || language.name}
+                    className={styles.icon}
+                  />
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
