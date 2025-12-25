@@ -106,10 +106,14 @@ export default function LanguageIntegration() {
 
     intervalRef.current = setInterval(() => {
       setCurrentLanguageIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % languages.length;
-        return nextIndex;
+        // After the last language (index 16), go to -1 (default view)
+        // Then from -1, go to 0 (first language)
+        if (prevIndex === languages.length - 1) {
+          return -1;
+        }
+        return prevIndex + 1;
       });
-    }, 5000);
+    }, 3000);
 
     return () => {
       if (intervalRef.current) {
@@ -123,6 +127,8 @@ export default function LanguageIntegration() {
     if (currentLanguageIndex >= 0 && !isPaused) {
       const language = languages[currentLanguageIndex];
       setHoveredLanguage(language.displayName || language.name);
+    } else if (currentLanguageIndex === -1 && !isPaused) {
+      setHoveredLanguage(null);
     }
   }, [currentLanguageIndex, isPaused]);
 
