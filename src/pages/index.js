@@ -10,6 +10,7 @@ import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AnimatedText from "../components/AnimatedText";
+import LogoCarousel from "@site/src/components/LogoCarousel";
 
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
@@ -75,6 +76,10 @@ function HomepageHeader() {
           >
             <Translate>Try Online Editor</Translate>
           </Link>
+        </div>
+        {/* logo carousel in hero */}
+        <div style={{marginTop: "18px"}}>
+          <LogoCarousel />
         </div>
       </div>
     </header>

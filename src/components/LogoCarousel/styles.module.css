@@ -1,0 +1,143 @@
+.logoCarousel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  position: relative;
+
+  /* Spacing from above elements */
+  margin-top: 90px;
+
+  /* Compact bottom spacing */
+  padding: 8px 0 14px; /* space for logos and bottom decoration */
+  z-index: 0;
+}
+
+.viewport {
+  width: min(86vw, 1200px);
+  overflow: hidden;
+
+  /* Fade logos at edges */
+  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 32px; /* Space between logos */
+  transition: transform 0ms linear; /* Instant transform */
+  will-change: transform;
+  z-index: 1; /* Under overlays */
+}
+
+.slide {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+
+  /* Fade transition */
+  transition: opacity 360ms ease;
+}
+
+.slide img {
+  height: 36px; /* Logo size */
+  width: auto;
+  max-width: 260px;
+  opacity: 0.98;
+
+  /* Grayscale filter */
+  filter: grayscale(100%) contrast(0.95) brightness(0.95);
+  background: transparent;
+  object-fit: contain;
+  transition: opacity 480ms cubic-bezier(0.2, 0, 0.1, 1), transform 480ms cubic-bezier(0.2, 0, 0.1, 1);
+  will-change: opacity, transform;
+}
+
+/* High contrast for colored backgrounds */
+.whiteBg .slide img {
+  mix-blend-mode: screen;
+
+  /* Enhanced grayscale */
+  filter: grayscale(100%) contrast(1.1) brightness(0.9);
+}
+
+/* Decorative gradient border */
+.logoCarousel::after {
+  content: "";
+  position: absolute;
+
+  /* Extend beyond container */
+  left: -8%;
+  right: -8%;
+  bottom: 0;
+
+  /* Thin border */
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #ec4899, #f97316, #7c3aed);
+  background-size: 200% 100%;
+
+  /* Fade edges */
+  mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+
+  /* Glow effect */
+  box-shadow:
+    0 -2px 20px rgb(255 255 255 / 6%) inset,
+    0 6px 18px rgb(168 85 247 / 4%),
+    0 10px 28px rgb(168 85 247 / 6%);
+  z-index: 4; /* Above track */
+}
+
+/* Highlight above border */
+.logoCarousel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  /* Position highlight at border with upward spread and masking */
+  bottom: 0;
+  height: 28px;
+  pointer-events: none;
+
+  /* Soft glow background */
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgb(255 255 255 / 28%) 0%,
+      rgb(255 255 255 / 18%) 24%,
+      rgb(255 255 255 / 8%) 48%,
+      rgb(168 85 247 / 2%) 72%,
+      rgb(168 85 247 / 0%) 100%
+    );
+
+  /* Blur and opacity */
+  filter: blur(8px);
+  opacity: 0.68;
+  mix-blend-mode: soft-light;
+  z-index: 2; /* Above track */
+
+  /* Mask for glow */
+  mask-image:
+    linear-gradient(
+      to top,
+      transparent 0,
+      black 1px,
+      rgb(0 0 0 / 90%) 18%,
+      rgb(0 0 0 / 60%) 38%,
+      rgb(0 0 0 / 0%) 100%
+    );
+}
+
+/* Hover effect */
+.slide:hover img {
+  transform: translateY(-4px) scale(1.06);
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .slide img { max-height: 36px; }
+}
