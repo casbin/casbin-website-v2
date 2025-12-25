@@ -85,7 +85,7 @@
 }
 
 /* Action button hover styles for hero */
-.actionButtons .button {
+.actionButtons :global(.button) {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -96,12 +96,6 @@
     border-color 150ms ease,
     box-shadow 180ms ease;
   will-change: transform, box-shadow;
-}
-
-/* Ensure Lucide icons align properly with text */
-.actionButtons .button svg {
-  flex-shrink: 0;
-  align-self: center;
 }
 
 /* Base styles for the buttons (scoped via CSS module) */
