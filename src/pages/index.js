@@ -58,11 +58,12 @@ function HomepageHeader() {
           <span className={styles.pillText}>{pillText}</span>
           <span className={styles.pillArrow}>→</span>
         </Link>
-        <h1 className="hero__title">
+        <h1 className={styles.casbinHeading}>Casbin</h1>
+        <h2 className="hero__title">
           <Translate>Open-source authorization for</Translate>
           <br />
           <AnimatedText words={["applications", "clouds", "web apps", "AI gateway", "MCP"]} interval={3000} />
-        </h1>
+        </h2>
         <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
         <div className={styles.actionButtons}>
           <Link className={`button button--lg ${styles.getStartedBtn}`}

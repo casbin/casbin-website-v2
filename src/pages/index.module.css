@@ -75,6 +75,18 @@
   z-index: 2;
 }
 
+/* Primary "Casbin" heading - largest text in hero section */
+.casbinHeading {
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 2px 20px rgb(0 0 0 / 30%);
+}
+
 .hero__title {
   font-size: clamp(2.2rem, 6vw, 4.2rem);
   font-weight: 700;
@@ -240,6 +252,13 @@
   /* Stronger overlay on mobile for better text readability */
   .heroOverlay {
     background: linear-gradient(135deg, rgb(68 61 128 / 80%) 0%, rgb(100 80 160 / 75%) 100%);
+  }
+
+  /* Adjust Casbin heading size on mobile */
+  .casbinHeading {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 
