@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import Link from "@docusaurus/Link";
-import AnimatedText from "../AnimatedText";
 import styles from "./styles.module.css";
 
 const languages = [
@@ -149,7 +148,7 @@ export default function LanguageIntegration() {
       <div className="container">
         <div className={styles.headlineContainer}>
           <h2 className={styles.headline}>
-            Use Casbin with <AnimatedText key={hoveredLanguage || "default"} words={[hoveredLanguage || "Multiple Languages"]} interval={999999} />
+            Use Casbin with <span key={hoveredLanguage || "default"} className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
         <div className={styles.iconGrid} onMouseLeave={handleMouseLeave}>
