@@ -98,12 +98,6 @@
   will-change: transform, box-shadow;
 }
 
-/* Ensure icons align properly with text */
-.actionButtons .button svg {
-  vertical-align: middle;
-  display: inline-block;
-}
-
 /* Base styles for the buttons (scoped via CSS module) */
 .actionButtons .getStartedBtn {
   background: linear-gradient(135deg, #fff 0%, #f0eeff 100%);
