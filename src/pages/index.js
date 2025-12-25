@@ -10,6 +10,8 @@ import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AnimatedText from "../components/AnimatedText";
+import ZapIcon from "../components/svgIcons/ZapIcon";
+import CodeIcon from "../components/svgIcons/CodeIcon";
 
 function HomepageHeader() {
   const [latestVersion, setLatestVersion] = useState("v3.4.1");
@@ -68,11 +70,13 @@ function HomepageHeader() {
           <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
           >
+            <ZapIcon size="small" />
             <Translate>Get Started</Translate>
           </Link>
           <Link className={`button button--lg ${styles.tryEditorBtn}`}
             to="/editor"
           >
+            <CodeIcon size="small" />
             <Translate>Try Online Editor</Translate>
           </Link>
         </div>
