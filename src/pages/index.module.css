@@ -85,7 +85,10 @@
 }
 
 /* Action button hover styles for hero */
-.actionButtons .button {
+.actionButtons :global(.button) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   transition:
     background-color 150ms ease,
     color 150ms ease,

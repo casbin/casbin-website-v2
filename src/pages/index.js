@@ -10,6 +10,7 @@ import EditorPreview from "../components/EditorPreview";
 import LanguageIntegration from "../components/LanguageIntegration";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AnimatedText from "../components/AnimatedText";
+import {Code, Zap} from "lucide-react";
 import LogoCarousel from "@site/src/components/LogoCarousel";
 
 function HomepageHeader() {
@@ -69,11 +70,13 @@ function HomepageHeader() {
           <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
           >
+            <Zap size={18} />
             <Translate>Get Started</Translate>
           </Link>
           <Link className={`button button--lg ${styles.tryEditorBtn}`}
             to="/editor"
           >
+            <Code size={18} />
             <Translate>Try Online Editor</Translate>
           </Link>
         </div>
