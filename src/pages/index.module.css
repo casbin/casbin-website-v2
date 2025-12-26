@@ -428,3 +428,92 @@ html[data-theme="light"] .highlightedKeyword {
   mix-blend-mode: screen;
   will-change: transform, opacity;
 }
+
+/* ============================================
+   Casbin Hero Title
+   ============================================ */
+
+/* Title line container - single line display, allows wrapping */
+.heroTitleLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4em;
+  justify-content: center;
+}
+
+/* Brand name "Casbin" */
+.brandName {
+  font-size: 1.5em; /* Slightly larger relative to parent */
+  font-weight: 800;
+  letter-spacing: -0.03em;
+
+  /* Gradient text effect */
+  background:
+    linear-gradient(
+      135deg,
+      #fff 0%,
+      #c7d2fe 40%,
+      #a5b4fc 60%,
+      #fff 100%
+    );
+  background-size: 200% 200%;
+  background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Glow effect */
+  filter: drop-shadow(0 2px 8px rgb(99 102 241 / 40%));
+
+  /* Subtle animation */
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+/* "Open-source authorization for" */
+.tagline {
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 95%);
+}
+
+/* Gradient animation */
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Responsive - auto wrap on small screens */
+@media (max-width: 768px) {
+  .heroTitleLine {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+  }
+
+  .brandName {
+    font-size: 1.3em;
+  }
+}
+
+/* Dark mode */
+[data-theme="dark"] .brandName {
+  background:
+    linear-gradient(
+      135deg,
+      #fff 0%,
+      #a5b4fc 35%,
+      #818cf8 65%,
+      #fff 100%
+    );
+  background-size: 200% 200%;
+  background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 2px 12px rgb(129 140 248 / 50%));
+}

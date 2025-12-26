@@ -30,7 +30,7 @@ function HomepageHeader() {
       .catch(() => setLatestVersion("v3.4.1"));
   }, []);
 
-  const pillText = customFields?.customMessage || `Casbin ${latestVersion} Released`;
+  const pillText = customFields?.customMessage || `${latestVersion} Released`;
   const link = customFields?.customLink || `https://github.com/casbin/casbin/releases/tag/${latestVersion}`;
 
   return (
@@ -56,16 +56,20 @@ function HomepageHeader() {
       <div className={styles.cursorHalo} ref={haloRef} aria-hidden="true" />
       <div className={clsx("container", styles.heroContent)}>
         <Link href={link} target="_blank" rel="noopener noreferrer" className={styles.heroPill}>
-          <span className={styles.pillNew}>NEW</span>
+          <span className={styles.pillNew}>NEWS</span>
           <span className={styles.pillText}>{pillText}</span>
           <span className={styles.pillArrow}>→</span>
         </Link>
         <h1 className="hero__title">
-          <Translate>Open-source authorization for</Translate>
+          <span className={styles.brandName}>Casbin</span>
           <br />
-          <AnimatedText words={["applications", "clouds", "web apps", "AI gateway", "MCP"]} interval={3000} />
+          <span className={styles.taglineWrapper}>
+            <span className={styles.tagline}><Translate>Open-source authorization for</Translate></span>&nbsp;&nbsp;
+            <AnimatedText words={["applications", "clouds", "web apps", "AI gateway", "MCP"]} interval={3000} />
+          </span>
+          <br />
         </h1>
-        <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the board</Translate></p>
+        <p className="hero__subtitle"><Translate>Casbin is a powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the world</Translate></p>
         <div className={styles.actionButtons}>
           <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
