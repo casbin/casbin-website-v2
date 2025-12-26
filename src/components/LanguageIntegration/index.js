@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 
@@ -94,35 +94,86 @@ const languages = [
 
 export default function LanguageIntegration() {
   const [hoveredLanguage, setHoveredLanguage] = useState(null);
+  const [currentLanguageIndex, setCurrentLanguageIndex] = useState(-1);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef(null);
+
+  // Auto-carousel logic
+  useEffect(() => {
+    if (isPaused) {
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      setCurrentLanguageIndex((prevIndex) => {
+        // After the last language (index 16), go to -1 (default view)
+        // Then from -1, go to 0 (first language)
+        if (prevIndex === languages.length - 1) {
+          return -1;
+        }
+        return prevIndex + 1;
+      });
+    }, 3000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPaused]);
+
+  // Update hoveredLanguage based on currentLanguageIndex
+  useEffect(() => {
+    if (currentLanguageIndex >= 0 && !isPaused) {
+      const language = languages[currentLanguageIndex];
+      setHoveredLanguage(language.displayName || language.name);
+    } else if (currentLanguageIndex === -1 && !isPaused) {
+      setHoveredLanguage(null);
+    }
+  }, [currentLanguageIndex, isPaused]);
+
+  const handleMouseEnter = (languageName, index) => {
+    setIsPaused(true);
+    setHoveredLanguage(languageName);
+    setCurrentLanguageIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+    // Keep the current language displayed and resume from current position
+  };
 
   return (
     <div className={styles.languageIntegration}>
       <div className="container">
         <div className={styles.headlineContainer}>
           <h2 className={styles.headline}>
-            Use Casbin with <span className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
+            Use Casbin with <span key={hoveredLanguage || "default"} className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
-        <div className={styles.iconGrid} onMouseLeave={() => setHoveredLanguage(null)}>
-          {languages.map((language) => (
-            <Link
-              key={language.name}
-              to={language.url}
-              className={styles.iconLink}
-              aria-label={language.fullName || language.name}
-            >
-              <div
-                className={`${styles.iconContainer} ${hoveredLanguage === (language.displayName || language.name) ? styles.iconHovered : ""}`}
-                onMouseEnter={() => setHoveredLanguage(language.displayName || language.name)}
+        <div className={styles.iconGrid} onMouseLeave={handleMouseLeave}>
+          {languages.map((language, index) => {
+            const isSelected = currentLanguageIndex === index;
+            return (
+              <Link
+                key={language.name}
+                to={language.url}
+                className={styles.iconLink}
+                aria-label={language.fullName || language.name}
               >
-                <img
-                  src={language.icon}
-                  alt={language.fullName || language.name}
-                  className={styles.icon}
-                />
-              </div>
-            </Link>
-          ))}
+                <div
+                  className={`${styles.iconContainer} ${isSelected ? styles.iconHovered : ""}`}
+                  onMouseEnter={() => handleMouseEnter(language.displayName || language.name, index)}
+                >
+                  <img
+                    src={language.icon}
+                    alt={language.fullName || language.name}
+                    className={styles.icon}
+                  />
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
