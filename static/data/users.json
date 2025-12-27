@@ -25,7 +25,7 @@
     },
     {
         "caption": "Cisco",
-        "image": "users/cisco.svg",
+        "image": "users/cisco.png",
         "infolink": "https://www.linkedin.com/in/openmohan/",
         "pinned": true
     },
@@ -61,7 +61,7 @@
     },
     {
         "caption": "ETH Zurich",
-        "image": "users/eth.jpg",
+        "image": "users/eth.png",
         "infolink": "https://github.com/netsec-ethz/",
         "pinned": true
     },
@@ -97,7 +97,7 @@
     },
     {
         "caption": "Elastic",
-        "image": "users/elastic.svg",
+        "image": "users/elastic.png",
         "infolink": "https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-dependencies.html",
         "pinned": true
     },
@@ -109,7 +109,7 @@
     },
     {
         "caption": "HPE",
-        "image": "users/hpe.jpg",
+        "image": "users/hpe.png",
         "infolink": "https://www.linkedin.com/in/raghavbabu",
         "pinned": true
     },
@@ -121,31 +121,31 @@
     },
     {
         "caption": "SIEMENS",
-        "image": "users/siemens.svg",
+        "image": "users/siemens.png",
         "infolink": "https://www.linkedin.com/in/kshitij-rastogi19",
         "pinned": true
     },
     {
         "caption": "Musma",
-        "image": "users/musma.svg",
+        "image": "users/musma.png",
         "infolink": "https://www.musma.net/",
         "pinned": true
     },
     {
         "caption": "Jdlt",
-        "image": "users/jdlt.svg",
+        "image": "users/jdlt.png",
         "infolink": "https://jdlt.co.uk/",
         "pinned": true
     },
     {
-        "caption": "Jfif",
-        "image": "users/360.jfif",
+        "caption": "360",
+        "image": "users/360.png",
         "infolink": "https://www.linkedin.com/in/andrew-weng/",
         "pinned": true
     },
     {
         "caption": "Bytebase",
-        "image": "users/bytebase.svg",
+        "image": "users/bytebase.png",
         "infolink": "https://github.com/bytebase/bytebase/blob/740afc6286cd855fecc3cc54875583c6b650a41a/server/server.go",
         "pinned": true
     },
@@ -157,13 +157,13 @@
     },
     {
         "caption": "Ontario Government",
-        "image": "users/ontario.jpg",
+        "image": "users/ontario.png",
         "infolink": "https://www.linkedin.com/in/nihalpandit",
         "pinned": true
     },
     {
         "caption": "Apache Pulsar",
-        "image": "users/pulsar.svg",
+        "image": "users/pulsar.png",
         "infolink": "https://apachecon.com/acasia2021/sessions/1049.html",
         "pinned": true
     }
