@@ -4,10 +4,13 @@
 # Production
 /build
 /i18n
+/.next
+/out
 
 # Generated files
 .docusaurus
 .cache-loader
+.source
 
 # Misc
 .DS_Store
