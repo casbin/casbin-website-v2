@@ -183,7 +183,7 @@ func TestManyRoles(t *testing.T) {
 The enforcement time may be very long, up to 6 seconds.
 
 ```bash
-go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v3 -v
 
 === RUN   TestManyRoles
     rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
@@ -194,7 +194,7 @@ go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
     rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
 --- FAIL: TestManyRoles (6.24s)
 FAIL
-FAIL    github.com/casbin/casbin/v2     6.244s
+FAIL    github.com/casbin/casbin/v3     6.244s
 FAIL
 ```
 
@@ -208,7 +208,7 @@ m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
 ```
 
 ```bash
-go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v3 -v
 === RUN   TestManyRoles
     rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
     rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
@@ -217,7 +217,7 @@ go test -run ^TestManyRoles$ github.com/casbin/casbin/v2 -v
     rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
 --- PASS: TestManyRoles (0.05s)
 PASS
-ok      github.com/casbin/casbin/v2     0.053s
+ok      github.com/casbin/casbin/v3     0.053s
 ```
 
 ## Multiple Section Types
