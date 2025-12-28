@@ -123,7 +123,7 @@ Below shows how to initialize an enforcer from the built-in file adapter:
 ```
 
 ```go
-import "github.com/casbin/casbin"
+import "github.com/casbin/casbin/v3"
 
 e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
 ```
@@ -164,8 +164,8 @@ This is the same with:
 
 ```go
 import (
-    "github.com/casbin/casbin"
-    "github.com/casbin/casbin/file-adapter"
+    "github.com/casbin/casbin/v3"
+    fileadapter "github.com/casbin/casbin/v3/persist/file-adapter"
 )
 
 a := fileadapter.NewAdapter("examples/basic_policy.csv")
@@ -213,7 +213,7 @@ Below shows how to initialize an enforcer from MySQL database. it connects to a 
 
 ```go
 import (
-    "github.com/casbin/casbin"
+    "github.com/casbin/casbin/v3"
     "github.com/casbin/mysql-adapter"
 )
 
@@ -283,7 +283,7 @@ You can use your own adapter like below:
 
 ```go
 import (
-    "github.com/casbin/casbin"
+    "github.com/casbin/casbin/v3"
     "github.com/your-username/your-repo"
 )
 
@@ -353,7 +353,7 @@ Here's an example about how to use ``Auto-Save``:
 
 ```go
 import (
-    "github.com/casbin/casbin"
+    "github.com/casbin/casbin/v3"
     "github.com/casbin/xorm-adapter"
     _ "github.com/go-sql-driver/mysql"
 )
