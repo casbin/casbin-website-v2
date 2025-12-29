@@ -10,6 +10,8 @@ authors: [nodece]
 
 - If a model uses Role-Based Access Control (RBAC), it should also include the `[role_definition]` section.
 
+- If a model needs to enforce policy invariants for RBAC, it can optionally include the `[constraint_definition]` section.
+
 - A model configuration (CONF) can contain comments. Comments start with the `#` symbol, and everything after the `#` symbol will be commented out.
 
 ## Request definition
@@ -95,6 +97,50 @@ The supported built-in policy effects are:
 | some(where (p.eft == allow)) && !some(where (p.eft == deny)) | allow-and-deny        | [Allow-and-deny](/docs/supported-models#examples)   |
 | priority(p.eft) &#124;&#124; deny                            | priority              | [Priority](/docs/supported-models#examples)         |
 | subjectPriority(p.eft)                                       | priority based on role| [Subject-Priority](/docs/supported-models#examples) |
+
+## Constraint Definition
+
+The `[constraint_definition]` section declares policy invariants for RBAC systems. Constraints ensure your role assignments stay valid by checking rules every time policies change. This section is optional and only works when RBAC is enabled (requires `[role_definition]`).
+
+```ini
+[constraint_definition]
+c = sod("finance_requester", "finance_approver")
+c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
+c3 = roleMax("superadmin", 2)
+c4 = rolePre("db_admin", "security_trained")
+```
+
+### Constraint Types
+
+**Separation of Duties (sod)** - Prevents a user from holding two conflicting roles simultaneously. When Alice is assigned `finance_requester`, the system blocks any attempt to also give her `finance_approver`.
+
+```ini
+c = sod("finance_requester", "finance_approver")
+```
+
+**Separation of Duties Max (sodMax)** - Limits how many roles from a set each user can have. With `sodMax` set to 1, a user managing payroll can either view, edit, or approve—but never hold two of these roles at once.
+
+```ini
+c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
+```
+
+**Role Cardinality (roleMax)** - Caps the total number of users who can have a specific role. Setting a limit of 2 for `superadmin` means only two people in your organization can hold that role at any time.
+
+```ini
+c3 = roleMax("superadmin", 2)
+```
+
+**Prerequisite Role (rolePre)** - Requires users to have one role before they can receive another. Nobody gets `db_admin` access unless they already have the `security_trained` role.
+
+```ini
+c4 = rolePre("db_admin", "security_trained")
+```
+
+### How Constraints Work
+
+Constraints validate automatically when you modify grouping policies through methods like `AddGroupingPolicy()` or `RemoveGroupingPolicy()`. If a change would break a constraint, the operation fails and returns a constraint violation error—the policy remains unchanged.
+
+During model initialization, all existing constraints are checked against current policies. If any constraint is invalid (wrong syntax, missing RBAC setup, or violated by existing data), the model fails to load with a descriptive error.
 
 ## Matchers
 
