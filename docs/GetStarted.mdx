@@ -14,7 +14,7 @@ authors: [nodece]
 ```
 
 ```bash
-go get github.com/casbin/casbin/v2
+go get github.com/casbin/casbin/v3
 ```
 
 ```mdx-code-block
@@ -170,6 +170,19 @@ luarocks install casbin --local
 </Tabs>
 ```
 
+:::info Migrating from v2 to v3
+
+If you're upgrading from Casbin v2 to v3, update your import paths from `github.com/casbin/casbin/v2` to `github.com/casbin/casbin/v3`. This applies to all subpackages as well (e.g., `v2/model` becomes `v3/model`).
+
+For Go modules, run:
+
+```bash
+go get -u github.com/casbin/casbin/v3
+```
+
+Then update all imports in your code from `/v2` to `/v3`.
+:::
+
 ## New a Casbin enforcer
 
 Casbin uses configuration files to define the access control model.
@@ -188,7 +201,7 @@ Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use
 ```
 
 ```go
-import "github.com/casbin/casbin/v2"
+import "github.com/casbin/casbin/v3"
 
 e, err := casbin.NewEnforcer("path/to/model.conf", "path/to/policy.csv")
 ```
@@ -332,8 +345,8 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 import (
     "log"
 
-    "github.com/casbin/casbin/v2"
-    "github.com/casbin/casbin/v2/model"
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin/v3/model"
     xormadapter "github.com/casbin/xorm-adapter/v2"
     _ "github.com/go-sql-driver/mysql"
 )
