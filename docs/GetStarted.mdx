@@ -148,7 +148,7 @@ cargo add tokio
 <TabItem value="Delphi" label="Delphi">
 ```
 
-Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components which means that you can use the units independently of packages. Just import the units in your project (assuming you do not mind the number of them).
+Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components, which means you can use the units independently of packages. Just import the units in your project (assuming you don't mind the number of them).
 
 ```mdx-code-block
 </TabItem>
@@ -187,7 +187,7 @@ Then update all imports in your code from `/v2` to `/v3`.
 
 Casbin uses configuration files to define the access control model.
 
-There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. The usage of Casbin is very straightforward. We only need to create one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
+There are two configuration files: `model.conf` and `policy.csv`. The `model.conf` file stores the access model, while `policy.csv` stores the specific user permission configuration. Using Casbin is straightforward. You only need to create one main structure: the **enforcer**. When constructing this structure, the `model.conf` and `policy.csv` files will be loaded.
 
 In other words, to create a Casbin enforcer, you need to provide a [Model](supported-models) and an [Adapter](adapters).
 

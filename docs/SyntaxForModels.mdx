@@ -12,7 +12,7 @@ authors: [nodece]
 
 - If a model needs to enforce policy invariants for RBAC, it can optionally include the `[constraint_definition]` section.
 
-- A model configuration (CONF) can contain comments. Comments start with the `#` symbol, and everything after the `#` symbol will be commented out.
+- A model configuration (CONF) can contain comments. Comments start with the `#` symbol, and everything following the `#` symbol will be treated as a comment.
 
 ## Request definition
 
@@ -57,7 +57,7 @@ The elements in a policy rule are always regarded as `strings`. If you have any 
 
 ## Policy Effect
 
-``[policy_effect]`` is the definition for the policy effect. It determines whether the access request should be approved if multiple policy rules match the request. For example, one rule permits and the other denies.
+``[policy_effect]`` defines the policy effect. It determines whether the access request should be approved if multiple policy rules match the request. For example, one rule permits while another denies.
 
 ```ini
 [policy_effect]
@@ -73,18 +73,18 @@ Another example for the policy effect is:
 e = !some(where (p.eft == deny))
 ```
 
-This means that if there are no matched policy rules of ``deny``, the final effect is ``allow`` (also known as deny-override). ``some`` means that there exists one matched policy rule. ``any`` means that all matched policy rules (not used here). The policy effect can even be connected with logical expressions:
+This means that if there are no matched policy rules of ``deny``, the final effect is ``allow`` (also known as deny-override). ``some`` means at least one matched policy rule exists. ``any`` means all matched policy rules (not used here). The policy effect can even be connected with logical expressions:
 
 ```ini
 [policy_effect]
 e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
 ```
 
-This means that there must be at least one matched policy rule of ``allow``, and there cannot be any matched policy rule of ``deny``. Therefore, in this way, both allow and deny authorizations are supported, and the deny overrides.
+This means that there must be at least one matched policy rule of ``allow``, and there cannot be any matched policy rule of ``deny``. In this way, both allow and deny authorizations are supported, and deny overrides allow.
 
 :::note
 
-Although we designed the syntax of the policy effect as above, the current implementations only use hard-coded policy effects. This is because we found that there isn't much need for that level of flexibility. So for now, you must use one of the built-in policy effects instead of customizing your own.
+Although we designed the syntax of the policy effect as above, the current implementations only use hard-coded policy effects. This is because we found that there isn't much need for that level of flexibility. For now, you must use one of the built-in policy effects instead of customizing your own.
 
 :::
 
@@ -112,7 +112,7 @@ c4 = rolePre("db_admin", "security_trained")
 
 ### Constraint Types
 
-**Separation of Duties (sod)** - Prevents a user from holding two conflicting roles simultaneously. When Alice is assigned `finance_requester`, the system blocks any attempt to also give her `finance_approver`.
+**Separation of Duties (sod)** - Prevents a user from holding two conflicting roles simultaneously. When Alice is assigned `finance_requester`, the system blocks any attempt to also assign her `finance_approver`.
 
 ```ini
 c = sod("finance_requester", "finance_approver")
@@ -130,7 +130,7 @@ c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
 c3 = roleMax("superadmin", 2)
 ```
 
-**Prerequisite Role (rolePre)** - Requires users to have one role before they can receive another. Nobody gets `db_admin` access unless they already have the `security_trained` role.
+**Prerequisite Role (rolePre)** - Requires users to have one role before they can receive another. Nobody gets `db_admin` access unless they already have the `security_trained` role first.
 
 ```ini
 c4 = rolePre("db_admin", "security_trained")
@@ -144,14 +144,14 @@ During model initialization, all existing constraints are checked against curren
 
 ## Matchers
 
-``[matchers]`` is the definition for policy matchers. The matchers are expressions that define how the policy rules are evaluated against the request.
+``[matchers]`` defines the policy matchers. The matchers are expressions that define how policy rules are evaluated against the request.
 
 ```ini
 [matchers]
 m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 ```
 
-The above matcher is the simplest and means that the subject, object, and action in a request should match the ones in a policy rule.
+The above matcher is the simplest and means that the subject, object, and action in a request should match the corresponding fields in a policy rule.
 
 Arithmetic operators like ``+, -, *, /`` and logical operators like ``&&, ||, !`` can be used in matchers.
 
@@ -394,7 +394,7 @@ e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1
 
 ## Special Grammar
 
-You could also use the "in" operator, which is the only operator with a text name. This operator checks the array on the right-hand side to see if it contains a value that is equal to the value on the left side. Equality is determined by using the == operator, and this library does not check the types between the values. As long as two values can be cast to interface{} and can still be checked for equality with ==, they will act as expected. Note that you can use a parameter for the array, but it must be an []interface{}.
+You can also use the "in" operator, which is the only operator with a text name. This operator checks whether the array on the right-hand side contains a value that is equal to the value on the left side. Equality is determined using the == operator, and this library does not check types between the values. As long as two values can be cast to interface{} and can still be checked for equality with ==, they will behave as expected. Note that you can use a parameter for the array, but it must be an []interface{}.
 
 Also refer to [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf), and [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf).
 
@@ -414,7 +414,7 @@ e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice",
 
 ## Expression Evaluator
 
-The matcher evaluation in Casbin is implemented by expression evaluators in each language. Casbin integrates their powers to provide the unified PERM language. In addition to the model syntax provided here, these expression evaluators may offer extra functionality that might not be supported by another language or implementation. Please be cautious when using this functionality.
+The matcher evaluation in Casbin is implemented by expression evaluators in each language. Casbin integrates these to provide the unified PERM language. In addition to the model syntax provided here, these expression evaluators may offer extra functionality that might not be supported by another language or implementation. Please be cautious when using this functionality.
 
 The expression evaluators used by each Casbin implementation are as follows:
 
@@ -432,6 +432,6 @@ The expression evaluators used by each Casbin implementation are as follows:
 
 :::note
 
-If you encounter a performance issue with Casbin, it is likely caused by the low efficiency of the expression evaluator. You can address the issue to Casbin or the expression evaluator directly for advice on speeding up the performance. For more details, please refer to the [Benchmarks](/docs/benchmark) section.
+If you encounter a performance issue with Casbin, it is likely caused by the low efficiency of the expression evaluator. You can address the issue to Casbin or the expression evaluator directly for advice on improving performance. For more details, please refer to the [Benchmarks](/docs/benchmark) section.
 
 :::
