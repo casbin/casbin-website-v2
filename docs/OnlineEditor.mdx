@@ -6,54 +6,54 @@ keywords: [online editor, Casbin editor]
 authors: [hsluoyz]
 ---
 
-You can also use the [online editor](/editor) to write your Casbin model and policy in your web browser. It provides functionality such as "syntax highlighting" and "code completion", just like an IDE for a programming language.
+Write and test your Casbin models and policies directly in your browser using the [online editor](/editor). The editor provides syntax highlighting and code completion similar to a programming IDE.
 
 ## Editor Features
 
-The online editor provides several powerful features to enhance your Casbin development experience:
+The online editor includes these capabilities to streamline Casbin development:
 
 ### AI-Powered Assistance
 
-The editor includes AI assistance to help you write better Casbin models and policies.
+Get AI help while writing Casbin models and policies.
 
 ![editor-ai](/img/editor-ai.png)
 
 ### Engine Selection
 
-Choose from multiple Casbin engines including Go, Java, Node.js, Python, Rust, and .NET implementations.
+Test your models using Go, Java, Node.js, Python, Rust, or .NET Casbin implementations.
 
 ![editor-engine](/img/editor-engine.png)
 
 ### Multiple Engine Support
 
-Switch between different Casbin implementations to test your models across various platforms.
+Switch between Casbin implementations to validate your models across different platforms.
 
 ![editor-multi-engine](/img/editor-multi-engine.png)
 
 ### Endpoint Configuration
 
-Configure custom endpoints for testing your Casbin models against different environments.
+Point the editor to custom endpoints for testing models in different environments.
 
 ![editor-endpoint](/img/editor-endpoint.png)
 
 ### File Upload
 
-Upload existing model and policy files to quickly get started with the editor.
+Import existing model and policy files to start working immediately.
 
 ![editor-upload](/img/editor-upload.png)
 
 ### Use Custom Functions
 
-If you need to use a customized matching function (e.g. "RBAC with Patterns"), you can add it by clicking the "Add Role Matching" button at the bottom left corner of the editor.
+Add custom matching functions (for example, "RBAC with Patterns") by clicking the "Add Role Matching" button in the bottom left corner.
 
 ![editor-tips](/img/editor-tips.png).
 
-If you want to write the equivalent code, you need to specify the pattern matching function through the relevant API. Refer to [RBAC with Pattern](/docs/rbac-with-pattern) for more information.
+To implement custom matching functions in your code, configure them through the Casbin API. See [RBAC with Pattern](/docs/rbac-with-pattern) for details.
 
 :::note
 
-The editor supports multiple Casbin implementations, including [Node-Casbin (Node.js)](https://github.com/casbin/node-casbin), [JCasbin (Java)](https://github.com/casbin/jcasbin), [Casbin (Go)](https://github.com/casbin/casbin), [Casbin-rs (Rust)](https://github.com/casbin/casbin-rs), [PyCasbin (Python)](https://github.com/casbin/pycasbin), and [Casbin.NET (C#)](https://github.com/casbin/Casbin.NET). You can switch between different implementations in the upper right corner to test your model and policy.
+The editor supports [Node-Casbin (Node.js)](https://github.com/casbin/node-casbin), [JCasbin (Java)](https://github.com/casbin/jcasbin), [Casbin (Go)](https://github.com/casbin/casbin), [Casbin-rs (Rust)](https://github.com/casbin/casbin-rs), [PyCasbin (Python)](https://github.com/casbin/pycasbin), and [Casbin.NET (C#)](https://github.com/casbin/Casbin.NET). Switch between implementations in the upper right corner to test your configuration.
 
-Although the editor validates through a remote CLI, due to environment differences, the validation results may differ slightly from the results you get in your local environment. If you encounter any issues, please submit them to the corresponding Casbin implementation repository.
+The editor validates models through a remote CLI. Results may vary slightly from your local environment due to implementation differences. Report any issues to the appropriate Casbin implementation repository.
 
 :::

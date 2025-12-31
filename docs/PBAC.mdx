@@ -14,18 +14,18 @@ authors: [casbin]
 
 ## What is the PBAC model?
 
-PBAC stands for Policy-Based Access Control. It is a flexible access control model that makes authorization decisions based on policies defined as rules. Unlike traditional access control models that rely on static roles or attributes, PBAC allows for dynamic, rule-based authorization that can evaluate complex conditions using the `eval()` function.
+PBAC (Policy-Based Access Control) is a flexible access control model that evaluates authorization based on rules defined in policies. Unlike static role-based or attribute-based models, PBAC evaluates complex conditions dynamically at runtime using the `eval()` function.
 
-In PBAC, access decisions are made by evaluating policies that can include:
+PBAC policies can include:
 
-- **Dynamic Rules**: Policies that evaluate expressions at runtime
-- **Complex Logic**: Support for boolean operations, comparisons, and attribute-based conditions
+- **Dynamic Rules**: Expressions evaluated at runtime
+- **Complex Logic**: Boolean operations, comparisons, and attribute-based conditions
 - **Contextual Information**: User attributes, resource properties, and environmental factors
-- **Business Rules**: Domain-specific authorization logic that reflects organizational policies
+- **Business Rules**: Domain-specific authorization logic reflecting organizational policies
 
 ## PBAC Model Definition
 
-Here's the PBAC model configuration:
+The PBAC model configuration:
 
 ```ini
 [request_definition]
@@ -41,11 +41,11 @@ e = some(where (p.eft == allow))
 m = eval(p.sub_rule) && eval(p.obj_rule) && r.act == p.act
 ```
 
-In this model:
+Model components:
 
-- `p.sub_rule` contains the subject rule to be evaluated (e.g., `r.sub.Age >= 18`)
-- `p.obj_rule` contains the object rule to be evaluated (e.g., `r.obj.Level >= 1`)
-- `eval()` function evaluates the policy rules dynamically against the request
+- `p.sub_rule` contains the subject rule (for example, `r.sub.Age >= 18`)
+- `p.obj_rule` contains the object rule (for example, `r.obj.Level >= 1`)
+- `eval()` evaluates policy rules dynamically against the request
 
 ## Policy and Request Examples
 

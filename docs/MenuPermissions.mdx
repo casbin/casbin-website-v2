@@ -6,66 +6,66 @@ keywords: [Menu Permissions, example]
 authors: [amikecoXu]
 ---
 
-We begin by introducing a Spring Boot example featuring a menu system. This example leverages jCasbin to manage menu permissions. Ultimately, it aims to abstract a middleware, specifically for menu permissions, which could be extended to other languages supported by Casbin, such as Go and Python.
+This guide demonstrates a Spring Boot application that implements menu-based access control using jCasbin. The approach shown here serves as a foundation for building menu permission middleware that can be adapted to other Casbin-supported languages like Go and Python.
 
 ### 1. Configuration Files
 
-You need to set up role and permission management in the `policy.csv` file, along with the parent-child relationships between menu items. For more details, please refer to [this GitHub repo](https://github.com/jcasbin/jcasbin-menu-permission).
+Configure role permissions and menu hierarchies in the `policy.csv` file. For a complete working example, see the [jCasbin menu permission repository](https://github.com/jcasbin/jcasbin-menu-permission).
 
 #### 1.1 Overview
 
-Using `policy.csv`, you can flexibly configure role permissions and menu structures for fine-grained access control. This configuration file defines access permissions for different roles on various menu items, associations between users and roles, and the hierarchical relationships between menu items.
+The `policy.csv` file enables granular access control by defining role-based permissions for menu items, user-role assignments, and hierarchical menu structures. This configuration combines three elements: which roles can access which menu items, which users belong to which roles, and how menus relate to each other in the navigation hierarchy.
 
 #### 1.2 Permission Definitions (Policies)
 
-- **Policy Rules**: Policies are defined with a `p` prefix, specifying roles (`sub`) and their permissions (`act`) on menu items (`obj`), along with the rule's effect (`eft`), where `allow` indicates permission is granted, and `deny` indicates it is denied.
+- **Policy Rules**: Each policy line starts with `p` and defines whether a role (`sub`) has permission to perform an action (`act`) on a menu item (`obj`). The effect (`eft`) is either `allow` or `deny`.
 
 Examples:
 
-- `p, ROLE_ROOT, SystemMenu, read, allow` means the `ROLE_ROOT` role has read access to the `SystemMenu` menu item.
-- `p, ROLE_ROOT, UserMenu, read, deny` means the `ROLE_ROOT` role is denied read access to the `UserMenu` menu item.
+- `p, ROLE_ROOT, SystemMenu, read, allow` grants `ROLE_ROOT` read access to `SystemMenu`.
+- `p, ROLE_ROOT, UserMenu, read, deny` denies `ROLE_ROOT` read access to `UserMenu`.
 
 #### 1.3 Roles and User Associations
 
-- **Role Inheritance**: User-role relationships and role hierarchies are defined with a `g` prefix. This allows users to inherit permissions from one or multiple roles.
+- **Role Inheritance**: Lines starting with `g` define user-role assignments and role inheritance chains. Users automatically inherit permissions from all their assigned roles.
 
 Examples:
 
-- `g, user, ROLE_USER` means the user `user` is assigned the `ROLE_USER` role.
-- `g, ROLE_ADMIN, ROLE_USER` means `ROLE_ADMIN` inherits permissions from `ROLE_USER`.
+- `g, user, ROLE_USER` assigns the user named `user` to `ROLE_USER`.
+- `g, ROLE_ADMIN, ROLE_USER` makes `ROLE_ADMIN` inherit all permissions from `ROLE_USER`.
 
 #### 1.4 Menu Item Hierarchy
 
-- **Menu Relationships**: Parent-child relationships between menu items are defined with a `g2` prefix, aiding in the construction of a menu's structure.
+- **Menu Relationships**: Lines starting with `g2` define parent-child relationships between menu items, establishing the menu structure.
 
 Examples:
 
-- `g2, UserSubMenu_allow, UserMenu` indicates `UserSubMenu_allow` is a submenu of `UserMenu`.
-- `g2, (NULL), SystemMenu` indicates `SystemMenu` has no submenu item, meaning it is a top-level menu item.
+- `g2, UserSubMenu_allow, UserMenu` makes `UserSubMenu_allow` a child of `UserMenu`.
+- `g2, (NULL), SystemMenu` marks `SystemMenu` as a top-level menu with no parent.
 
 #### 1.5 Menu Permission Inheritance and Default Rules
 
-When managing menu permissions with jCasbin, the permission relationship between parent and child menus follows specific inheritance rules, with two important default rules:
+jCasbin applies specific inheritance rules when determining menu access based on parent-child relationships:
 
 **Inheritance of Parent Menu Permissions**:
 
-If a parent menu is explicitly granted `allow` permission, all its submenus also default to `allow` permission unless specifically marked as `deny`. This means once a parent menu is accessible, its submenus are also accessible by default.
+When a parent menu has explicit `allow` permission, all child menus inherit `allow` by default unless explicitly set to `deny`. Granting access to a parent menu automatically grants access to its children.
 
 **Handling Parent Menus Without Direct Permission Settings**:
 
-If a parent menu has no direct permission settings (neither explicitly allowed nor denied) but has at least one submenu explicitly granted `allow` permission, then the parent menu is implicitly considered to have `allow` permission. This ensures users can navigate to these submenus.
+When a parent menu has no explicit permission but contains at least one child menu with explicit `allow` permission, the parent menu is implicitly granted `allow` status. This ensures users can reach the accessible child menus.
 
 #### 1.6 Special Permission Inheritance Rules
 
-Regarding the inheritance of permissions between roles, especially in scenarios involving `deny` permissions, the following rules must be followed to ensure system security and precise control of permissions:
+Role inheritance interacts with `deny` permissions according to these rules:
 
 **Distinction Between Explicit and Default Denials**:
 
-If a role, such as `ROLE_ADMIN`, is explicitly denied access to a menu item, such as `AdminSubMenu_deny` (marked as `deny`), then even if this role is inherited by another role (e.g., `ROLE_ROOT`), the inheriting role is not permitted access to the denied menu item. This ensures explicit security policies are not bypassed due to role inheritance.
+Explicit `deny` permissions always take precedence. When a role like `ROLE_ADMIN` is explicitly denied access to `AdminSubMenu_deny`, no role that inherits from `ROLE_ADMIN` (such as `ROLE_ROOT`) can access that menu. Explicit denials cannot be overridden through role inheritance.
 
 **Inheritance of Default Denial Permissions**:
 
-Conversely, if a role's denial of access to a menu item (e.g., `UserSubMenu_deny`) is default (not explicitly marked as `deny`, but because it was not explicitly granted `allow`), then when this role is inherited by another role (e.g., `ROLE_ADMIN`), the inheriting role may override the default `deny` status, allowing access to these menu items.
+Default denials (menus that lack an explicit `allow`) work differently. When `UserSubMenu_deny` is implicitly denied to `ROLE_USER` simply because no `allow` rule exists, a role inheriting from `ROLE_USER` (like `ROLE_ADMIN`) can override this by adding its own explicit `allow` rule.
 
 #### 1.7 Example Description
 
@@ -106,4 +106,4 @@ g2, (NULL), SystemMenu
 
 ### 2. Menu Permission Control
 
-The list of all menu items accessible by a given username can be identified through the `findAccessibleMenus()` function available in the [MenuService](https://github.com/jcasbin/jcasbin-menu-permission/blob/master/src/main/java/org/casbin/service/MenuService.java). To check whether a specific user has the rights to access a designated menu item, the `checkMenuAccess()` method can be utilized. This approach ensures that menu permissions are effectively controlled, leveraging jCasbin's capabilities to manage access rights efficiently.
+Use `findAccessibleMenus()` from [MenuService](https://github.com/jcasbin/jcasbin-menu-permission/blob/master/src/main/java/org/casbin/service/MenuService.java) to retrieve all menu items a user can access. To verify access to a specific menu item, call the `checkMenuAccess()` method. These functions provide efficient menu permission enforcement through jCasbin's access control engine.

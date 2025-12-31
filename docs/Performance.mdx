@@ -6,34 +6,34 @@ keywords: [optimization]
 authors: [hsluoyz]
 ---
 
-When applied in a production environment with millions of users or permissions, you may encounter a performance downgrade in Casbin enforcement. There are usually two causes:
+Deploying Casbin in production with millions of users or permissions may lead to performance bottlenecks. These typically stem from two causes:
 
 #### High Volume Traffic
 
-The number of incoming requests per second is too large, for example, 10,000 requests/s for a single Casbin instance. In such cases, a single Casbin instance is usually not enough to handle all the requests. There are two possible solutions:
+When a single Casbin instance receives excessive requests (for example, 10,000 requests/s), it cannot process them all. Consider these solutions:
 
-1. Use multi-threading to enable multiple Casbin instances, so you can fully utilize all the cores in the machine. For more details, see: [Multi-threading](/docs/multi-threading).
+1. Enable multi-threading to run multiple Casbin instances, utilizing all CPU cores on the machine. See [Multi-threading](/docs/multi-threading) for details.
 
-2. Deploy Casbin instances to a cluster (multiple machines) and use Watcher to ensure all Casbin instances are consistent. For more details, see: [Watchers](/docs/watchers).
+2. Deploy Casbin instances across a cluster (multiple machines) and use Watchers to synchronize policy changes. See [Watchers](/docs/watchers) for details.
 
 :::note
 
-You can use both of the above methods at the same time, for example, deploy Casbin to a 10-machine cluster where each machine has 5 threads simultaneously serving Casbin enforcement requests.
+Combine both approaches: deploy Casbin across a 10-machine cluster where each machine runs 5 threads handling enforcement requests simultaneously.
 
 :::
 
 #### High Number of Policy Rules
 
-In a cloud or multi-tenant environment, millions of policy rules may be required. Each enforcement call or even loading the policy rules at the initial time can be very slow. Such cases can usually be mitigated in several ways:
+Multi-tenant or cloud environments may require millions of policy rules, causing slow enforcement and initial policy loading. Mitigate this issue with these approaches:
 
-1. Check if your Casbin model or policy is well-designed. A well-written model and policy abstracts out the duplicated logic for each user/tenant and reduces the number of rules to a very small level (< 100). For example, you can share some default rules across all tenants and allow users to customize their rules later. Customized rules can override the default rules. If you have any further questions, please open a GitHub issue on the Casbin repository.
+1. Review your Casbin model and policy design. Well-designed models abstract common logic across users and tenants, reducing rules to a small set (typically under 100). Share default rules across tenants and allow customization through override rules. Open a GitHub issue on the Casbin repository if you need design guidance.
 
-2. Do sharding to let a Casbin enforcer only load a small set of policy rules. For example, enforcer_0 can serve tenant_0 to tenant_99, while enforcer_1 can serve tenant_100 to tenant_199. To load only a subset of all policy rules, see: [Policy Subset Loading](/docs/policy-subset-loading).
+2. Use policy sharding to load only relevant rules per enforcer. For example, `enforcer_0` serves `tenant_0` through `tenant_99`, while `enforcer_1` serves `tenant_100` through `tenant_199`. See [Policy Subset Loading](/docs/policy-subset-loading) for implementation details.
 
-3. Grant permissions to RBAC roles instead of users directly. Casbin's RBAC is implemented by a role inheritance tree (as a cache). So, given a user like Alice, Casbin only takes O(1) time to query the RBAC tree for the role-user relationship and perform enforcement. If your g rules don't change often, then the RBAC tree won't need to be constantly updated. See the details of this discussion here: [https://github.com/casbin/casbin/issues/681#issuecomment-763801583](https://github.com/casbin/casbin/issues/681#issuecomment-763801583)
+3. Assign permissions to RBAC roles rather than directly to users. Casbin implements RBAC using a role inheritance tree (cached in memory), enabling O(1) lookup time for user-role relationships. When role assignments remain relatively stable, the RBAC tree requires infrequent updates. See this [discussion](https://github.com/casbin/casbin/issues/681#issuecomment-763801583) for more details.
 
 :::note
 
-You can try all of the above methods at the same time.
+Apply all these methods simultaneously for optimal performance.
 
 :::

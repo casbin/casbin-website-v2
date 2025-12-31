@@ -6,11 +6,11 @@ keywords: [filtered policies, policy subset, performance optimization]
 authors: [hsluoyz]
 ---
 
-Some adapters support filtered policy management. This means that the policy loaded by Casbin is a subset of the policy stored in the database based on a given filter. This allows for efficient policy enforcement in large, multi-tenant environments where parsing the entire policy becomes a performance bottleneck.
+Some adapters support filtered policy loading. This capability loads only a subset of policies from storage based on specified criteria, enabling efficient enforcement in large multi-tenant environments where loading all policies would create a performance bottleneck.
 
-To use filtered policies with a supported adapter, simply call the `LoadFilteredPolicy` method. The valid format for the filter parameter depends on the adapter used. To prevent accidental data loss, the `SavePolicy` method is disabled when a filtered policy is loaded.
+To load filtered policies with a supported adapter, call `LoadFilteredPolicy`. The filter format depends on the adapter implementation. The `SavePolicy` method is disabled when operating with filtered policies to prevent accidental data loss.
 
-For example, the following code snippet uses the built-in filtered file adapter and the RBAC model with domains. In this case, the filter limits the policy to a single domain. Any policy lines for domains other than `"domain1"` are omitted from the loaded policy:
+Here's an example using the built-in filtered file adapter with an RBAC model that includes domains. This filter restricts loaded policies to a single domain, excluding all policies for other domains:
 
 ```go
 import (
@@ -32,4 +32,4 @@ enforcer.LoadFilteredPolicy(filter)
 // The loaded policy now only contains the entries pertaining to "domain1".
 ```
 
-There is another method that supports the subset loading feature: `LoadIncrementalFilteredPolicy`. `LoadIncrementalFilteredPolicy` is similar to `LoadFilteredPolicy`, but it does not clear the previously loaded policy. It only appends the filtered policy to the existing policy.
+The `LoadIncrementalFilteredPolicy` method provides similar functionality but appends filtered policies to existing policies rather than replacing them. This incremental approach lets you build up policies from multiple filtered loads.
