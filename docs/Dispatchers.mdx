@@ -6,19 +6,19 @@ keywords: [dispatcher]
 authors: [dovics]
 ---
 
-Dispatchers provide a way to synchronize incremental changes of policy. They should be based on consistency algorithms such as Raft to ensure the consistency of all enforcer instances. Through dispatchers, users can easily establish distributed clusters.
+Dispatchers enable synchronization of incremental policy changes across distributed Casbin enforcer instances. They rely on consistency algorithms like Raft to maintain uniform policy state across all enforcers, simplifying the creation of distributed authorization clusters.
 
-The dispatcher's method is divided into two parts. The first part is the method combined with Casbin. These methods should be called inside Casbin. Users can use the more complete API provided by Casbin itself.
+A dispatcher's functionality is split into two parts. The first consists of methods integrated with Casbin's core. These methods are called internally by Casbin, allowing developers to use Casbin's standard API without modification.
 
-The other part is the method defined by the dispatcher itself, including the dispatcher initialization method, and different functions provided by different algorithms, such as dynamic membership and config changes.
+The second part includes the dispatcher's own initialization and algorithm-specific features, such as dynamic membership management and configuration updates.
 
 :::note
 
-We hope dispatchers only ensure the consistency of the Casbin enforcer at runtime. So if the policy is inconsistent during initialization, the dispatchers will not work properly. Users need to ensure that the state of all instances is consistent before using dispatchers.
+Dispatchers synchronize runtime policy changes only. They do not resolve pre-existing inconsistencies during initialization. You must ensure all enforcer instances start with identical policy states before enabling dispatchers.
 
 :::
 
-A complete list of Casbin dispatchers is provided below. Any 3rd-party contributions on a new dispatcher are welcomed. Please inform us, and we will add it to this list.
+Below is a list of available Casbin dispatchers. Contributions of new dispatchers are welcome—let us know, and we'll include them here.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -37,7 +37,7 @@ import {DispatcherGoData} from "@site/src/tableData/DispatcherData/DispatcherGoD
 
 ### DistributedEnforcer
 
-DistributedEnforcer wraps SyncedEnforcer for the dispatcher.
+`DistributedEnforcer` wraps `SyncedEnforcer` to work with dispatchers.
 
 ```mdx-code-block
 <Tabs groupId="langs">
