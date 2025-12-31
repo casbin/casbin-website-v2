@@ -6,15 +6,15 @@ keywords: [model storage]
 authors: [hsluoyz]
 ---
 
-Unlike the policy, the model can only be loaded, it cannot be saved. We believe that the model is not a dynamic component and should not be modified at runtime, so we have not implemented an API to save the model into storage.
+Casbin models are designed to be loaded rather than saved. The model defines your access control logic and should remain static at runtime, so Casbin does not provide an API for persisting model changes to storage.
 
-However, there is good news. We provide three equivalent ways to load a model, either statically or dynamically:
+You can load a model using any of these three approaches:
 
 ## Load model from .CONF file
 
-This is the most common way to use Casbin. It is easy to understand for beginners and convenient for sharing when you need help from the Casbin team.
+Loading from a configuration file is the standard approach. This method makes models easy to understand and share when seeking help from the Casbin community.
 
-The content of the `.CONF` file [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) is as follows:
+Here's an example model file [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
 
 ```ini
 [request_definition]
@@ -33,7 +33,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-Then you can load the model file as follows:
+Load this model file:
 
 ```go
 e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
@@ -41,7 +41,7 @@ e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 
 ## Load model from code
 
-The model can be initialized dynamically from code instead of using a `.CONF` file. Here's an example for the RBAC model:
+Build the model programmatically instead of reading from a file. This example constructs an RBAC model:
 
 ```go
 import (
@@ -68,7 +68,7 @@ e := casbin.NewEnforcer(m, a)
 
 ## Load model from string
 
-Alternatively, you can load the entire model text from a multi-line string. The advantage of this approach is that you do not need to maintain a model file.
+Load the model directly from a multi-line string. This eliminates the need to maintain a separate model file.
 
 ```go
 import (

@@ -52,6 +52,6 @@ Follow these steps to configure K8s-authz:
       --from-file=cert.pem=certs/casbin-crt.pem
     ```
 
-7. Update the certificate directory paths in [main.go](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) and the [manifests](https://github.com/ashish493/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) to reference the created `secret`.
+7. Update the certificate directory paths in [main.go](https://github.com/casbin/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/main.go#L26) and the [manifests](https://github.com/casbin/k8s-authz/blob/3560551427c0431a9d4594ad1206f084ede37c49/manifests/deployment.yaml#L22) to reference the created `secret`.
 
 The server should now be operational, validating requests to Kubernetes resources and enforcing policies.
