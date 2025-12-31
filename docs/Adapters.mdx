@@ -358,7 +358,7 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-// AutoSave is enabled by default for enforcers.
+// AutoSave is enabled by default when using compatible adapters with enforcers.
 a := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
 e := casbin.NewEnforcer("examples/basic_model.conf", a)
 
