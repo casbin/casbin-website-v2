@@ -8,16 +8,16 @@ authors: [hsluoyz]
 
 ## Functions in matchers
 
-You can specify functions in a matcher to make it more powerful. You can use built-in functions or define your own custom functions.
-The built-in key-matching functions take the following format:
+Enhance matcher capabilities by incorporating functions. Use built-in functions or define custom ones.
+Built-in key-matching functions follow this signature:
 
 ```c
 bool function_name(string url, string pattern)
 ```
 
-They return a boolean indicating whether the `url` matches the `pattern`.
+These functions return booleans indicating whether `url` matches `pattern`.
 
-The supported built-in functions are:
+Available built-in functions:
 
 | Function   | url                                             | pattern                                                            | Example                                                                                                                                                                                               |
 |------------|-------------------------------------------------|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -30,16 +30,16 @@ The supported built-in functions are:
 | ipMatch    | an IP address like `192.168.2.123`              | an IP address or a CIDR like `192.168.2.0/24`                       | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)/[ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)         |
 | globMatch  | a path-like path like `/alice_data/resource1`   | a glob pattern like `/alice_data/*`                                 | [https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466)                                                                               |
 
-For key-getting functions, they typically take three parameters (except `keyGet`):
+Key-getting functions generally accept three parameters (except `keyGet`):
 
 ```c
 bool function_name(string url, string pattern, string key_name)
 ```
 
-They will return the value of the key `key_name` if it matches the pattern, and return `""` if there is no match.
+These return the `key_name` value when matching the pattern, otherwise returning `""`.
 
-For example, `KeyGet2("/resource1/action", "/:res/action", "res")` will return `"resource1"`, and `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` will return `"resource1"`.
-As for `KeyGet`, which takes two parameters, `KeyGet("/resource1/action", "/*)` will return `"resource1/action"`.
+Examples: `KeyGet2("/resource1/action", "/:res/action", "res")` returns `"resource1"`, while `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` returns `"resource1"`.
+For `KeyGet` with two parameters: `KeyGet("/resource1/action", "/*)` returns `"resource1/action"`.
 
 | Function | url                                   | pattern                                                        | key_name                          | example                                                                                                                                                                                           |
 |----------|---------------------------------------|----------------------------------------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -47,11 +47,11 @@ As for `KeyGet`, which takes two parameters, `KeyGet("/resource1/action", "/*)` 
 | keyGet2  | a URL path like `/proj/resource1`     | a URL path or `:` pattern like `/prooj/:resource`                | key name specified in the pattern | [keyget2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
 | keyGet3  | a URL path like `/proj/res3_admin/`   | a URL path or `{}` pattern like `/proj/{resource}_admin/*`       | key name specified in the pattern | [https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247](https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247)                                                                           |
 
-See details for the above functions at: [https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go](https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go)
+Complete function details: [https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go](https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go)
 
 ## How to add a customized function
 
-First, prepare your function. It takes several parameters and returns a bool:
+Start by creating your function, accepting multiple parameters and returning a bool:
 
 ```go
 func KeyMatch(key1 string, key2 string) bool {
@@ -67,7 +67,7 @@ func KeyMatch(key1 string, key2 string) bool {
 }
 ```
 
-Then, wrap it with `interface{}` types:
+Next, create an `interface{}` wrapper:
 
 ```go
 func KeyMatchFunc(args ...interface{}) (interface{}, error) {
@@ -78,13 +78,13 @@ func KeyMatchFunc(args ...interface{}) (interface{}, error) {
 }
 ```
 
-Finally, register the function to the Casbin enforcer:
+Register the function with the Casbin enforcer:
 
 ```go
 e.AddFunction("my_func", KeyMatchFunc)
 ```
 
-Now, you can use the function in your model CONF like this:
+Use the function in your model CONF:
 
 ```ini
 [matchers]
