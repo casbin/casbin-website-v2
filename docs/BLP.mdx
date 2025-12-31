@@ -8,7 +8,7 @@ authors: [nodece]
 
 ## Overview
 
-The Bell-LaPadula (BLP) model is a formal state transition model of computer security policy that describes a set of access control rules which use security labels on objects and clearances for subjects. It was developed by David Elliott Bell and Leonard J. LaPadula in 1973.
+The Bell-LaPadula (BLP) model, developed by David Elliott Bell and Leonard J. LaPadula in 1973, is a formal state transition system for computer security policy. It defines access control rules using security labels on objects and clearances for subjects.
 
 ## Model
 
@@ -31,10 +31,10 @@ m = (r.act == "read" && r.sub_level >= r.obj_level) || (r.act == "write" && r.su
 
 ## Policy
 
-BLP model typically doesn't require explicit policy rules as the access control is determined by the security levels of subjects and objects. The matcher function implements the BLP rules:
+BLP typically requires no explicit policy rules since security levels determine access control. The matcher implements BLP rules:
 
-- **No Read Up**: A subject cannot read an object with a higher security level
-- **No Write Down**: A subject cannot write to an object with a lower security level
+- **No Read Up**: Subjects cannot read objects with higher security levels
+- **No Write Down**: Subjects cannot write to objects with lower security levels
 
 ## Examples
 
@@ -56,7 +56,7 @@ bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - DENIED (No 
 
 ## Security Levels
 
-In the BLP model, security levels are typically represented as integers where higher numbers indicate higher security levels:
+BLP represents security levels as integers where higher values indicate greater security:
 
 - Level 1: Public/Unclassified
 - Level 2: Confidential
@@ -65,16 +65,16 @@ In the BLP model, security levels are typically represented as integers where hi
 
 ## Use Cases
 
-BLP model is commonly used in:
+Common BLP model applications:
 
 - Military and government systems
 - Financial institutions
 - Healthcare systems
-- Any environment requiring strict information flow control
+- Environments requiring strict information flow control
 
 ## Implementation Notes
 
-- The model enforces mandatory access control (MAC)
-- Security levels are assigned by system administrators
-- Access decisions are based purely on security levels, not user identity
-- The model prevents information leakage through read/write operations
+- Enforces mandatory access control (MAC)
+- System administrators assign security levels
+- Access decisions depend on security levels, not user identity
+- Prevents information leakage through read/write operations
