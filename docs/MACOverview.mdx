@@ -8,30 +8,30 @@ authors: [hsluoyz]
 
 ## Overview
 
-Mandatory Access Control (MAC) is a type of access control where the operating system or security kernel constrains the ability of a subject to access or perform operations on an object. In MAC systems, security policies are centrally controlled and cannot be changed by individual users.
+Mandatory Access Control (MAC) is an access control framework where the operating system or security kernel enforces restrictions on resource access that individual users cannot override. In MAC systems, security policies are centrally managed and applied uniformly across the system.
 
 ## MAC Models in Casbin
 
-Casbin supports several well-known MAC security models:
+Casbin implements several established MAC security models:
 
-- **BLP (Bell-LaPadula)**: A formal state transition model focusing on confidentiality
-- **Biba**: An integrity-focused model that prevents unauthorized data modification
-- **LBAC (Lattice-Based Access Control)**: A formal model that can combine confidentiality and integrity controls
+- **BLP (Bell-LaPadula)**: A state transition model that enforces confidentiality properties
+- **Biba**: An integrity-focused model designed to prevent unauthorized data modifications
+- **LBAC (Lattice-Based Access Control)**: A formal framework that can enforce both confidentiality and integrity controls
 
-## Key Characteristics
+## Core Characteristics
 
-MAC models share several important characteristics:
+MAC models share these fundamental properties:
 
-- **Centralized Policy Management**: Security policies are defined and enforced by the system
-- **Security Labels**: Objects and subjects are assigned security labels or clearance levels
-- **Formal Security Properties**: Each model enforces specific security properties (e.g., no read up, no write down)
+- **Centralized Policy Management**: Security policies are defined and enforced system-wide
+- **Security Labels**: Both subjects and objects are assigned security clearances or classification levels
+- **Formal Security Properties**: Each model implements specific security guarantees (such as "no read up" or "no write down")
 
-## Use Cases
+## Common Use Cases
 
-MAC models are particularly useful in:
+MAC models are particularly applicable in:
 
-- Government and military systems requiring strict confidentiality
-- Systems requiring strong data integrity guarantees
-- Multi-level security environments
+- Government and military systems that require strict information confidentiality
+- Applications requiring strong data integrity protections
+- Multi-level security deployments
 
-Explore the subsections in this category to learn more about each MAC model and how to implement them in Casbin.
+See the related subsections for detailed information on implementing each MAC model in Casbin.

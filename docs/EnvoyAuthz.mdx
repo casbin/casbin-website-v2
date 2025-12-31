@@ -6,24 +6,24 @@ keywords: [Envoy, Envoy-authz, Istio]
 authors: [ashish493]
 ---
 
-[Envoy-authz](https://github.com/casbin/envoy-authz) is a middleware for Envoy that performs external RBAC & ABAC authorization through casbin. This middleware uses [Envoy's external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server. This proxy can be deployed on any type of Envoy-based service mesh, such as Istio.
+[Envoy-authz](https://github.com/casbin/envoy-authz) is an Envoy middleware that provides external RBAC and ABAC authorization through Casbin. It integrates with [Envoy's external authorization API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html) via a gRPC server and can be deployed on any Envoy-based service mesh, including Istio.
 
-## Requirements
+## Prerequisites
 
-- Envoy 1.17+
-- Istio or any other type of service mesh
-- grpc dependencies
+- Envoy 1.17 or later
+- Istio or another Envoy-based service mesh
+- gRPC dependencies
 
-Dependencies are managed using `go.mod`.
+Dependencies are managed through `go.mod`.
 
-## Working of the Middleware
+## How It Works
 
-- A client makes an HTTP request.
-- The Envoy proxy sends the request to the gRPC server.
-- The gRPC server authorizes the request based on casbin policies.
-- If authorized, the request is forwarded; otherwise, it is denied.
+- A client initiates an HTTP request
+- Envoy intercepts the request and forwards it to the gRPC authorization server
+- The server evaluates the request against Casbin policies
+- Authorized requests proceed; unauthorized requests are blocked
 
-The gRPC server is based on protocol buffer from [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) in Envoy.
+The gRPC server implements the protocol buffer definition from Envoy's [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto):
 
 ```protobuf
 // A generic interface for performing authorization checks on incoming
@@ -35,29 +35,29 @@ service Authorization {
 }
 ```
 
-From the above proto file, we need to use the `Check()` service in the authorization server.
+The authorization server must implement the `Check()` method defined above.
 
 ## Usage
 
-- Define the Casbin policies in the config files following this [guide](/docs/how-it-works).
+- Configure your Casbin policies in the configuration files following the [Casbin documentation](/docs/how-it-works).
 
-You can verify/test your policies using the online [casbin-editor](/editor).
+You can test your policies using the online [Casbin editor](/editor).
 
-- Start the authentication server by running:
+- Launch the authorization server:
 
 ```bash
 go build .
 ./authz
 ```
 
-- Load the Envoy configuration:
+- Apply the Envoy configuration:
 
 ```bash
 envoy -c authz.yaml -l info
 ```
 
-Once Envoy starts, it will intercept requests for the authorization process.
+Once Envoy starts, it will route incoming requests through the authorization middleware.
 
 ## Integrating with Istio
 
-To make this middleware work, you need to send custom headers containing usernames in the JWT token or headers. You can refer to the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/) for more information on modifying `Request Headers`.
+To enable this middleware, configure your system to pass user identity information through custom headers in JWT tokens or request headers. For instructions on modifying request headers, consult the official [Istio documentation](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/).
