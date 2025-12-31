@@ -8,9 +8,9 @@ authors: [PokIsemaine]
 
 ## Conditional RoleManager
 
-`ConditionalRoleManager` supports custom condition functions at the policy level.
+The `ConditionalRoleManager` allows you to apply custom condition functions at the policy level.
 
-For example, when we need a temporary role policy, we can follow the following approach:
+When you need role policies that are valid only under certain conditions—such as time-based temporary roles—you can configure this as shown below:
 
 `model.conf`
 
@@ -31,8 +31,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-`g = _, _, (_, _)` uses `(_, _)` to contain a list of arguments to pass to the condition function
-and `_` as a parameter placeholder
+The syntax `g = _, _, (_, _)` defines a role relationship with additional parameters. The underscores `_` serve as placeholders, while the parentheses `(_, _)` specify the list of arguments that will be passed to the condition function.
 
 `policy.csv`
 
@@ -57,10 +56,7 @@ g, alice, data8_admin, 9999-12-30 00:00:00, _
 
 ### Basic Usage
 
-Add a conditional function for the role policy(`g`type policy)  through `AddNamedLinkConditionFunc`,
-and when enforcing is executed, the corresponding parameters will be automatically obtained
-and passed in the conditional function for checking.
-If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+Use `AddNamedLinkConditionFunc` to attach a condition function to a role policy (of type `g`). During enforcement, the system automatically retrieves the corresponding parameters and passes them to the condition function. The role policy is considered valid only if the function returns true.
 
 ```go
 e.AddNamedLinkConditionFunc("g", "alice", "data2_admin", util.TimeMatchFunc)
@@ -72,25 +68,25 @@ e.AddNamedLinkConditionFunc("g", "alice", "data7_admin", util.TimeMatchFunc)
 e.AddNamedLinkConditionFunc("g", "alice", "data8_admin", util.TimeMatchFunc)
 
 
-e.enforce("alice", "data1", "read")     // except: true
-e.enforce("alice", "data2", "write")    // except: false
-e.enforce("alice", "data3", "read")     // except: true
-e.enforce("alice", "data4", "write")    // except: true
-e.enforce("alice", "data5", "read")     // except: true
-e.enforce("alice", "data6", "write")    // except: false
-e.enforce("alice", "data7", "read")     // except: true
-e.enforce("alice", "data8", "write")    // except: false
+e.enforce("alice", "data1", "read")     // expect: true
+e.enforce("alice", "data2", "write")    // expect: false
+e.enforce("alice", "data3", "read")     // expect: true
+e.enforce("alice", "data4", "write")    // expect: true
+e.enforce("alice", "data5", "read")     // expect: true
+e.enforce("alice", "data6", "write")    // expect: false
+e.enforce("alice", "data7", "read")     // expect: true
+e.enforce("alice", "data8", "write")    // expect: false
 ```
 
 ### Custom condition functions
 
-Custom conditional functions need to conform to the following function types
+Condition functions must follow this signature:
 
 ```go
 type LinkConditionFunc = func(args ...string) (bool, error)
 ```
 
-for example:
+Example implementation:
 
 ```go
 // TimeMatchFunc is the wrapper for TimeMatch.
@@ -169,10 +165,7 @@ g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
 
 ### Basic Usage
 
-Add a conditional function for the role policy(`g`type policy)  through `AddNamedDomainLinkConditionFunc`,
-and when enforcing is executed, the corresponding parameters will be automatically obtained
-and passed in the conditional function for checking.
-If the check passes, then the corresponding role policy(`g` type policy) is valid, otherwise it is invalid
+Use `AddNamedDomainLinkConditionFunc` to attach a condition function to a domain-specific role policy (of type `g`). During enforcement, the system automatically retrieves the corresponding parameters and passes them to the condition function. The role policy is considered valid only if the function returns true.
 
 ```go
 e.AddNamedDomainLinkConditionFunc("g", "alice", "data2_admin", "domain2", util.TimeMatchFunc)
@@ -184,28 +177,28 @@ e.AddNamedDomainLinkConditionFunc("g", "alice", "data7_admin", "domain7", util.T
 e.AddNamedDomainLinkConditionFunc("g", "alice", "data8_admin", "domain8", util.TimeMatchFunc)
 
 
-e.enforce("alice", "domain1", "data1", "read")              // except: true
-e.enforce("alice", "domain2", "data2", "write")             // except: false
-e.enforce("alice", "domain3", "data3", "read")              // except: true
-e.enforce("alice", "domain4", "data4", "write")             // except: true
-e.enforce("alice", "domain5", "data5", "read")              // except: true
-e.enforce("alice", "domain6", "data6", "write")             // except: false
-e.enforce("alice", "domain7", "data7", "read")              // except: true
-e.enforce("alice", "domain8", "data8", "write")             // except: false
-e.enforce("alice", "domain_not_exist", "data1", "write")    // except: false
-e.enforce("alice", "domain_not_exist", "data2", "read")     // except: false
-e.enforce("alice", "domain_not_exist", "data3", "write")    // except: false
-e.enforce("alice", "domain_not_exist", "data4", "read")     // except: false
-e.enforce("alice", "domain_not_exist", "data5", "write")    // except: false
-e.enforce("alice", "domain_not_exist", "data6", "read")     // except: false
-e.enforce("alice", "domain_not_exist", "data7", "write")    // except: false
-e.enforce("alice", "domain_not_exist", "data8", "read")     // except: false
+e.enforce("alice", "domain1", "data1", "read")              // expect: true
+e.enforce("alice", "domain2", "data2", "write")             // expect: false
+e.enforce("alice", "domain3", "data3", "read")              // expect: true
+e.enforce("alice", "domain4", "data4", "write")             // expect: true
+e.enforce("alice", "domain5", "data5", "read")              // expect: true
+e.enforce("alice", "domain6", "data6", "write")             // expect: false
+e.enforce("alice", "domain7", "data7", "read")              // expect: true
+e.enforce("alice", "domain8", "data8", "write")             // expect: false
+e.enforce("alice", "domain_not_exist", "data1", "write")    // expect: false
+e.enforce("alice", "domain_not_exist", "data2", "read")     // expect: false
+e.enforce("alice", "domain_not_exist", "data3", "write")    // expect: false
+e.enforce("alice", "domain_not_exist", "data4", "read")     // expect: false
+e.enforce("alice", "domain_not_exist", "data5", "write")    // expect: false
+e.enforce("alice", "domain_not_exist", "data6", "read")     // expect: false
+e.enforce("alice", "domain_not_exist", "data7", "write")    // expect: false
+e.enforce("alice", "domain_not_exist", "data8", "read")     // expect: false
 ```
 
 ### Custom condition functions
 
-Like the basic `Conditional RoleManager`, custom functions are supported, and there is no difference in use.
+Custom condition functions work the same way as in the basic `Conditional RoleManager`.
 
-Note that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` are at different levels and are used in different situations.
+Keep in mind that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` operate at different levels and serve distinct purposes.
 
 ![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)

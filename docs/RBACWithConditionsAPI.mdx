@@ -6,14 +6,13 @@ keywords: [RBAC with conditions, API]
 authors: [PokIsemaine]
 ---
 
-A more user-friendly API for [RBAC with conditions](RBACWithConditions.mdx).
+This API provides a simplified interface for working with [RBAC with conditions](RBACWithConditions.mdx).
 
 ## Reference
 
 ### AddNamedLinkConditionFunc
 
-`AddNamedLinkConditionFunc` Add condition function fn for Link `userName->roleName`,
-when fn returns true, Link is valid, otherwise invalid
+`AddNamedLinkConditionFunc` attaches a condition function to a link between `userName` and `roleName`. The link is valid only when the function returns true.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -31,8 +30,7 @@ e.AddNamedLinkConditionFunc("g", "userName", "roleName", YourLinkConditionFunc)
 
 ### AddNamedDomainLinkConditionFunc
 
-`AddNamedDomainLinkConditionFunc` Add condition function fn for Link `userName-> {roleName, domain}`,
-when fn returns true, Link is valid, otherwise invalid
+`AddNamedDomainLinkConditionFunc` attaches a condition function to a link between `userName` and `{roleName, domain}`. The link is valid only when the function returns true.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -50,7 +48,7 @@ e.AddNamedDomainLinkConditionFunc("g", "userName", "roleName", "domainName", You
 
 ### SetNamedLinkConditionFuncParams
 
-`SetNamedLinkConditionFuncParams` Sets the parameters of the condition function fn for Link `userName->roleName`
+`SetNamedLinkConditionFuncParams` configures the parameters passed to the condition function for a link between `userName` and `roleName`.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -69,8 +67,7 @@ e.SetNamedLinkConditionFuncParams("g", "userName2", "roleName2", "YourConditionF
 
 ### SetNamedDomainLinkConditionFuncParams
 
-`SetNamedDomainLinkConditionFuncParams` Sets the parameters of the condition function fn
-for Link `userName->{roleName, domain}`
+`SetNamedDomainLinkConditionFuncParams` configures the parameters passed to the condition function for a link between `userName` and `{roleName, domain}`.
 
 ```mdx-code-block
 <Tabs groupId="langs">
