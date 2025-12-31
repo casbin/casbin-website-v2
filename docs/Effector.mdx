@@ -6,11 +6,11 @@ keywords: [effector, Effect, MergeEffects]
 authors: [ErikQQY]
 ---
 
-The `Effect` represents the result of a policy rule, and the `Effector` is the interface for handling effects in Casbin.
+The `Effect` represents policy rule outcomes, while the `Effector` interface manages effect handling within Casbin.
 
 ## `MergeEffects()`
 
-The `MergeEffects()` function is used to merge all matching results collected by the enforcer into a single decision.
+The `MergeEffects()` function consolidates all matching results gathered by the enforcer into one final decision.
 
 For example:
 
@@ -28,20 +28,20 @@ Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, 
 </Tabs>
 ```
 
-In this example:  
+Explanation of parameters:
 
-- `Effect` is the final decision that is merged by this function (initialized as `Indeterminate`).
-- `explainIndex` is the index of `eft` (`Allow` or `Deny`), and it is initialized as `-1`.
-- `err` is used to check if the effect is supported.
-- `expr` is the string representation of the policy effects.
-- `effects` is an array of effects, which can be `Allow`, `Indeterminate`, or `Deny`.
-- `matches` is an array that indicates whether the result matches the policy.
-- `policyIndex` is the index of the policy in the model.
-- `policyLength` is the length of the policy.
+- `Effect` represents the final merged decision (initialized as `Indeterminate`).
+- `explainIndex` holds the `eft` index (`Allow` or `Deny`), initialized at `-1`.
+- `err` verifies effect support.
+- `expr` contains the string representation of policy effects.
+- `effects` is an array containing `Allow`, `Indeterminate`, or `Deny` values.
+- `matches` indicates which results match policies.
+- `policyIndex` identifies the policy position in the model.
+- `policyLength` specifies the policy count.
 
-The code above illustrates how to pass the parameters to the `MergeEffects()` function, and the function will process the effects and matches based on the `expr`.
+The example demonstrates parameter passing to `MergeEffects()`, which processes effects and matches according to the `expr`.
 
-To use the `Effector`, follow these steps:
+To utilize the `Effector`:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -58,10 +58,10 @@ Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, 
 </Tabs>
 ```
 
-The basic idea of `MergeEffects()` is that if the `expr` can match the results, indicating that the `p_eft` is `allow`, then all effects can be merged. If no deny rules are matched, then the decision is allow.
+The core concept of `MergeEffects()`: when `expr` matches results indicating `p_eft` is `allow`, effects merge together. Absent deny rule matches result in an allow decision.
 
 :::note
 
-If the `expr` does not match the condition `"priority(p_eft) || deny"`, and the `policyIndex` is shorter than `policyLength-1`, it will **short-circuit** some effects in the middle.
+When `expr` doesn't match `"priority(p_eft) || deny"` and `policyIndex` is less than `policyLength-1`, **short-circuiting** occurs, skipping intermediate effects.
 
 :::

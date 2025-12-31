@@ -148,7 +148,7 @@ cargo add tokio
 <TabItem value="Delphi" label="Delphi">
 ```
 
-Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install it in the IDE. However, there are no visual components which means that you can use the units independently of packages. Just import the units in your project (assuming you do not mind the number of them).
+Casbin4D is packaged for Delphi 10.3 Rio and installs directly in the IDE. Note that no visual components are included—the library consists of standalone units that you import into your project independently.
 
 ```mdx-code-block
 </TabItem>
@@ -159,7 +159,7 @@ Casbin4D comes in a package (currently for Delphi 10.3 Rio) and you can install 
 luarocks install casbin
 ```
 
-If you receive an error message: "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", you may want to run the command as a privileged user or use your local tree with `--local`. To fix the error, you can add `--local` behind your command like this:
+If you receive the error "Your user does not have write permissions in /usr/local/lib/luarocks/rocks", run the command with elevated privileges or install to your local tree using the `--local` flag:
 
 ```bash
 luarocks install casbin --local
@@ -183,17 +183,17 @@ go get -u github.com/casbin/casbin/v3
 Then update all imports in your code from `/v2` to `/v3`.
 :::
 
-## New a Casbin enforcer
+## Create a Casbin Enforcer
 
-Casbin uses configuration files to define the access control model.
+Casbin relies on configuration files to specify the access control model.
 
-There are two configuration files: `model.conf` and `policy.csv`. `model.conf` stores the access model, while `policy.csv` stores the specific user permission configuration. The usage of Casbin is very straightforward. We only need to create one main structure: **enforcer**. When constructing this structure, `model.conf` and `policy.csv` will be loaded.
+Two configuration files are required: `model.conf` and `policy.csv`. The `model.conf` file defines your access control model, while `policy.csv` contains the specific permission rules. Working with Casbin is simple—you primarily interact with one structure: the **enforcer**. During initialization, this structure loads both configuration files automatically.
 
-In other words, to create a Casbin enforcer, you need to provide a [Model](supported-models) and an [Adapter](adapters).
+Put simply, creating a Casbin enforcer requires providing a [Model](supported-models) and an [Adapter](adapters).
 
 Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use. See [Adapter](adapters) for more information.
 
-- Example of using the Model file and the default [FileAdapter](adapters#file-adapter-built-in):
+- Example using a Model file with the default [FileAdapter](adapters#file-adapter-built-in):
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -334,7 +334,7 @@ local e = Enforcer:new("path/to/model.conf", "path/to/policy.csv") -- The Casbin
 </Tabs>
 ```
 
-- Use the Model text with other Adapter:
+- Example using Model text with an alternative Adapter:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -420,7 +420,7 @@ e = casbin.Enforcer('rbac_example_model.conf', adapter)
 
 ### Check permissions
 
-Add an enforcement hook into your code right before the access happens:
+Insert an enforcement check in your code immediately before resource access occurs:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -612,7 +612,7 @@ end
 </Tabs>
 ```
 
-Casbin also provides API for permission management at run-time. For example, You can get all the roles assigned to a user as below:
+Casbin provides APIs for runtime permission management. For instance, you can retrieve all roles assigned to a user:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -700,6 +700,6 @@ local roles = e:GetRolesForUser("alice")
 </Tabs>
 ```
 
-See [Management API](/docs/management-api) and [RBAC API](/docs/rbac-api) for more usage.
+For additional usage examples, consult [Management API](/docs/management-api) and [RBAC API](/docs/rbac-api).
 
-Please refer to the test cases for more usage.
+Additional examples can be found in the test cases.

@@ -6,28 +6,28 @@ keywords: [syntax]
 authors: [nodece]
 ---
 
-- A model configuration (CONF) should have at least four sections: `[request_definition]`, `[policy_definition]`, `[policy_effect]`, and `[matchers]`.
+- A model configuration (CONF) requires at minimum four sections: `[request_definition]`, `[policy_definition]`, `[policy_effect]`, and `[matchers]`.
 
-- If a model uses Role-Based Access Control (RBAC), it should also include the `[role_definition]` section.
+- Models implementing Role-Based Access Control (RBAC) must additionally include a `[role_definition]` section.
 
-- If a model needs to enforce policy invariants for RBAC, it can optionally include the `[constraint_definition]` section.
+- Models requiring policy invariant enforcement for RBAC may optionally include a `[constraint_definition]` section.
 
-- A model configuration (CONF) can contain comments. Comments start with the `#` symbol, and everything after the `#` symbol will be commented out.
+- Model configuration (CONF) files support comments. The `#` symbol initiates a comment, treating all subsequent text on that line as commentary.
 
 ## Request definition
 
-The `[request_definition]` section defines the arguments in the `e.Enforce(...)` function.
+The `[request_definition]` section specifies the parameters passed to the `e.Enforce(...)` function.
 
 ```ini
 [request_definition]
 r = sub, obj, act
 ```
 
-In this example, `sub`, `obj`, and `act` represent the classic access triple: the subject (accessing entity), the object (accessed resource), and the action (access method). However, you can customize your own request format. For example, you can use `sub, act` if you don't need to specify a particular resource, or `sub, sub2, obj, act` if you have two accessing entities.
+Here, `sub`, `obj`, and `act` represent the traditional access control triple: subject (requesting entity), object (target resource), and action (operation type). This format is customizable—use `sub, act` when resources needn't be specified, or `sub, sub2, obj, act` when two requesting entities are involved.
 
 ## Policy Definition
 
-The `[policy_definition]` is the definition for a policy. It defines the meaning of the policy. For example, we have the following model:
+The `[policy_definition]` describes policy structure and semantics. Consider this model:
 
 ```ini
 [policy_definition]
@@ -35,14 +35,14 @@ p = sub, obj, act
 p2 = sub, act
 ```
 
-And we have the following policy (if in a policy file):
+With this corresponding policy (from a policy file):
 
 ```csv
 p, alice, data1, read
 p2, bob, write-all-objects
 ```
 
-Each line in a policy is called a policy rule. Each policy rule starts with a `policy type`, such as `p` or `p2`. It is used to match the policy definition if there are multiple definitions. The above policy shows the following binding. The binding can be used in the matcher.
+Policy rules are organized as lines in the policy file. Each rule begins with a `policy type` identifier (like `p` or `p2`) that matches one of your policy definitions when multiple exist. The policy above creates these bindings for matcher use:
 
 ```text
 (alice, data1, read) -> (p.sub, p.obj, p.act)
@@ -51,44 +51,44 @@ Each line in a policy is called a policy rule. Each policy rule starts with a `p
 
 :::tip
 
-The elements in a policy rule are always regarded as `strings`. If you have any questions about this, please refer to the discussion at: [https://github.com/casbin/casbin/issues/113](https://github.com/casbin/casbin/issues/113)
+Policy rule elements are always interpreted as `strings`. For questions about this behavior, consult the discussion at: [https://github.com/casbin/casbin/issues/113](https://github.com/casbin/casbin/issues/113)
 
 :::
 
 ## Policy Effect
 
-``[policy_effect]`` is the definition for the policy effect. It determines whether the access request should be approved if multiple policy rules match the request. For example, one rule permits and the other denies.
+The ``[policy_effect]`` section determines request approval when multiple matching policies exist—for instance, when one permits and another denies.
 
 ```ini
 [policy_effect]
 e = some(where (p.eft == allow))
 ```
 
-The above policy effect means that if there's any matched policy rule of ``allow``, the final effect is ``allow`` (also known as allow-override). ``p.eft`` is the effect for a policy, and it can be either ``allow`` or ``deny``. It is optional, and the default value is ``allow``. Since we didn't specify it above, it uses the default value.
+This policy effect implements "allow-override": when any matched policy grants ``allow``, the final decision is ``allow``. The ``p.eft`` field contains a policy's effect, taking values of either ``allow`` or ``deny``. This field is optional and defaults to ``allow``—since we omitted it above, the default applies.
 
-Another example for the policy effect is:
+Here's an alternative policy effect:
 
 ```ini
 [policy_effect]
 e = !some(where (p.eft == deny))
 ```
 
-This means that if there are no matched policy rules of ``deny``, the final effect is ``allow`` (also known as deny-override). ``some`` means that there exists one matched policy rule. ``any`` means that all matched policy rules (not used here). The policy effect can even be connected with logical expressions:
+This implements "deny-override": the final effect is ``allow`` when no ``deny`` policies match. Here, ``some`` indicates at least one matching policy exists, while ``any`` means all policies match (though not used in this example). Policy effects can combine using logical expressions:
 
 ```ini
 [policy_effect]
 e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
 ```
 
-This means that there must be at least one matched policy rule of ``allow``, and there cannot be any matched policy rule of ``deny``. Therefore, in this way, both allow and deny authorizations are supported, and the deny overrides.
+This requires at least one ``allow`` policy and zero ``deny`` policies. Both allow and deny authorizations are supported, with deny taking priority over allow.
 
 :::note
 
-Although we designed the syntax of the policy effect as above, the current implementations only use hard-coded policy effects. This is because we found that there isn't much need for that level of flexibility. So for now, you must use one of the built-in policy effects instead of customizing your own.
+While we designed the policy effect syntax shown above, current implementations use hard-coded policy effects. We discovered limited need for this level of customization. Consequently, you must select from the built-in policy effects rather than defining custom ones.
 
 :::
 
-The supported built-in policy effects are:
+Available built-in policy effects:
 
 | Policy Effect                                                | Meaning               | Example                                             |
 |--------------------------------------------------------------|-----------------------|-----------------------------------------------------|
@@ -100,7 +100,7 @@ The supported built-in policy effects are:
 
 ## Constraint Definition
 
-The `[constraint_definition]` section declares policy invariants for RBAC systems. Constraints ensure your role assignments stay valid by checking rules every time policies change. This section is optional and only works when RBAC is enabled (requires `[role_definition]`).
+The `[constraint_definition]` section establishes policy invariants for RBAC systems. Constraints maintain role assignment validity by verifying rules whenever policies change. This optional section requires RBAC enablement (necessitating `[role_definition]`).
 
 ```ini
 [constraint_definition]
@@ -112,25 +112,25 @@ c4 = rolePre("db_admin", "security_trained")
 
 ### Constraint Types
 
-**Separation of Duties (sod)** - Prevents a user from holding two conflicting roles simultaneously. When Alice is assigned `finance_requester`, the system blocks any attempt to also give her `finance_approver`.
+**Separation of Duties (sod)** - Blocks users from simultaneously holding conflicting roles. When Alice receives the `finance_requester` role, the system prevents assigning her `finance_approver`.
 
 ```ini
 c = sod("finance_requester", "finance_approver")
 ```
 
-**Separation of Duties Max (sodMax)** - Limits how many roles from a set each user can have. With `sodMax` set to 1, a user managing payroll can either view, edit, or approve—but never hold two of these roles at once.
+**Separation of Duties Max (sodMax)** - Restricts the number of roles from a set that each user may hold. Setting `sodMax` to 1 for payroll operations means a user can view, edit, or approve—never possessing more than one of these roles concurrently.
 
 ```ini
 c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
 ```
 
-**Role Cardinality (roleMax)** - Caps the total number of users who can have a specific role. Setting a limit of 2 for `superadmin` means only two people in your organization can hold that role at any time.
+**Role Cardinality (roleMax)** - Limits how many users can possess a specific role. Setting a limit of 2 for `superadmin` restricts that role to two people organization-wide.
 
 ```ini
 c3 = roleMax("superadmin", 2)
 ```
 
-**Prerequisite Role (rolePre)** - Requires users to have one role before they can receive another. Nobody gets `db_admin` access unless they already have the `security_trained` role.
+**Prerequisite Role (rolePre)** - Requires having a prerequisite role before granting another role. Users cannot receive `db_admin` access without first possessing the `security_trained` role.
 
 ```ini
 c4 = rolePre("db_admin", "security_trained")
@@ -138,26 +138,26 @@ c4 = rolePre("db_admin", "security_trained")
 
 ### How Constraints Work
 
-Constraints validate automatically when you modify grouping policies through methods like `AddGroupingPolicy()` or `RemoveGroupingPolicy()`. If a change would break a constraint, the operation fails and returns a constraint violation error—the policy remains unchanged.
+Constraints perform automatic validation during grouping policy modifications via methods like `AddGroupingPolicy()` or `RemoveGroupingPolicy()`. When changes violate constraints, the operations fail and return constraint violation errors, leaving policies unchanged.
 
-During model initialization, all existing constraints are checked against current policies. If any constraint is invalid (wrong syntax, missing RBAC setup, or violated by existing data), the model fails to load with a descriptive error.
+At model initialization, the system verifies all existing constraints against current policies. Invalid constraints (incorrect syntax, missing RBAC configuration, or violations of existing data) prevent model loading and generate descriptive errors.
 
 ## Matchers
 
-``[matchers]`` is the definition for policy matchers. The matchers are expressions that define how the policy rules are evaluated against the request.
+The ``[matchers]`` section specifies how policy rules evaluate against requests.
 
 ```ini
 [matchers]
 m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 ```
 
-The above matcher is the simplest and means that the subject, object, and action in a request should match the ones in a policy rule.
+This represents the most basic matcher, requiring that request subject, object, and action match corresponding policy rule fields.
 
-Arithmetic operators like ``+, -, *, /`` and logical operators like ``&&, ||, !`` can be used in matchers.
+Matchers support arithmetic operators (``+, -, *, /``) and logical operators (``&&, ||, !``).
 
 ### Order of expressions in matchers
 
-The order of expressions can greatly affect performance. Take a look at the following example for more details:
+Expression ordering significantly impacts performance. Review the following example for details:
 
 ```go
 const rbac_models = `
@@ -226,7 +226,7 @@ func TestManyRoles(t *testing.T) {
 }
 ```
 
-The enforcement time may be very long, up to 6 seconds.
+Enforcement duration can reach 6 seconds.
 
 ```bash
 go test -run ^TestManyRoles$ github.com/casbin/casbin/v3 -v
@@ -244,9 +244,9 @@ FAIL    github.com/casbin/casbin/v3     6.244s
 FAIL
 ```
 
-However, if we adjust the order of the expressions in matchers and put more time-consuming expressions like functions behind, the execution time will be very short.
+Reordering matcher expressions by placing expensive operations (like functions) later dramatically reduces execution time.
 
-Changing the order of expressions in matchers in the above example to:
+Modifying the matcher expression order in the previous example:
 
 ```ini
 [matchers]
@@ -268,9 +268,9 @@ ok      github.com/casbin/casbin/v3     0.053s
 
 ## Multiple Section Types
 
-If you need multiple policy definitions or multiple matchers, you can use `p2` or `m2` as examples. In fact, all four sections mentioned above can use multiple types, and the syntax is `r` followed by a number, such as `r2` or `e2`. By default, these four sections should correspond one-to-one. For example, your `r2` section will only use the `m2` matcher to match `p2` policies.
+When requiring multiple policy definitions or matchers, use identifiers like `p2` or `m2`. All four primary sections support multiple types through numbered suffixes: `r2`, `e2`, etc. By default, these sections maintain one-to-one correspondence—your `r2` section uses the `m2` matcher for matching `p2` policies.
 
-You can pass an `EnforceContext` as the first parameter of the `enforce` method to specify the types. The `EnforceContext` is defined as follows:
+Pass an `EnforceContext` as the first `enforce` parameter to specify section types. The `EnforceContext` structure:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -330,7 +330,7 @@ public class EnforceContext {
 </Tabs>
 ```
 
-Here is an example usage. Please refer to the [model](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) and [policy](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv). The request is as follows:
+Example usage follows. Refer to the [model](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf) and [policy](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv) files. Request format:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -394,9 +394,9 @@ e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1
 
 ## Special Grammar
 
-You could also use the "in" operator, which is the only operator with a text name. This operator checks the array on the right-hand side to see if it contains a value that is equal to the value on the left side. Equality is determined by using the == operator, and this library does not check the types between the values. As long as two values can be cast to interface{} and can still be checked for equality with ==, they will act as expected. Note that you can use a parameter for the array, but it must be an []interface{}.
+The "in" operator is available—the sole text-named operator. It checks whether the right-side array contains a value equal to the left-side value. Equality uses the == operator without type checking between values. Values castable to interface{} and comparable with == behave as expected. Arrays must be []interface{} type when used as parameters.
 
-Also refer to [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf), and [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf).
+Reference examples: [rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf), [keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf), and [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf).
 
 Example:
 
@@ -414,9 +414,9 @@ e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice",
 
 ## Expression Evaluator
 
-The matcher evaluation in Casbin is implemented by expression evaluators in each language. Casbin integrates their powers to provide the unified PERM language. In addition to the model syntax provided here, these expression evaluators may offer extra functionality that might not be supported by another language or implementation. Please be cautious when using this functionality.
+Casbin's matcher evaluation employs language-specific expression evaluators. Casbin leverages these evaluators to deliver the unified PERM language. Beyond the documented model syntax, these evaluators may provide additional functionality not universally supported across languages or implementations. Exercise caution when utilizing such features.
 
-The expression evaluators used by each Casbin implementation are as follows:
+Expression evaluators by implementation:
 
 | Implementation | Language | Expression Evaluator                                                                                                                                                                                     |
 |----------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -432,6 +432,6 @@ The expression evaluators used by each Casbin implementation are as follows:
 
 :::note
 
-If you encounter a performance issue with Casbin, it is likely caused by the low efficiency of the expression evaluator. You can address the issue to Casbin or the expression evaluator directly for advice on speeding up the performance. For more details, please refer to the [Benchmarks](/docs/benchmark) section.
+Performance issues with Casbin likely stem from expression evaluator inefficiency. Report problems to either Casbin or the expression evaluator for optimization guidance. Consult the [Benchmarks](/docs/benchmark) section for additional details.
 
 :::

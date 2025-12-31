@@ -6,50 +6,50 @@ keywords: [PERM, request, policy, matcher, effect]
 authors: [nodece]
 ---
 
-In Casbin, an access control model is abstracted into a CONF file based on the **PERM metamodel (Policy, Effect, Request, Matchers)**. Switching or upgrading the authorization mechanism for a project is as simple as modifying a configuration. You can customize your own access control model by combining the available models. For example, you can combine RBAC roles and ABAC attributes together inside one model and share one set of policy rules.
+Within Casbin, access control models are represented as CONF files structured around the **PERM metamodel (Policy, Effect, Request, Matchers)**. Changing your project's authorization mechanism is as straightforward as updating a configuration file. You can build custom access control models by mixing and matching available components—for example, combining RBAC roles with ABAC attributes in a single model that operates on one policy rule set.
 
-The PERM model is composed of four foundations: Policy, Effect, Request, and Matchers. These foundations describe the relationship between resources and users.
+The PERM model consists of four core elements: Policy, Effect, Request, and Matchers. These components work together to define how resources and users interact.
 
 ### Request
 
-Defines the request parameters. A basic request is a tuple object, requiring at least a subject (accessed entity), object (accessed resource), and action (access method).
+Specifies the parameters required for access requests. At minimum, a basic request contains three elements in tuple form: subject (the entity requesting access), object (the target resource), and action (the intended operation).
 
-For instance, a request definition may look like this:
+A typical request definition looks like:
 `r={sub,obj,act}`
 
-This definition specifies the parameter names and ordering required by the access control matching function.
+This definition establishes both the parameter names and their sequence as expected by the access control matching function.
 
 ### Policy
 
-Defines the model for the access strategy. It specifies the name and order of the fields in the Policy rule document.
+Establishes the structure for access rules. This component defines the field names and their order within policy rule documents.
 
-For instance:
+Example definitions:
 `p={sub, obj, act}` or `p={sub, obj, act, eft}`
 
-Note: If eft (policy result) is not defined, the result field in the policy file will not be read, and the matching policy result will be allowed by default.
+Note: When eft (policy result) isn't included in the definition, the result field in policy files is ignored, and matching policies default to "allow".
 
 ### Matcher
 
-Defines the matching rules for Request and Policy.
+Specifies how requests are matched against policies.
 
-For example: `m = r.sub == p.sub && r.act == p.act && r.obj == p.obj`
-This simple and common matching rule means that if the requested parameters (entities, resources, and methods) are equal to those found in the policy, then the policy result (`p.eft`) is returned. The result of the strategy will be saved in `p.eft`.
+Example: `m = r.sub == p.sub && r.act == p.act && r.obj == p.obj`
+This straightforward matching rule states that when request parameters (entity, resource, and operation) match those in a policy, that policy's result (`p.eft`) applies. The policy result is stored in `p.eft`.
 
 ### Effect
 
-Performs a logical combination judgment on the matching results of Matchers.
+Combines the results from matched policies using logical operations.
 
-For example: `e = some(where(p.eft == allow))`
+Example: `e = some(where(p.eft == allow))`
 
-This statement means that if the matching strategy result `p.eft` has the result of (some) allow, then the final result is true.
+This expression means that if any matching policy evaluates to "allow", the final result is true.
 
-Let's look at another example:
+Another example:
 
 `e = some(where (p.eft == allow)) && !some(where (p.eft == deny))`
 
-The logical meaning of this example combination is: if there is a strategy that matches the result of allow and no strategy that matches the result of deny, the result is true. In other words, it is true when the matching strategies are all allow. If there is any deny, both are false (more simply, when allow and deny exist at the same time, deny takes precedence).
+This logical expression requires at least one "allow" policy and zero "deny" policies for the result to be true. Essentially, all matching policies must be "allow"—any "deny" makes the entire result false. When both allow and deny policies match, deny takes precedence.
 
-The most basic and simplest model in Casbin is ACL. The model CONF for ACL is as follows:
+ACL represents the most fundamental and straightforward model in Casbin. Below is the model CONF for ACL:
 
 ```ini
 # Request definition
@@ -70,19 +70,19 @@ m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 
 ```
 
-An example policy for the ACL model is:
+Here's a sample policy for the ACL model:
 
 ```csv
 p, alice, data1, read
 p, bob, data2, write
 ```
 
-This means:
+This policy grants:
 
-- alice can read data1
-- bob can write data2
+- alice: read access to data1
+- bob: write access to data2
 
-We also support multi-line mode by appending '\\' in the end:
+Multi-line mode is supported by appending '\\' at line endings:
 
 ```ini
 # Matchers
@@ -91,7 +91,7 @@ m = r.sub == p.sub && r.obj == p.obj \
   && r.act == p.act
 ```
 
-Furthermore, if you are using ABAC, you can try the 'in' operator as shown in the following example for the Casbin **golang** edition (jCasbin and Node-Casbin are not supported yet):
+For ABAC users, the 'in' operator is available in the Casbin **golang** implementation (not yet supported in jCasbin and Node-Casbin):
 
 ```ini
 # Matchers
@@ -99,6 +99,6 @@ Furthermore, if you are using ABAC, you can try the 'in' operator as shown in th
 m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
 ```
 
-But you **MUST** make sure that the length of the array is **MORE** than **1**, otherwise it will cause a panic.
+Important: Ensure the array length exceeds **1**, otherwise a panic will occur.
 
-For more operators, you may take a look at [govaluate](https://github.com/casbin/govaluate).
+For additional operators, see [govaluate](https://github.com/casbin/govaluate).
