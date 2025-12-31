@@ -130,7 +130,7 @@ c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
 c3 = roleMax("superadmin", 2)
 ```
 
-**Prerequisite Role (rolePre)** - Mandates prerequisite role ownership before granting another role. Users cannot receive `db_admin` access without first possessing the `security_trained` role.
+**Prerequisite Role (rolePre)** - Requires having a prerequisite role before granting another role. Users cannot receive `db_admin` access without first possessing the `security_trained` role.
 
 ```ini
 c4 = rolePre("db_admin", "security_trained")
@@ -138,7 +138,7 @@ c4 = rolePre("db_admin", "security_trained")
 
 ### How Constraints Work
 
-Constraints perform automatic validation during grouping policy modifications via methods like `AddGroupingPolicy()` or `RemoveGroupingPolicy()`. Changes violating constraints fail and return constraint violation errors, leaving policies unchanged.
+Constraints perform automatic validation during grouping policy modifications via methods like `AddGroupingPolicy()` or `RemoveGroupingPolicy()`. When changes violate constraints, the operations fail and return constraint violation errors, leaving policies unchanged.
 
 At model initialization, the system verifies all existing constraints against current policies. Invalid constraints (incorrect syntax, missing RBAC configuration, or violations of existing data) prevent model loading and generate descriptive errors.
 

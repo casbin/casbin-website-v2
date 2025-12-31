@@ -47,7 +47,7 @@ Another example:
 
 `e = some(where (p.eft == allow)) && !some(where (p.eft == deny))`
 
-This logical expression requires at least one "allow" policy and zero "deny" policies for the result to be true. Essentially, all matching policies must be "allow"—any "deny" makes the entire result false. Put more simply: when both allow and deny policies match, deny wins.
+This logical expression requires at least one "allow" policy and zero "deny" policies for the result to be true. Essentially, all matching policies must be "allow"—any "deny" makes the entire result false. When both allow and deny policies match, deny takes precedence.
 
 ACL represents the most fundamental and straightforward model in Casbin. Below is the model CONF for ACL:
 
