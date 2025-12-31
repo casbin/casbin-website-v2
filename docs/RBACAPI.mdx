@@ -6,11 +6,11 @@ keywords: [RBAC, API]
 authors: [nodece]
 ---
 
-A more friendly API for RBAC. This API is a subset of Management API. The RBAC users could use this API to simplify the code.
+This RBAC API simplifies common role-based access control operations. It provides a subset of the Management API tailored for RBAC users.
 
 ## Reference
 
-global variable `e` is Enforcer instance.
+The global variable `e` represents an Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -82,7 +82,7 @@ Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv"
 
 ### `GetRolesForUser()`
 
-GetRolesForUser gets the roles that a user has.
+Retrieves all roles assigned to a user.
 
 For example:
 
@@ -156,7 +156,7 @@ List<String> res = e.getRolesForUser("alice");
 
 ### `GetUsersForRole()`
 
-GetUsersForRole gets the users that has a role.
+Retrieves all users assigned to a role.
 
 For example:
 
@@ -230,7 +230,7 @@ List<String> res = e.getUsersForRole("data1_admin");
 
 ### `HasRoleForUser()`
 
-HasRoleForUser determines whether a user has a role.
+Checks whether a user has a specific role.
 
 For example:
 
@@ -304,7 +304,7 @@ boolean res = e.hasRoleForUser("alice", "data1_admin");
 
 ### `AddRoleForUser()`
 
-AddRoleForUser adds a role for a user.
+Assigns a role to a user.
 Returns false if the user already has the role (aka not affected).
 
 For example:
@@ -381,7 +381,7 @@ boolean added = e.addRoleForUser("alice", "data2_admin");
 
 ### `AddRolesForUser()`
 
-AddRolesForUser adds multiple roles for a user.
+Assigns multiple roles to a user.
 Returns false if the user already has one of these roles (aka not affected).
 
 For example:
@@ -435,7 +435,7 @@ let all_added = e.add_roles_for_user("alice", roles, None).await?; // No domain
 
 ### `DeleteRoleForUser()`
 
-DeleteRoleForUser deletes a role for a user.
+Removes a role from a user.
 Returns false if the user does not have the role (aka not affected).
 
 For example:
@@ -512,7 +512,7 @@ boolean deleted = e.deleteRoleForUser("alice", "data1_admin");
 
 ### `DeleteRolesForUser()`
 
-DeleteRolesForUser deletes all roles for a user.
+Removes all roles from a user.
 Returns false if the user does not have any roles (aka not affected).
 
 For example:
@@ -589,7 +589,7 @@ boolean deletedAtLeastOne = e.deleteRolesForUser("alice");
 
 ### `DeleteUser()`
 
-DeleteUser deletes a user.
+Removes a user from the system.
 Returns false if the user does not exist (aka not affected).
 
 For example:
@@ -666,7 +666,7 @@ boolean deleted = e.deleteUser("alice");
 
 ### `DeleteRole()`
 
-DeleteRole deletes a role.
+Removes a role from the system.
 
 For example:
 
@@ -742,7 +742,7 @@ e.deleteRole("data2_admin");
 
 ### `DeletePermission()`
 
-DeletePermission deletes a permission.
+Removes a permission from the system.
 Returns false if the permission does not exist (aka not affected).
 
 For example:
@@ -819,7 +819,7 @@ boolean deleted = e.deletePermission("read");
 
 ### `AddPermissionForUser()`
 
-AddPermissionForUser adds a permission for a user or role.
+Grants a permission to a user or role.
 Returns false if the user or role already has the permission (aka not affected).
 
 For example:
@@ -896,7 +896,7 @@ boolean added = e.addPermissionForUser("bob", "read");
 
 ### `AddPermissionsForUser()`
 
-AddPermissionsForUser adds multiple permissions for a user or role.
+Grants multiple permissions to a user or role.
 Returns false if the user or role already has one of the permissions (aka not affected).
 
 For example:
@@ -968,7 +968,7 @@ let all_added = e.add_permissions_for_user("bob", permissions).await?;
 
 ### `DeletePermissionForUser()`
 
-DeletePermissionForUser deletes a permission for a user or role.
+Revokes a permission from a user or role.
 Returns false if the user or role does not have the permission (aka not affected).
 
 For example:
@@ -1045,7 +1045,7 @@ boolean deleted = e.deletePermissionForUser("bob", "read");
 
 ### `DeletePermissionsForUser()`
 
-DeletePermissionsForUser deletes permissions for a user or role.
+Revokes all permissions from a user or role.
 Returns false if the user or role does not have any permissions (aka not affected).
 
 For example:
@@ -1122,7 +1122,7 @@ boolean deletedAtLeastOne = e.deletePermissionForUser("bob");
 
 ### `GetPermissionsForUser()`
 
-GetPermissionsForUser gets permissions for a user or role.
+Retrieves all permissions for a user or role.
 
 For example:
 
@@ -1669,7 +1669,7 @@ var result = e.GetDomainsForUser("alice");
 
 ### `GetImplicitResourcesForUser()`
 
-GetImplicitResourcesForUser returns all policies that should be true for user.
+Returns all policies that apply to a user, including those inherited through roles.
 
 For example:
 
@@ -1710,7 +1710,7 @@ var resources = e.GetImplicitResourcesForUser("alice");
 
 ### `GetImplicitUsersForPermission()`
 
-GetImplicitUsersForPermission gets implicit users for a permission.
+Retrieves all users with a specific permission, including those with implicit permissions through roles.
 
 For example:
 
@@ -1749,7 +1749,7 @@ var users = e.GetImplicitUsersForPermission("data1", "read");
 
 ### `GetImplicitObjectPatternsForUser()`
 
-GetImplicitObjectPatternsForUser returns all object patterns (with wildcards) that a user has for a given domain and action.
+Returns all object patterns (including wildcards) that a user can access for a given domain and action.
 
 For example:
 
@@ -1833,7 +1833,7 @@ List<String> patterns = e.getImplicitObjectPatternsForUser("alice", "chronicle/1
 
 ### `GetAllowedObjectConditions()`
 
-GetAllowedObjectConditions returns a string array of object conditions that the user can access.
+Returns object conditions that a user can access.
 
 For example:
 
@@ -1883,7 +1883,7 @@ var conditions = e.GetAllowedObjectConditions("alice", "read", "r.obj.");
 
 ### `GetImplicitUsersForResource()`
 
-GetImplicitUsersForResource return implicit user based on resource.
+Returns all users with access to a resource, including those with implicit permissions through roles.
 
 For example:
 
@@ -1930,7 +1930,7 @@ Only users will be returned, roles (2nd arg in "g") will be excluded.
 
 ### `GetNamedImplicitUsersForResource()`
 
-GetNamedImplicitUsersForResource return implicit user based on resource with named policy support.
+Returns all users with access to a resource through a named policy, including those with implicit permissions through roles.
 This function handles resource role relationships through named policies (e.g., g2, g3, etc.).
 
 For example:
