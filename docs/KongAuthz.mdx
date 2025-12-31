@@ -6,25 +6,25 @@ keywords: [Kong, Kong API Gateway, kong-authz, Lua]
 authors: [hsluoyz]
 ---
 
-[kong-authz](https://github.com/casbin-lua/kong-authz) is an authorization plugin for Kong based on [lua-casbin](https://github.com/casbin/lua-casbin/). This plugin enables request authorization in Kong API Gateway using Casbin's powerful and flexible access control models.
+[kong-authz](https://github.com/casbin-lua/kong-authz) is an authorization plugin for Kong built on [lua-casbin](https://github.com/casbin/lua-casbin/). This plugin enables request authorization in Kong API Gateway using Casbin's flexible access control models.
 
 ## Prerequisites
 
-The following need to be installed in advance:
+Install the following before proceeding:
 
 - [Kong](https://konghq.com/)
-- [4daysorm-adapter](https://github.com/casbin-lua/4daysorm-adapter) (optional, if you want to use database as policy storage)
-- [luasql-adapter](https://github.com/casbin-lua/luasql-adapter) (optional, if you want to use database as policy storage)
+- [4daysorm-adapter](https://github.com/casbin-lua/4daysorm-adapter) (optional, for database-backed policy storage)
+- [luasql-adapter](https://github.com/casbin-lua/luasql-adapter) (optional, for database-backed policy storage)
 
 :::info
-The Casbin policy is read from a file by default. If you want to use Casbin policy from a database, choose either 4daysorm-adapter or luasql-adapter.
+By default, policies are loaded from files. To use database-backed policies, install either 4daysorm-adapter or luasql-adapter.
 :::
 
 ## Installation
 
-Ensure you have Casbin's system dependencies installed:
+Install Casbin's system dependencies:
 
-- For systems with `apt` package manager:
+- For systems with `apt`:
 
 ```bash
 sudo apt install gcc libpcre3 libpcre3-dev
@@ -48,14 +48,14 @@ Install the kong-authz plugin:
 sudo luarocks install https://raw.githubusercontent.com/casbin-lua/kong-authz/master/kong-authz-0.0.1-1.rockspec
 ```
 
-Add the plugin to your `kong.conf` file by appending `kong-authz` (with a comma) to the `plugins` variable:
+Add the plugin to your `kong.conf` by appending `kong-authz` (comma-separated) to the `plugins` variable:
 
 ```conf
 # kong.conf
 plugins = bundled, kong-authz
 ```
 
-Finally, start or restart Kong:
+Start or restart Kong:
 
 ```bash
 kong start [-c /path/to/kong.conf]
@@ -63,11 +63,11 @@ kong start [-c /path/to/kong.conf]
 
 ## Configuration
 
-You can add this plugin on top of any service/API or globally by sending a request through the Kong Admin API.
+Configure this plugin at the service, API, or global level through the Kong Admin API.
 
 ### File-Based Policy Storage
 
-Add the plugin globally with file-based policy storage:
+Configure globally with file-based policies:
 
 ```bash
 curl -i -X POST \
@@ -80,7 +80,7 @@ curl -i -X POST \
 
 ### Database Policy Storage with LuaSQL
 
-Add the plugin to a specific service with LuaSQL adapter:
+Configure for a specific service using the LuaSQL adapter:
 
 ```bash
 curl -i -X POST \
@@ -99,7 +99,7 @@ curl -i -X POST \
 
 ### Database Policy Storage with 4DaysORM
 
-Add the plugin to a specific service with 4DaysORM adapter:
+Configure for a specific service using the 4DaysORM adapter:
 
 ```bash
 curl -i -X POST \
@@ -116,21 +116,21 @@ curl -i -X POST \
   --data 'config.db_info.port=3306'
 ```
 
-## How Authorization Works
+## Authorization Process
 
-The authorization determines a request based on `{subject, object, action}`, which means what `subject` can perform what `action` on what `object`. In this plugin:
+Authorization evaluates requests using `{subject, object, action}`, determining what `subject` can perform what `action` on what `object`. In this plugin:
 
-1. **subject**: the logged-in username as passed in the header
-2. **object**: the URL path for the web resource like "dataset1/item1"
-3. **action**: HTTP method like GET, POST, PUT, DELETE, or high-level actions you defined like "read-file", "write-blog"
+1. **subject**: The logged-in username passed in the request header
+2. **object**: The URL path for the resource (e.g., "dataset1/item1")
+3. **action**: HTTP method (GET, POST, PUT, DELETE) or custom actions like "read-file" or "write-blog"
 
-For details on writing authorization policies, refer to the [Casbin documentation](/docs/how-it-works).
+For policy authoring details, consult the [Casbin documentation](/docs/how-it-works).
 
-## Example Usage
+## Example Configuration
 
-Here's a complete example of setting up kong-authz for a service:
+Complete example of configuring kong-authz for a service:
 
-1. Set up an example service:
+1. Create an example service:
 
 ```bash
 curl -i -X POST \
@@ -139,7 +139,7 @@ curl -i -X POST \
   --data 'url=http://mockbin.org'
 ```
 
-1. Set up a route for the service:
+2. Create a route for the service:
 
 ```bash
 curl -i -X POST \
@@ -147,7 +147,7 @@ curl -i -X POST \
   --data 'hosts[]=example.com'
 ```
 
-1. Configure the kong-authz plugin:
+3. Apply the kong-authz plugin:
 
 ```bash
 curl -i -X POST \
@@ -158,7 +158,7 @@ curl -i -X POST \
   --data 'config.username=user'
 ```
 
-1. Test the authorization by sending a request:
+4. Test authorization with a request:
 
 ```bash
 curl -i -X GET \
@@ -167,7 +167,7 @@ curl -i -X GET \
   --header 'user: anonymous'
 ```
 
-When run for the first time, it will create a Casbin Enforcer using the model and policy paths. If this returns any non-500 error, the configuration is successful. Otherwise, check the error.log file in your Kong setup.
+On first execution, this creates a Casbin Enforcer using the specified model and policy paths. Any non-500 error indicates successful configuration. For 500 errors, check the error.log file in your Kong installation.
 
 ## Resources
 
