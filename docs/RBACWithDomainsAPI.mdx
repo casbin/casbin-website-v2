@@ -6,7 +6,7 @@ keywords: [RBAC with domains, API]
 authors: [hsluoyz]
 ---
 
-A more user-friendly API for RBAC with domains. This API is a subset of the Management API. RBAC users can use this API to simplify their code.
+This simplified API is designed for RBAC with domains. It is a subset of the Management API, making it easier for RBAC users to work with domain-based policies.
 
 ## Reference
 
@@ -82,7 +82,7 @@ Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rba
 
 ### `GetUsersForRoleInDomain()`
 
-The `GetUsersForRoleInDomain()` function retrieves the users that have a role within a domain.
+`GetUsersForRoleInDomain()` retrieves all users assigned to a specific role within a domain.
 
 For example:
 
@@ -120,7 +120,7 @@ res = e.get_users_for_role_in_domain("admin", "domain1")
 
 ### `GetRolesForUserInDomain()`
 
-The `GetRolesForUserInDomain()` function retrieves the roles that a user has within a domain.
+`GetRolesForUserInDomain()` retrieves all roles assigned to a user within a domain.
 
 For example:
 
@@ -167,7 +167,7 @@ List<String> res = e.getRolesForUserInDomain("admin", "domain1");
 
 ### `GetPermissionsForUserInDomain()`
 
-The `GetPermissionsForUserInDomain()` function retrieves the permissions for a user or role within a domain.
+`GetPermissionsForUserInDomain()` retrieves all permissions for a user or role within a domain.
 
 For example:
 
@@ -196,7 +196,7 @@ List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
 
 ### `AddRoleForUserInDomain()`
 
-The `AddRoleForUserInDomain()` function adds a role for a user within a domain. It returns `false` if the user already has the role (no changes made).
+`AddRoleForUserInDomain()` assigns a role to a user within a domain. Returns `false` if the user already has the role (no changes made).
 
 For example:
 
@@ -234,7 +234,7 @@ boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
 
 ### `DeleteRoleForUserInDomain()`
 
-The `DeleteRoleForUserInDomain()` function removes a role for a user within a domain. It returns `false` if the user does not have the role (no changes made).
+`DeleteRoleForUserInDomain()` removes a role from a user within a domain. Returns `false` if the user does not have the role (no changes made).
 
 For example:
 
@@ -263,7 +263,7 @@ boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
 
 ### `DeleteRolesForUserInDomain()`
 
-The `DeleteRolesForUserInDomain()` function removes all roles for a user within a domain. It returns `false` if the user does not have any roles (no changes made).
+`DeleteRolesForUserInDomain()` removes all roles from a user within a domain. Returns `false` if the user has no roles (no changes made).
 
 For example:
 
@@ -283,7 +283,7 @@ ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
 
 ### `GetAllUsersByDomain()`
 
-The `GetAllUsersByDomain()` function retrieves all users associated with the given domain. It returns an empty string array if no domain is defined in the model.
+`GetAllUsersByDomain()` retrieves all users associated with the specified domain. Returns an empty string array if no domain is defined in the model.
 
 For example:
 
@@ -303,7 +303,7 @@ res := e.GetAllUsersByDomain("domain1")
 
 ### `DeleteAllUsersByDomain()`
 
-The `DeleteAllUsersByDomain()` function deletes all users associated with the given domain. It returns `false` if no domain is defined in the model.
+`DeleteAllUsersByDomain()` removes all users associated with the specified domain. Returns `false` if no domain is defined in the model.
 
 For example:
 
@@ -323,8 +323,7 @@ ok, err := e.DeleteAllUsersByDomain("domain1")
 
 ### `DeleteDomains()`
 
-DeleteDomains would delete all associated users and roles.
-It would delete all domains if parameter is not provided.
+`DeleteDomains()` removes all associated users and roles for the specified domains. If no parameters are provided, all domains are deleted.
 
 For example:
 
@@ -344,7 +343,7 @@ ok, err := e.DeleteDomains("domain1", "domain2")
 
 ### `GetAllDomains()`
 
-GetAllDomains would get all domains.
+`GetAllDomains()` retrieves all domains.
 
 For example:
 
@@ -364,13 +363,13 @@ res, _ := e.GetAllDomains()
 
 :::note
 
-If you are handling a domain like ```name::domain```, it may lead to unexpected behavior. In Casbin, ```::``` is a reserved keyword, just like ```for```, ```if``` in a programming language, we should never put ```::``` in a domain.
+When handling domain names that contain `::`, unexpected behavior may occur. In Casbin, `::` is a reserved keyword, similar to `for` or `if` in programming languages. Never use `::` within a domain name.
 
 :::
 
 ### `GetAllRolesByDomain()`
 
-GetAllRolesByDomain would get all roles associated with the domain.
+`GetAllRolesByDomain()` retrieves all roles associated with the specified domain.
 
 For example:
 
@@ -396,7 +395,7 @@ This method does not apply to domains that have an inheritance relationship, als
 
 ### `GetImplicitUsersForResourceByDomain()`
 
-GetImplicitUsersForResourceByDomain return implicit user based on resource and domain.
+`GetImplicitUsersForResourceByDomain()` returns implicit users based on resource and domain.
 
 For example:
 
