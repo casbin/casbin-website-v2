@@ -6,8 +6,7 @@ keywords: [Casbin.js, react-authz, rbac-react, vue-authz, angular-authz]
 authors: [hsluoyz]
 ---
 
-
-[Casbin.js](https://github.com/casbin/casbin.js) is a Casbin addon that facilitates your access-control management in the frontend application.
+[Casbin.js](https://github.com/casbin/casbin.js) is a Casbin extension that simplifies access control management in frontend applications.
 
 ## Installation
 
@@ -22,18 +21,18 @@ or
 yarn add casbin.js
 ```
 
-## Frontend Middlewares
+## Frontend Frameworks
 
-| Middleware                                                  | Type    | Author                                 | Description                                                       |
-|-------------------------------------------------------------|---------|----------------------------------------|-------------------------------------------------------------------|
-| [react-authz](https://github.com/casbin-js/react-authz)     | React   | Casbin                                 | React wrapper for Casbin.js                                       |
-| [rbac-react](https://github.com/daobeng/rbac-react)         | React   | [@daobeng](https://github.com/daobeng) | Role Based Access Control in React using HOCs, CASL and Casbin.js |
-| [vue-authz](https://github.com/casbin-js/vue-authz)         | Vue     | Casbin                                 | Vue wrapper for Casbin.js                                         |
-| [angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin                                 | Angular wrapper for Casbin.js                                     |
+| Framework                                                   | Type    | Author                                 | Description                                                                   |
+|-------------------------------------------------------------|---------|----------------------------------------|-------------------------------------------------------------------------------|
+| [react-authz](https://github.com/casbin-js/react-authz)     | React   | Casbin                                 | React wrapper for Casbin.js                                                   |
+| [rbac-react](https://github.com/daobeng/rbac-react)         | React   | [@daobeng](https://github.com/daobeng) | Role-Based Access Control in React using Higher-Order Components, CASL, and Casbin.js |
+| [vue-authz](https://github.com/casbin-js/vue-authz)         | Vue     | Casbin                                 | Vue wrapper for Casbin.js                                                     |
+| [angular-authz](https://github.com/casbin-js/angular-authz) | Angular | Casbin                                 | Angular wrapper for Casbin.js                                                 |
 
 ## Quick Start
 
-You can use the `manual` mode in your frontend application and set the permissions whenever you wish.
+Configure Casbin.js in `manual` mode to set permissions explicitly in your frontend application:
 
 ```javascript
 const casbinjs = require("casbin.js");
@@ -48,7 +47,7 @@ const permission = {
 const authorizer = new casbinjs.Authorizer("manual");
 ```
 
-Now we have an authorizer, `authorizer`. We can get permission rules from it by using the `authorizer.can()` and `authorizer.cannot()` APIs. The return values of these 2 APIs are JavaScript Promises ([details here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)), so we should use the `then()` method of the return value like this:
+With an authorizer instance, you can check permissions using `authorizer.can()` and `authorizer.cannot()`. Both methods return JavaScript Promises ([see MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)), so use the `then()` method to handle results:
 
 ```javascript
 result = authorizer.can("write", "data1");
@@ -62,7 +61,7 @@ result.then((success, failed) => {
 // output: you can write data1
 ```
 
-The `cannot()` API is used in the same way:
+The `cannot()` method works identically:
 
 ```javascript
 result = authorizer.cannot("read", "data2");
@@ -76,13 +75,13 @@ result.then((success, failed) => {
 // output: you can read data2
 ```
 
-In the code above, the `success` variable in the parameters means the request gets the result without throwing an error and doesn't mean that the permission rule is `true`. The `failed` variable is also unrelated to the permission rules. It only makes sense when something goes wrong in the process of the request.
+The `success` parameter indicates that the query completed without errors—not that permission was granted. Similarly, `failed` relates to query errors, not permission denial.
 
-You can refer to our [React example](https://github.com/casbin-js/examples) to see a practical usage of Casbin.js.
+See our [React example](https://github.com/casbin-js/examples) for practical Casbin.js usage.
 
 ### Permission Object
 
-Casbin.js will accept a JSON object to manipulate the corresponding permission of a visitor. For example:
+Casbin.js uses a JSON object to represent visitor permissions. For example:
 
 ```json
 {
@@ -91,13 +90,13 @@ Casbin.js will accept a JSON object to manipulate the corresponding permission o
 }
 ```
 
-The permission object above shows that the visitor can `read` the `data1` and `data2` objects, while they can only `write` the `data1` objects.
+This object indicates that the visitor can read both `data1` and `data2` objects but can only write to `data1`.
 
 ## Advanced Usage
 
-Casbin.js provides a perfect solution for integrating your frontend access-control management with your backend Casbin service.
+Casbin.js provides seamless integration between frontend access control and your backend Casbin service.
 
-Use the `auto` mode and specify your endpoint when initializing the Casbin.js `Authorizer`, it will automatically sync the permission and manipulate the frontend status.
+Use `auto` mode and specify your backend endpoint when initializing the Casbin.js `Authorizer`. It will automatically synchronize permissions and manage frontend authorization state:
 
 ```javascript
 const casbinjs = require('casbin.js');
@@ -121,11 +120,11 @@ result.then((success, failed) => {
 });
 ```
 
-Correspondingly, you need to expose an interface (e.g. a RestAPI) to generate the permission object and pass it to the frontend. In your API controller, call `CasbinJsGetUserPermission` to construct the permission object. Here is an example in Beego:
+On the backend, expose an endpoint (such as a REST API) that generates the permission object for the frontend. In your API controller, call `CasbinJsGetUserPermission` to construct the permission object. This Beego example demonstrates the pattern:
 
 :::note
 
-Your endpoint server should return something like
+Your endpoint should return a response like:
 
 ```json
 {
@@ -153,46 +152,46 @@ func (c *APIController) GetFrontendPermission() {
 
 :::note
 
-Currently, the `CasbinJsGetPermissionForUser` API is only supported in Go Casbin and Node-Casbin. If you want this API to be supported in other languages, please [raise an issue](https://github.com/casbin/casbin.js/issues) or leave a comment below.
+Currently, `CasbinJsGetPermissionForUser` is available only in Go Casbin and Node-Casbin. To request support in other languages, please [open an issue](https://github.com/casbin/casbin.js/issues) or leave a comment below.
 
 :::
 
-## API List
+## API Reference
 
 ### `setPermission(permission: string)`
 
-Set the permission object. Always used in `manual` mode.
+Sets the permission object. Used primarily in `manual` mode.
 
 ### `setUser(user: string)`
 
-Set the visitor identity and update the permission. Always used in `auto` mode.
+Sets the visitor identity and refreshes permissions. Used primarily in `auto` mode.
 
 ### `can(action: string, object: string)`
 
-Check if the user can perform `action` on `object`.
+Checks if the user can perform `action` on `object`.
 
 ### `cannot(action: string, object: string)`
 
-Check if the user **cannot** perform `action` on `object`.
+Checks if the user **cannot** perform `action` on `object`.
 
 ### `canAll(action: string, objects: Array<object>)`
 
-Check if the user can perform `action` on **all** objects in `objects`.
+Checks if the user can perform `action` on **all** objects in `objects`.
 
 ### `canAny(action: string, objects: Array<object>)`
 
-Check if the user can perform `action` on **any one** of the `objects`.
+Checks if the user can perform `action` on **any** object in `objects`.
 
 ## Why Casbin.js
 
-People may wonder about the difference between Node-Casbin and Casbin.js. In a word, Node-Casbin is the core of Casbin implemented in the NodeJS environment, and it's normally used as an access-controlling management toolkit at the server ends. Casbin.js is a frontend library that helps you use Casbin to authorize your webpage users at the client side.
+People often wonder about the distinction between Node-Casbin and Casbin.js. Node-Casbin is Casbin's core implementation for Node.js environments, typically deployed at the server level for access control management. Casbin.js is a frontend library that helps you apply Casbin authorization logic at the client side for webpage users.
 
-Normally, it is not proper to directly build up a Casbin service and do the authorization/enforcement tasks at a web frontend application due to the following problems:
+Directly building a Casbin service for frontend authorization presents several issues:
 
-1. When someone turns on the client, the enforcer will be initialized, and it will pull all the policies from the backend persistent layers. A high concurrency could bring tough pressure on the databases and cost a lot of network throughput.
-2. Loading all policies to the client side could bring security risks.
-3. It is difficult to separate the client and server as well as facilitate agile development.
+1. When a client connects, the enforcer initializes and pulls all policies from backend storage. High concurrency can strain databases and consume significant network bandwidth.
+2. Exposing all policies to clients creates security vulnerabilities.
+3. Tight coupling between client and server complicates development and maintenance.
 
-We need a tool that eases the process of using Casbin at the frontend. Actually, the core of Casbin.js is the manipulation of the current user's permission at the client side. As you mentioned, Casbin.js does a fetch from a specified endpoint. This procedure will sync the permission of the user with the backend Casbin service. After having the permission data, developers can use Casbin.js interfaces to manage the behavior of the user at the frontend side.
+Casbin.js addresses these challenges by managing user permissions at the client level. The core functionality involves synchronizing the current user's permissions with the backend Casbin service through a fetch operation. Once permission data is retrieved, developers can use Casbin.js interfaces to control user behavior at the frontend.
 
-Casbin.js avoids the two problems mentioned above: Casbin service will no longer be pulled up repeatedly, and the size of passing messages between the client and the server is reduced. We also avoid storing all the policies at the frontend. The user can only access their own permission, but has no knowledge about the access-control model and other users' permissions. Besides, Casbin.js can also efficiently decouple the client and the server in authorization management.
+This approach eliminates repeated enforcer initialization, reduces message size between client and server, and avoids exposing all policies at the frontend. Users access only their own permissions without knowledge of the access control model or other users' permissions. Additionally, Casbin.js effectively decouples client and server authorization logic.

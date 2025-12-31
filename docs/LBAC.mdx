@@ -6,13 +6,13 @@ keywords: [lbac, lattice-based access control, security model, confidentiality, 
 authors: [nodece]
 ---
 
-## What is the LBAC model?
+## What is LBAC?
 
-LBAC stands for Lattice-Based Access Control. It is a formal access control model that can be implemented in various ways. The example shown below demonstrates one possible implementation in Casbin that combines confidentiality and integrity controls.
+LBAC (Lattice-Based Access Control) is a formal access control model that can be implemented in multiple ways. The implementation shown here demonstrates one approach in Casbin that combines confidentiality and integrity controls.
 
 ## Model Definition
 
-Here is an example LBAC model implementation in Casbin:
+This example shows an LBAC model implementation in Casbin:
 
 ```conf
 [request_definition]
@@ -31,20 +31,18 @@ e = some(where (p.eft == allow))
 m = (r.act == "read" && r.subject_confidentiality >= r.object_confidentiality && r.subject_integrity >= r.object_integrity) || (r.act == "write" && r.subject_confidentiality <= r.object_confidentiality && r.subject_integrity <= r.object_integrity)
 ```
 
-## How it works
+## How It Works
 
-In this example implementation, the matcher function implements access control rules based on two security properties:
+This implementation uses the matcher function to enforce access control based on two security dimensions:
 
-- **Confidentiality Control**: Prevents unauthorized disclosure of information
-- **Integrity Control**: Prevents unauthorized modification of information
+- **Confidentiality Control**: Protects against unauthorized information disclosure
+- **Integrity Control**: Protects against unauthorized information modification
 
-The access control decisions are made by comparing the security levels of subjects and objects in both dimensions.
+Access decisions are made by comparing security levels of subjects and objects across both dimensions.
 
-## Examples
+## Example Requests
 
-### Request Examples
-
-The following are example requests to demonstrate how this LBAC implementation works:
+The following examples demonstrate how this LBAC implementation evaluates requests:
 
 ```text
 # Normal read operations (ALLOWED)
@@ -74,7 +72,7 @@ guest, 2, 2, file_private, 1, 3, write       # guest (conf:2, int:2) writes file
 
 ## Security Levels
 
-In this example implementation, both confidentiality and integrity levels are represented as integers where higher numbers indicate higher security levels:
+In this implementation, both confidentiality and integrity are represented as integers where higher values indicate higher security levels:
 
 ### Confidentiality Levels
 
@@ -90,16 +88,16 @@ In this example implementation, both confidentiality and integrity levels are re
 - Level 3: High integrity (e.g., system data, administrative content)
 - Level 4: Critical integrity (e.g., security policies, system configuration)
 
-## Use Cases
+## Applicable Scenarios
 
-This LBAC implementation example is suitable for:
+This LBAC implementation is well-suited for:
 
 - Multi-level security environments
-- Applications where data protection and data accuracy are both important
+- Applications where both data protection and data accuracy matter
 
 ## Implementation Notes
 
-- The model enforces mandatory access control (MAC) with dual security properties
-- Security levels are assigned by system administrators
-- Access decisions are based on both confidentiality and integrity levels
-- The model prevents both information leakage and data corruption
+- The model implements mandatory access control (MAC) with dual security properties
+- System administrators assign security levels
+- Access decisions consider both confidentiality and integrity levels
+- The model prevents information leakage and data corruption
