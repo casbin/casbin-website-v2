@@ -139,7 +139,7 @@ curl -i -X POST \
   --data 'url=http://mockbin.org'
 ```
 
-2. Create a route for the service:
+1. Create a route for the service:
 
 ```bash
 curl -i -X POST \
@@ -147,7 +147,7 @@ curl -i -X POST \
   --data 'hosts[]=example.com'
 ```
 
-3. Apply the kong-authz plugin:
+1. Apply the kong-authz plugin:
 
 ```bash
 curl -i -X POST \
@@ -158,7 +158,7 @@ curl -i -X POST \
   --data 'config.username=user'
 ```
 
-4. Test authorization with a request:
+1. Test authorization with a request:
 
 ```bash
 curl -i -X GET \
