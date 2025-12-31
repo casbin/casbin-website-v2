@@ -6,13 +6,11 @@ keywords: [management, Filtered API]
 authors: [nodece]
 ---
 
-
-
-The primitive API that provides full support for Casbin policy management.
+The Management API provides comprehensive support for Casbin policy management operations.
 
 ## Filtered API
 
-Almost all filtered api has the same parameters ``(fieldIndex int, fieldValues ...string)``. `fieldIndex` is the index where matching start, `fieldValues` denotes the values result should have. Note that empty string in fieldValues could be any word.
+Filtered API methods share a common parameter signature: `(fieldIndex int, fieldValues ...string)`. The `fieldIndex` parameter specifies the starting index for matching, while `fieldValues` contains the expected values. Empty strings in `fieldValues` act as wildcards, matching any value.
 
 Example:
 
@@ -25,18 +23,18 @@ p, bob, pen ,get
 ```
 
 ```go
-e.GetFilteredPolicy(1, "book") // will return: [["alice", "book", "read"], ["bob", "book", "read"], ["bob", "book", "write"]]
+e.GetFilteredPolicy(1, "book") // returns: [["alice", "book", "read"], ["bob", "book", "read"], ["bob", "book", "write"]]
 
-e.GetFilteredPolicy(1, "book", "read") // will return: [["alice", "book", "read"], ["bob", "book", "read"]]
+e.GetFilteredPolicy(1, "book", "read") // returns: [["alice", "book", "read"], ["bob", "book", "read"]]
 
-e.GetFilteredPolicy(0, "alice", "", "read") // will return: [[alice book read]]
+e.GetFilteredPolicy(0, "alice", "", "read") // returns: [[alice book read]]
 
-e.GetFilteredPolicy(0, "alice") // will return: [["alice", "book", "read"], ["alice", "pen", "get"]]
+e.GetFilteredPolicy(0, "alice") // returns: [["alice", "book", "read"], ["alice", "pen", "get"]]
 ```
 
-## Reference
+## API Reference
 
-global variable `e` is Enforcer instance.
+Throughout this reference, the variable `e` represents an Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">
