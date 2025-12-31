@@ -6,11 +6,11 @@ keywords: [ABAC, ABAC model]
 authors: [hsluoyz]
 ---
 
-## What is the ABAC model?
+## Understanding ABAC
 
-ABAC stands for Attribute-Based Access Control. It allows you to control access by using the attributes (properties) of the subject, object, or action instead of using the string values themselves. You may have heard of a complicated ABAC access control language called XACML. Casbin's ABAC, on the other hand, is much simpler. In Casbin's ABAC, you can use structs or class instances instead of strings for model elements.
+Attribute-Based Access Control (ABAC) determines access permissions by evaluating the properties of subjects, objects, and actions rather than relying solely on identity strings. While standards like XACML provide comprehensive but complex ABAC implementations, Casbin offers a streamlined approach where structs or class instances replace simple string identifiers.
 
-Let's take a look at the official ABAC example:
+Consider this basic ABAC configuration:
 
 ```ini
 [request_definition]
@@ -26,9 +26,9 @@ e = some(where (p.eft == allow))
 m = r.sub == r.obj.Owner
 ```
 
-In the matcher, we use `r.obj.Owner` instead of `r.obj`. The `r.obj` passed in the `Enforce()` function will be a struct or class instance rather than a string. Casbin will use reflection to retrieve the `obj` member variable in that struct or class for you.
+The matcher references `r.obj.Owner`, expecting `r.obj` to be a structured object rather than a plain string. When you call `Enforce()`, Casbin uses reflection to access the `Owner` field from the provided object.
 
-Here is a definition for the `r.obj` struct or class:
+A typical resource structure looks like this:
 
 ```go
 type testResource struct {
@@ -37,9 +37,7 @@ type testResource struct {
 }
 ```
 
-If you want to pass parameters to the enforcer through JSON, you need to enable the function with `e.EnableAcceptJsonRequest(true)`.
-
-For example:
+For JSON-based parameter passing, enable JSON request handling:
 
 ```go
 e, _ := NewEnforcer("examples/abac_model.conf")
@@ -52,40 +50,40 @@ ok, _ := e.Enforce("alice", data1Json, "read")
 
 :::note
 
-Enabling the function of accepting JSON parameters may result in a performance drop of 1.1 to 1.5 times.
+Enabling JSON parameter support introduces a performance overhead of approximately 1.1 to 1.5x.
 
 :::
 
-## How to use ABAC?
+## Using ABAC
 
-To use ABAC, you need to do two things:
+Implementing ABAC requires two steps:
 
-1. Specify the attributes in the model matcher.
-2. Pass in the struct or class instance for the element as an argument to Casbin's `Enforce()` function.
+1. Reference attributes within your model matcher.
+2. Supply struct or class instances as arguments to `Enforce()`.
 
 :::warning
 
-Currently, only request elements like `r.sub`, `r.obj`, `r.act`, and so on support ABAC. You cannot use it on policy elements like `p.sub` because there is no way to define a struct or class in Casbin's policy.
+ABAC attribute access works only for request elements (`r.sub`, `r.obj`, `r.act`). Policy elements like `p.sub` cannot use ABAC since policies cannot store struct or class definitions.
 
 :::
 
 :::tip
 
-You can use multiple ABAC attributes in a matcher. For example: `m = r.sub.Domain == r.obj.Domain`.
+Matchers can reference multiple attributes simultaneously. Example: `m = r.sub.Domain == r.obj.Domain`.
 
 :::
 
 :::tip
 
-If you need to use a comma in a policy that conflicts with CSV's separator, you can escape it by surrounding the statement with quotation marks. For example, `"keyMatch("bob", r.sub.Role)"` will not be split.
+When policies require commas that would conflict with CSV parsing, wrap the expression in quotation marks. Example: `"keyMatch("bob", r.sub.Role)"` prevents unwanted splitting.
 
 :::
 
-## Scaling the model for complex and large numbers of ABAC rules
+## Handling Complex ABAC Requirements
 
-The above implementation of the ABAC model is simple at its core. However, in many cases, the authorization system requires a complex and large number of ABAC rules. To accommodate this requirement, it is recommended to add the rules in the policy instead of the model. This can be done by introducing an `eval()` functional construct. Here is an example:
+While the basic ABAC model works for simple scenarios, real-world authorization often demands intricate rule sets. For such cases, move rule complexity from the model into policies using the `eval()` function.
 
-This is the definition of the `CONF` file used to define the ABAC model.
+Model configuration with `eval()`:
 
 ```ini
 [request_definition]
@@ -101,9 +99,9 @@ e = some(where (p.eft == allow))
 m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
 ```
 
-In this example, `p.sub_rule` is a struct or class (user-defined type) that contains the necessary attributes to be used in the policy.
+Here, `p.sub_rule` holds expressions that reference request attributes. These expressions are evaluated dynamically during enforcement.
 
-This is the policy that is used against the model for `Enforcement`. Now, you can use the object instance passed to `eval()` as a parameter to define certain ABAC constraints.
+Policy definitions using attribute-based rules:
 
 ```csv
 p, r.sub.Age > 18, /data1, read

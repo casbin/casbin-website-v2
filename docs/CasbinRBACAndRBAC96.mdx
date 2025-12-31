@@ -8,22 +8,22 @@ authors: [kininaru]
 
 ## Casbin RBAC and RBAC96
 
-In this document, we will compare Casbin RBAC with [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf).
+This document compares Casbin RBAC with [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf).
 
-Casbin RBAC supports nearly all the features of RBAC96 and adds new features on top of that.
+Casbin RBAC implements nearly all RBAC96 features while adding enhancements.
 
 | RBAC Version | Support Level | Description |
 |--------------|---------------|-------------|
-| RBAC0        | Fully Supported | RBAC0 is the basic version of RBAC96. It clarifies the relationship between Users, Roles, and Permissions. |
-| RBAC1        | Fully Supported | RBAC1 adds role hierarchies on top of RBAC0. This means that if `alice` has `role1`, `role1` has `role2`, then `alice` will also have `role2` and inherit its permissions. |
-| RBAC2        | Mutually Exclusive Handling Supported ([like this](/docs/syntax-for-models#policy-effect)) | RBAC2 adds constraints on RBAC0. This allows RBAC2 to handle mutually exclusive policies. However, quantitative limits are not supported. |
-| RBAC3        | Mutually Exclusive Handling Supported ([like this](/docs/syntax-for-models#policy-effect)) | RBAC3 is a combination of RBAC1 and RBAC2. It supports role hierarchies and constraints found in RBAC1 and RBAC2. However, quantitative limits are not supported. |
+| RBAC0        | Fully Supported | RBAC0 provides basic RBAC96 functionality, defining relationships between Users, Roles, and Permissions. |
+| RBAC1        | Fully Supported | RBAC1 extends RBAC0 with role hierarchies. When `alice` has `role1` and `role1` has `role2`, then `alice` inherits `role2` and its permissions. |
+| RBAC2        | Mutually Exclusive Handling Supported ([like this](/docs/syntax-for-models#policy-effect)) | RBAC2 adds constraints to RBAC0, enabling mutually exclusive policy handling. Quantitative limits are unsupported. |
+| RBAC3        | Mutually Exclusive Handling Supported ([like this](/docs/syntax-for-models#policy-effect)) | RBAC3 combines RBAC1 and RBAC2, supporting both role hierarchies and constraints. Quantitative limits are unsupported. |
 
 ## The Difference Between Casbin RBAC and RBAC96
 
-1. In Casbin, the distinction between User and Role is not as clear as in RBAC96.
+1. Casbin handles User-Role distinction less strictly than RBAC96.
 
-   In Casbin, both the User and the Role are treated as strings. For example, consider the following policy file:
+   Casbin treats both Users and Roles as strings. Consider this policy:
 
    ```csv
    p, admin, book, read
@@ -31,40 +31,40 @@ Casbin RBAC supports nearly all the features of RBAC96 and adds new features on 
    g, amber, admin
    ```
 
-   If you call the method `GetAllSubjects()` using an instance of the Casbin Enforcer:
+   Calling `GetAllSubjects()` on a Casbin Enforcer:
 
    ```go
    e.GetAllSubjects()
    ```
 
-   the return value will be:
+   returns:
 
    ```go
    [admin alice]
    ```
 
-   This is because in Casbin, subjects include both Users and Roles.
+   Casbin includes both Users and Roles as subjects.
 
-   However, if you call the method `GetAllRoles()`:
+   However, calling `GetAllRoles()`:
 
    ```go
    e.GetAllRoles()
    ```
 
-   the return value will be:
+   returns:
 
    ```go
    [admin]
    ```
 
-   From this, you can see that there is a distinction between Users and Roles in Casbin, but it is not as sharp as in RBAC96. Of course, you can add a prefix to your policies such as `user::alice` and `role::admin` to clarify their relationships.
+   Casbin distinguishes Users from Roles, but less strictly than RBAC96. Add prefixes like `user::alice` and `role::admin` to clarify relationships.
 
-2. Casbin RBAC provides more permissions than RBAC96.
+2. Casbin RBAC offers more flexible permissions than RBAC96.
 
-   RBAC96 defines only 7 permissions: read, write, append, execute, credit, debit, and inquiry.
+   RBAC96 defines seven permissions: read, write, append, execute, credit, debit, and inquiry.
 
-   However, in Casbin, we treat permissions as strings. This allows you to create permissions that better suit your needs.
+   Casbin treats permissions as strings, letting you define permissions matching your requirements.
 
 3. Casbin RBAC supports domains.
 
-   In Casbin, you can perform authorizations based on domains. This feature makes your Access Control Model more flexible.
+   Casbin enables domain-based authorization, providing greater Access Control Model flexibility.

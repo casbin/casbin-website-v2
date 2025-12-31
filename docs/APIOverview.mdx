@@ -6,11 +6,11 @@ keywords: [API overview, API, API usage]
 authors: [hsluoyz]
 ---
 
-This overview only shows you how to use Casbin APIs and doesn't explain how Casbin is installed or how it works. You can find those tutorials here: [Installation of Casbin](/docs/get-started) and [How Casbin Works](/docs/how-it-works). So, when you start reading this tutorial, we assume that you have fully installed and imported Casbin into your code.
+This guide demonstrates Casbin API usage. For installation or architectural details, see [Installation of Casbin](/docs/get-started) and [How Casbin Works](/docs/how-it-works). We assume you've completed installation and import before proceeding.
 
 ## Enforce API
 
-Let's start with the Enforce APIs of Casbin. We will load a RBAC model from `model.conf` and load policies from `policy.csv`. You can learn about the Model syntax [here](/docs/syntax-for-models), and we won't discuss it in this tutorial. We assume that you can understand the config files given below:
+We'll load an RBAC model from `model.conf` and policies from `policy.csv`. Model syntax is explained [here](/docs/syntax-for-models). Review the configuration files below:
 
 `model.conf`
 
@@ -44,7 +44,7 @@ g, amber, admin
 g, abc, admin
 ```
 
-After reading the config files, please read the following code.
+Review this code after examining the configuration files:
 
 ```go
 // Load information from files.
@@ -55,44 +55,42 @@ if err != nil {
 ok, err := enforcer.Enforce("alice", "data1", "read")
 ```
 
-This code loads the access control model and policies from local files. The function `casbin.NewEnforcer()` will return an enforcer. It will recognize its two parameters as file paths and load the files from there. Errors occurred in the process are stored in the variable `err`. This code uses the default adapter to load the model and policies, and of course, you can achieve the same result by using a third-party adapter.
+This loads the access control model and policies from local files. The `casbin.NewEnforcer()` function returns an enforcer, interpreting its parameters as file paths. Any errors are captured in `err`. By default, this uses the built-in adapter, though third-party adapters work identically.
 
-The code `ok, err := enforcer.Enforce("alice", "data1", "read")` is used to confirm access permissions. If Alice can access data1 with the read operation, the returned value of `ok` will be `true`; otherwise, it will be `false`. In this example, the value of `ok` is `true`.
+The `ok, err := enforcer.Enforce("alice", "data1", "read")` call checks access permissions. When Alice has permission to read data1, `ok` returns `true`; otherwise `false`. Here, the result is `true`.
 
 ## EnforceEx API
 
-Sometimes you may wonder which policy allowed the request, so we have prepared the function `EnforceEx()`. You can use it like this:
+To identify which policy permitted a request, use `EnforceEx()`:
 
 ```go
 ok, reason, err := enforcer.EnforceEx("amber", "data1", "read")
 fmt.Println(ok, reason) // true [admin data1 read]
 ```
 
-The `EnforceEx()` function will return the exact policy string in the return value `reason`. In this example, `amber` is an `admin` role, so the policy `p, admin, data1, read` allowed this request to be `true`. The output of this code is in the comment.
+`EnforceEx()` returns the matching policy string in `reason`. Since `amber` holds the `admin` role, the policy `p, admin, data1, read` authorizes this request. Output appears in the comment.
 
-Casbin has provided many APIs similar to this one. These APIs add some extra functions to the basic ones. They include:
+Casbin offers several similar enhanced APIs:
 
 - `ok, err := enforcer.EnforceWithMatcher(matcher, request)`
 
-  This function uses a matcher.
+  Uses a custom matcher.
 
 - `ok, reason, err := enforcer.EnforceExWithMatcher(matcher, request)`
 
-  This is a combination of `EnforceWithMatcher()` and `EnforceEx()`.
+  Combines `EnforceWithMatcher()` and `EnforceEx()`.
 
 - `boolArray, err := enforcer.BatchEnforce(requests)`
 
-  This function allows for a list of jobs and returns an array.
+  Processes multiple requests, returning an array of results.
 
-This is a simple use case of Casbin. You can use Casbin to start an authorization server using these APIs. We will show you some other types of APIs in the following paragraphs.
+These APIs provide the foundation for building an authorization server. Additional API categories follow.
 
 ## Management API
 
 ### Get API
 
-These APIs are used to retrieve specific objects in policies. In this example, we are loading an enforcer and retrieving something from it.
-
-Please take a look at the following code:
+These APIs retrieve specific policy elements. The example loads an enforcer and extracts information:
 
 ```go
 enforcer, err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
@@ -103,36 +101,36 @@ allSubjects := enforcer.GetAllSubjects()
 fmt.Println(allSubjects)
 ```
 
-Similar to the previous example, the first four lines are used to load necessary information from local files. We won't discuss that here any further.
+The first four lines load information from local files, as shown previously.
 
-The code `allSubjects := enforcer.GetAllSubjects()` retrieves all the subjects in the policy file and returns them as an array. We then print that array.
+The `allSubjects := enforcer.GetAllSubjects()` call retrieves all policy subjects as an array, which is then printed.
 
-Typically, the output of the code should be:
+Expected output:
 
 ```text
 [admin alice bob]
 ```
 
-You can also change the function `GetAllSubjects()` to `GetAllNamedSubjects()` to get the list of subjects that appear in the current named policy.
+Use `GetAllNamedSubjects()` to retrieve subjects from a specific named policy.
 
-Similarly, we have prepared `GetAll` functions for `Objects, Actions, Roles`. To access these functions, you simply need to replace the word `Subject` in the function name with the desired category.
+Replace `Subject` in the function name with `Objects`, `Actions`, or `Roles` to retrieve those elements instead.
 
-Additionally, there are more getters available for policies. The method of calling and the return values are similar to the ones mentioned above.
+Additional policy getters are available. Their usage patterns match those above.
 
-- `policy = e.GetPolicy()` retrieves all the authorization rules in the policy.
-- `filteredPolicy := e.GetFilteredPolicy(0, "alice")` retrieves all the authorization rules in the policy with specified field filters.
-- `namedPolicy := e.GetNamedPolicy("p")` retrieves all the authorization rules in the named policy.
-- `filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")` retrieves all the authorization rules in the named policy with specified field filters.
-- `groupingPolicy := e.GetGroupingPolicy()` retrieves all the role inheritance rules in the policy.
-- `filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")` retrieves all the role inheritance rules in the policy with specified field filters.
-- `namedGroupingPolicy := e.GetNamedGroupingPolicy("g")` retrieves all the role inheritance rules in the policy.
-- `namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")` retrieves all the role inheritance rules in the policy with specified field filters.
+- `policy = e.GetPolicy()` retrieves all authorization rules.
+- `filteredPolicy := e.GetFilteredPolicy(0, "alice")` retrieves authorization rules matching field filters.
+- `namedPolicy := e.GetNamedPolicy("p")` retrieves all rules from a named policy.
+- `filteredNamedPolicy = e.GetFilteredNamedPolicy("p", 0, "bob")` retrieves filtered rules from a named policy.
+- `groupingPolicy := e.GetGroupingPolicy()` retrieves all role inheritance rules.
+- `filteredGroupingPolicy := e.GetFilteredGroupingPolicy(0, "alice")` retrieves filtered role inheritance rules.
+- `namedGroupingPolicy := e.GetNamedGroupingPolicy("g")` retrieves role inheritance rules from a named policy.
+- `namedGroupingPolicy := e.GetFilteredNamedGroupingPolicy("g", 0, "alice")` retrieves filtered role inheritance rules from a named policy.
 
 ### Add, Delete, Update API
 
-Casbin provides a variety of APIs for dynamically adding, deleting, or modifying policies at runtime.
+Casbin enables runtime policy modifications through various APIs.
 
-The following code demonstrates how to add, remove, and update policies, as well as how to check if a policy exists:
+This code demonstrates adding, removing, and updating policies, plus checking policy existence:
 
 ```go
 // load information from files
@@ -159,29 +157,27 @@ hasPolicy = enforcer.HasPolicy("added_user", "data1", "write")
 fmt.Println(hasPolicy) // true, the new policy is in effect
 ```
 
-By using these APIs, you can edit your policies dynamically. Similarly, we have provided similar APIs for `FilteredPolicy, NamedPolicy, FilteredNamedPolicy, GroupingPolicy, NamedGroupingPolicy, FilteredGroupingPolicy, FilteredNamedGroupingPolicy`. To use them, simply replace the word `Policy` in the function name with the appropriate category.
+These APIs enable dynamic policy editing. Similar APIs exist for `FilteredPolicy`, `NamedPolicy`, `FilteredNamedPolicy`, `GroupingPolicy`, `NamedGroupingPolicy`, `FilteredGroupingPolicy`, and `FilteredNamedGroupingPolicy`. Replace `Policy` in the function name with the desired category.
 
-Furthermore, by changing the parameters to arrays, you can perform batch editing of your policies.
+Batch operations use array parameters.
 
-For example, consider functions like this:
+Example:
 
 ```go
 enforcer.UpdatePolicy([]string{"eve", "data3", "read"}, []string{"eve", "data3", "write"})
 ```
 
-If we change `Policy` to `Policies` and modify the parameters as follows:
+Change `Policy` to `Policies` and modify parameters for batch operations:
 
 ```go
 enforcer.UpdatePolicies([][]string{{"eve", "data3", "read"}, {"jack", "data3", "read"}}, [][]string{{"eve", "data3", "write"}, {"jack", "data3", "write"}})
 ```
 
-then we can perform batch editing of these policies.
-
-The same operations can also be applied to `GroupingPolicy, NamedGroupingPolicy`.
+Batch operations also apply to `GroupingPolicy` and `NamedGroupingPolicy`.
 
 ### AddEx API
 
-Casbin provides the AddEx series of APIs to help users add rules in batches.
+Casbin provides AddEx series APIs for batch rule addition with filtering.
 
 ```go
 AddPoliciesEx(rules [][]string) (bool, error)
@@ -191,11 +187,9 @@ AddNamedGroupingPoliciesEx(ptype string, rules [][]string) (bool, error)
 SelfAddPoliciesEx(sec string, ptype string, rules [][]string) (bool, error) 
 ```
 
-The difference between these methods and the methods without the Ex suffix is that if one of the rules already exists, they will continue checking the next rule instead of returning false immediately.
+These methods differ from their non-Ex counterparts by continuing to process remaining rules when encountering existing ones, rather than returning false immediately.
 
-For example, let's compare `AddPolicies` and `AddPoliciesEx`.
-
-You can run and observe the following code by copying it into the test under casbin.
+Compare `AddPolicies` and `AddPoliciesEx` with this test:
 
 ```go
 func TestDemo(t *testing.T) {
@@ -232,11 +226,9 @@ func TestDemo(t *testing.T) {
 
 ## RBAC API
 
-Casbin provides some APIs for you to modify the RBAC model and policies. If you are familiar with RBAC, you can easily use these APIs.
+Casbin provides APIs for modifying RBAC models and policies. For RBAC fundamentals, see [here](/docs/rbac).
 
-Here, we only show you how to use the RBAC APIs of Casbin and won't talk about RBAC itself. You can get more details [here](/docs/rbac).
-
-We use the following code to load the model and policies, just like before.
+Load the model and policies as before:
 
 ```go
 enforcer, err := casbin.NewEnforcer("./example/model.conf", "./example/policy.csv")
@@ -245,7 +237,7 @@ if err != nil {
 }
 ```
 
-Then, we can use an instance of the Enforcer `enforcer` to access these APIs.
+Access RBAC APIs through the enforcer instance:
 
 ```go
 roles, err := enforcer.GetRolesForUser("amber")
@@ -254,13 +246,13 @@ users, err := enforcer.GetUsersForRole("admin")
 fmt.Println(users) // [amber abc]
 ```
 
-`GetRolesForUser()` returns an array that contains all the roles that amber has. In this example, amber has only one role, which is admin, so the array `roles` is `[admin]`. Similarly, you can use `GetUsersForRole()` to get the users who belong to a role. The return value of this function is also an array.
+`GetRolesForUser()` returns all roles assigned to amber. Here, amber has only the admin role, yielding `[admin]`. `GetUsersForRole()` returns users belonging to a role, also as an array.
 
 ```go
 enforcer.HasRoleForUser("amber", "admin") // true
 ```
 
-You can use `HasRoleForUser()` to confirm whether the user belongs to the role. In this example, amber is a member of admin, so the return value of the function is `true`.
+`HasRoleForUser()` confirms role membership. Since amber belongs to admin, this returns `true`.
 
 ```go
 fmt.Println(enforcer.Enforce("bob", "data2", "write")) // true
@@ -268,7 +260,7 @@ enforcer.DeletePermission("data2", "write")
 fmt.Println(enforcer.Enforce("bob", "data2", "write")) // false
 ```
 
-You can use `DeletePermission()` to delete a permission.
+`DeletePermission()` removes a permission.
 
 ```go
 fmt.Println(enforcer.Enforce("alice", "data1", "read")) // true
@@ -276,6 +268,6 @@ enforcer.DeletePermissionForUser("alice", "data1", "read")
 fmt.Println(enforcer.Enforce("alice", "data1", "read")) // false
 ```
 
-And use `DeletePermissionForUser()` to delete a permission for a user.
+`DeletePermissionForUser()` removes a specific user permission.
 
-Casbin has many APIs like this. Their calling methods and return values have the same style as the above APIs. You can find these APIs in the [next documents](/docs/rbac-api).
+Additional RBAC APIs follow similar patterns. See [next documents](/docs/rbac-api) for complete details.

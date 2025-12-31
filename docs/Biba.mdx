@@ -8,7 +8,7 @@ authors: [nodece]
 
 ## Overview
 
-The Biba Model (also known as Biba Integrity Model) is a formal state transition model of computer security policy developed by Kenneth J. Biba in 1975. It describes a set of access control rules designed to ensure data integrity. Unlike the Bell-LaPadula model which focuses on confidentiality, the Biba model is specifically designed to protect data integrity and prevent unauthorized modification of data.
+The Biba Integrity Model, developed by Kenneth J. Biba in 1975, is a formal state transition system for computer security policy. It defines access control rules that preserve data integrity. Where Bell-LaPadula focuses on confidentiality, Biba specifically prevents unauthorized data modification.
 
 ## Model
 
@@ -31,18 +31,18 @@ m = (r.act == "read" && r.sub_level <= r.obj_level) || (r.act == "write" && r.su
 
 ## Policy
 
-The Biba model typically doesn't require explicit policy rules as the access control is determined by the integrity levels of subjects and objects. The matcher function implements the Biba integrity rules:
+Biba typically requires no explicit policy rules since integrity levels determine access control. The matcher implements Biba integrity rules:
 
-- **No Read Down (Simple Integrity Property)**: A subject cannot read an object with a lower integrity level
-- **No Write Up (Star Integrity Property)**: A subject cannot write to an object with a higher integrity level
+- **No Read Down (Simple Integrity Property)**: Subjects cannot read objects with lower integrity levels
+- **No Write Up (Star Integrity Property)**: Subjects cannot write to objects with higher integrity levels
 
 ## Core Principles
 
-The Biba model is characterized by the phrase "read up, write down", which is the inverse of the Bell-LaPadula model's "read down, write up". This approach ensures:
+Biba's "read up, write down" approach inverts Bell-LaPadula's "read down, write up" model. This ensures:
 
-1. **Data Integrity Protection**: Prevents corruption of high-integrity data by lower-integrity sources
-2. **Controlled Information Flow**: Ensures that information flows only from higher to lower integrity levels for writes
-3. **Trust Preservation**: Maintains the trustworthiness of data at each integrity level
+1. **Data Integrity Protection**: Prevents high-integrity data corruption from lower-integrity sources
+2. **Controlled Information Flow**: Limits writes to flow from higher to lower integrity levels only
+3. **Trust Preservation**: Maintains data trustworthiness at each integrity level
 
 ## Examples
 
@@ -64,30 +64,30 @@ bob, 2, data1, 1, write     # bob (level 2) writes data1 (level 1) - ALLOWED
 
 ## Integrity Levels
 
-In the Biba model, integrity levels are typically represented as integers where higher numbers indicate higher integrity levels:
+Biba represents integrity levels as integers where higher values indicate greater integrity:
 
-- Level 1: Low integrity (e.g., public data, user-generated content)
-- Level 2: Medium integrity (e.g., verified data, trusted sources)
-- Level 3: High integrity (e.g., system data, administrative content)
-- Level 4: Critical integrity (e.g., security policies, system configuration)
+- Level 1: Low integrity (public data, user-generated content)
+- Level 2: Medium integrity (verified data, trusted sources)
+- Level 3: High integrity (system data, administrative content)
+- Level 4: Critical integrity (security policies, system configuration)
 
 ## Use Cases
 
-The Biba model is commonly used in:
+Common Biba model applications:
 
-- Financial systems where data accuracy is paramount
+- Financial systems requiring data accuracy
 - Healthcare records management
 - Database systems requiring data integrity
-- Any environment where preventing data corruption is more important than preventing data disclosure
-- Systems where the accuracy and reliability of information is critical
+- Environments where preventing data corruption outweighs preventing disclosure
+- Systems where information accuracy and reliability are critical
 
 ## Implementation Notes
 
-- The model enforces mandatory access control (MAC) focused on integrity
-- Integrity levels are assigned by system administrators based on data trustworthiness
-- Access decisions are based on integrity levels rather than user identity
-- The model prevents data corruption through controlled read/write operations
-- Unlike Bell-LaPadula, most Biba applications use only a small number of integrity levels
+- Enforces mandatory access control (MAC) focused on integrity
+- System administrators assign integrity levels based on data trustworthiness
+- Access decisions depend on integrity levels rather than user identity
+- Prevents data corruption through controlled read/write operations
+- Unlike Bell-LaPadula, most Biba implementations use few integrity levels
 
 ## Comparison with Bell-LaPadula
 
