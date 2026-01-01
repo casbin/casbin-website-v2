@@ -60,7 +60,7 @@ m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj 
 
 This works seamlessly—enforcement will correctly match policies using your custom domain parameter name.
 
-For domain-related API methods like `GetAllUsersByDomain()`, you need to inform Casbin about the domain token's position when using non-standard names or positions:
+For domain-related API methods like `GetAllUsersByDomain()`, you only need to call `SetFieldIndex()` if the domain parameter is not in the standard second position:
 
 ```ini
 # Domain parameter in a different position
