@@ -48,7 +48,8 @@ data1Json := `{ "Name": "data1", "Owner": "bob"}`
 ok, err := e.Enforce("alice", data1Json, "read")
 if err != nil {
     // Handle JSON parsing errors
-    log.Fatalf("Enforcement failed: %v", err)
+    fmt.Printf("Enforcement failed: %v\n", err)
+    return
 }
 ```
 
@@ -60,7 +61,7 @@ validJSON := `{"Name": "alice", "Age": 25}`
 ok, err := e.Enforce(validJSON, "data1", "read")  // Works correctly
 
 // Invalid JSON - returns descriptive error
-invalidJSON := `{"Name": "\x20"}`  // Invalid escape sequence
+invalidJSON := `{"Name": "alice",}`  // Trailing comma is invalid in JSON
 ok, err := e.Enforce(invalidJSON, "data1", "read")
 // Returns: "failed to parse JSON parameter at index 0: ..."
 
