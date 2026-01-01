@@ -36,6 +36,33 @@ In your matcher, verify the role as follows:
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 ```
 
+### Flexible Domain Token Naming
+
+While the convention uses `dom` as the domain token name, Casbin supports arbitrary names for domain parameters. You can rename the domain token to better match your application's terminology, such as `tenant`, `workspace`, or any other meaningful identifier:
+
+```ini
+[request_definition]
+r = sub, tenant, obj, act
+
+[policy_definition]
+p = sub, tenant, obj, act
+
+[role_definition]
+g = _, _, _
+
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && r.tenant == p.tenant && r.obj == p.obj && r.act == p.act
+```
+
+When using pattern matching functions like `keyMatch` for domain matching, Casbin automatically detects your custom domain token name from the model definition, provided the domain is the second parameter (index 1) in both request and policy definitions:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj && r.act == p.act
+```
+
+This automatic detection eliminates the need for hardcoded token names in pattern matching scenarios. For using custom domain token names with domain-related APIs (like `GetAllUsersByDomain()`), refer to the Token Name Convention section below.
+
 For additional examples, refer to [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf).
 
 :::info Token Name Convention
