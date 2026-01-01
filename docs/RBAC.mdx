@@ -2,7 +2,7 @@
 id: rbac
 title: RBAC
 description: Casbin RBAC usage
-keywords: [RBAC, role definition, role hierarchy]
+keywords: [RBAC, role definition, role hierarchy, cycle detection, detector]
 authors: [hsluoyz]
 ---
 
@@ -82,6 +82,33 @@ func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
     return &rm
 }
 ```
+
+## Detecting Cycles in Role Inheritance
+
+Role inheritance cycles can break your RBAC model. A cycle occurs when a role inherits from itself through other roles—for example, `admin` → `editor` → `reviewer` → `admin`. Casbin provides the Detector interface to catch these issues early.
+
+The default implementation uses depth-first search to traverse your role graph and identify circular dependencies. When a cycle is found, you get a clear error showing the exact path, like `"cycle detected: admin -> editor -> reviewer -> admin"`.
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin/v3/detector"
+)
+
+e, _ := casbin.NewEnforcer("model.conf", "policy.csv")
+rm := e.GetRoleManager()
+
+// Create and run the detector
+det := detector.NewDefaultDetector()
+if err := det.Check(rm); err != nil {
+    // Handle the cycle error
+    panic(err) // e.g., "cycle detected: admin -> editor -> reviewer -> admin"
+}
+```
+
+You'll typically want to run the detector after loading policies from your database or after bulk role updates, not after every individual role assignment. The check is fast but becomes more useful when verifying complete role configurations.
+
+For custom cycle detection logic, implement the `Detector` interface with your own `Check(rm rbac.RoleManager) error` method. This lets you define specialized validation rules or integrate with your existing policy validation pipeline.
 
 ## How to Distinguish Role from User?
 
