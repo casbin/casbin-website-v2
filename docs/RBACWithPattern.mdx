@@ -108,6 +108,12 @@ await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
 
 If you're unclear about the meaning of `g(r.sub, p.sub, r.dom)`, refer to [rbac-with-domains](/docs/rbac-with-domains). In brief, `g(r.sub, p.sub, r.dom)` checks whether user `r.sub` has role `p.sub` in domain `r.dom`. For a complete example, see [here](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
 
+:::note
+
+Pattern matching with domains supports custom domain token names. Instead of `dom`, you can use any identifier like `tenant` or `workspace`. Casbin automatically detects the domain token name from your model definition when using pattern matching functions like `keyMatch`.
+
+:::
+
 You can also use pure domain patterns in addition to the pattern matching syntax shown above.
 
 For example, to grant `sub` access across different domains like `domain1` and `domain2`, use pure domain patterns:
