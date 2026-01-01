@@ -46,6 +46,7 @@ module.exports = {
             "rbac-with-domains",
             "rbac-with-conditions",
             "rbac-96",
+            "cycle-detection",
           ],
         },
         "rebac",

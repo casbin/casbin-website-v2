@@ -1,0 +1,87 @@
+---
+id: cycle-detection
+title: Cycle Detection
+description: Detect and prevent role inheritance cycles in RBAC
+keywords: [cycle detection, RBAC, role inheritance, detector]
+authors: [hsluoyz]
+---
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+Role inheritance in RBAC creates directed relationships between roles. When these relationships form a cycle (like A inherits B, B inherits C, C inherits A), it creates logical inconsistencies that can break authorization checks. Casbin provides built-in cycle detection to catch these errors early.
+
+## Why Detect Cycles?
+
+Consider this problematic setup:
+
+```csv
+g, role_a, role_b
+g, role_b, role_c
+g, role_c, role_a
+```
+
+Here, `role_a` inherits from `role_b`, which inherits from `role_c`, which inherits back to `role_a`. This creates an infinite loop that makes it impossible to determine what permissions any role actually has. Even simpler cases like `g, admin, admin` (a role inheriting from itself) cause similar problems.
+
+Cycle detection helps you catch these mistakes before they cause runtime issues or security vulnerabilities.
+
+## Using the Detector
+
+The `DefaultDetector` uses depth-first search to efficiently scan your role graph for cycles. It works with any `RoleManager` that supports the `Range` method:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin/v3/detector"
+)
+
+e, _ := casbin.NewEnforcer("model.conf", "policy.csv")
+d := detector.NewDefaultDetector()
+
+// Check for cycles after loading or modifying roles
+if err := d.Check(e.GetRoleManager()); err != nil {
+    // Handle the cycle error - err describes which roles form the cycle
+    log.Fatal(err)
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+When a cycle is detected, the error message shows the full path: `"cycle detected: role_a -> role_b -> role_c -> role_a"`.
+
+## When to Check
+
+Run cycle detection:
+
+- After loading policies from storage
+- Before deploying role changes to production  
+- When users modify role hierarchies through admin interfaces
+- As part of policy validation in CI/CD pipelines
+
+For systems with complex role structures, consider checking periodically or after bulk updates.
+
+## Performance
+
+The detector runs in linear time relative to the number of roles and relationships. Even with 10,000 roles, cycle detection completes quickly enough for real-time validation. The algorithm only visits each role once, making it efficient for large RBAC systems.
+
+## Custom Detectors
+
+You can implement the `Detector` interface to create custom validation logic:
+
+```go
+type Detector interface {
+    Check(rm rbac.RoleManager) error
+}
+```
+
+This allows adding checks beyond cycle detection, such as validating role naming conventions or enforcing hierarchy depth limits.
