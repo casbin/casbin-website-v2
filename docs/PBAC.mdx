@@ -97,10 +97,16 @@ object := `{"Confidential": false}`
 action := "read"
 
 // Check permission
-ok, _ := e.Enforce(subject, object, action)
+ok, err := e.Enforce(subject, object, action)
+if err != nil {
+    fmt.Printf("Enforcement error: %v\n", err)
+    return
+}
 if ok {
     fmt.Println("Permission granted")
 } else {
     fmt.Println("Permission denied")
 }
 ```
+
+When `EnableAcceptJsonRequest` is enabled, Casbin parses request parameters that start with `{` or `[` as JSON. Invalid JSON syntax in these parameters triggers an error with a clear message identifying which parameter failed to parse. Regular strings without JSON delimiters are handled normally without parsing attempts.

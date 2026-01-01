@@ -45,7 +45,28 @@ e.EnableAcceptJsonRequest(true)
 
 data1Json := `{ "Name": "data1", "Owner": "bob"}`
 
-ok, _ := e.Enforce("alice", data1Json, "read")
+ok, err := e.Enforce("alice", data1Json, "read")
+if err != nil {
+    // Handle JSON parsing errors
+    log.Fatalf("Enforcement failed: %v", err)
+}
+```
+
+When JSON request handling is enabled, Casbin automatically detects and parses strings that begin with `{` or `[`. If a string looks like JSON but contains invalid syntax, `Enforce()` returns a clear error message indicating which parameter failed to parse. Plain strings that don't start with JSON delimiters are passed through unchanged, avoiding unnecessary parsing attempts.
+
+```go
+// Valid JSON - automatically parsed
+validJSON := `{"Name": "alice", "Age": 25}`
+ok, err := e.Enforce(validJSON, "data1", "read")  // Works correctly
+
+// Invalid JSON - returns descriptive error
+invalidJSON := `{"Name": "\x20"}`  // Invalid escape sequence
+ok, err := e.Enforce(invalidJSON, "data1", "read")
+// Returns: "failed to parse JSON parameter at index 0: ..."
+
+// Plain string - no parsing attempted
+plainString := "alice"
+ok, err := e.Enforce(plainString, "data1", "read")  // Treated as plain string
 ```
 
 :::note
