@@ -38,19 +38,37 @@ m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 
 For additional examples, refer to [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf).
 
-:::info Token Name Convention
+## Custom Domain Parameter Names
 
-By convention, the domain token in policy definitions is named `dom` and is typically positioned as the second token (e.g., `sub, dom, obj, act`). Golang Casbin now supports custom token names and positions. If the domain token is named `dom`, it can be placed anywhere without extra configuration. For other names, call `e.SetFieldIndex()` with `constant.DomainIndex` after initializing the enforcer, regardless of token position.
+The domain parameter is conventionally named `dom` and placed as the second token (e.g., `sub, dom, obj, act`). However, you can use any name that suits your application—`tenant`, `organization`, `domain1`, or any other identifier.
+
+When using custom domain names in matchers with domain-aware functions like `keyMatch`, Casbin automatically detects the domain token from your model definition:
 
 ```ini
-# Using `domain` instead of `dom`
+[request_definition]
+r = sub, tenant, obj, act
+
 [policy_definition]
-p = sub, obj, act, domain
+p = sub, tenant, obj, act
+
+[role_definition]
+g = _, _, _
+
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj && r.act == p.act
+```
+
+This works seamlessly—enforcement will correctly match policies using your custom domain parameter name.
+
+For domain-related API methods like `GetAllUsersByDomain()`, you need to inform Casbin about the domain token's position when using non-standard names or positions:
+
+```ini
+# Domain parameter in a different position
+[policy_definition]
+p = sub, obj, act, organization
 ```
 
 ```go
 e.SetFieldIndex("p", constant.DomainIndex, 3) // index starts from 0
-users := e.GetAllUsersByDomain("domain1") // without SetFieldIndex, this will raise an error
+users := e.GetAllUsersByDomain("domain1")
 ```
-
-:::

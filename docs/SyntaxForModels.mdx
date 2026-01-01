@@ -155,6 +155,17 @@ This represents the most basic matcher, requiring that request subject, object, 
 
 Matchers support arithmetic operators (``+, -, *, /``) and logical operators (``&&, ||, !``).
 
+### Domain Parameters in Matchers
+
+When working with RBAC with domains, you can use any parameter name for the domain token. Casbin automatically detects domain parameters in matchers when using domain-aware functions like `keyMatch`:
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj && r.act == p.act
+```
+
+In this example, `tenant` is used instead of the conventional `dom`. The matcher will correctly evaluate domain-based policies as long as the parameter names match your request and policy definitions.
+
 ### Order of expressions in matchers
 
 Expression ordering significantly impacts performance. Review the following example for details:
