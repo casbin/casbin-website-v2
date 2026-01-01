@@ -8,39 +8,39 @@ authors: [hsluoyz]
 
 ## Quick Start
 
-- Use pattern in `g(_, _)`.
+- Use pattern matching in `g(_, _)`:
 
   ```go
   e, _ := NewEnforcer("./example.conf", "./example.csv")
   e.AddNamedMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
   ```
 
-- Use pattern with domain.
+- Use pattern matching with domains:
 
   ```go
   e.AddNamedDomainMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
   ```
 
-- Use all patterns.
+- Use both patterns together:
 
-  Just combine the use of both APIs.
+  Simply combine both API calls.
 
-As shown above, after you create the `enforcer` instance, you need to activate pattern matching via the `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` APIs, which determine how the pattern matches.
+After creating the `enforcer` instance, activate pattern matching using the `AddNamedMatchingFunc` and `AddNamedDomainMatchingFunc` APIs. These determine how the pattern matching is performed.
 
 :::note
 
-If you use the online editor, You can add a pattern matching function by clicking the "Add Role Matching" button in the lower left corner.
+If using the online editor, add a pattern matching function by clicking the "Add Role Matching" button in the lower left corner.
 ![editor-tips](/img/editor-tips.png)
 
 :::
 
 ## Use pattern matching in RBAC
 
-Sometimes, you want certain subjects, objects, or domains/tenants with a specific pattern to be automatically granted a role. Pattern matching functions in RBAC can help you do that. A pattern matching function shares the same parameters and return value as the previous [matcher function](/docs/syntax-for-models#functions-in-matchers).
+Sometimes you want subjects, objects, or domains with a specific pattern to automatically inherit a role. Pattern matching functions in RBAC enable this behavior. These functions share the same parameters and return values as the [matcher functions](/docs/syntax-for-models#functions-in-matchers).
 
-The pattern matching function supports each parameter of `g`.
+Pattern matching functions work with each parameter of `g`.
 
-We know that normally RBAC is expressed as `g(r.sub, p.sub)` in a matcher. Then we can use a policy like:
+Normally, RBAC is expressed as `g(r.sub, p.sub)` in a matcher. You can then use policies like:
 
 ```csv
 p, alice, book_group, read
@@ -48,15 +48,15 @@ g, /book/1, book_group
 g, /book/2, book_group
 ```
 
-So `alice` can read all books including `book 1` and `book 2`. But there can be thousands of books, and it's very tedious to add each book to the book role (or group) with one `g` policy rule.
+In this case, `alice` can read all books, including `book 1` and `book 2`. However, with thousands of books, adding each one individually to the book role or group with a separate `g` policy becomes tedious.
 
-But with pattern matching functions, you can write the policy with only one line:
+With pattern matching functions, you can write the policy in a single line:
 
 ```csv
 g, /book/:id, book_group
 ```
 
-Casbin will automatically match `/book/1` and `/book/2` into the pattern `/book/:id` for you. You only need to register the function with the enforcer like:
+Casbin automatically matches `/book/1` and `/book/2` to the pattern `/book/:id`. You just need to register the function with the enforcer:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -81,7 +81,7 @@ await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
 </Tabs>
 ```
 
-When using a pattern matching function in domains/tenants, you need to register the function with the enforcer and model.
+When using pattern matching with domains, register the function with both the enforcer and the model:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -106,11 +106,11 @@ await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
 </Tabs>
 ```
 
-If you don't understand what `g(r.sub, p.sub, r.dom)` means, please read [rbac-with-domains](/docs/rbac-with-domains). In short, `g(r.sub, p.sub, r.dom)` will check whether the user `r.sub` has a role `p.sub` in the domain `r.dom`. So this is how the matcher works. You can see the full example [here](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
+If you're unclear about the meaning of `g(r.sub, p.sub, r.dom)`, refer to [rbac-with-domains](/docs/rbac-with-domains). In brief, `g(r.sub, p.sub, r.dom)` checks whether user `r.sub` has role `p.sub` in domain `r.dom`. For a complete example, see [here](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307).
 
-Apart from the pattern matching syntax above, we can also use pure domain pattern.
+You can also use pure domain patterns in addition to the pattern matching syntax shown above.
 
-For example, if we want `sub` to have access in different domains, `domain1` and `domain2`, we can use the pure domain pattern:
+For example, to grant `sub` access across different domains like `domain1` and `domain2`, use pure domain patterns:
 
 ```csv
 p, admin, domain1, data1, read
@@ -122,6 +122,6 @@ g, alice, admin, *
 g, bob, admin, domain2
 ```
 
-In this example, we want `alice` to read and write `data` in domain1 and domain2. Pattern matching `*` in `g` makes `alice` have access to two domains.
+Here, `alice` can read and write `data` in both `domain1` and `domain2`. The wildcard `*` in `g` grants `alice` access across both domains.
 
-By using pattern matching, especially in scenarios that are more complicated and have a lot of domains or objects to consider, we can implement the `policy_definition` in a more elegant and effective way.
+Pattern matching is particularly useful in complex scenarios with many domains or objects, enabling more elegant and effective `policy_definition` implementations.

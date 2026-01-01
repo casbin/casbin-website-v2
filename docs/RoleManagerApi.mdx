@@ -8,11 +8,11 @@ authors: [closetool, kiloson-c]
 
 ## RoleManager
 
-The RoleManager provides an interface for defining operations to manage roles. The addition of a matching function to the RoleManager allows the use of wildcards in role names and domains.
+The RoleManager provides an interface for managing role operations. Adding a matching function to the RoleManager enables the use of wildcards in role names and domains.
 
 ### `AddNamedMatchingFunc()`
 
-The `AddNamedMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `MatchingFunc` will be used when performing role matching.
+`AddNamedMatchingFunc` registers a `MatchingFunc` for a specific policy type in the RoleManager. The `MatchingFunc` is applied during role matching.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -41,7 +41,7 @@ The `AddNamedMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleMa
 </Tabs>
 ```
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -70,9 +70,9 @@ For example:
 
 ### `AddNamedDomainMatchingFunc()`
 
-The `AddNamedDomainMatchingFunc` function adds a `MatchingFunc` by Ptype to the RoleManager. The `DomainMatchingFunc` is similar to the `MatchingFunc` listed above.
+`AddNamedDomainMatchingFunc` registers a `MatchingFunc` for a specific policy type in the RoleManager. The `DomainMatchingFunc` works similarly to `MatchingFunc`.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -101,9 +101,9 @@ For example:
 
 ### `GetRoleManager()`
 
-The `GetRoleManager` function gets the current role manager for `g`.
+`GetRoleManager` retrieves the current role manager for `g`.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -139,9 +139,9 @@ For example:
 
 ### `GetNamedRoleManager()`
 
-The `GetNamedRoleManager` function gets the role manager by named Ptype.
+`GetNamedRoleManager` retrieves the role manager by named policy type.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -177,9 +177,9 @@ For example:
 
 ### `SetRoleManager()`
 
-The `SetRoleManager` function sets the current role manager for `g`.
+`SetRoleManager` assigns the current role manager for `g`.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -215,9 +215,9 @@ For example:
 
 ### `SetNamedRoleManager()`
 
-The `SetNamedRoleManager` function sets the role manager by named Ptype.
+`SetNamedRoleManager` assigns the role manager by named policy type.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -244,9 +244,9 @@ For example:
 
 ### `Clear()`
 
-The `Clear` function clears all stored data and resets the role manager to its initial state.
+`Clear` removes all stored data and resets the role manager to its initial state.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -282,10 +282,9 @@ For example:
 
 ### `AddLink()`
 
-AddLink adds the inheritance link between two roles. role: name1 and role: name2.
-Domain is a prefix to the roles (can be used for other purposes).
+`AddLink` creates an inheritance link between two roles: `name1` and `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -321,10 +320,9 @@ For example:
 
 ### `DeleteLink()`
 
-DeleteLink deletes the inheritance link between two roles. role: name1 and role: name2.
-Domain is a prefix to the roles (can be used for other purposes).
+`DeleteLink` removes the inheritance link between two roles: `name1` and `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -360,10 +358,9 @@ For example:
 
 ### `HasLink()`
 
-HasLink determines whether a link exists between two roles. role: name1 inherits role: name2.
-Domain is a prefix to the roles (can be used for other purposes).
+`HasLink` checks whether a link exists between two roles, where `name1` inherits from `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -399,10 +396,9 @@ For example:
 
 ### `GetRoles()`
 
-GetRoles gets the roles that a user inherits.
-Domain is a prefix to the roles (can be used for other purposes).
+`GetRoles` retrieves the roles that a user inherits. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -438,10 +434,9 @@ For example:
 
 ### `GetUsers()`
 
-GetUsers gets the users that inherits a role.
-Domain is a prefix to the users (can be used for other purposes).
+`GetUsers` retrieves the users that inherit a role. The domain parameter serves as a prefix to the users (can also be used for other purposes).
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -477,9 +472,9 @@ For example:
 
 ### `PrintRoles()`
 
-PrintRoles prints all the roles to log.
+`PrintRoles` outputs all roles to the log.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -515,9 +510,9 @@ For example:
 
 ### `SetLogger()`
 
-SetLogger sets role manager's logger.
+`SetLogger` assigns a logger to the role manager.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -538,9 +533,9 @@ For example:
 
 ### `GetDomains()`
 
-GetDomains gets domains that a user has
+`GetDomains` retrieves the domains that a user belongs to.
 
-For example:
+Example usage:
 
 ```mdx-code-block
 <Tabs groupId="langs">
