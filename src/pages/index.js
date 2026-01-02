@@ -69,7 +69,7 @@ function HomepageHeader() {
           </span>
           <br />
         </h1>
-        <p className="hero__subtitle"><Translate>Casbin is a powerful and efficient open-source access control library that supports various access control models for enforcing authorization across the world</Translate></p>
+        <p className="hero__subtitle"><Translate>An efficient, open-source access control library supporting diverse authorization models to secure applications worldwide</Translate></p>
         <div className={styles.actionButtons}>
           <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
@@ -152,7 +152,7 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"Casbin implements policy storage through adapters (middleware components). To maintain a lightweight core, adapter code is not included in the main library (except for the default file adapter). We welcome third-party adapter contributions. For a complete list of available adapters and detailed documentation, please refer to: {adaptersLink}."}
+              {"Policy storage in Casbin utilizes adapters, which serve as middleware connectors. The core library remains minimal by excluding adapter implementations, with the exception of the built-in file adapter. Community contributions of third-party adapters are encouraged. For comprehensive adapter listings and usage guides, consult: {adaptersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -174,7 +174,7 @@ function PolicyEnforcement() {
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy Enforcement at Scale</Translate></h3>
-            <Translate>Some adapters support filtered policy management, meaning Casbin loads only a subset of policies from storage based on specified filters. This enables efficient policy enforcement in large, multi-tenant environments where loading the entire policy set would create a performance bottleneck.</Translate>
+            <Translate>Certain adapters enable filtered policy loading, allowing Casbin to retrieve only relevant policy subsets from storage using defined criteria. This optimization proves essential in expansive, multi-tenant systems where loading complete policy sets would hinder performance significantly.</Translate>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ function RoleManager() {
                 ),
               }}
             >
-              {"The role manager handles RBAC role hierarchies (user-role mappings) in Casbin. It can retrieve role data from Casbin policy rules or external sources such as LDAP, Okta, Auth0, Azure AD, and others. We support multiple role manager implementations. To maintain a lightweight core, role manager code is not included in the main library (except for the default implementation). View the complete list of available {rolemanagersLink}."}
+              {"Role managers in Casbin govern RBAC hierarchies, managing user-to-role associations. They can source role information from Casbin's policy rules or integrate with external identity providers including LDAP, Okta, Auth0, Azure AD, and similar services. Various role manager implementations are supported. Keeping the core lightweight, role manager code resides separately from the main library, except for the default version. Explore all available {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -222,11 +222,11 @@ function Showcase() {
           <Translate values={{
             UsersPage: (
               <Link to="/users">
-                <Translate>check out these apps</Translate>
+                <Translate>explore these applications</Translate>
               </Link>
             ),
           }}>
-            {"Hundreds of projects use Casbin, from established Fortune 500 companies to innovative startups. If you're curious to see what can be accomplished with Casbin, {UsersPage}!"}
+            {"Casbin powers numerous projects spanning major Fortune 500 enterprises to cutting-edge startups. Curious about Casbin's capabilities in action? {UsersPage}!"}
           </Translate>
         </p>
         <br /><br />

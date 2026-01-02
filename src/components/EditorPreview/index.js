@@ -18,12 +18,12 @@ function EditorPreview() {
       <div className="container">
         <div className={styles.editorHeader}>
           <h2 className={styles.editorTitle}>
-            <Translate>Try Casbin Online Editor</Translate>
+            <Translate>Experience the Casbin Online Editor</Translate>
           </h2>
           <p className={styles.editorDescription}>
             <Translate>
-              Write and test your Casbin model and policy in real-time with our interactive online editor.
-              Experiment with different access control models and see results instantly.
+              Compose and validate your Casbin model and policy configurations in real-time through our interactive web-based editor.
+              Test various access control scenarios and observe immediate results.
             </Translate>
           </p>
         </div>
@@ -40,7 +40,7 @@ function EditorPreview() {
               className="button button--primary button--lg"
               to="/editor"
             >
-              <Translate>Open Full Editor</Translate>
+              <Translate>Launch Full Editor</Translate>
             </Link>
           </div>
         </div>

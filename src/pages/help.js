@@ -9,8 +9,8 @@ function Hello() {
       <div className="container text--center">
         <br />
         <br />
-        <h1><Translate>Need help?</Translate></h1>
-        <Translate>If you need help with Casbin, you can try one of the mechanisms below.</Translate>
+        <h1><Translate>Looking for assistance?</Translate></h1>
+        <Translate>Explore these support channels to get help with Casbin-related questions or issues.</Translate>
         <br />
         <br />
         <br />
@@ -26,7 +26,7 @@ function Hello() {
               ),
             }}
             >
-              {"You can join the conversation on {discordLink} for contributing help."}
+              {"Join our {discordLink} community to connect with contributors and get assistance."}
             </Translate>
           </div>
           <div className="col">
@@ -35,7 +35,7 @@ function Hello() {
               values={{
                 repoLink: (
                   <a href="https://github.com/casbin/casbin">
-                    <Translate>GitHub repo</Translate>
+                    <Translate>GitHub repository</Translate>
                   </a>
                 ),
                 issueLink: (
@@ -50,7 +50,7 @@ function Hello() {
                 ),
               }}
             >
-              {"At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented."}
+              {"Visit our {repoLink} to explore the codebase, report bugs through {issueLink}, or contribute enhancements via {prLink}."}
             </Translate>
           </div>
           <div className="col">
@@ -62,7 +62,7 @@ function Hello() {
                 </a>
               ),
             }}>
-              {"Discuss with maintainers or share your experience about Casbin on {googleGroupsLink}."}
+              {"Engage in discussions with maintainers or exchange insights about Casbin on {googleGroupsLink}."}
             </Translate>
           </div>
           <div className="col">
@@ -74,7 +74,7 @@ function Hello() {
                 </a>
               ),
             }}>
-              {"Ask questions about Casbin on {stackOverflowLink}."}
+              {"Post your Casbin-related inquiries on {stackOverflowLink}."}
             </Translate>
           </div>
         </div>
