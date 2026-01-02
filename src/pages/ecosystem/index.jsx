@@ -8,9 +8,9 @@ import ShowcaseFilters from "@site/src/pages/ecosystem/_components/ShowcaseFilte
 import ShowcaseCards from "@site/src/pages/ecosystem/_components/ShowcaseCards";
 import SearchBar from "@site/src/pages/ecosystem/_components/SearchBar";
 
-export const TITLE = translate({message: "Casbin Extensions"});
+export const TITLE = translate({message: "Casbin Plugins"});
 export const DESCRIPTION = translate({
-  message: "Integration components for Casbin including adapters, watchers, role managers, middlewares, and dispatchers",
+  message: "Adapters, watchers, role managers, middlewares, and dispatchers for Casbin",
 });
 
 export default function Showcase() {

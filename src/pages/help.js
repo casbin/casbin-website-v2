@@ -9,8 +9,8 @@ function Hello() {
       <div className="container text--center">
         <br />
         <br />
-        <h1><Translate>Looking for assistance?</Translate></h1>
-        <Translate>Explore these support channels to get help with Casbin-related questions or issues.</Translate>
+        <h1><Translate>Need help?</Translate></h1>
+        <Translate>If you need help with Casbin, try one of these options.</Translate>
         <br />
         <br />
         <br />
@@ -26,7 +26,7 @@ function Hello() {
               ),
             }}
             >
-              {"Join our {discordLink} community to connect with contributors and get assistance."}
+              {"Join the conversation on {discordLink} to get help from contributors."}
             </Translate>
           </div>
           <div className="col">
@@ -35,7 +35,7 @@ function Hello() {
               values={{
                 repoLink: (
                   <a href="https://github.com/casbin/casbin">
-                    <Translate>GitHub repository</Translate>
+                    <Translate>GitHub repo</Translate>
                   </a>
                 ),
                 issueLink: (
@@ -50,7 +50,7 @@ function Hello() {
                 ),
               }}
             >
-              {"Visit our {repoLink} to explore the codebase, report bugs through {issueLink}, or contribute enhancements via {prLink}."}
+              {"Browse our {repoLink} and submit {issueLink} or {prLink} for bugs or feature requests."}
             </Translate>
           </div>
           <div className="col">
@@ -62,7 +62,7 @@ function Hello() {
                 </a>
               ),
             }}>
-              {"Engage in discussions with maintainers or exchange insights about Casbin on {googleGroupsLink}."}
+              {"Discuss with maintainers or share your experience with Casbin on {googleGroupsLink}."}
             </Translate>
           </div>
           <div className="col">
@@ -74,7 +74,7 @@ function Hello() {
                 </a>
               ),
             }}>
-              {"Post your Casbin-related inquiries on {stackOverflowLink}."}
+              {"Ask questions about Casbin on {stackOverflowLink}."}
             </Translate>
           </div>
         </div>

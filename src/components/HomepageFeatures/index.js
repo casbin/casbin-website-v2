@@ -10,9 +10,9 @@ const FeatureList = [
     path: "/img/model",
     description: (
       <Translate>
-        Access control models in Casbin are abstracted into CONF configuration files following the PERM
-        metamodel (Policy, Effect, Request, Matchers). Transitioning or enhancing
-        authorization mechanisms in your application requires only configuration file modifications.
+        Casbin uses CONF files to define access control models based on the PERM
+        metamodel (Policy, Effect, Request, Matchers). You can change or upgrade
+        your authorization mechanism by modifying the configuration file.
       </Translate>
     ),
   },
@@ -30,7 +30,7 @@ const FeatureList = [
         }}
       >
         {
-          "Policies in Casbin support storage across memory, file systems, and various database platforms. Currently, dozens of storage backends are supported, such as MySQL, Postgres, Oracle, MongoDB, Redis, Cassandra, and AWS S3. Browse the full catalog of supported {adaptersLink}."
+          "Casbin policies can be stored in memory, files, or databases. We support dozens of storage backends including MySQL, Postgres, Oracle, MongoDB, Redis, Cassandra, and AWS S3. See the full list of {adaptersLink}."
         }
       </Translate>
     ),
@@ -40,9 +40,9 @@ const FeatureList = [
     path: "/img/language",
     description: (
       <Translate>
-        Casbin provides implementations across numerous programming languages such as Golang,
-        Java, PHP, Node.js, Python, .NET, Rust, and additional options. All versions
-        maintain consistent APIs and functionality, enabling seamless knowledge transfer across platforms.
+        Casbin is implemented in multiple languages including Golang,
+        Java, PHP, Node.js, Python, .NET, Rust, and more. All implementations
+        share the same API and behavior.
       </Translate>
     ),
   },

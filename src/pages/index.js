@@ -69,7 +69,7 @@ function HomepageHeader() {
           </span>
           <br />
         </h1>
-        <p className="hero__subtitle"><Translate>An efficient, open-source access control library supporting diverse authorization models to secure applications worldwide</Translate></p>
+        <p className="hero__subtitle"><Translate>A powerful and efficient open-source access control library that supports multiple authorization models</Translate></p>
         <div className={styles.actionButtons}>
           <Link className={`button button--lg ${styles.getStartedBtn}`}
             to="/docs/get-started"
@@ -152,7 +152,7 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"Policy storage in Casbin utilizes adapters, which serve as middleware connectors. The core library remains minimal by excluding adapter implementations, with the exception of the built-in file adapter. Community contributions of third-party adapters are encouraged. For comprehensive adapter listings and usage guides, consult: {adaptersLink}."}
+              {"Casbin stores policies through adapters. To keep the library lightweight, adapter code is separated from the main library (except for the default file adapter). We support third-party adapter contributions. See the full list of {adaptersLink} for more information."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -174,7 +174,7 @@ function PolicyEnforcement() {
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy Enforcement at Scale</Translate></h3>
-            <Translate>Certain adapters enable filtered policy loading, allowing Casbin to retrieve only relevant policy subsets from storage using defined criteria. This optimization proves essential in expansive, multi-tenant systems where loading complete policy sets would hinder performance significantly.</Translate>
+            <Translate>Some adapters support filtered policy loading. This means Casbin can load only a subset of policies from storage based on specified filters. This feature is useful for large-scale, multi-tenant applications where loading all policies at once would be inefficient.</Translate>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ function RoleManager() {
                 ),
               }}
             >
-              {"Role managers in Casbin govern RBAC hierarchies, managing user-to-role associations. They can source role information from Casbin's policy rules or integrate with external identity providers including LDAP, Okta, Auth0, Azure AD, and similar services. Various role manager implementations are supported. Keeping the core lightweight, role manager code resides separately from the main library, except for the default version. Explore all available {rolemanagersLink}."}
+              {"The role manager handles RBAC role hierarchy (user-role mappings) in Casbin. It can load role data from Casbin policy rules or from external sources like LDAP, Okta, Auth0, Azure AD, etc. To keep the library lightweight, role manager code is separated from the main library (except for the default one). See all available {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -222,11 +222,11 @@ function Showcase() {
           <Translate values={{
             UsersPage: (
               <Link to="/users">
-                <Translate>explore these applications</Translate>
+                <Translate>check out these apps</Translate>
               </Link>
             ),
           }}>
-            {"Casbin powers numerous projects spanning major Fortune 500 enterprises to cutting-edge startups. Curious about Casbin's capabilities in action? {UsersPage}!"}
+            {"Hundreds of projects use Casbin, from Fortune 500 companies to new startups. If you want to see what can be built with Casbin, {UsersPage}!"}
           </Translate>
         </p>
         <br /><br />
