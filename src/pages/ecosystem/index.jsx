@@ -10,7 +10,7 @@ import SearchBar from "@site/src/pages/ecosystem/_components/SearchBar";
 
 export const TITLE = translate({message: "Casbin Plugins"});
 export const DESCRIPTION = translate({
-  message: "Casbin adapters, watchers, role managers, middlewares and dispatchers",
+  message: "Adapters, watchers, role managers, middlewares, and dispatchers for Casbin",
 });
 
 export default function Showcase() {

@@ -13,7 +13,7 @@ export default function Users() {
           </h1>
           <p className="hero__subtitle">
             <Translate>
-              Hundreds of projects are using Casbin, from established Fortune 500 companies to hot new startups. If you&apos;re curious to see what can be accomplished with Casbin, check out these apps!
+              Hundreds of projects use Casbin, from Fortune 500 companies to new startups. Check out these applications to see what can be built with Casbin.
             </Translate>
           </p>
         </div>
@@ -26,10 +26,10 @@ export default function Users() {
         <UserList />
         <br /><br /><br />
         <h2>
-          <Translate>Is your project also using Casbin?</Translate>
+          <Translate>Is your project using Casbin?</Translate>
         </h2>
         <a className="button button--lg button--outline button--primary" href="https://github.com/casbin/casbin-website-v2/edit/master/static/data/users.json">
-          <Translate>Add your company here</Translate>
+          <Translate>Add your company</Translate>
         </a>
       </div>
     </Layout>

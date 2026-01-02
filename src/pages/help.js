@@ -10,7 +10,7 @@ function Hello() {
         <br />
         <br />
         <h1><Translate>Need help?</Translate></h1>
-        <Translate>If you need help with Casbin, you can try one of the mechanisms below.</Translate>
+        <Translate>If you need help with Casbin, try one of these options.</Translate>
         <br />
         <br />
         <br />
@@ -26,7 +26,7 @@ function Hello() {
               ),
             }}
             >
-              {"You can join the conversation on {discordLink} for contributing help."}
+              {"Join the conversation on {discordLink} to get help from contributors."}
             </Translate>
           </div>
           <div className="col">
@@ -50,7 +50,7 @@ function Hello() {
                 ),
               }}
             >
-              {"At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented."}
+              {"Browse our {repoLink} and submit {issueLink} or {prLink} for bugs or feature requests."}
             </Translate>
           </div>
           <div className="col">
@@ -62,7 +62,7 @@ function Hello() {
                 </a>
               ),
             }}>
-              {"Discuss with maintainers or share your experience about Casbin on {googleGroupsLink}."}
+              {"Discuss with maintainers or share your experience with Casbin on {googleGroupsLink}."}
             </Translate>
           </div>
           <div className="col">
