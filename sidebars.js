@@ -129,7 +129,6 @@ module.exports = {
         "multi-threading",
         "benchmark",
         "performance",
-        "k8s",
         "k8s-gatekeeper",
         "envoy",
       ],
