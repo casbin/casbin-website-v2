@@ -17,6 +17,19 @@ authors: [nodece]
 go get github.com/casbin/casbin/v3
 ```
 
+:::info Migrating from v2 to v3
+
+If you're upgrading from Casbin v2 to v3, update your import paths from `github.com/casbin/casbin/v2` to `github.com/casbin/casbin/v3`. This applies to all subpackages as well (e.g., `v2/model` becomes `v3/model`).
+
+For Go modules, run:
+
+```bash
+go get -u github.com/casbin/casbin/v3
+```
+
+Then update all imports in your code from `/v2` to `/v3`.
+:::
+
 ```mdx-code-block
 </TabItem>
 <TabItem value="Java" label="Java">
@@ -169,19 +182,6 @@ luarocks install casbin --local
 </TabItem>
 </Tabs>
 ```
-
-:::info Migrating from v2 to v3
-
-If you're upgrading from Casbin v2 to v3, update your import paths from `github.com/casbin/casbin/v2` to `github.com/casbin/casbin/v3`. This applies to all subpackages as well (e.g., `v2/model` becomes `v3/model`).
-
-For Go modules, run:
-
-```bash
-go get -u github.com/casbin/casbin/v3
-```
-
-Then update all imports in your code from `/v2` to `/v3`.
-:::
 
 ## Create a Casbin Enforcer
 
