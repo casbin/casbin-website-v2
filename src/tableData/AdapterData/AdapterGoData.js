@@ -172,6 +172,14 @@ export const AdapterGoData = [
     "image": "/img/ecosystem/postgreSQL.png",
   },
   {
+    "title": "[casbin-pgx-adapter](https://github.com/noho-digital/casbin-pgx-adapter)",
+    "type": "SQL",
+    "author": "[@noho-digital](https://github.com/noho-digital)",
+    "autoSave": "✅",
+    "description": "A PostgreSQL adapter for Casbin using the [pgx](https://github.com/jackc/pgx) driver.",
+    "image": "/img/ecosystem/postgreSQL.png",
+  },
+  {
     title:
       "[PostgreSQL Adapter](https://github.com/cychiuae/casbin-pg-adapter)",
     type: "SQL",
