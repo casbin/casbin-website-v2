@@ -14,7 +14,7 @@ export const MiddlewarePythonData = [
   {
     title: "[FastAPI](https://github.com/tiangolo/fastapi)",
     description:
-      "A modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints, via plugin: [fastapi-casbin-auth](https://github.com/officialpycasbin/fastapi-casbin-auth) or [Fastapi-app](https://github.com/lqmanh/fastapi-app)",
+      "A modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints, via plugin: [fastapi-casbin-auth](https://github.com/officialpycasbin/fastapi-casbin-auth) or [Fastapi-app](https://github.com/lqmanh/fastapi-app) or [casbin-fastapi-decorator](https://github.com/Neko1313/casbin-fastapi-decorator)",
     image: "/img/ecosystem/fastapi.png",
   },
   {
