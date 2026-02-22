@@ -8,11 +8,9 @@ authors: [nodece]
 
 ## What is LBAC?
 
-LBAC (Lattice-Based Access Control) is a formal access control model that can be implemented in multiple ways. The implementation shown here demonstrates one approach in Casbin that combines confidentiality and integrity controls.
+**LBAC (Lattice-Based Access Control)** is a formal model that can enforce both **confidentiality** and **integrity** in one framework. This page shows one Casbin formulation: subject and object each have a confidentiality level and an integrity level; the matcher enforces read/write rules on both dimensions.
 
-## Model Definition
-
-This example shows an LBAC model implementation in Casbin:
+## Model
 
 ```conf
 [request_definition]
@@ -31,14 +29,7 @@ e = some(where (p.eft == allow))
 m = (r.act == "read" && r.subject_confidentiality >= r.object_confidentiality && r.subject_integrity >= r.object_integrity) || (r.act == "write" && r.subject_confidentiality <= r.object_confidentiality && r.subject_integrity <= r.object_integrity)
 ```
 
-## How It Works
-
-This implementation uses the matcher function to enforce access control based on two security dimensions:
-
-- **Confidentiality Control**: Protects against unauthorized information disclosure
-- **Integrity Control**: Protects against unauthorized information modification
-
-Access decisions are made by comparing security levels of subjects and objects across both dimensions.
+Read allowed when subject’s confidentiality and integrity are both ≥ object’s; write allowed when both are ≤ object’s. So confidentiality follows a BLP-like rule and integrity a Biba-like rule, in a single matcher.
 
 ## Example Requests
 

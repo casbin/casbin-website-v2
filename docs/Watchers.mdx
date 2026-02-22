@@ -6,11 +6,9 @@ keywords: [watcher, multiple Casbin enforcer, WatcherEx]
 authors: [hsluoyz]
 ---
 
+**Watchers** keep policy in sync across multiple enforcer instances. When one enforcer updates policy, it notifies others (via a message bus such as [etcd](https://github.com/coreos/etcd), Redis, or Kafka), and they reload or update their in-memory policy. That lets you run many enforcers behind load balancers without stale permissions.
 
-
-We support distributed messaging systems like [etcd](https://github.com/coreos/etcd) to maintain consistency across multiple Casbin enforcer instances. This enables concurrent use of multiple Casbin enforcers to handle large volumes of permission checking requests.
-
-Similar to policy storage adapters, watcher code is not included in the main library. Support for new messaging systems should be implemented as a separate watcher. Below is a complete list of available Casbin watchers. We welcome third-party contributions for new watchers—please let us know, and we'll add them to this list.
+Watchers are implemented in separate packages, like adapters. The list below covers supported backends. To add a new one, open an issue or PR.
 
 ```mdx-code-block
 <Tabs groupId="langs">

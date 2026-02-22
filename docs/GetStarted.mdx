@@ -187,9 +187,9 @@ luarocks install casbin --local
 
 Casbin relies on configuration files to specify the access control model.
 
-Two configuration files are required: `model.conf` and `policy.csv`. The `model.conf` file defines your access control model, while `policy.csv` contains the specific permission rules. Working with Casbin is simple—you primarily interact with one structure: the **enforcer**. During initialization, this structure loads both configuration files automatically.
+You need two configuration files: `model.conf` and `policy.csv`. The **model** file defines your access control model; the **policy** file holds the permission rules. In practice you work with a single component—the **Enforcer**—which loads both files when it is created.
 
-Put simply, creating a Casbin enforcer requires providing a [Model](supported-models) and an [Adapter](adapters).
+To create an Enforcer, provide a [Model](/docs/supported-models) and an [Adapter](/docs/adapters).
 
 Casbin provides a [FileAdapter](adapters#file-adapter-built-in) that you can use. See [Adapter](adapters) for more information.
 
@@ -418,9 +418,9 @@ e = casbin.Enforcer('rbac_example_model.conf', adapter)
 </Tabs>
 ```
 
-### Check permissions
+### Check Permissions
 
-Insert an enforcement check in your code immediately before resource access occurs:
+Add an enforcement check in your code immediately before the resource is accessed:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -529,9 +529,9 @@ else:
 ```
 
 ```csharp
-var sub = "alice";  # the user that wants to access a resource.
-var obj = "data1";  # the resource that is going to be accessed.
-var act = "read";  # the operation that the user performs on the resource.
+var sub = "alice";  // the user that wants to access a resource.
+var obj = "data1";  // the resource that is going to be accessed.
+var act = "read";   // the operation that the user performs on the resource.
 
 if (await e.EnforceAsync(sub, obj, act))
 {
@@ -700,6 +700,4 @@ local roles = e:GetRolesForUser("alice")
 </Tabs>
 ```
 
-For additional usage examples, consult [Management API](/docs/management-api) and [RBAC API](/docs/rbac-api).
-
-Additional examples can be found in the test cases.
+For more examples, see [Management API](/docs/management-api) and [RBAC API](/docs/rbac-api). You can also browse the test cases in each language repository.

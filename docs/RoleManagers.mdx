@@ -6,7 +6,7 @@ keywords: [role manager, RBAC, Casbin]
 authors: [hsluoyz]
 ---
 
-The role manager handles the RBAC role hierarchy (user-role mapping) in Casbin. It can retrieve role data from Casbin policy rules or from external sources such as LDAP, Okta, Auth0, Azure AD, and others. We support multiple role manager implementations. To keep the main library lightweight, role manager code (except the default implementation) is maintained separately. Below is a complete list of available Casbin role managers. We welcome contributions for new role managers—please let us know, and we'll add them to this list.
+The **role manager** implements the RBAC role hierarchy (who has which role, and role inheritance). Casbin can use the default in-memory role manager (backed by policy) or plug in external sources (e.g. LDAP, Okta, Auth0, Azure AD). Custom role managers live in separate packages. List of available role managers by language:
 
 ```mdx-code-block
 <Tabs groupId="langs">

@@ -6,50 +6,53 @@ keywords: [PERM, request, policy, matcher, effect]
 authors: [nodece]
 ---
 
-Within Casbin, access control models are represented as CONF files structured around the **PERM metamodel (Policy, Effect, Request, Matchers)**. Changing your project's authorization mechanism is as straightforward as updating a configuration file. You can build custom access control models by mixing and matching available components—for example, combining RBAC roles with ABAC attributes in a single model that operates on one policy rule set.
+In Casbin, access control is expressed as CONF files based on the **PERM metamodel (Policy, Effect, Request, Matchers)**. Changing how authorization works in your project is a matter of editing a configuration file. You can build custom models by combining components—for example, RBAC roles with ABAC attributes in a single model and policy set.
 
-The PERM model consists of four core elements: Policy, Effect, Request, and Matchers. These components work together to define how resources and users interact.
+The PERM model has four parts: **Request**, **Policy**, **Effect**, and **Matchers**. Together they define how users and resources interact.
 
 ### Request
 
-Specifies the parameters required for access requests. At minimum, a basic request contains three elements in tuple form: subject (the entity requesting access), object (the target resource), and action (the intended operation).
+The request definition specifies the parameters of an access request. A basic request is a tuple of three elements: **subject** (who is requesting), **object** (the resource), and **action** (the operation).
 
-A typical request definition looks like:
-`r={sub,obj,act}`
+Example:
 
-This definition establishes both the parameter names and their sequence as expected by the access control matching function.
+`r = sub, obj, act`
+
+This sets the parameter names and their order for the matching logic.
 
 ### Policy
 
-Establishes the structure for access rules. This component defines the field names and their order within policy rule documents.
+The policy definition describes the shape of your access rules: field names and order.
 
-Example definitions:
-`p={sub, obj, act}` or `p={sub, obj, act, eft}`
+Examples:
 
-Note: When eft (policy result) isn't included in the definition, the result field in policy files is ignored, and matching policies default to "allow".
+`p = sub, obj, act` or `p = sub, obj, act, eft`
+
+When `eft` (policy effect) is omitted from the definition, the effect field in the policy file is ignored and matching policies are treated as "allow".
 
 ### Matcher
 
-Specifies how requests are matched against policies.
+The matcher defines how a request is matched against policies.
 
 Example: `m = r.sub == p.sub && r.act == p.act && r.obj == p.obj`
-This straightforward matching rule states that when request parameters (entity, resource, and operation) match those in a policy, that policy's result (`p.eft`) applies. The policy result is stored in `p.eft`.
+
+When the request subject, object, and action match a policy’s fields, that policy’s effect (`p.eft`) is used. The effect is stored in `p.eft`.
 
 ### Effect
 
-Combines the results from matched policies using logical operations.
+The effect section combines the effects of all matched policies with a logical expression.
 
-Example: `e = some(where(p.eft == allow))`
+Example: `e = some(where (p.eft == allow))`
 
-This expression means that if any matching policy evaluates to "allow", the final result is true.
+If any matched policy has effect "allow", the result is allow.
 
 Another example:
 
 `e = some(where (p.eft == allow)) && !some(where (p.eft == deny))`
 
-This logical expression requires at least one "allow" policy and zero "deny" policies for the result to be true. Essentially, all matching policies must be "allow"—any "deny" makes the entire result false. When both allow and deny policies match, deny takes precedence.
+This means: the result is allow only if at least one policy allows and none deny. If both allow and deny match, deny wins.
 
-ACL represents the most fundamental and straightforward model in Casbin. Below is the model CONF for ACL:
+**ACL** is the simplest model in Casbin. Here is a minimal ACL model:
 
 ```ini
 # Request definition
@@ -70,19 +73,19 @@ m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
 
 ```
 
-Here's a sample policy for the ACL model:
+Example policy for this model:
 
 ```csv
 p, alice, data1, read
 p, bob, data2, write
 ```
 
-This policy grants:
+So:
 
-- alice: read access to data1
-- bob: write access to data2
+- **alice** can read **data1**
+- **bob** can write **data2**
 
-Multi-line mode is supported by appending '\\' at line endings:
+You can split matchers across lines by ending each line with `\`:
 
 ```ini
 # Matchers
@@ -91,7 +94,7 @@ m = r.sub == p.sub && r.obj == p.obj \
   && r.act == p.act
 ```
 
-For ABAC users, the 'in' operator is available in the Casbin **golang** implementation (not yet supported in jCasbin and Node-Casbin):
+The `in` operator is available in the **Go** implementation (not yet in jCasbin or Node-Casbin):
 
 ```ini
 # Matchers
@@ -99,6 +102,8 @@ For ABAC users, the 'in' operator is available in the Casbin **golang** implemen
 m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
 ```
 
-Important: Ensure the array length exceeds **1**, otherwise a panic will occur.
+:::caution
+The array must have more than one element; otherwise the Go implementation may panic.
+:::
 
-For additional operators, see [govaluate](https://github.com/casbin/govaluate).
+For more operators, see [govaluate](https://github.com/casbin/govaluate).

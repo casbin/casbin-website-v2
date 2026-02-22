@@ -6,11 +6,11 @@ keywords: [filtered policies, policy subset, performance optimization]
 authors: [hsluoyz]
 ---
 
-Some adapters support filtered policy loading. This capability loads only a subset of policies from storage based on specified criteria, enabling efficient enforcement in large multi-tenant environments where loading all policies would create a performance bottleneck.
+Some [adapters](/docs/adapters) support **filtered policy loading**: only a subset of policies is loaded from storage according to a filter. That reduces memory and speed in large or multi-tenant setups where loading the full policy set is impractical.
 
-To load filtered policies with a supported adapter, call `LoadFilteredPolicy`. The filter format depends on the adapter implementation. The `SavePolicy` method is disabled when operating with filtered policies to prevent accidental data loss.
+Call `LoadFilteredPolicy(filter)` with a supported adapter. The filter shape is adapter-specific. When using filtered loading, `SavePolicy()` is disabled so you don’t overwrite the full policy by mistake.
 
-Here's an example using the built-in filtered file adapter with an RBAC model that includes domains. This filter restricts loaded policies to a single domain, excluding all policies for other domains:
+Example: filtered file adapter with an RBAC-with-domains model. The filter loads only policies for `domain1`:
 
 ```go
 import (
@@ -29,7 +29,7 @@ filter := &fileadapter.Filter{
 }
 enforcer.LoadFilteredPolicy(filter)
 
-// The loaded policy now only contains the entries pertaining to "domain1".
+// Only policies for "domain1" are loaded.
 ```
 
-The `LoadIncrementalFilteredPolicy` method provides similar functionality but appends filtered policies to existing policies rather than replacing them. This incremental approach lets you build up policies from multiple filtered loads.
+`LoadIncrementalFilteredPolicy(filter)` works like `LoadFilteredPolicy` but **adds** the filtered policies to the current in-memory policy instead of replacing it. You can combine several filtered loads (e.g. per tenant) into one enforcer.

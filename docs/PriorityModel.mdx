@@ -6,30 +6,26 @@ keywords: [priority model]
 authors: [hsluoyz]
 ---
 
-Casbin supports priority-based policy loading.
+Casbin can apply **priority** to policies: when multiple policies match, the one with highest priority wins (and can produce allow or deny).
 
-## Load Policy with Implicit Priority
+## Implicit priority (policy order)
 
-Priority is determined by policy order: policies appearing first have higher priority.
-
-model.conf:
+Policy order defines priority: **first** in the list has highest priority. Use this effect:
 
 ```ini
 [policy_effect]
 e = priority(p.eft) || deny
 ```
 
-## Load Policy with Explicit Priority
+## Explicit priority (numeric field)
 
-> See also: [casbin#550](https://github.com/casbin/casbin/issues/550)
+Add a **priority** field to the policy; **lower** number = **higher** priority. Non-numeric values are treated as lowest priority. See [casbin#550](https://github.com/casbin/casbin/issues/550).
 
-Lower priority values indicate higher priority. Non-numerical priority values are placed last rather than causing errors.
+:::info Custom priority field
+The default priority field name is `priority`. For another name (e.g. `customized_priority`), call `e.SetFieldIndex("p", constant.PriorityIndex, index)` after init and reload policy. Example: [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044).
+:::
 
-:::info Token name convention
-
-The standard priority token name in policy definitions is "priority". To use a custom token name, call `e.SetFieldIndex()` after initializing the enforcer and reload policies (see the full example in [TestCustomizedFieldIndex](https://github.com/casbin/casbin/pull/1044)).
-
-model.conf:
+Example with explicit priority in policy:
 
 ```ini
 [policy_definition]
@@ -54,9 +50,9 @@ ok, err := e.Enforce("bob", "data2", "read") // the result will be `false, nil`
 
 :::
 
-Explicit priority currently supports only `AddPolicy` and `AddPolicies`. Avoid changing the priority attribute when calling `UpdatePolicy`.
+Only `AddPolicy` and `AddPolicies` respect explicit priority. Do not change the priority field via `UpdatePolicy`.
 
-model.conf:
+Full model:
 
 ```ini
 [request_definition]
@@ -100,11 +96,11 @@ bob, data2, read --> false
 bob, data2, write --> true // because bob has the role of `data2_allow_group` which has the right to write data2, and there's no deny policy with higher priority
 ```
 
-## Load Policy with Priority Based on Role and User Hierarchy
+## Subject priority (role/user hierarchy)
 
-The role and user inheritance structure must form multiple trees, not graphs. When a user has multiple roles, ensure the user occupies the same hierarchy level in each tree. When two roles share the same level, the policy appearing first takes priority. For details, see [casbin#833](https://github.com/casbin/casbin/pull/833) and [casbin#831](https://github.com/casbin/casbin/issues/831).
+Use `subjectPriority(p.eft)` so that priority comes from the **role hierarchy**: leaves (e.g. end users) have higher priority than inner roles. The hierarchy must be **trees**, not graphs; if a user has multiple roles, they should be at the same depth in each tree. Same-level ties are broken by policy order. See [casbin#833](https://github.com/casbin/casbin/pull/833), [casbin#831](https://github.com/casbin/casbin/issues/831).
 
-model.conf:
+Model:
 
 ```ini
 [request_definition]

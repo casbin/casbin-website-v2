@@ -6,19 +6,15 @@ keywords: [dispatcher]
 authors: [dovics]
 ---
 
-Dispatchers enable synchronization of incremental policy changes across distributed Casbin enforcer instances. They rely on consistency algorithms like Raft to maintain uniform policy state across all enforcers, simplifying the creation of distributed authorization clusters.
+**Dispatchers** propagate **incremental** policy updates to multiple enforcer instances (e.g. a cluster). They use a consistency protocol (e.g. Raft) so all enforcers eventually see the same policy. Casbin’s normal API (AddPolicy, RemovePolicy, etc.) is unchanged; the dispatcher sends updates to other nodes.
 
-A dispatcher's functionality is split into two parts. The first consists of methods integrated with Casbin's core. These methods are called internally by Casbin, allowing developers to use Casbin's standard API without modification.
-
-The second part includes the dispatcher's own initialization and algorithm-specific features, such as dynamic membership management and configuration updates.
+Two parts: (1) hooks inside Casbin that the dispatcher implements, and (2) dispatcher-specific setup (e.g. cluster membership, config).
 
 :::note
-
-Dispatchers synchronize runtime policy changes only. They do not resolve pre-existing inconsistencies during initialization. You must ensure all enforcer instances start with identical policy states before enabling dispatchers.
-
+Dispatchers only sync **changes** after init. They do **not** fix existing divergence. Start all enforcers with the same policy (e.g. from the same DB or snapshot) before enabling a dispatcher.
 :::
 
-Below is a list of available Casbin dispatchers. Contributions of new dispatchers are welcome—let us know, and we'll include them here.
+Available dispatchers:
 
 ```mdx-code-block
 <Tabs groupId="langs">

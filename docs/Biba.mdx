@@ -8,7 +8,7 @@ authors: [nodece]
 
 ## Overview
 
-The Biba Integrity Model, developed by Kenneth J. Biba in 1975, is a formal state transition system for computer security policy. It defines access control rules that preserve data integrity. Where Bell-LaPadula focuses on confidentiality, Biba specifically prevents unauthorized data modification.
+The **Biba** model (1975) enforces **integrity**: subjects and objects have integrity levels. Rules: **no read down** (don’t read lower-integrity data), **no write up** (don’t write to higher-integrity data). So high-integrity data cannot be corrupted by lower-integrity sources.
 
 ## Model
 
@@ -31,7 +31,7 @@ m = (r.act == "read" && r.sub_level <= r.obj_level) || (r.act == "write" && r.su
 
 ## Policy
 
-Biba typically requires no explicit policy rules since integrity levels determine access control. The matcher implements Biba integrity rules:
+Usually no `p` rules; the matcher implements Biba from request levels:
 
 - **No Read Down (Simple Integrity Property)**: Subjects cannot read objects with lower integrity levels
 - **No Write Up (Star Integrity Property)**: Subjects cannot write to objects with higher integrity levels

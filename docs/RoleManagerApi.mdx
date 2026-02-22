@@ -6,13 +6,13 @@ keywords: [rolemanager, API]
 authors: [closetool, kiloson-c]
 ---
 
-## RoleManager
+The **RoleManager** interface defines how role hierarchy and user–role links are stored and queried. You can attach **matching functions** so that wildcards (e.g. `*`) in role or domain names are supported. Below, `e` is an Enforcer and `rm` is a RoleManager.
 
-The RoleManager provides an interface for managing role operations. Adding a matching function to the RoleManager enables the use of wildcards in role names and domains.
+## RoleManager API
 
-### `AddNamedMatchingFunc()`
+### AddNamedMatchingFunc
 
-`AddNamedMatchingFunc` registers a `MatchingFunc` for a specific policy type in the RoleManager. The `MatchingFunc` is applied during role matching.
+Registers a matching function for a policy type (e.g. `g`). Used when evaluating role links so that patterns like `*` match multiple names.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -41,38 +41,11 @@ The RoleManager provides an interface for managing role operations. Adding a mat
 </Tabs>
 ```
 
-Example usage:
+### AddNamedDomainMatchingFunc
 
-```mdx-code-block
-<Tabs groupId="langs">
-<TabItem value="Go" label="Go" default>
-```
+Registers a matching function for the **domain** field in role links (e.g. in `g` with three arguments). Enables wildcards in domain names.
 
-```go
-    e, _ := casbin.NewEnforcer("path/to/model", "path/to/policy")
-    e.AddNamedMatchingFunc("g", "", util.MatchKey)
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Node.js" label="Node.js">
-```
-
-```typescript
-    const e = await newEnforcer('path/to/model', 'path/to/policy');
-    await e.addNamedMatchingFunc('g', Util.keyMatchFunc);
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### `AddNamedDomainMatchingFunc()`
-
-`AddNamedDomainMatchingFunc` registers a `MatchingFunc` for a specific policy type in the RoleManager. The `DomainMatchingFunc` works similarly to `MatchingFunc`.
-
-Example usage:
+Example:
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -99,11 +72,9 @@ Example usage:
 </Tabs>
 ```
 
-### `GetRoleManager()`
+### GetRoleManager
 
-`GetRoleManager` retrieves the current role manager for `g`.
-
-Example usage:
+Returns the role manager used for the default grouping policy type (e.g. `g`).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -137,11 +108,9 @@ Example usage:
 </Tabs>
 ```
 
-### `GetNamedRoleManager()`
+### GetNamedRoleManager
 
-`GetNamedRoleManager` retrieves the role manager by named policy type.
-
-Example usage:
+Returns the role manager for a specific policy type (e.g. `g2`).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -175,11 +144,9 @@ Example usage:
 </Tabs>
 ```
 
-### `SetRoleManager()`
+### SetRoleManager
 
-`SetRoleManager` assigns the current role manager for `g`.
-
-Example usage:
+Sets the role manager for the default grouping policy type.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -213,11 +180,9 @@ Example usage:
 </Tabs>
 ```
 
-### `SetNamedRoleManager()`
+### SetNamedRoleManager
 
-`SetNamedRoleManager` assigns the role manager by named policy type.
-
-Example usage:
+Sets the role manager for a specific policy type (e.g. `g2`).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -242,11 +207,9 @@ Example usage:
 </Tabs>
 ```
 
-### `Clear()`
+### Clear
 
-`Clear` removes all stored data and resets the role manager to its initial state.
-
-Example usage:
+Clears all role/link data in the role manager.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -280,11 +243,9 @@ Example usage:
 </Tabs>
 ```
 
-### `AddLink()`
+### AddLink
 
-`AddLink` creates an inheritance link between two roles: `name1` and `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
-
-Example usage:
+Adds a link so that `name1` has role `name2` in the given domain (or with the domain as a prefix, depending on the model).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -318,11 +279,9 @@ Example usage:
 </Tabs>
 ```
 
-### `DeleteLink()`
+### DeleteLink
 
-`DeleteLink` removes the inheritance link between two roles: `name1` and `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
-
-Example usage:
+Removes the link between `name1` and `name2` in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -356,11 +315,9 @@ Example usage:
 </Tabs>
 ```
 
-### `HasLink()`
+### HasLink
 
-`HasLink` checks whether a link exists between two roles, where `name1` inherits from `name2`. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
-
-Example usage:
+Returns whether `name1` has role `name2` (directly or by inheritance) in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -394,11 +351,9 @@ Example usage:
 </Tabs>
 ```
 
-### `GetRoles()`
+### GetRoles
 
-`GetRoles` retrieves the roles that a user inherits. The domain parameter serves as a prefix to the roles (can also be used for other purposes).
-
-Example usage:
+Returns all roles the user has in the given domain (including inherited).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -432,11 +387,9 @@ Example usage:
 </Tabs>
 ```
 
-### `GetUsers()`
+### GetUsers
 
-`GetUsers` retrieves the users that inherit a role. The domain parameter serves as a prefix to the users (can also be used for other purposes).
-
-Example usage:
+Returns all users that have the given role (in the default domain, if applicable).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -470,11 +423,9 @@ Example usage:
 </Tabs>
 ```
 
-### `PrintRoles()`
+### PrintRoles
 
-`PrintRoles` outputs all roles to the log.
-
-Example usage:
+Prints all roles to the role manager’s logger (for debugging).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -508,11 +459,9 @@ Example usage:
 </Tabs>
 ```
 
-### `SetLogger()`
+### SetLogger
 
-`SetLogger` assigns a logger to the role manager.
-
-Example usage:
+Sets the logger used by the role manager (e.g. for PrintRoles).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -531,11 +480,9 @@ Example usage:
 </Tabs>
 ```
 
-### `GetDomains()`
+### GetDomains
 
-`GetDomains` retrieves the domains that a user belongs to.
-
-Example usage:
+Returns the domains in which the user has at least one role. (Go only; signature may vary.)
 
 ```mdx-code-block
 <Tabs groupId="langs">

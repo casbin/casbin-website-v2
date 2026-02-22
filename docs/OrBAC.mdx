@@ -12,21 +12,19 @@ keywords:
 authors: [casbin]
 ---
 
-## What is the OrBAC model?
+## What is OrBAC?
 
-OrBAC (Organisation-Based Access Control) extends traditional RBAC by adding abstraction layers that decouple concrete entities from security policies. This separation creates more flexible and maintainable access control across multiple organizations.
+**OrBAC (Organisation-Based Access Control)** extends RBAC with **abstractions** and an **organization** dimension. Policies refer to **roles**, **activities**, and **views**; concrete users, actions, and objects are mapped to them per organization. That keeps policy stable when entities change.
 
-OrBAC evaluates access requests using three key abstraction mappings within an organizational context:
+Three mappings (all scoped by organization):
 
-- **Empower**: Associates users (subjects) with roles in organizations
-- **Use**: Associates concrete actions with abstract activities in organizations
-- **Consider**: Associates concrete objects with abstract views in organizations
+- **Empower** — user → role
+- **Use** — action → activity
+- **Consider** — object → view
 
-Policies operate on roles, activities, and views rather than concrete subjects, actions, and objects. This design lets you define organization-specific policies that remain independent of the actual entities involved.
+Permission is granted when the request’s (subject, action, object) maps to a (role, activity, view) that has permission in that org.
 
-## OrBAC Model Definition
-
-The OrBAC model configuration:
+## Model
 
 ```ini
 [request_definition]
@@ -47,12 +45,10 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.role, r.org) && g2(r.act, p.activity, r.org) && g3(r.obj, p.view, r.org) && r.org == p.org
 ```
 
-The matcher components:
-
-- `g(r.sub, p.role, r.org)` verifies the subject holds the role within the organization (Empower)
-- `g2(r.act, p.activity, r.org)` verifies the action maps to the activity within the organization (Use)
-- `g3(r.obj, p.view, r.org)` verifies the object belongs to the view within the organization (Consider)
-- `r.org == p.org` confirms the organizational context matches
+- `g` — subject has role in org (Empower)
+- `g2` — action is activity in org (Use)
+- `g3` — object is in view in org (Consider)
+- `r.org == p.org` — same organization
 
 ## Policy Examples
 
@@ -124,9 +120,6 @@ ok, _ = e.Enforce("charlie", "org1", "data1", "read")  // false
 
 ## Benefits
 
-OrBAC offers several advantages over traditional access control:
-
-- **Abstraction**: Define policies using abstract security entities (roles, activities, views) instead of concrete ones, improving maintainability and adaptability
-- **Organization Context**: Each organization maintains independent policies and mappings while sharing the same security model
-- **Flexibility**: Modify concrete entity mappings without changing core security policies
-- **Scalability**: Abstraction layers reduce policy complexity in multi-organizational systems
+- **Abstraction** — Policies use roles, activities, and views; you can change concrete mappings without rewriting policy.
+- **Per-organization** — Each org has its own mappings and permissions; one model covers all.
+- **Scalability** — Fewer, clearer rules in multi-org setups.

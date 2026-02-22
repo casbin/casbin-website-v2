@@ -6,12 +6,14 @@ keywords: [benchmarks, overhead]
 authors: [hsluoyz]
 ---
 
+This page reports **enforcement overhead** (time and memory per `Enforce()` call) for different models and rule sizes. Results depend on hardware and language; use them as a rough guide.
+
 ```mdx-code-block
 <Tabs groupId="langs">
 <TabItem value="Go" label="Go" default>
 ```
 
-Policy enforcement overhead is benchmarked in [model_b_test.go](https://github.com/casbin/casbin/blob/master/model_b_test.go). Testing environment:
+Go benchmarks: [model_b_test.go](https://github.com/casbin/casbin/blob/master/model_b_test.go). Environment:
 
 ```text
 Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 2601 Mhz, 4 Core(s), 8 Logical Processor(s)

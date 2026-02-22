@@ -6,11 +6,11 @@ keywords: [RBAC, role definition, role hierarchy]
 authors: [hsluoyz]
 ---
 
-## Role Definition
+## Role definition
 
-`[role_definition]` defines RBAC role inheritance relationships. Casbin supports multiple independent RBAC systems: users can have roles with inheritance relationships, and resources can have their own roles with separate inheritance relationships. These RBAC systems operate independently.
+The `[role_definition]` section defines RBAC role (inheritance) relationships. Casbin can run several RBAC systems at once: one for users (with role inheritance) and optionally one for resources. Each is independent.
 
-This section is optional. Omit it if your model doesn't use RBAC roles.
+This section is optional; omit it if you are not using RBAC.
 
 ```ini
 [role_definition]
@@ -18,38 +18,34 @@ g = _, _
 g2 = _, _
 ```
 
-This definition shows two RBAC systems: `g` and `g2`. The `_,_` notation indicates two parties participate in each inheritance relationship. Typically, you'll use only `g` when roles apply to users alone. Use both `g` and `g2` when roles apply to both users and resources. See [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf) and [rbac_model_with_resource_roles.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf) for examples.
+Here `g` and `g2` are two role systems; `_, _` means each has two sides (e.g. user and role). Use only `g` for user roles; add `g2` when resources have roles too. Examples: [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf), [rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf).
 
-Casbin stores user-role mappings (or resource-role mappings for resource roles) in the policy:
+User–role (and resource–role) mappings are stored in the policy, for example:
 
 ```csv
 p, data2_admin, data2, read
 g, alice, data2_admin
 ```
 
-This means `alice` inherits from or belongs to role `data2_admin`. Here, `alice` represents a user, resource, or role. Casbin treats it as a string.
+So `alice` has role `data2_admin`. Casbin treats all names as strings (user, resource, or role).
 
-Check the role in a matcher:
+Use the role in a matcher:
 
 ```ini
 [matchers]
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-This matcher verifies that the request's `sub` has the policy's `sub` role.
+So the request is allowed only if the request subject has the role given in the policy.
 
 :::note
-
-1. Casbin stores only user-role mappings.
-2. Casbin doesn't validate users or roles. Authentication handles this responsibility.
-3. Avoid using the same name for both a user and a role within an RBAC system. Casbin treats users and roles as strings, making it impossible to distinguish between user `alice` and role `alice`. Use prefixes like `role_alice` to avoid conflicts.
-4. Role inheritance is transitive: if `A` has role `B`, and `B` has role `C`, then `A` has role `C`. This transitivity is unlimited.
-
+1. Casbin only stores and evaluates user–role (and resource–role) mappings; it does not validate that users or roles exist. That is the job of authentication.
+2. Do not reuse the same name for a user and a role (e.g. user `alice` and role `alice`), since Casbin cannot tell them apart. Use a prefix (e.g. `role_alice`) if needed.
+3. Role inheritance is transitive and unbounded: if A has role B and B has role C, then A effectively has role C.
 :::
 
-:::info Token Name Convention
-
-By convention, the subject token name in policy definitions is `sub` and appears first. Golang Casbin supports custom token names and positions. When the subject token name is `sub`, place it anywhere without additional configuration. For other subject token names, call `e.SetFieldIndex()` for `constant.SubjectIndex` after initializing the enforcer, regardless of position.
+:::info Token name convention
+The subject in the policy is usually named `sub` and listed first. In Go Casbin you can use other names and order; then you must call `e.SetFieldIndex("p", constant.SubjectIndex, index)` after creating the enforcer so that APIs like `DeleteUser` use the correct column.
 
 ```ini
 # `subject` here is for sub
@@ -64,11 +60,11 @@ ok, err := e.DeleteUser("alice") // without SetFieldIndex, it will raise an erro
 
 :::
 
-## Role Hierarchy
+## Role hierarchy
 
-Casbin's RBAC implements RBAC1's role hierarchy: when `alice` has `role1`, and `role1` has `role2`, then `alice` inherits `role2` and its permissions.
+Casbin implements RBAC1-style role hierarchy: if `alice` has `role1` and `role1` has `role2`, then `alice` effectively has `role2` and its permissions.
 
-Hierarchy level describes the depth of role inheritance. In this example, the hierarchy level is 2. Casbin's built-in role manager lets you specify the maximum hierarchy level, defaulting to 10. This means an end user like `alice` can inherit up to 10 levels of roles.
+The **hierarchy depth** is how many levels of inheritance you allow. The default role manager uses a maximum depth of 10 (configurable), so a user can inherit up to 10 levels of roles.
 
 ```go
 // NewRoleManager is the constructor for creating an instance of the
@@ -83,20 +79,18 @@ func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
 }
 ```
 
-## How to Distinguish Role from User?
+## Distinguishing users from roles
 
-Casbin treats roles and users identically in RBAC—both are strings. For single-level RBAC (where roles never belong to other roles), use `e.GetAllSubjects()` to list all users and `e.GetAllRoles()` to list all roles. These functions return all `u` and all `r` values from `g, u, r` rules.
+In Casbin, users and roles are both strings. In flat RBAC (no role hierarchy), `GetAllSubjects()` and `GetAllRoles()` return the left and right sides of `g` rules (often users and roles). With a hierarchy, the same name can appear as both user and role; if your app does not track which is which, use a naming convention (e.g. prefix `role::`) and check it when interpreting results.
 
-For multi-level RBAC (with role hierarchy), if your application doesn't track whether a name represents a user or role, or if users and roles share names, add a prefix like `role::admin` before passing it to Casbin. Check for this prefix to identify roles.
+## Implicit roles and permissions
 
-## How to Query Implicit Roles or Permissions?
+Roles and permissions inherited through the hierarchy (not only direct assignments) are called **implicit**. Use `GetImplicitRolesForUser()` and `GetImplicitPermissionsForUser()` to include them; `GetRolesForUser()` and `GetPermissionsForUser()` return only direct assignments. See [GitHub #137](https://github.com/casbin/casbin/issues/137).
 
-When users inherit roles or permissions through RBAC hierarchy rather than direct policy assignment, we call these "implicit" assignments. Query implicit relationships using `GetImplicitRolesForUser()` and `GetImplicitPermissionsForUser()` instead of `GetRolesForUser()` and `GetPermissionsForUser()`. See [this GitHub issue](https://github.com/casbin/casbin/issues/137) for details.
+## Pattern matching in RBAC
 
-## Using Pattern Matching in RBAC
+See [RBAC with pattern](/docs/rbac-with-pattern).
 
-See [RBAC with Pattern](/docs/rbac-with-pattern)
+## Role manager
 
-## Role Manager
-
-See the [Role Managers](/docs/role-managers) section for details.
+See [Role managers](/docs/role-managers) for custom role management.

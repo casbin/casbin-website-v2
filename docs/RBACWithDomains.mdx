@@ -6,18 +6,18 @@ keywords: [RBAC with domains]
 authors: [hsluoyz]
 ---
 
-## Role Definition with Domain Tenants
+## Role definition with domains
 
-In Casbin, RBAC roles can be either global or domain-specific. Domain-specific roles allow a user to hold different roles across different domains or tenants. This capability is particularly valuable in large-scale systems such as cloud platforms, where users frequently operate within multiple distinct tenants.
+In Casbin, roles can be **domain-scoped**: the same user can have different roles in different domains (tenants). That fits multi-tenant and cloud systems where one user works in many tenants.
 
-The role definition for domains or tenants should be structured as follows:
+Use a role definition with **three** elements; the third is the domain:
 
 ```ini
 [role_definition]
 g = _, _, _
 ```
 
-The third underscore `_` denotes the domain or tenant name and must remain unchanged. With this setup, policies can be written like this:
+The third field is the domain. Example policy:
 
 ```csv
 p, admin, tenant1, data1, read
@@ -27,18 +27,18 @@ g, alice, admin, tenant1
 g, alice, user, tenant2
 ```
 
-This configuration means that the `admin` role in `tenant1` has read access to `data1`. Alice holds the `admin` role in `tenant1` and the `user` role in `tenant2`, so she can read `data1`. However, because Alice is not an `admin` in `tenant2`, she cannot read `data2`.
+So: `admin` in `tenant1` can read `data1`. Alice is `admin` in `tenant1` and `user` in `tenant2`; she can read `data1` but not `data2` (only `admin` in `tenant2` can read `data2`).
 
-In your matcher, verify the role as follows:
+Matcher: include the domain in `g` and require it to match:
 
 ```ini
 [matchers]
 m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
 ```
 
-### Flexible Domain Token Naming
+### Custom domain token name
 
-While the convention uses `dom` as the domain token name, Casbin supports arbitrary names for domain parameters. You can rename the domain token to better match your application's terminology, such as `tenant`, `workspace`, or any other meaningful identifier:
+By convention the domain is named `dom`, but you can use any name (`tenant`, `workspace`, etc.) in the request and policy definitions:
 
 ```ini
 [request_definition]
@@ -54,20 +54,17 @@ g = _, _, _
 m = g(r.sub, p.sub, r.tenant) && r.tenant == p.tenant && r.obj == p.obj && r.act == p.act
 ```
 
-When using pattern matching functions like `keyMatch` for domain matching, Casbin automatically detects your custom domain token name from the model definition, provided the domain is the second parameter (index 1) in both request and policy definitions:
+With pattern matching (e.g. `keyMatch`) for domains, Casbin infers the domain token from the model as long as the domain is at index 1 in both request and policy:
 
 ```ini
 [matchers]
 m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj && r.act == p.act
 ```
 
-This automatic detection eliminates the need for hardcoded token names in pattern matching scenarios. For using custom domain token names with domain-related APIs (like `GetAllUsersByDomain()`), refer to the Token Name Convention section below.
+For domain APIs (e.g. `GetAllUsersByDomain()`) with a **custom** domain token name or position, set the index after creating the enforcer. Full example: [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf).
 
-For additional examples, refer to [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf).
-
-:::info Token Name Convention
-
-By convention, the domain token in policy definitions is named `dom` and is typically positioned as the second token (e.g., `sub, dom, obj, act`). Golang Casbin now supports custom token names and positions. If the domain token is named `dom`, it can be placed anywhere without extra configuration. For other names, call `e.SetFieldIndex()` with `constant.DomainIndex` after initializing the enforcer, regardless of token position.
+:::info Token name and position
+The domain is usually named `dom` and placed second (`sub, dom, obj, act`). In Go Casbin you can use another name or position; then call `e.SetFieldIndex("p", constant.DomainIndex, index)` after init so APIs like `GetAllUsersByDomain()` work correctly.
 
 ```ini
 # Using `domain` instead of `dom`

@@ -6,11 +6,11 @@ keywords: [Contributing]
 authors: [Selflocking, EmperorYP7]
 ---
 
-Casbin is an authorization library that implements access control models across multiple programming languages. Contributors with expertise in any supported language are welcome to participate in its development.
+Casbin is an open-source authorization library with implementations in many languages. We welcome contributors in any of the supported languages.
 
-The project consists of two primary categories:
+The project splits into two main areas:
 
-* **Algorithm-focused projects** - These involve implementing Casbin's core algorithms in various languages, including Go, Java, C++, Elixir, Dart, and Rust, along with their ecosystem integrations.
+* **Core and language ports** — Implementing Casbin’s core and ecosystem in Go, Java, Node.js, PHP, Python, .NET, C++, Rust, and others.
 
 | [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
 |----------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------|
@@ -22,33 +22,29 @@ The project consists of two primary categories:
 | [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
 | Production-ready                                                       | Production-ready                                                         | Production-ready                                                   | Production-ready                                                    |
 
-* **Application-based projects** - These projects build applications on top of the Casbin library.
+* **Applications and tools** — Projects built on top of Casbin (e.g. editors, dashboards).
 
 | Project                                                  | Demo                                       | Details                                                                           | Tech Stack         |
 |----------------------------------------------------------|--------------------------------------------|-----------------------------------------------------------------------------------|--------------------|
 | [Casbin Editor](https://github.com/casbin/casbin-editor) | [Casbin Editor](https://editor.casbin.org) | A browser-based editor for creating and testing Casbin models and policies.       | TypeScript + React |
 
-## Ways to Contribute
+## Ways to contribute
 
-There are multiple ways to help Casbin grow:
+* **Use Casbin and give feedback** — Report bugs or suggest features on [GitHub](https://github.com/casbin/casbin). For bigger ideas, discuss first on [Discord](https://discord.gg/S5UjpzGZjN) or [GitHub Discussions](https://github.com/casbin/casbin/discussions). Please use English for issues and discussions.
 
-* **Use Casbin and provide feedback** - Your real-world experience helps us improve. Report bugs or suggest features on [GitHub](https://github.com/casbin/casbin). Before opening an issue, consider discussing it first on [Discord](https://discord.gg/S5UjpzGZjN) or [GitHub Discussions](https://github.com/casbin/casbin/discussions).
+* **Improve documentation** — Docs are a great way to get started; fixes and clarifications are always welcome.
 
-  > Note: Please describe issues in English.
+* **Tackle issues** — See the [project board](https://github.com/orgs/casbin/projects/2) for open issues; many are labeled by difficulty.
 
-* **Improve documentation** - Documentation improvements are an excellent starting point for new contributors.
+## Submitting pull requests
 
-* **Resolve existing issues** - Check our [issue board](https://github.com/orgs/casbin/projects/2) for beginner-friendly tasks, labeled by difficulty level.
+We use GitHub and standard pull-request workflow.
 
-## Submitting Pull Requests
+Before you submit:
 
-Casbin develops on GitHub, making pull requests the standard contribution method.
+* Describe the purpose and impact of your change clearly.
 
-Before submitting a pull request:
-
-* Clearly explain the purpose and impact of your changes on the repository.
-
-* Keep each pull request focused on a single change. Submit separate pull requests for unrelated modifications.
+* Keep each PR focused (one feature or fix). Split unrelated changes into separate PRs.
 
 * When adding new files, include the Casbin license header at the top:
 

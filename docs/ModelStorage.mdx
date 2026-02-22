@@ -6,15 +6,15 @@ keywords: [model storage]
 authors: [hsluoyz]
 ---
 
-Casbin models are designed to be loaded rather than saved. The model defines your access control logic and should remain static at runtime, so Casbin does not provide an API for persisting model changes to storage.
+Models in Casbin are **load-only**: they define your access control logic and are treated as static at runtime. There is no API to save or update the model in storage.
 
-You can load a model using any of these three approaches:
+You can load a model in three ways:
 
-## Load model from .CONF file
+## Load from a CONF file
 
-Loading from a configuration file is the standard approach. This method makes models easy to understand and share when seeking help from the Casbin community.
+Loading from a `.conf` file is the usual approach and makes it easy to share and discuss models.
 
-Here's an example model file [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf):
+Example: [examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)
 
 ```ini
 [request_definition]
@@ -33,15 +33,15 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-Load this model file:
+Use it when creating the enforcer:
 
 ```go
 e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
 ```
 
-## Load model from code
+## Load from code
 
-Build the model programmatically instead of reading from a file. This example constructs an RBAC model:
+You can build the model in code instead of using a file:
 
 ```go
 import (
@@ -50,7 +50,7 @@ import (
     "github.com/casbin/casbin/v3/persist/file-adapter"
 )
 
-// Initialize the model from Go code.
+// Build the model in Go.
 m := model.NewModel()
 m.AddDef("r", "r", "sub, obj, act")
 m.AddDef("p", "p", "sub, obj, act")
@@ -66,9 +66,9 @@ a := fileadapter.NewAdapter("examples/rbac_policy.csv")
 e := casbin.NewEnforcer(m, a)
 ```
 
-## Load model from string
+## Load from a string
 
-Load the model directly from a multi-line string. This eliminates the need to maintain a separate model file.
+You can also load the model from a string (e.g. from config or a database):
 
 ```go
 import (
@@ -76,7 +76,7 @@ import (
     "github.com/casbin/casbin/v3/model"
 )
 
-// Initialize the model from a string.
+// Model text (e.g. from config).
 text :=
 `
 [request_definition]

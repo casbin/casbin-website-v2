@@ -6,11 +6,9 @@ keywords: [Kong, Kong API Gateway, kong-authz, Lua]
 authors: [hsluoyz]
 ---
 
-[kong-authz](https://github.com/casbin-lua/kong-authz) is an authorization plugin for Kong built on [lua-casbin](https://github.com/casbin/lua-casbin/). This plugin enables request authorization in Kong API Gateway using Casbin's flexible access control models.
+**[kong-authz](https://github.com/casbin-lua/kong-authz)** is a Kong plugin that does request authorization with [lua-casbin](https://github.com/casbin/lua-casbin). You define models and policies as usual; the plugin enforces them on Kong routes.
 
 ## Prerequisites
-
-Install the following before proceeding:
 
 - [Kong](https://konghq.com/)
 - [4daysorm-adapter](https://github.com/casbin-lua/4daysorm-adapter) (optional, for database-backed policy storage)

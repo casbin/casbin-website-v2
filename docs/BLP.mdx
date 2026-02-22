@@ -8,7 +8,7 @@ authors: [nodece]
 
 ## Overview
 
-The Bell-LaPadula (BLP) model, developed by David Elliott Bell and Leonard J. LaPadula in 1973, is a formal state transition system for computer security policy. It defines access control rules using security labels on objects and clearances for subjects.
+The **Bell–LaPadula (BLP)** model (1973) enforces **confidentiality** via security levels: subjects have clearances, objects have classifications. Two rules: **no read up** (cannot read higher-level data), **no write down** (cannot write to lower-level data).
 
 ## Model
 
@@ -31,7 +31,7 @@ m = (r.act == "read" && r.sub_level >= r.obj_level) || (r.act == "write" && r.su
 
 ## Policy
 
-BLP typically requires no explicit policy rules since security levels determine access control. The matcher implements BLP rules:
+You usually need **no** `p` rules; the matcher implements BLP from request levels:
 
 - **No Read Up**: Subjects cannot read objects with higher security levels
 - **No Write Down**: Subjects cannot write to objects with lower security levels

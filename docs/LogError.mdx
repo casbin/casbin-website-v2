@@ -8,24 +8,18 @@ authors: [hsluoyz]
 
 ## Logging
 
-By default, Casbin uses the built-in `log` package to print messages to the console:
+Casbin can log requests, model load, and policy changes. **Logging is off by default.** Turn it on with `Enforcer.EnableLog()` or via the logger parameter to `NewEnforcer()`. Example output:
 
 ```log
 2017/07/15 19:43:56 [Request: alice, data1, read ---> true]
 ```
 
-Logging is disabled by default. Enable it using `Enforcer.EnableLog()` or the last parameter of `NewEnforcer()`.
-
 :::note
-
-For Golang: Casbin supports logging models, enforcement requests, roles, and policies. You can implement custom loggers for Casbin.
-
+**Go:** You can plug in a custom logger; Casbin logs models, requests, roles, and policies through it.
 :::
 
 :::note
-
-For Python: PyCasbin uses Python's standard logging mechanism. PyCasbin calls `logging.getLogger()` to configure its logger. No special configuration is needed beyond initializing logging in your application. If you don't initialize logging, PyCasbin will produce no log output. When enabling logs in PyCasbin, you can specify configuration through the `logging_config` parameter. Without explicit configuration, PyCasbin uses the [default log configuration](https://github.com/casbin/pycasbin/blob/c33cabfa0ac65cd09cf812a65e71794d64cb5132/casbin/util/log.py#L6C1-L6C1). Django users should consult the [Django logging documentation](https://docs.djangoproject.com/en/4.2/topics/logging/). Other Python users should refer to the [Python logging documentation](https://docs.python.org/3/library/logging.config.html).
-
+**Python:** PyCasbin uses the standard `logging` module. Configure your app’s logging as usual; PyCasbin uses `logging.getLogger()`. Optional `logging_config` is documented in [pycasbin/util/log.py](https://github.com/casbin/pycasbin/blob/master/casbin/util/log.py). See [Python logging](https://docs.python.org/3/library/logging.config.html) and [Django logging](https://docs.djangoproject.com/en/4.2/topics/logging/) for setup.
 :::
 
 ### Configure Separate Loggers for Different Enforcers

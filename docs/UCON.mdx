@@ -9,7 +9,7 @@ authors: [nodece]
 
 ## Overview
 
-The Usage Control (UCON) model extends traditional access control models by integrating authorizations, obligations, and conditions. Originally developed by Sandhu and Park, UCON provides a comprehensive framework for controlling both access to and usage of digital resources in distributed systems. Unlike traditional access control models that only make authorization decisions at access time, UCON introduces continuous enforcement and attribute mutability.
+**UCON (Usage Control)** extends access control with **authorizations (A)**, **obligations (B)**, and **conditions (C)**. It supports **continuous** enforcement during use (not only at access time) and **mutable** attributes. Casbin does not implement UCON in the core; use the [casbin-ucon](https://github.com/casbin/casbin-ucon) extension for session-based usage control.
 
 ## Model & Policy
 
@@ -39,21 +39,17 @@ p, alice, document1, read
 
 > **Note**: In UCON, Conditions and Obligations are not written in policy.csv; they are added and managed in code through the casbin-ucon API.
 
-## Core Components
+## Core components
 
-The UCON model consists of three core components:
+- **Authorizations (A)** — Access rules based on subject/object attributes (like standard Casbin).
+- **Obligations (B)** — Actions the subject must perform before or during use (e.g. log, confirm).
+- **Conditions (C)** — Environment or system state (e.g. time, location) that must hold.
 
-1. **Authorizations (A)**: Traditional access control rules based on subject and object attributes
-2. **oBligations (B)**: Requirements that subjects must fulfill before or during resource usage
-3. **Conditions (C)**: Environmental or system factors independent of subjects and objects
+## Features
 
-## Key Features
-
-1. **Continuity**: Unlike traditional models that check permissions only at access time, UCON enables ongoing enforcement throughout the entire usage session
-2. **Mutability**: Subject and object attributes can be updated as a consequence of usage
-3. **Pre-decisions**: Authorizations, obligations, and conditions checked before access
-4. **Ongoing-decisions**: Continuous checking during resource usage
-5. **Post-decisions**: Updates to attributes after usage completion
+- **Continuous enforcement** — Checks during the whole usage session, not only at entry.
+- **Mutability** — Attributes can change as a result of usage.
+- **Pre / ongoing / post** — Decisions and obligations at access time, during use, and after.
 
 ## Use Cases
 

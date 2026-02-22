@@ -8,30 +8,26 @@ authors: [hsluoyz]
 
 ## Overview
 
-Mandatory Access Control (MAC) is an access control framework where the operating system or security kernel enforces restrictions on resource access that individual users cannot override. In MAC systems, security policies are centrally managed and applied uniformly across the system.
+**Mandatory Access Control (MAC)** means the system enforces access rules that users cannot bypass. Policy is central and uniform; access is determined by **labels** (e.g. clearance, classification) rather than by user choice.
 
-## MAC Models in Casbin
+## MAC models in Casbin
 
-Casbin implements several established MAC security models:
+Casbin provides:
 
-- **BLP (Bell-LaPadula)**: A state transition model that enforces confidentiality properties
-- **Biba**: An integrity-focused model designed to prevent unauthorized data modifications
-- **LBAC (Lattice-Based Access Control)**: A formal framework that can enforce both confidentiality and integrity controls
+- **[BLP](/docs/blp)** — Confidentiality: “no read up, no write down”
+- **[Biba](/docs/biba)** — Integrity: “no read down, no write up”
+- **[LBAC](/docs/lbac)** — Lattice-based: both confidentiality and integrity in one model
 
-## Core Characteristics
+## Shared properties
 
-MAC models share these fundamental properties:
+- **Central policy** — Rules are system-wide, not per user.
+- **Labels** — Subjects and objects have security/integrity levels.
+- **Formal rules** — Each model encodes specific guarantees (e.g. no information flow upward in BLP).
 
-- **Centralized Policy Management**: Security policies are defined and enforced system-wide
-- **Security Labels**: Both subjects and objects are assigned security clearances or classification levels
-- **Formal Security Properties**: Each model implements specific security guarantees (such as "no read up" or "no write down")
+## When to use MAC
 
-## Common Use Cases
+- Government, military, or regulated environments with classification levels
+- Systems where data integrity is as important as confidentiality
+- Multi-level security (MLS) deployments
 
-MAC models are particularly applicable in:
-
-- Government and military systems that require strict information confidentiality
-- Applications requiring strong data integrity protections
-- Multi-level security deployments
-
-See the related subsections for detailed information on implementing each MAC model in Casbin.
+See the linked pages for each model’s syntax and examples.

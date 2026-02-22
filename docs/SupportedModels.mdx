@@ -6,24 +6,26 @@ keywords: [supported models]
 authors: [nodece]
 ---
 
+Casbin supports the following access control models and patterns:
+
 1. [**ACL (Access Control List)**](https://en.wikipedia.org/wiki/Access_control_list)
 2. **ACL with [superuser](https://en.wikipedia.org/wiki/Superuser)**
-3. **ACL without users**: Particularly useful for systems lacking authentication mechanisms or user login functionality.
-4. **ACL without resources**: Appropriate when permissions target resource types rather than individual resources. Examples include permissions like "write-article" and "read-log" that don't govern access to specific articles or logs.
+3. **ACL without users** — For systems without authentication or user identity (e.g. API-only or device access).
+4. **ACL without resources** — When permissions apply to resource types rather than specific instances (e.g. "write-article", "read-log").
 5. **[RBAC (Role-Based Access Control)](https://en.wikipedia.org/wiki/Role-based_access_control)**
-6. **RBAC with resource roles**: Allows both users and resources to possess roles (or group memberships) simultaneously.
-7. **RBAC with domains/tenants**: Enables users to hold different role sets across different domains or tenants.
-8. **[ABAC (Attribute-Based Access Control)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)**: Utilizes convenient syntax like "resource.Owner" to access resource attributes.
-9. **[PBAC (Policy-Based Access Control)](https://heimdalsecurity.com/blog/rbac-vs-abac-vs-pbac/#:~:text=ABAC%20has%20many%20benefits%20over,no%20predefined%20roles%20or%20permissions)**: A versatile access control approach where authorization decisions derive from rule-based policies, enabling dynamic, context-aware access control.
-10. **[BLP (Bell-LaPadula)](https://en.wikipedia.org/wiki/Bell%E2%80%93LaPadula_model)**: A formal state transition security model defining access control rules through security labels on objects and subject clearances.
-11. **[Biba (Biba Integrity Model)](https://en.wikipedia.org/wiki/Biba_Model)**: A security model controlling information flow to maintain data integrity and prevent unauthorized modifications.
-12. **[LBAC (Lattice-Based Access Control)](./lbac)**: A formal model merging confidentiality and integrity controls within a unified framework, using lattice structures for detailed access control decisions.
-13. **[OrBAC (Organisation-Based Access Control)](./orbac)**: Extends RBAC through abstraction layers separating concrete entities from abstract security policies, facilitating flexible multi-organizational access control.
-14. **[UCON (Usage Control)](./ucon)**: A modern access control model emphasizing ongoing authorization, mutable attributes, and a comprehensive framework encompassing authorizations, obligations, and conditions.
-15. **[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer)**: Handles path patterns such as "/res/*" and "/res/:id", along with HTTP methods including "GET", "POST", "PUT", and "DELETE".
-16. **IP Match**: Enables IP address-based matching for network-level access control.
-17. **Deny-override**: Accommodates both allow and deny authorizations, with deny taking precedence over allow.
-18. **Priority**: Permits prioritization of policy rules similar to firewall rule ordering.
+6. **RBAC with resource roles** — Both users and resources can have roles (or group memberships).
+7. **RBAC with domains/tenants** — Users can have different roles in different domains or tenants.
+8. **[ABAC (Attribute-Based Access Control)](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control)** — Uses attributes (e.g. `resource.Owner`) in rules.
+9. **[PBAC (Policy-Based Access Control)](https://heimdalsecurity.com/blog/rbac-vs-abac-vs-pbac/#:~:text=ABAC%20has%20many%20benefits%20over,no%20predefined%20roles%20or%20permissions)** — Authorization is driven by rule-based policies for dynamic, context-aware decisions.
+10. **[BLP (Bell–LaPadula)](https://en.wikipedia.org/wiki/Bell%E2%80%93LaPadula_model)** — Formal model with security labels and clearances.
+11. **[Biba](https://en.wikipedia.org/wiki/Biba_Model)** — Integrity model that restricts information flow to prevent unauthorized changes.
+12. **[LBAC (Lattice-Based Access Control)](/docs/lbac)** — Combines confidentiality and integrity in a lattice-based framework.
+13. **[OrBAC (Organisation-Based Access Control)](/docs/orbac)** — RBAC extended with abstraction layers for multi-organization policies.
+14. **[UCON (Usage Control)](/docs/ucon)** — Covers ongoing authorization, mutable attributes, obligations, and conditions.
+15. **RESTful** — Path patterns (e.g. `/res/*`, `/res/:id`) and HTTP methods (GET, POST, PUT, DELETE).
+16. **IP Match** — Match by IP address or CIDR for network-level control.
+17. **Deny-override** — Both allow and deny policies; deny overrides allow.
+18. **Priority** — Policy rules are ordered (e.g. like firewall rules); first match wins.
 
 ## Examples
 

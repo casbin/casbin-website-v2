@@ -12,20 +12,18 @@ keywords:
 authors: [casbin]
 ---
 
-## What is the PBAC model?
+## What is PBAC?
 
-PBAC (Policy-Based Access Control) is a flexible access control model that evaluates authorization based on rules defined in policies. Unlike static role-based or attribute-based models, PBAC evaluates complex conditions dynamically at runtime using the `eval()` function.
+**PBAC (Policy-Based Access Control)** decides authorization from **rules stored in policy**, evaluated at runtime with `eval()`. Unlike fixed role or attribute checks, PBAC can express complex, context-dependent conditions.
 
-PBAC policies can include:
+Policies can include:
 
-- **Dynamic Rules**: Expressions evaluated at runtime
-- **Complex Logic**: Boolean operations, comparisons, and attribute-based conditions
-- **Contextual Information**: User attributes, resource properties, and environmental factors
-- **Business Rules**: Domain-specific authorization logic reflecting organizational policies
+- **Dynamic expressions** — evaluated per request (e.g. `r.sub.Age >= 18`)
+- **Complex logic** — boolean and comparison operators, attribute access
+- **Context** — user, resource, and environment attributes
+- **Business rules** — domain-specific logic in policy
 
-## PBAC Model Definition
-
-The PBAC model configuration:
+## Model
 
 ```ini
 [request_definition]
@@ -41,13 +39,10 @@ e = some(where (p.eft == allow))
 m = eval(p.sub_rule) && eval(p.obj_rule) && r.act == p.act
 ```
 
-Model components:
+- `p.sub_rule` / `p.obj_rule` — expressions over the request (e.g. `r.sub.Age >= 18`, `r.obj.Level >= 1`)
+- `eval()` — evaluates these expressions at enforce time
 
-- `p.sub_rule` contains the subject rule (for example, `r.sub.Age >= 18`)
-- `p.obj_rule` contains the object rule (for example, `r.obj.Level >= 1`)
-- `eval()` evaluates policy rules dynamically against the request
-
-## Policy and Request Examples
+## Examples
 
 ### Basic Policy
 
@@ -109,4 +104,4 @@ if ok {
 }
 ```
 
-When `EnableAcceptJsonRequest` is enabled, Casbin parses request parameters that start with `{` or `[` as JSON. Invalid JSON syntax in these parameters triggers an error with a clear message identifying which parameter failed to parse. Regular strings without JSON delimiters are handled normally without parsing attempts.
+With `EnableAcceptJsonRequest(true)`, parameters that look like JSON (`{` or `[`) are parsed automatically; invalid JSON returns a clear error.

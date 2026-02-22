@@ -6,11 +6,11 @@ keywords: [ABAC, ABAC model]
 authors: [hsluoyz]
 ---
 
-## Understanding ABAC
+## What is ABAC?
 
-Attribute-Based Access Control (ABAC) determines access permissions by evaluating the properties of subjects, objects, and actions rather than relying solely on identity strings. While standards like XACML provide comprehensive but complex ABAC implementations, Casbin offers a streamlined approach where structs or class instances replace simple string identifiers.
+**Attribute-Based Access Control (ABAC)** decides access by evaluating **attributes** of the subject, object, and action (e.g. `resource.Owner`, `user.Role`), not just by identity strings. Casbin keeps this simple: you pass structs or objects into `Enforce()` and reference their fields in the matcher.
 
-Consider this basic ABAC configuration:
+Minimal example:
 
 ```ini
 [request_definition]
@@ -26,9 +26,7 @@ e = some(where (p.eft == allow))
 m = r.sub == r.obj.Owner
 ```
 
-The matcher references `r.obj.Owner`, expecting `r.obj` to be a structured object rather than a plain string. When you call `Enforce()`, Casbin uses reflection to access the `Owner` field from the provided object.
-
-A typical resource structure looks like this:
+So `r.obj` must be an object with an `Owner` field; Casbin reads it via reflection. In Go you might define:
 
 ```go
 type testResource struct {
@@ -37,7 +35,7 @@ type testResource struct {
 }
 ```
 
-For JSON-based parameter passing, enable JSON request handling:
+You can also pass **JSON strings**; enable JSON handling and Casbin will parse them:
 
 ```go
 e, _ := NewEnforcer("examples/abac_model.conf")
@@ -53,7 +51,7 @@ if err != nil {
 }
 ```
 
-When JSON request handling is enabled, Casbin automatically detects and parses strings that begin with `{` or `[`. If a string looks like JSON but contains invalid syntax, `Enforce()` returns a clear error message indicating which parameter failed to parse. Plain strings that don't start with JSON delimiters are passed through unchanged, avoiding unnecessary parsing attempts.
+When enabled, any parameter that starts with `{` or `[` is parsed as JSON. Invalid JSON produces a clear error; other strings are left as-is.
 
 ```go
 // Valid JSON - automatically parsed
@@ -78,10 +76,8 @@ Enabling JSON parameter support introduces a performance overhead of approximate
 
 ## Using ABAC
 
-Implementing ABAC requires two steps:
-
-1. Reference attributes within your model matcher.
-2. Supply struct or class instances as arguments to `Enforce()`.
+1. Reference attributes in the matcher (e.g. `r.sub.Role`, `r.obj.Owner`).
+2. Pass struct or class instances (or JSON) into `Enforce()`.
 
 :::warning
 
@@ -101,9 +97,9 @@ When policies require commas that would conflict with CSV parsing, wrap the expr
 
 :::
 
-## Handling Complex ABAC Requirements
+## Complex rules with `eval()`
 
-While the basic ABAC model works for simple scenarios, real-world authorization often demands intricate rule sets. For such cases, move rule complexity from the model into policies using the `eval()` function.
+For more complex conditions, put expressions in **policy** and evaluate them with `eval()` so the model stays small and policies stay flexible.
 
 Model configuration with `eval()`:
 
@@ -121,9 +117,7 @@ e = some(where (p.eft == allow))
 m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
 ```
 
-Here, `p.sub_rule` holds expressions that reference request attributes. These expressions are evaluated dynamically during enforcement.
-
-Policy definitions using attribute-based rules:
+`p.sub_rule` is an expression over request attributes, evaluated at enforce time. Example policy:
 
 ```csv
 p, r.sub.Age > 18, /data1, read

@@ -6,34 +6,21 @@ keywords: [optimization]
 authors: [hsluoyz]
 ---
 
-Deploying Casbin in production with millions of users or permissions may lead to performance bottlenecks. These typically stem from two causes:
+At scale (many users or many rules), two common bottlenecks are **throughput** and **policy size**. Below are practical mitigations.
 
-#### High Volume Traffic
+### High request volume
 
-When a single Casbin instance receives excessive requests (for example, 10,000 requests/s), it cannot process them all. Consider these solutions:
+If one enforcer cannot keep up (e.g. 10k+ req/s):
 
-1. Enable multi-threading to run multiple Casbin instances, utilizing all CPU cores on the machine. See [Multi-threading](/docs/multi-threading) for details.
+1. **Multi-threading** — Use [SyncedEnforcer](/docs/multi-threading) and run multiple worker threads/instances to use all cores.
+2. **Cluster** — Run multiple machines with Casbin and use [Watchers](/docs/watchers) to sync policy. You can combine both: e.g. 10 nodes × 5 threads each.
 
-2. Deploy Casbin instances across a cluster (multiple machines) and use Watchers to synchronize policy changes. See [Watchers](/docs/watchers) for details.
+### Large policy (many rules)
 
-:::note
+With millions of rules, enforcement and load time can suffer:
 
-Combine both approaches: deploy Casbin across a 10-machine cluster where each machine runs 5 threads handling enforcement requests simultaneously.
+1. **Model and policy design** — Prefer RBAC and shared defaults so most tenants use a small rule set (e.g. &lt; 100 rules); override only where needed. See [GitHub #681](https://github.com/casbin/casbin/issues/681#issuecomment-763801583) for discussion.
+2. **Policy sharding** — Load only the rules each enforcer needs (e.g. per tenant or per domain) via [Policy subset loading](/docs/policy-subset-loading).
+3. **RBAC over direct user permissions** — Assign permissions to roles; Casbin caches the role tree for O(1) role lookups and fewer policy rules.
 
-:::
-
-#### High Number of Policy Rules
-
-Multi-tenant or cloud environments may require millions of policy rules, causing slow enforcement and initial policy loading. Mitigate this issue with these approaches:
-
-1. Review your Casbin model and policy design. Well-designed models abstract common logic across users and tenants, reducing rules to a small set (typically under 100). Share default rules across tenants and allow customization through override rules. Open a GitHub issue on the Casbin repository if you need design guidance.
-
-2. Use policy sharding to load only relevant rules per enforcer. For example, `enforcer_0` serves `tenant_0` through `tenant_99`, while `enforcer_1` serves `tenant_100` through `tenant_199`. See [Policy Subset Loading](/docs/policy-subset-loading) for implementation details.
-
-3. Assign permissions to RBAC roles rather than directly to users. Casbin implements RBAC using a role inheritance tree (cached in memory), enabling O(1) lookup time for user-role relationships. When role assignments remain relatively stable, the RBAC tree requires infrequent updates. See this [discussion](https://github.com/casbin/casbin/issues/681#issuecomment-763801583) for more details.
-
-:::note
-
-Apply all these methods simultaneously for optimal performance.
-
-:::
+Combine these where possible for best results.

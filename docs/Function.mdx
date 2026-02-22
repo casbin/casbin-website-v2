@@ -8,14 +8,13 @@ authors: [hsluoyz]
 
 ## Functions in matchers
 
-Enhance matcher capabilities by incorporating functions. Use built-in functions or define custom ones.
-Built-in key-matching functions follow this signature:
+You can use built-in functions in matchers or register custom ones. Built-in key-matching functions have the form:
 
 ```c
 bool function_name(string url, string pattern)
 ```
 
-These functions return booleans indicating whether `url` matches `pattern`.
+They return whether `url` matches `pattern`.
 
 Available built-in functions:
 
@@ -30,28 +29,31 @@ Available built-in functions:
 | ipMatch    | an IP address like `192.168.2.123`              | an IP address or a CIDR like `192.168.2.0/24`                       | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)/[ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)         |
 | globMatch  | a path-like path like `/alice_data/resource1`   | a glob pattern like `/alice_data/*`                                 | [https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466)                                                                               |
 
-Key-getting functions generally accept three parameters (except `keyGet`):
+Key-extraction functions take three parameters (except `keyGet`, which takes two):
 
 ```c
 bool function_name(string url, string pattern, string key_name)
 ```
 
-These return the `key_name` value when matching the pattern, otherwise returning `""`.
+They return the value of the named key when the URL matches the pattern, or `""` otherwise.
 
-Examples: `KeyGet2("/resource1/action", "/:res/action", "res")` returns `"resource1"`, while `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` returns `"resource1"`.
-For `KeyGet` with two parameters: `KeyGet("/resource1/action", "/*")` returns `"resource1/action"`.
+Examples:
+
+- `KeyGet2("/resource1/action", "/:res/action", "res")` → `"resource1"`
+- `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` → `"resource1"`
+- `KeyGet("/resource1/action", "/*")` → `"resource1/action"` (two-parameter form)
 
 | Function | url                                   | pattern                                                        | key_name                          | example                                                                                                                                                                                           |
 |----------|---------------------------------------|----------------------------------------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | keyGet   | a URL path like `/proj/resource1`     | a URL path or a `*` pattern like `/proj/*`                       | \                                 | [keyget_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
-| keyGet2  | a URL path like `/proj/resource1`     | a URL path or `:` pattern like `/prooj/:resource`                | key name specified in the pattern | [keyget2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
+| keyGet2  | a URL path like `/proj/resource1`     | a URL path or `:` pattern like `/proj/:resource`                 | key name specified in the pattern | [keyget2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
 | keyGet3  | a URL path like `/proj/res3_admin/`   | a URL path or `{}` pattern like `/proj/{resource}_admin/*`       | key name specified in the pattern | [https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247](https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247)                                                                           |
 
 Complete function details: [https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go](https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go)
 
-## How to add a customized function
+## Adding a custom function
 
-Start by creating your function, accepting multiple parameters and returning a bool:
+1. Implement a function that takes the required arguments and returns a `bool`:
 
 ```go
 func KeyMatch(key1 string, key2 string) bool {
@@ -67,7 +69,7 @@ func KeyMatch(key1 string, key2 string) bool {
 }
 ```
 
-Next, create an `interface{}` wrapper:
+2. Wrap it for Casbin (signature `func(...interface{}) (interface{}, error)`):
 
 ```go
 func KeyMatchFunc(args ...interface{}) (interface{}, error) {
@@ -78,13 +80,13 @@ func KeyMatchFunc(args ...interface{}) (interface{}, error) {
 }
 ```
 
-Register the function with the Casbin enforcer:
+3. Register it on the enforcer:
 
 ```go
 e.AddFunction("my_func", KeyMatchFunc)
 ```
 
-Use the function in your model CONF:
+4. Use it in your model:
 
 ```ini
 [matchers]

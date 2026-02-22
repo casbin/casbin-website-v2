@@ -6,13 +6,13 @@ keywords: [RBAC with conditions, API]
 authors: [PokIsemaine]
 ---
 
-This API provides a simplified interface for working with [RBAC with conditions](RBACWithConditions.mdx).
+This page documents the API for [RBAC with conditions](/docs/rbac-with-conditions): attaching condition functions to user–role links so that a link is valid only when the condition returns true.
 
 ## Reference
 
 ### AddNamedLinkConditionFunc
 
-`AddNamedLinkConditionFunc` attaches a condition function to a link between `userName` and `roleName`. The link is valid only when the function returns true.
+Registers a condition function for the user–role link `(userName, roleName)`. The link is considered valid only when the function returns true.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -30,7 +30,7 @@ e.AddNamedLinkConditionFunc("g", "userName", "roleName", YourLinkConditionFunc)
 
 ### AddNamedDomainLinkConditionFunc
 
-`AddNamedDomainLinkConditionFunc` attaches a condition function to a link between `userName` and `{roleName, domain}`. The link is valid only when the function returns true.
+Same as above for domain-scoped links: `(userName, roleName, domainName)`. The link is valid only when the condition function returns true.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -48,7 +48,7 @@ e.AddNamedDomainLinkConditionFunc("g", "userName", "roleName", "domainName", You
 
 ### SetNamedLinkConditionFuncParams
 
-`SetNamedLinkConditionFuncParams` configures the parameters passed to the condition function for a link between `userName` and `roleName`.
+Sets the parameters passed to the condition function for the link `(userName, roleName)`. Pass one or more string arguments.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -67,7 +67,7 @@ e.SetNamedLinkConditionFuncParams("g", "userName2", "roleName2", "YourConditionF
 
 ### SetNamedDomainLinkConditionFuncParams
 
-`SetNamedDomainLinkConditionFuncParams` configures the parameters passed to the condition function for a link between `userName` and `{roleName, domain}`.
+Sets the parameters passed to the condition function for the domain-scoped link `(userName, roleName, domainName)`.
 
 ```mdx-code-block
 <Tabs groupId="langs">

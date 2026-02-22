@@ -6,11 +6,11 @@ keywords: [management, Filtered API]
 authors: [nodece]
 ---
 
-The Management API provides comprehensive support for Casbin policy management operations.
+The **Management API** covers all policy and grouping (role) operations: get, add, remove, update, filter. Below, `e` is an Enforcer instance.
 
 ## Filtered API
 
-Filtered API methods share a common parameter signature: `(fieldIndex int, fieldValues ...string)`. The `fieldIndex` parameter specifies the starting index for matching, while `fieldValues` contains the expected values. Empty strings in `fieldValues` act as wildcards, matching any value.
+Filtered methods take `(fieldIndex int, fieldValues ...string)`: matching starts at `fieldIndex`, and `fieldValues` are the required values at consecutive positions. Use `""` in `fieldValues` as a wildcard for that position.
 
 Example:
 
@@ -33,8 +33,6 @@ e.GetFilteredPolicy(0, "alice") // returns: [["alice", "book", "read"], ["alice"
 ```
 
 ## API Reference
-
-Throughout this reference, the variable `e` represents an Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">

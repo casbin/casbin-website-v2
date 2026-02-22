@@ -1,15 +1,12 @@
 ---
-title: Reworking our Documentation
+title: Reworking Our Documentation
 authors: [hsluoyz]
 ---
 
-Today, we migrated Casbin's documentation from GitHub Wiki to ``Docs`` of this website,
-which is powered by Docusaurus. Docusaurus provides lots of awesome features like better
-Markdown styles, full-text search, versioning, translation.
+We have moved Casbin’s documentation from GitHub Wiki to the **Docs** section of this site, powered by Docusaurus. You get better Markdown rendering, full-text search, versioning, and translation.
 
 <!-- truncate -->
 
-The documentation is not perfect yet and still needs tuning. The source code is hosted
-on GitHub: https://github.com/casbin/casbin-website-v2 .
+The docs are still being improved. The site source is on GitHub: https://github.com/casbin/casbin-website-v2
 
-Any contribution or suggestion is welcome!
+Contributions and suggestions are welcome.

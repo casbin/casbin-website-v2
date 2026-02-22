@@ -6,13 +6,11 @@ keywords: [adapters, MySQL adapter, storage adapter]
 authors: [hsluoyz]
 ---
 
-
-
-Casbin handles policy storage through adapters that function as middleware. Adapters enable loading policies from storage via `LoadPolicy()` and persisting them with `SavePolicy()`. To maintain a lightweight core library, adapter implementations are maintained separately.
+Casbin loads and saves policy through **adapters**. The enforcer calls `LoadPolicy()` to load rules and, when supported, `SavePolicy()` to persist them. Adapters are implemented in separate packages to keep the core library small.
 
 ## Supported adapters
 
-Below is a comprehensive list of available Casbin adapters. Third-party contributions are welcome—contact us to have your adapter included:
+Adapters by language are listed below. To add a third-party adapter, open an issue or PR.
 
 ```mdx-code-block
 <Tabs groupId="langs">

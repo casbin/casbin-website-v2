@@ -6,11 +6,9 @@ keywords: [RBAC with domains, API]
 authors: [hsluoyz]
 ---
 
-This simplified API is designed for RBAC with domains. It is a subset of the Management API, making it easier for RBAC users to work with domain-based policies.
+Convenience API for [RBAC with domains](/docs/rbac-with-domains): user–role and permission operations scoped by domain. It is a subset of the [Management API](/docs/management-api). Below, `e` is an Enforcer instance loaded with a domain-aware model.
 
 ## Reference
-
-The global variable `e` represents the Enforcer instance.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -80,11 +78,9 @@ Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rba
 </Tabs>
 ```
 
-### `GetUsersForRoleInDomain()`
+### GetUsersForRoleInDomain
 
-`GetUsersForRoleInDomain()` retrieves all users assigned to a specific role within a domain.
-
-For example:
+Returns all users that have the given role in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -118,11 +114,9 @@ res = e.get_users_for_role_in_domain("admin", "domain1")
 </Tabs>
 ```
 
-### `GetRolesForUserInDomain()`
+### GetRolesForUserInDomain
 
-`GetRolesForUserInDomain()` retrieves all roles assigned to a user within a domain.
-
-For example:
+Returns all roles assigned to the user in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -130,7 +124,7 @@ For example:
 ```
 
 ```go
-res := e.GetRolesForUserInDomain("admin", "domain1")
+res := e.GetRolesForUserInDomain("alice", "domain1")
 ```
 
 ```mdx-code-block
@@ -165,11 +159,9 @@ List<String> res = e.getRolesForUserInDomain("admin", "domain1");
 </Tabs>
 ```
 
-### `GetPermissionsForUserInDomain()`
+### GetPermissionsForUserInDomain
 
-`GetPermissionsForUserInDomain()` retrieves all permissions for a user or role within a domain.
-
-For example:
+Returns all permissions (policy rules) for the user or role in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -194,11 +186,9 @@ List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
 </Tabs>
 ```
 
-### `AddRoleForUserInDomain()`
+### AddRoleForUserInDomain
 
-`AddRoleForUserInDomain()` assigns a role to a user within a domain. Returns `false` if the user already has the role (no changes made).
-
-For example:
+Assigns the role to the user in the domain. Returns `false` if the assignment already exists.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -232,11 +222,9 @@ boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
 </Tabs>
 ```
 
-### `DeleteRoleForUserInDomain()`
+### DeleteRoleForUserInDomain
 
-`DeleteRoleForUserInDomain()` removes a role from a user within a domain. Returns `false` if the user does not have the role (no changes made).
-
-For example:
+Removes the role from the user in the domain. Returns `false` if the link did not exist.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -261,11 +249,9 @@ boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
 </Tabs>
 ```
 
-### `DeleteRolesForUserInDomain()`
+### DeleteRolesForUserInDomain
 
-`DeleteRolesForUserInDomain()` removes all roles from a user within a domain. Returns `false` if the user has no roles (no changes made).
-
-For example:
+Removes all roles from the user in the domain. Returns `false` if the user had no roles there.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -281,11 +267,9 @@ ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
 </Tabs>
 ```
 
-### `GetAllUsersByDomain()`
+### GetAllUsersByDomain
 
-`GetAllUsersByDomain()` retrieves all users associated with the specified domain. Returns an empty string array if no domain is defined in the model.
-
-For example:
+Returns all users that have at least one role in the given domain. Empty if the model has no domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -301,11 +285,9 @@ res := e.GetAllUsersByDomain("domain1")
 </Tabs>
 ```
 
-### `DeleteAllUsersByDomain()`
+### DeleteAllUsersByDomain
 
-`DeleteAllUsersByDomain()` removes all users associated with the specified domain. Returns `false` if no domain is defined in the model.
-
-For example:
+Removes all user–role assignments in the given domain. Returns `false` if the model has no domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -321,11 +303,9 @@ ok, err := e.DeleteAllUsersByDomain("domain1")
 </Tabs>
 ```
 
-### `DeleteDomains()`
+### DeleteDomains
 
-`DeleteDomains()` removes all associated users and roles for the specified domains. If no parameters are provided, all domains are deleted.
-
-For example:
+Removes all users and roles for the given domains. With no arguments, clears all domains.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -341,11 +321,9 @@ ok, err := e.DeleteDomains("domain1", "domain2")
 </Tabs>
 ```
 
-### `GetAllDomains()`
+### GetAllDomains
 
-`GetAllDomains()` retrieves all domains.
-
-For example:
+Returns all domains that appear in the policy.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -361,17 +339,13 @@ res, _ := e.GetAllDomains()
 </Tabs>
 ```
 
-:::note
-
-When handling domain names that contain `::`, unexpected behavior may occur. In Casbin, `::` is a reserved keyword, similar to `for` or `if` in programming languages. Never use `::` within a domain name.
-
+:::caution
+Do not use `::` in domain names; it is reserved in Casbin’s expression syntax.
 :::
 
-### `GetAllRolesByDomain()`
+### GetAllRolesByDomain
 
-`GetAllRolesByDomain()` retrieves all roles associated with the specified domain.
-
-For example:
+Returns all roles that appear in the given domain.
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -388,16 +362,12 @@ res := e.GetAllRolesByDomain("domain1")
 ```
 
 :::note
-
-This method does not apply to domains that have an inheritance relationship, also known as implicit roles.
-
+Does not include roles inherited via hierarchy (implicit roles); only direct assignments in the domain.
 :::
 
-### `GetImplicitUsersForResourceByDomain()`
+### GetImplicitUsersForResourceByDomain
 
-`GetImplicitUsersForResourceByDomain()` returns implicit users based on resource and domain.
-
-For example:
+Returns the implicit users (and their permissions) for the given resource and domain—i.e. users who have permission on the resource in that domain via their roles.
 
 ```csv
 p, admin, domain1, data1, read
@@ -408,7 +378,7 @@ g, alice, admin, domain1
 g, bob, admin, domain2
 ```
 
-GetImplicitUsersForResourceByDomain("data1", "domain1") will return `[["alice", "domain1", "data1", "read"],["alice", "domain1", "data1", "write"]], nil`
+Example: with the policy below, `GetImplicitUsersForResourceByDomain("data1", "domain1")` returns the permissions for users who can access `data1` in `domain1` (e.g. alice via role admin).
 
 ```mdx-code-block
 <Tabs groupId="langs">
@@ -425,7 +395,5 @@ ImplicitUsers, err := e.GetImplicitUsersForResourceByDomain("data1", "domain1")
 ```
 
 :::note
-
-Only users will be returned, roles (2nd arg in "g") will be excluded.
-
+Only user-level results are returned; role names (the second element in `g` rules) are not listed.
 :::

@@ -8,24 +8,20 @@ authors: [hsluoyz]
 
 ## Overview
 
-Role-Based Access Control (RBAC) grants permissions to users based on organizational roles. Casbin implements RBAC with flexibility and power.
+**Role-Based Access Control (RBAC)** assigns permissions to users according to their roles. Casbin implements RBAC with support for role hierarchies, domains, and conditions.
 
-## RBAC Features in Casbin
+## RBAC in Casbin
 
-Casbin provides comprehensive RBAC support with advanced features:
+- **Basic RBAC** — Role hierarchies and user–role assignments
+- **RBAC with pattern** — Pattern matching for flexible role assignment
+- **RBAC with domains** — Multi-tenancy with per-domain roles
+- **RBAC with conditions** — Conditional logic in role-based permissions
+- **RBAC96** — Alignment with the NIST RBAC96 model
 
-- **Basic RBAC**: Define role hierarchies and user-role assignments
-- **RBAC with Pattern**: Use pattern matching for flexible role assignments
-- **RBAC with Domains**: Implement multi-tenancy with domain-specific roles
-- **RBAC with Conditions**: Add conditional logic to role-based permissions
-- **RBAC96 Compliance**: Compare Casbin RBAC implementation with the NIST RBAC96 standard
+## Getting started
 
-## Getting Started
+1. Define the role hierarchy and request/policy shape in the [model](/docs/syntax-for-models).
+2. Assign users to roles (and optionally resources to roles) in [policy](/docs/policy-storage).
+3. Use the [RBAC API](/docs/rbac-api) to manage roles and check permissions.
 
-Implement RBAC in Casbin by:
-
-1. Defining role hierarchy in the model configuration
-2. Assigning users to roles through policies
-3. Using the RBAC API to manage roles and permissions
-
-Browse the subsections in this category to learn about each RBAC feature and implementation approach.
+See the sections below for each variant and implementation details.

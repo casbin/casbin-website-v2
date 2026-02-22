@@ -6,10 +6,10 @@ keywords: [service]
 authors: [hsluoyz]
 ---
 
-## How to Use Casbin as a Service?
+You can run Casbin as a **remote service** and call it via gRPC or HTTP instead of embedding the library. Options:
 
-| Name                                                         | Description                                                                                                                                 |
-|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| [Casbin Server](https://github.com/casbin/casbin-server)     | The official "Casbin as a Service" solution built on [gRPC](https://grpc.io/). Provides both Management API and RBAC API.                 |
-| [middleware-acl](https://github.com/luk4z7/middleware-acl)   | RESTful access control middleware powered by Casbin.                                                                                        |
-| [auth-server](https://github.com/ZettaAI/auth-server)        | Authentication server for proofreading services.                                                                                            |
+| Project | Description |
+|--------|--------------|
+| [Casbin Server](https://github.com/casbin/casbin-server) | Official gRPC service exposing Management API and RBAC API. |
+| [middleware-acl](https://github.com/luk4z7/middleware-acl) | RESTful ACL middleware built on Casbin. |
+| [auth-server](https://github.com/ZettaAI/auth-server) | Auth server example using Casbin. |

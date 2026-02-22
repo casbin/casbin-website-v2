@@ -6,7 +6,7 @@ keywords: [GraphQL, authorization]
 authors: [hsluoyz]
 ---
 
-Casbin follows the recommended GraphQL authorization pattern by implementing authorization as a single source of truth: [https://graphql.org/learn/authorization/](https://graphql.org/learn/authorization/). This means Casbin logic should sit between the GraphQL layer and your business logic.
+Per [GraphQL’s authorization guidance](https://graphql.org/learn/authorization/), authorization should live in one place—between the GraphQL layer and your resolvers. Use Casbin in resolvers (or a thin wrapper) to enforce access on types, fields, or operations.
 
 ```javascript
 // Casbin authorization logic lives inside postRepository
@@ -27,7 +27,7 @@ var postType = new GraphQLObjectType({
 
 ## Available GraphQL Middlewares
 
-Below is a complete list of Casbin GraphQL middlewares. Third-party middleware contributions are welcome—please let us know and we'll include them here.
+Available Casbin GraphQL integrations:
 
 ```mdx-code-block
 <Tabs groupId="langs">

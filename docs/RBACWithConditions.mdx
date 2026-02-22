@@ -8,9 +8,9 @@ authors: [PokIsemaine]
 
 ## Conditional RoleManager
 
-The `ConditionalRoleManager` allows you to apply custom condition functions at the policy level.
+The **Conditional RoleManager** lets you attach condition functions to role assignments (e.g. time-bound roles). A role assignment is valid only when its condition function returns true.
 
-When you need role policies that are valid only under certain conditions—such as time-based temporary roles—you can configure this as shown below:
+Example: time-based role validity. Model:
 
 `model.conf`
 
@@ -31,9 +31,7 @@ e = some(where (p.eft == allow))
 m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 ```
 
-The syntax `g = _, _, (_, _)` defines a role relationship with additional parameters. The underscores `_` serve as placeholders, while the parentheses `(_, _)` specify the list of arguments that will be passed to the condition function.
-
-`policy.csv`
+The `(_, _)` in the role definition are the extra arguments passed to the condition function (e.g. start and end time). Policy:
 
 ```csv
 p, alice, data1, read
@@ -54,9 +52,9 @@ g, alice, data7_admin, 0000-01-01 00:00:00, _
 g, alice, data8_admin, 9999-12-30 00:00:00, _
 ```
 
-### Basic Usage
+### Basic usage
 
-Use `AddNamedLinkConditionFunc` to attach a condition function to a role policy (of type `g`). During enforcement, the system automatically retrieves the corresponding parameters and passes them to the condition function. The role policy is considered valid only if the function returns true.
+Call `AddNamedLinkConditionFunc` to bind a condition function to each `g` rule (or the relevant user–role pair). At enforce time, the extra policy fields are passed to the function; the assignment counts only if the function returns true.
 
 ```go
 e.AddNamedLinkConditionFunc("g", "alice", "data2_admin", util.TimeMatchFunc)
@@ -80,7 +78,7 @@ e.enforce("alice", "data8", "write")    // expect: false
 
 ### Custom condition functions
 
-Condition functions must follow this signature:
+Signature:
 
 ```go
 type LinkConditionFunc = func(args ...string) (bool, error)
@@ -123,7 +121,7 @@ func TimeMatch(startTime, endTime string) (bool, error) {
 
 ## Conditional RoleManager with domains
 
-`model.conf`
+With domains, the role definition has an extra domain field and the condition arguments in parentheses. Model:
 
 ```ini
 [request_definition]
@@ -163,9 +161,9 @@ g, alice, data7_admin, domain7, 0000-01-01 00:00:00, _
 g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
 ```
 
-### Basic Usage
+### Basic usage
 
-Use `AddNamedDomainLinkConditionFunc` to attach a condition function to a domain-specific role policy (of type `g`). During enforcement, the system automatically retrieves the corresponding parameters and passes them to the condition function. The role policy is considered valid only if the function returns true.
+Use `AddNamedDomainLinkConditionFunc` with the domain and user–role–condition args. The condition is evaluated the same way; it receives the extra parameters from the `g` rule.
 
 ```go
 e.AddNamedDomainLinkConditionFunc("g", "alice", "data2_admin", "domain2", util.TimeMatchFunc)
@@ -195,10 +193,6 @@ e.enforce("alice", "domain_not_exist", "data7", "write")    // expect: false
 e.enforce("alice", "domain_not_exist", "data8", "read")     // expect: false
 ```
 
-### Custom condition functions
-
-Custom condition functions work the same way as in the basic `Conditional RoleManager`.
-
-Keep in mind that `DomainMatchingFunc`, `MatchingFunc`, and `LinkConditionFunc` operate at different levels and serve distinct purposes.
+Custom condition functions use the same signature. Note: **DomainMatchingFunc** (domain pattern), **MatchingFunc** (subject/object pattern), and **LinkConditionFunc** (condition on a role assignment) are independent and apply at different stages.
 
 ![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)

@@ -6,37 +6,31 @@ keywords: [plugins, extensions, adapters, watchers, middlewares]
 authors: [hsluoyz]
 ---
 
-## Overview
+Casbin’s plugin ecosystem extends the core with storage backends, framework integrations, and distributed sync. Use plugins to connect Casbin to your database, message bus, or web framework.
 
-Casbin offers an extensive plugin ecosystem that extends core functionality. These plugins integrate Casbin with storage systems, frameworks, and platforms.
+## Plugin categories
 
-## Plugin Categories
+| Category        | Purpose |
+|----------------|---------|
+| **Enforcers**  | Specialized enforcers for particular environments or use cases |
+| **Adapters**   | Connect to storage (databases, files, cloud) for model and policy |
+| **Watchers**   | Sync policy changes across multiple enforcer instances |
+| **Dispatchers**| Coordinate updates in distributed deployments |
+| **Role managers** | Custom role/hierarchy logic |
+| **Middlewares**| Integrations for Kong, GraphQL, and cloud-native stacks |
 
-The plugin ecosystem includes these categories:
+## Why use plugins?
 
-- **Enforcers**: Specialized enforcers tailored for specific use cases and environments
-- **Adapters**: Connect Casbin to storage backends (databases, files, cloud services)
-- **Watchers**: Synchronize policies across distributed systems
-- **Dispatchers**: Coordinate policy updates in distributed environments
-- **Role Managers**: Custom role management implementations for specific scenarios
-- **Middlewares**: Framework and platform integrations
+- **Integrate** with your existing DB and infra
+- **Scale** to multiple instances with watchers and dispatchers
+- **Use** framework-specific middlewares (e.g. Nest.js, Gin)
+- **Run** in cloud-native and serverless setups
 
-## Why Use Plugins?
+## Getting started
 
-Plugins expand Casbin's capabilities by:
+1. Choose the plugin type that fits your need (adapter, watcher, middleware, etc.).
+2. Install the package for your language.
+3. Configure it when creating or configuring the enforcer.
+4. See the plugin’s own docs for options and advanced usage.
 
-- Integrating with existing infrastructure
-- Supporting distributed and multi-instance deployments
-- Providing framework-specific integrations
-- Enabling cloud-native deployments
-
-## Getting Started
-
-To use a plugin:
-
-1. Select the plugin that matches your requirements
-2. Install the plugin package for your language
-3. Configure the plugin in your Casbin setup
-4. Consult plugin-specific documentation for advanced features
-
-Browse the subsections in this category to learn about each plugin type and find the right solution for your needs.
+Use the sections in this category to find and configure each plugin type.

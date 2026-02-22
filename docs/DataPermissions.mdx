@@ -6,17 +6,17 @@ keywords: [Data Permissions, implicit]
 authors: [ErikQQY]
 ---
 
-Casbin provides two approaches for implementing data-level permission filtering: querying implicit assignments or using batch enforcement.
+This page describes two ways to work with data-level permissions in Casbin: using **implicit** role/permission queries and using **batch enforcement**.
 
-### 1. Querying Implicit Roles and Permissions
+### 1. Implicit roles and permissions
 
-When users inherit roles or permissions through an RBAC hierarchy rather than through direct policy assignments, these are called "implicit" assignments. To retrieve these relationships, use `GetImplicitRolesForUser()` and `GetImplicitPermissionsForUser()` instead of the standard `GetRolesForUser()` and `GetPermissionsForUser()` methods. Additional details are available in [this GitHub issue](https://github.com/casbin/casbin/issues/137).
+When users get roles or permissions through the RBAC hierarchy (not only by direct policy rules), those are **implicit**. Use `GetImplicitRolesForUser()` and `GetImplicitPermissionsForUser()` to include them; `GetRolesForUser()` and `GetPermissionsForUser()` return only direct assignments. See [GitHub #137](https://github.com/casbin/casbin/issues/137).
 
-### 2. Using `BatchEnforce()`
+### 2. BatchEnforce()
 
-`BatchEnforce()` evaluates multiple access requests simultaneously and returns their results as a boolean array.
+`BatchEnforce()` runs many access checks in one call and returns a slice of booleans. Use it to filter or validate data sets efficiently.
 
-For example:
+Example:
 
 ```mdx-code-block
 <Tabs groupId="langs">

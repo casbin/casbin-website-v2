@@ -5,29 +5,26 @@ description: ReBAC based on Casbin
 keywords: [ReBAC, ReBAC model]
 authors: [D0000M]
 ---
-## What is the ReBAC Model?
+## What is ReBAC?
 
-ReBAC (Relationship-Based Access Control) is a contemporary access control model that manages permissions based on relationships between entities. Unlike traditional models such as RBAC (Role-Based Access Control) or ABAC (Attribute-Based Access Control), ReBAC excels in systems with intricate relationship networks, including social networks, collaborative platforms, and multi-tenant environments.
+**ReBAC (Relationship-Based Access Control)** bases authorization on **relationships** between entities (user–resource, resource–type, etc.), not only on roles or attributes. It fits systems with rich relationship graphs: social networks, collaboration tools, multi-tenant apps.
 
-In ReBAC, authorization decisions depend on the relationships between entities, for example:
+Typical questions ReBAC answers:
 
-- Is the user the "owner" of the resource?
-- Is the user a "friend" of the resource's "creator"?
-- Does the user belong to an organization associated with the resource?
-- Is the user an "admin" of a specific "project"?
+- Is the user the **owner** of the resource?
+- Is the user a **member** of the project that owns the resource?
+- Does the resource **belong to a type** the user has access to?
 
-These relationships are typically represented as graph structures or paths.
+Relationships are often modeled as graphs or paths.
 
-## ReBAC Support in Casbin
+## ReBAC in Casbin
 
-Casbin supports ReBAC through the following mechanisms:
+Casbin models ReBAC with:
 
-- User-Resource-Role Relationships
-- Resource-Type Relationships
+- **User–resource–role** relationships: “user U has role R on resource O” (e.g. `alice` is `collaborator` on `doc1`).
+- **Resource–type** relationships: “resource O is of type T” (e.g. `doc1` is of type `doc`).
 
-A single policy rule can apply to multiple users and multiple resources of the same type, enabling flexible and scalable permission control through relationship combinations.
-
-Casbin uses `.conf` files to define access control models. Here is an official ReBAC model example:
+Permissions are then “role R can do action A on type T”; a user gets permission if they have R on a resource that is of type T. Example model:
 
 ```ini
 [request_definition]
@@ -58,4 +55,4 @@ g, alice, doc1, collaborator
 g2, doc1, doc
 ```
 
-Permissions are automatically derived by verifying that a user has a specific role for a resource and that the resource belongs to the specified type, combining **role relationships + type relationships + permission definitions**.
+So: the user must have the right **role on the resource** and the resource must match the **type** in the permission rule. Casbin combines `g` (user–resource–role), `g2` (resource–type), and `p` (role–type–action) to decide access.

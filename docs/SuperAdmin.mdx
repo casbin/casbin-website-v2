@@ -6,7 +6,7 @@ keywords: [Super Admin]
 authors: [ErikQQY]
 ---
 
-The Super Admin represents the system-wide administrator. This concept can be applied in models such as RBAC, ABAC, and RBAC with domains. Here is a detailed example:
+A **Super Admin** (e.g. `root`) is a subject that bypasses normal policy and always gets allow. You implement it in the **matcher** by adding a condition like `r.sub == "root"`. Example:
 
 ```ini
 [request_definition]
@@ -22,6 +22,4 @@ e = some(where (p.eft == allow))
 m = r.sub == p.sub && r.obj == p.obj && r.act == p.act || r.sub == "root"
 ```
 
-This example demonstrates how Casbin evaluates whether a request matches a policy using the defined `request_definition`, `policy_definition`, `policy_effect`, and `matchers`. The key check is whether the `sub` equals "root". When this condition is true, authorization is granted, allowing the user to perform any action.
-
-Similar to the root user in Linux systems, a user with root privileges can access all files and modify all settings. To grant a subject complete system access, assign it the Super Admin role, which provides unrestricted permissions across the entire system.
+The matcher allows the request if either (1) it matches a policy rule, or (2) `r.sub == "root"`. So `root` is never denied. The same pattern works in RBAC, ABAC, or RBAC-with-domains: add `|| r.sub == "root"` (or your superuser name) to the matcher.
