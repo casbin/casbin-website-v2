@@ -18,7 +18,7 @@ module.exports = {
   docs: [
     {
       type: "category",
-      label: "The basics",
+      label: "Basics",
       link: {type: "generated-index"},
       items: [
         "overview",
@@ -29,7 +29,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Model",
+      label: "Access Control Models",
       link: {type: "generated-index"},
       items: [
         "supported-models",
@@ -79,7 +79,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Scenarios",
+      label: "Use Cases",
       link: {type: "generated-index"},
       items: [
         "data-permissions",
@@ -98,7 +98,7 @@ module.exports = {
         "role-managers",
         {
           type: "category",
-          label: "Middlewares",
+          label: "Middleware",
           link: {type: "doc", id: "middlewares"},
           items: [
             "kong-authz",
@@ -123,7 +123,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Advanced usage",
+      label: "Advanced Usage",
       link: {type: "generated-index"},
       items: [
         "multi-threading",
@@ -147,7 +147,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Editor",
+      label: "Editors & Tools",
       link: {type: "generated-index"},
       items: [
         "online-editor",
@@ -156,7 +156,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "More",
+      label: "About & More",
       link: {type: "generated-index"},
       items: [
         "adopters",
