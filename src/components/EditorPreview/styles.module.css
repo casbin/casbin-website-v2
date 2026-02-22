@@ -5,6 +5,11 @@
   background-color: var(--ifm-color-emphasis-100);
 }
 
+/* Override Docusaurus container max-width so the editor area can use a wider layout */
+.editorSection :global(.container) {
+  max-width: 1600px;
+}
+
 .editorHeader {
   text-align: center;
   margin-bottom: 40px;
@@ -26,7 +31,7 @@
 }
 
 .editorContainer {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
