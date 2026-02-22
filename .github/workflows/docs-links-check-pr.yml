@@ -1,18 +1,22 @@
-name: Check links for modified docs
+name: Check links for modified files
 
 on:
   pull_request:
     paths:
       - 'docs/**'
+      - 'blog/**'
+      - 'README.md'
 
 jobs:
   docs-links-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@master
 
-      - name: Check links for mdx files 🔎
+      - name: Check links for docs mdx files 🔎
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
@@ -23,7 +27,7 @@ jobs:
           folder-path: 'docs/' # only check the docs/ folder
           file-extension: '.mdx'
 
-      - name: Check links for markdown files 🔎
+      - name: Check links for docs markdown files 🔎
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
@@ -33,3 +37,20 @@ jobs:
           check-modified-files-only: 'yes'
           folder-path: 'docs/' # only check the docs/ folder
           file-extension: '.md'
+
+      - name: Check links for blog files 🔎
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes' # only show errors in output.
+          config-file: '.github/workflows/docs.links.check.config.json'
+          check-modified-files-only: 'yes'
+          folder-path: 'blog/'
+          file-extension: '.md'
+
+      - name: Check links for README 🔎
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes' # only show errors in output.
+          config-file: '.github/workflows/docs.links.check.config.json'
+          check-modified-files-only: 'yes'
+          file-path: './README.md'

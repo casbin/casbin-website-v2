@@ -1,4 +1,4 @@
-name: Docs Links Check
+name: All Links Check
 
 on:
   workflow_dispatch:
@@ -8,11 +8,13 @@ on:
 jobs:
   docs-links-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@master
 
-      - name: Check Links 🔎
+      - name: Check Docs Links 🔎
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
@@ -21,3 +23,18 @@ jobs:
           # refer to https://github.com/tcort/markdown-link-check#config-file-format
           config-file: '.github/workflows/docs.links.check.config.json'
           file-extension: '.md*' # .md or .mdx
+
+      - name: Check Blog Links 🔎
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes' # only show errors in output.
+          folder-path: 'blog/'
+          config-file: '.github/workflows/docs.links.check.config.json'
+          file-extension: '.md'
+
+      - name: Check README Links 🔎
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes' # only show errors in output.
+          config-file: '.github/workflows/docs.links.check.config.json'
+          file-path: './README.md'
