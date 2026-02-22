@@ -1,14 +1,13 @@
 ---
 title: Casbin Server is Launched!
-author: Helong Zhang
-authorTitle: Casbin Maintainer
-authorURL: "http://github.com/BetaCat0"
-authorImageURL: "https://avatars.githubusercontent.com/BetaCat0"
+authors: [BetaCat0]
 ---
 
 Some of our customers ask if Casbin can be used as a service instead of a library. The
 answer is **YES**. Today, we launched the [Casbin Server](https://github.com/casbin/casbin-server) project as a concrete solution for
 **Access Control as a Service**.
+
+<!-- truncate -->
 
 **Casbin Server** is under active development by our core team. It has several features:
 

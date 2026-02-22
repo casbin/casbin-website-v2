@@ -1,11 +1,11 @@
 ---
 title: Understanding How Casbin Matching Works in Detail
-author: Aravinda Kumar
-authorURL: "http://github.com/aravindarc"
-authorImageURL: "https://avatars.githubusercontent.com/aravindarc"
+authors: [aravindarc]
 ---
 
 In this post, I will explain the design and implementation of RBAC using the [Casbin](https://casbin.org/) library. For a SaaS platform dealing with multiple resource hierarchies and roles that inherit permissions from higher levels, Casbin provides a performant alternative to consider.
+
+<!-- truncate -->
 
 ## Introduction to RBAC
 

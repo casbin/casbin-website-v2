@@ -10,7 +10,11 @@ module.exports = {
   url: "https://casbin.org",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
   favicon: "img/favicon.png",
   organizationName: "casbin", // Usually your GitHub org/user name.
   projectName: "casbin.io", // Usually your repo name.
@@ -316,6 +320,7 @@ var _hmt = _hmt || [];
         },
         blog: {
           showReadingTime: true,
+          onUntruncatedBlogPosts: "ignore",
           editUrl: ({blogDirPath, blogPath}) => {
             return `https://github.com/casbin/casbin-website-v2/edit/master/${blogDirPath}/${blogPath}`;
           },
