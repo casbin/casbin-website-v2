@@ -56,7 +56,7 @@ module.exports = {
             },
             {
               label: "Model",
-              to: "/docs/category/model",
+              to: "/docs/category/access-control-models",
             },
             {
               label: "Storage",
