@@ -4,7 +4,7 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import("@docusaurus/types").DocusaurusConfig} */
 module.exports = {
-  title: "Casbin",
+  title: "Apache Casbin",
   tagline:
     "An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
   url: "https://casbin.org",
@@ -17,7 +17,7 @@ module.exports = {
   themeConfig: {
     metadata: [
       {
-        name: "Casbin",
+        name: "Apache Casbin",
         content:
           "An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
       },
@@ -36,7 +36,7 @@ module.exports = {
     navbar: {
       title: "",
       logo: {
-        alt: "Casbin Logo",
+        alt: "Apache Casbin Logo",
         src: "https://cdn.casbin.org/img/casbin_logo_1024x256.png",
       },
       hideOnScroll: true,
@@ -261,11 +261,11 @@ var _hmt = _hmt || [];
         },
       ],
       logo: {
-        alt: "Casbin Logo",
-        src: "img/casbin_min.svg",
-        href: "/",
+        alt: "Apache Software Foundation",
+        src: "img/asf_logo_wide_small.png",
+        href: "https://www.apache.org/",
       },
-      copyright: `Copyright © ${new Date().getFullYear()} Casbin Organization`,
+      copyright: `Copyright © ${new Date().getFullYear()} The Apache Software Foundation. Apache Casbin, Casbin, and the project logo are trademarks of The Apache Software Foundation.`,
     },
     prism: {
       theme: lightCodeTheme,

@@ -148,7 +148,7 @@ export default function LanguageIntegration() {
       <div className="container">
         <div className={styles.headlineContainer}>
           <h2 className={styles.headline}>
-            Use Casbin with <span key={hoveredLanguage || "default"} className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
+            Use Apache Casbin with <span key={hoveredLanguage || "default"} className={styles.languageName}>{hoveredLanguage || "Multiple Languages"}</span>
           </h2>
         </div>
         <div className={styles.iconGrid} onMouseLeave={handleMouseLeave}>

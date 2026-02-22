@@ -20,7 +20,7 @@ function EditorContent() {
         <iframe
           src={editorUrl}
           className="editor-iframe"
-          title="Casbin-editor"
+          title="Apache Casbin Editor"
         />
       </div>
       <div className="comments-container">
@@ -48,7 +48,7 @@ function Editor() {
   return (
     <Layout
       title="Editor"
-      description="Casbin Online Editor"
+      description="Apache Casbin Online Editor"
     >
       <EditorContent />
     </Layout>

@@ -61,7 +61,7 @@ function HomepageHeader() {
           <span className={styles.pillArrow}>→</span>
         </Link>
         <h1 className="hero__title">
-          <span className={styles.brandName}>Casbin</span>
+          <span className={styles.brandName}>Apache Casbin</span>
           <br />
           <span className={styles.taglineWrapper}>
             <span className={styles.tagline}><Translate>Open-source authorization for</Translate></span>&nbsp;&nbsp;
@@ -152,7 +152,7 @@ function PolicyPersistence() {
                 ),
               }}
             >
-              {"Casbin stores policies through adapters. To keep the library lightweight, adapter code is separated from the main library (except for the default file adapter). We support third-party adapter contributions. See the full list of {adaptersLink} for more information."}
+              {"Apache Casbin stores policies through adapters. To keep the library lightweight, adapter code is separated from the main library (except for the default file adapter). We support third-party adapter contributions. See the full list of {adaptersLink} for more information."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -174,7 +174,7 @@ function PolicyEnforcement() {
           </div>
           <div className="col" style={{marginBlock: "auto"}}>
             <h3><Translate>Policy Enforcement at Scale</Translate></h3>
-            <Translate>Some adapters support filtered policy loading. This means Casbin can load only a subset of policies from storage based on specified filters. This feature is useful for large-scale, multi-tenant applications where loading all policies at once would be inefficient.</Translate>
+            <Translate>Some adapters support filtered policy loading. This means Apache Casbin can load only a subset of policies from storage based on specified filters. This feature is useful for large-scale, multi-tenant applications where loading all policies at once would be inefficient.</Translate>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ function RoleManager() {
                 ),
               }}
             >
-              {"The role manager handles RBAC role hierarchy (user-role mappings) in Casbin. It can load role data from Casbin policy rules or from external sources like LDAP, Okta, Auth0, Azure AD, etc. To keep the library lightweight, role manager code is separated from the main library (except for the default one). See all available {rolemanagersLink}."}
+              {"The role manager handles RBAC role hierarchy (user-role mappings) in Apache Casbin. It can load role data from Apache Casbin policy rules or from external sources like LDAP, Okta, Auth0, Azure AD, etc. To keep the library lightweight, role manager code is separated from the main library (except for the default one). See all available {rolemanagersLink}."}
             </Translate>
           </div>
           <div style={{marginInline: "auto"}}>
@@ -214,7 +214,7 @@ function Showcase() {
   return (
     <div className="hero text--center showcase">
       <div className="container">
-        <h1><Translate>Who&apos;s using Casbin?</Translate></h1>
+        <h1><Translate>Who&apos;s using Apache Casbin?</Translate></h1>
         <p style={{
           width: "50vw",
           margin: "auto",
@@ -226,7 +226,7 @@ function Showcase() {
               </Link>
             ),
           }}>
-            {"Hundreds of projects use Casbin, from Fortune 500 companies to new startups. If you want to see what can be built with Casbin, {UsersPage}!"}
+            {"Hundreds of projects use Apache Casbin, from Fortune 500 companies to new startups. If you want to see what can be built with Apache Casbin, {UsersPage}!"}
           </Translate>
         </p>
         <br /><br />
@@ -239,7 +239,7 @@ function Showcase() {
 export default function Home() {
   return (
     <Layout
-      title="Casbin · An authorization library"
+      title="Apache Casbin · An authorization library"
       description="An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON, Priority, RESTful for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir">
       <main>
         <HomepageHeader />

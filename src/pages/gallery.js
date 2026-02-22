@@ -20,7 +20,7 @@ function GalleryContent() {
         <iframe
           src={galleryUrl}
           className="editor-iframe"
-          title="Casbin-gallery"
+          title="Apache Casbin Gallery"
         />
       </div>
       <div className="comments-container">
@@ -48,7 +48,7 @@ function Gallery() {
   return (
     <Layout
       title="Gallery"
-      description="Casbin Online Gallery"
+      description="Apache Casbin Online Gallery"
     >
       <GalleryContent />
     </Layout>

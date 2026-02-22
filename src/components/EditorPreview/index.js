@@ -18,11 +18,11 @@ function EditorPreview() {
       <div className="container">
         <div className={styles.editorHeader}>
           <h2 className={styles.editorTitle}>
-            <Translate>Try the Casbin Online Editor</Translate>
+            <Translate>Try the Apache Casbin Online Editor</Translate>
           </h2>
           <p className={styles.editorDescription}>
             <Translate>
-              Write and test your Casbin model and policy in real-time with the interactive online editor.
+              Write and test your Apache Casbin model and policy in real-time with the interactive online editor.
               Try different access control models and see results instantly.
             </Translate>
           </p>
@@ -32,7 +32,7 @@ function EditorPreview() {
             <iframe
               src={editorUrl}
               className={styles.editorIframe}
-              title="Casbin Online Editor"
+              title="Apache Casbin Online Editor"
             />
           </div>
           <div className={styles.editorFooter}>
