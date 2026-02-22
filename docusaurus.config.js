@@ -38,10 +38,10 @@ module.exports = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "",
+      title: "Apache Casbin",
       logo: {
-        alt: "Apache Casbin Logo",
-        src: "https://cdn.casbin.org/img/casbin_logo_1024x256.png",
+        alt: "Casbin Logo",
+        src: "img/casbin.svg",
       },
       hideOnScroll: true,
       items: [
