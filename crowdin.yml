@@ -15,7 +15,7 @@ files: [
     },
     # Blog Markdown files
     {
-      source: '/blog/**/*',
+      source: '/blog/**/*.md',
       translation: '/i18n/%two_letters_code%/docusaurus-plugin-content-blog/**/%original_file_name%',
     },
   ]
