@@ -130,6 +130,21 @@ See [Styling and Layout](https://docusaurus.io/docs/styling-layout) to learn how
 
 See [Swizzling](https://docusaurus.io/docs/swizzling) to learn how to modify Docusaurus built-in components.
 
+### Link Checking
+
+The repository has comprehensive automated link checking for all URLs:
+
+- **Documentation, blog posts, and README**: Checked via GitHub Actions using [markdown-link-check](https://github.com/tcort/markdown-link-check)
+- **Data files** (JSON/JS with GitHub profiles, repos, external links): Checked via a custom Node.js script
+
+You can run the data links checker locally:
+
+```bash
+yarn check:links
+```
+
+For more details, see the [Link Checking documentation](./docs/LinkChecking.md).
+
 ## LICENSE
 
 [Apache-2.0 license](./LICENSE).
