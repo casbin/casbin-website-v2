@@ -23,7 +23,7 @@ github:
     projects: false
     wiki: false
   labels:
-    - Casbin
+    - casbin
   enabled_merge_buttons:
     squash:  true
     merge:   false
@@ -37,6 +37,3 @@ publish:
 
 notifications:
   commits:      commits@casbin.apache.org
-  issues:       issues@casbin.apache.org
-  pullrequests: issues@casbin.apache.org
-  jobs:         builds@casbin.apache.org
