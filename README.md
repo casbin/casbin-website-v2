@@ -1,35 +1,50 @@
-# [casbin.org](https://casbin.org) [![Build and Deploy](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml/badge.svg)](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml)
+# [Apache Casbin website](https://casbin.apache.org/) [![Build and Deploy](https://github.com/apache/casbin-website/actions/workflows/master.yml/badge.svg)](https://github.com/apache/casbin-website/actions/workflows/master.yml)
 
-The configuration and documentation of Casbin website: <https://casbin.org/>.
+Source for the official [**Apache Casbin**](https://casbin.apache.org/) documentation site. Casbin is [under incubation](https://incubator.apache.org/projects/casbin.html) at the [Apache Software Foundation](https://www.apache.org/) (ASF). The site is built with [Docusaurus](https://docusaurus.io/) **v3**.
 
-Casbin website is built using [Docusaurus](https://docusaurus.io/), you can get the PDF at [casbin.org/pdf](https://casbin.org/pdf) or [GitHub Action](https://github.com/casbin/casbin-website-v2/actions/workflows/master.yml).
+- **Live site:** [casbin.apache.org](https://casbin.apache.org/)
+- **Source repository:** [github.com/apache/casbin-website](https://github.com/apache/casbin-website)
 
-## Get Started
+## Build and deploy
+
+On push to `master` or manual dispatch, the [Build and Deploy](https://github.com/apache/casbin-website/actions/workflows/master.yml) workflow:
+
+1. Installs dependencies and, for non–pull-request runs, runs Crowdin sync (`yarn crowdin:sync`; requires the `CROWDIN_PERSONAL_TOKEN` repository secret).
+2. Runs `yarn build` to produce the static site.
+3. Publishes the `build/` output to the **`asf-site`** branch of this repository (via [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages)).
+
+ASF infrastructure serves the site from `asf-site` as configured in [`.asf.yaml`](./.asf.yaml). **Pull requests** run the workflow without Crowdin sync or publishing to `asf-site`.
+
+Additional checks (Markdown lint, doc link checks, etc.) live under [`.github/workflows/`](./.github/workflows/).
+
+## Local development
 
 ### Requirements
 
 1. [Git](https://git-scm.com/downloads)
-2. [Node.js](https://nodejs.org/en/download/)：v16.14 or above
-3. [Yarn](https://classic.yarnpkg.com/en/docs/install): please use Yarn 1
+2. [Node.js](https://nodejs.org/) **20.x or later** (matches `engines` in `package.json` and CI)
+3. [Yarn Classic (v1)](https://classic.yarnpkg.com/en/docs/install)
 
-### Running Locally
+### Run locally
 
-1. `git clone https://github.com/casbin/casbin-website-v2.git`
-2. `cd casbin-website-v2`
-3. `yarn`: install dependencies.
-4. `yarn start`: starting the development server.
+```bash
+git clone https://github.com/apache/casbin-website.git
+cd casbin-website
+yarn install
+yarn start
+```
+
+Other useful scripts: `yarn build`, `yarn serve`, `yarn lint`.
 
 ## Contributing
 
-You can contribute to the documentation site in different ways: [Documentation Writing](#documentation-writing), [Translation](#translation), [Website Development](#website-development).
+You can help with documentation, translations, and front-end work. Mailing lists and project metadata are listed on the [incubator status page](https://incubator.apache.org/projects/casbin.html) (for example `dev@casbin.apache.org`). On-site contributing guidance is also available under **Docs → Start Contributing** on the published site.
 
-### Documentation Writing
+### Documentation writing
 
-For the configuration of the sidebar, you can refer to [Sidebar](https://docusaurus.io/docs/sidebar).
+For the sidebar, see [Docusaurus: Sidebar](https://docusaurus.io/docs/sidebar). For Markdown/MDX features, see [Markdown Features](https://docusaurus.io/docs/markdown-features).
 
-For the features that you may use when writing documents, please refer to [Markdown Features](https://docusaurus.io/docs/markdown-features).
-
-A standard document should look like this:
+A typical doc front matter and structure:
 
 ````md
 ---
@@ -53,19 +68,19 @@ content
 
 ````
 
-We use [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) to lint the markdown and mdx files, you can use the following command to fix basic errors and get a list of document issues:
+We use [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) for Markdown/MDX:
 
 ```bash
 yarn lint:md
 ```
 
-If you write docs using VSCode, Sublime, or Vim/Neovim, you can install the [extension](https://github.com/DavidAnson/markdownlint#related) to get better lint experience.
+For VS Code, Sublime, or Vim/Neovim, consider a [markdownlint extension](https://github.com/DavidAnson/markdownlint#related).
 
 #### Caution
 
 ##### Admonitions
 
-You can add [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions) in the documentation, but please leave two blank lines like this:
+You can use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions); leave blank lines around blocks, for example:
 
 ```md
 :::info Title
@@ -77,7 +92,7 @@ Title is optional
 
 ##### JSX
 
-You can use JSX in documents, such as the [Tabs](https://docusaurus.io/docs/markdown-features/tabs) component provided by Docusaurus, but to prevent Crowdin from breaking the code ([mdx-solutions](https://docusaurus.io/docs/i18n/crowdin#mdx-solutions)), please wrap the JSX code:
+You can use JSX in docs (e.g. [Tabs](https://docusaurus.io/docs/markdown-features/tabs)). To avoid Crowdin breaking code, follow [mdx-solutions](https://docusaurus.io/docs/i18n/crowdin#mdx-solutions) and wrap JSX with `mdx-code-block`:
 
 ````md
 ```mdx-code-block
@@ -108,28 +123,30 @@ content
 
 ### Translation
 
-[Crowdin](https://crowdin.com/project/casbin-website) and [Docusaurus i18n](https://docusaurus.io/docs/i18n/introduction) is used for Casbin website's translation.
+[Crowdin](https://crowdin.com/project/casbin-website) and [Docusaurus i18n](https://docusaurus.io/docs/i18n/introduction) are used for translations.
 
-Note: Please do not translate strings like `:::note`, `:::tip`, wrong translation may cause typographical error.
+Do not translate directive strings like `:::note` or `:::tip`; wrong translations can break rendering.
 
-You may see some sentences containing `{}`, like:
+Do not translate interpolation placeholders in sentences such as:
 
 ```text
 At our {repoLink}, browse and submit {issueLink} or {prLink} for bugs you find or any new features you may want implemented.
 ```
 
-Please do not translate `{repoLink}` or `{issueLink}` or any similar words, they are [interpolation placeholders](https://docusaurus.io/docs/docusaurus-core#translate-props).
+Keep `{repoLink}`, `{issueLink}`, etc. as-is; see [translate props](https://docusaurus.io/docs/docusaurus-core#translate-props).
 
-Please don't translate sentences like `authors: [casbin]`.
+Do not translate metadata lines like `authors: [casbin]`.
 
-### Website Development
+### Website development
 
-See [Creating Pages](https://docusaurus.io/docs/creating-pages) to learn how to create a page.
+- [Creating Pages](https://docusaurus.io/docs/creating-pages)
+- [Styling and Layout](https://docusaurus.io/docs/styling-layout)
+- [Swizzling](https://docusaurus.io/docs/swizzling)
 
-See [Styling and Layout](https://docusaurus.io/docs/styling-layout) to learn how to modify styles.
+## Apache and trademarks
 
-See [Swizzling](https://docusaurus.io/docs/swizzling) to learn how to modify Docusaurus built-in components.
+Apache Casbin is an effort undergoing incubation at the ASF. Apache®, the Apache feather logo, and related marks are trademarks of The Apache Software Foundation. See the [incubator status page](https://incubator.apache.org/projects/casbin.html) and the [ASF trademark policy](https://www.apache.org/foundation/marks/).
 
-## LICENSE
+## License
 
-[Apache-2.0 license](./LICENSE).
+[Apache License 2.0](./LICENSE).
