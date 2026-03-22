@@ -51,6 +51,10 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Add .asf.yaml to site output
+        if: github.event_name != 'pull_request'
+        run: cp .asf.yaml build/.asf.yaml
+
       - name: Publish to asf-site
         if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4
