@@ -48,7 +48,7 @@ function HomepageHeader() {
           e.target.play();
         }}
       >
-        <source src="https://cdn.casbin.org/video/background.mp4" type="video/mp4" />
+        <source src="/video/background.mp4" type="video/mp4" />
       </video>
       <div className={styles.heroOverlay}></div>
 
