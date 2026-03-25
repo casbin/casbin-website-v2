@@ -31,8 +31,8 @@ export const languageIconMapping: Record<string, string> = {
   "Dart (Flutter)": "/img/langs/dart.svg",
   "Flutter": "/img/langs/dart.svg",
   "Elixir": "/img/langs/elixir-lang-icon.svg",
-  "Cloud Native": "/img/langs/kubernets.svg",
-  "Kubernetes": "/img/langs/kubernets.svg",
+  "Cloud Native": "/img/langs/kubernetes.svg",
+  "Kubernetes": "/img/langs/kubernetes.svg",
 };
 
 /**
