@@ -459,7 +459,6 @@ html[data-theme="light"] .highlightedKeyword {
     );
   background-size: 200% 200%;
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 
   /* Glow effect */
@@ -513,7 +512,6 @@ html[data-theme="light"] .highlightedKeyword {
       #fff 100%
     );
   background-size: 200% 200%;
-  background-clip: text;
   background-clip: text;
   filter: drop-shadow(0 2px 12px rgb(129 140 248 / 50%));
 }

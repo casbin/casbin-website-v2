@@ -23,7 +23,7 @@ const FeatureList = [
       <Translate
         values={{
           adaptersLink: (
-            <a href="/docs/AdapterData">
+            <a href="/docs/adapters">
               <Translate>adapters</Translate>
             </a>
           ),
