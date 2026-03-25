@@ -87,7 +87,7 @@ const languages = [
     name: "Cloud Native",
     displayName: "Cloud Native",
     fullName: "Cloud Native (Kubernetes, Istio, Envoy, KubeSphere)",
-    icon: "/img/langs/kubernets.svg",
+    icon: "/img/langs/kubernetes.svg",
     url: "/docs/cloud-native",
   },
 ];
