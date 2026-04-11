@@ -338,3 +338,9 @@ footer a[href*="twitter.com"]:active img {
 .footer-community-link:hover .footer-community-icon {
   fill: currentColor;
 }
+
+.footer__copyright {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}

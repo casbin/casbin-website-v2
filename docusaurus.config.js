@@ -4,7 +4,7 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import("@docusaurus/types").DocusaurusConfig} */
 module.exports = {
-  title: "Apache Casbin",
+  title: "Apache Casbin (Incubating)",
   tagline:
     "An authorization library that supports access control models like ACL, RBAC, ABAC, ReBAC, PBAC, OrBAC, BLP, Biba, LBAC, UCON for Golang, Java, C/C++, Node.js, Javascript, PHP, Laravel, Python, .NET (C#), Delphi, Rust, Ruby, Swift (Objective-C), Lua (OpenResty), Dart (Flutter) and Elixir",
   url: "https://casbin.org",
@@ -99,6 +99,44 @@ module.exports = {
           to: "/blog",
           label: "Blog",
           position: "left",
+        },
+        {
+          label: "ASF",
+          position: "left",
+          items: [
+            {
+              label: "Foundation",
+              href: "https://www.apache.org/",
+            },
+            {
+              label: "License",
+              href: "https://www.apache.org/licenses/",
+            },
+            {
+              label: "Events",
+              href: "https://www.apache.org/events/current-event.html",
+            },
+            {
+              label: "Privacy",
+              href: "https://privacy.apache.org/policies/privacy-policy-public.html",
+            },
+            {
+              label: "Security",
+              href: "https://www.apache.org/security/",
+            },
+            {
+              label: "Sponsorship",
+              href: "https://www.apache.org/foundation/sponsorship.html",
+            },
+            {
+              label: "Thanks",
+              href: "https://www.apache.org/foundation/thanks.html",
+            },
+            {
+              label: "Code of Conduct",
+              href: "https://www.apache.org/foundation/policies/conduct.html",
+            },
+          ],
         },
         {
           to: "/help",
@@ -269,7 +307,7 @@ var _hmt = _hmt || [];
         src: "img/asf_logo_wide_small.png",
         href: "https://www.apache.org/",
       },
-      copyright: `Copyright © ${new Date().getFullYear()} The Apache Software Foundation. Apache Casbin, Casbin, and the project logo are trademarks of The Apache Software Foundation.`,
+      copyright: `<p>Apache Casbin (Incubating) is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</p><p>Copyright © ${new Date().getFullYear()} The Apache Software Foundation, Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.</p><p>Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries. All other marks mentioned may be trademarks or registered trademarks of their respective owners.</p>`,
     },
     prism: {
       theme: lightCodeTheme,
