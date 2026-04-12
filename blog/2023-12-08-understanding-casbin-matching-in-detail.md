@@ -13,7 +13,7 @@ RBAC restricts access based on the roles users hold. To see how **hierarchical**
 
 ## Azure’s hierarchical RBAC
 
-![Azure Hierarchy](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/media/organize-resources/scope-levels.png)
+![Azure Hierarchy](/img/blog/azure-scope-levels.png)
 
 In Azure, the **Owner** role applies at different scopes. If I have **Owner** at the subscription level, I am Owner of all resource groups and resources under that subscription. If I have Owner at a resource group level, I am Owner of all resources in that group.
 
