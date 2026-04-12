@@ -303,9 +303,9 @@ var _hmt = _hmt || [];
         },
       ],
       logo: {
-        alt: "Apache Software Foundation",
-        src: "img/asf_logo_wide_small.png",
-        href: "https://www.apache.org/",
+        alt: "Apache Incubator",
+        src: "img/incubator_feather_egg_logo_sm.png",
+        href: "https://incubator.apache.org/",
       },
       copyright: `<p>Apache Casbin (Incubating) is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</p><p>Copyright © ${new Date().getFullYear()} The Apache Software Foundation, Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>.</p><p>Apache, the names of Apache projects, and the feather logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries. All other marks mentioned may be trademarks or registered trademarks of their respective owners.</p>`,
     },
