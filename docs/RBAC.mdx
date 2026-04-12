@@ -39,9 +39,11 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 So the request is allowed only if the request subject has the role given in the policy.
 
 :::note
+
 1. Casbin only stores and evaluates user–role (and resource–role) mappings; it does not validate that users or roles exist. That is the job of authentication.
 2. Do not reuse the same name for a user and a role (e.g. user `alice` and role `alice`), since Casbin cannot tell them apart. Use a prefix (e.g. `role_alice`) if needed.
 3. Role inheritance is transitive and unbounded: if A has role B and B has role C, then A effectively has role C.
+
 :::
 
 :::info Token name convention

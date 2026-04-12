@@ -55,40 +55,40 @@ Complete function details: [https://github.com/casbin/casbin/blob/master/util/bu
 
 1. Implement a function that takes the required arguments and returns a `bool`:
 
-```go
-func KeyMatch(key1 string, key2 string) bool {
-    i := strings.Index(key2, "*")
-    if i == -1 {
-        return key1 == key2
-    }
+    ```go
+    func KeyMatch(key1 string, key2 string) bool {
+        i := strings.Index(key2, "*")
+        if i == -1 {
+            return key1 == key2
+        }
 
-    if len(key1) > i {
-        return key1[:i] == key2[:i]
+        if len(key1) > i {
+            return key1[:i] == key2[:i]
+        }
+        return key1 == key2[:i]
     }
-    return key1 == key2[:i]
-}
-```
+    ```
 
 2. Wrap it for Casbin (signature `func(...interface{}) (interface{}, error)`):
 
-```go
-func KeyMatchFunc(args ...interface{}) (interface{}, error) {
-    name1 := args[0].(string)
-    name2 := args[1].(string)
+    ```go
+    func KeyMatchFunc(args ...interface{}) (interface{}, error) {
+        name1 := args[0].(string)
+        name2 := args[1].(string)
 
-    return (bool)(KeyMatch(name1, name2)), nil
-}
-```
+        return (bool)(KeyMatch(name1, name2)), nil
+    }
+    ```
 
 3. Register it on the enforcer:
 
-```go
-e.AddFunction("my_func", KeyMatchFunc)
-```
+    ```go
+    e.AddFunction("my_func", KeyMatchFunc)
+    ```
 
 4. Use it in your model:
 
-```ini
-[matchers]
-m = r.sub == p.sub && my_func(r.obj, p.obj) && r.act == p.act
-```
+    ```ini
+    [matchers]
+    m = r.sub == p.sub && my_func(r.obj, p.obj) && r.act == p.act
+    ```

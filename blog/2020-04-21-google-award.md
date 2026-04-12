@@ -7,7 +7,7 @@ We are pleased to announce that Casbin’s founder, [Yang Luo](https://github.co
 
 <!-- truncate -->
 
-![ospb](https://hsluoyz.github.io/download/Open%20Source%20Peer%20Bonus%20Q3%202019%20-%20Yang%20Luo%20-%20OSPB%20Award%20Letter.png)
+![ospb](/img/blog/google-open-source-peer-bonus-award-letter.png)
 
 > The full award letter is available [here](https://github.com/hsluoyz/hsluoyz.github.io/blob/master/download/Open%20Source%20Peer%20Bonus%20Q3%202019%20-%20Yang%20Luo%20-%20OSPB%20Award%20Letter.pdf).
 
