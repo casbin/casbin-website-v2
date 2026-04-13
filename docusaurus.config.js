@@ -86,12 +86,12 @@ module.exports = {
           position: "left",
         },
         {
-          href: "/gallery",
+          href: "https://editor.casbin.org/gallery",
           label: "Authorization Models",
           position: "left",
         },
         {
-          href: "/editor",
+          href: "https://editor.casbin.org/",
           label: "GUI Policy Editor",
           position: "left",
         },

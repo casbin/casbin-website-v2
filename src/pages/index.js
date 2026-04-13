@@ -78,7 +78,7 @@ function HomepageHeader() {
             <Translate>Get Started</Translate>
           </Link>
           <Link className={`button button--lg ${styles.tryEditorBtn}`}
-            to="/editor"
+            href="https://editor.casbin.org/"
           >
             <Code size={18} />
             <Translate>Try Online Editor</Translate>
