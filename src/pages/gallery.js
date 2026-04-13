@@ -1,56 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
+import Head from "@docusaurus/Head";
 import Layout from "@theme/Layout";
-import Giscus from "@giscus/react";
-import {useColorMode} from "@docusaurus/theme-common";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Link from "@docusaurus/Link";
 
-function GalleryContent() {
-  const {colorMode} = useColorMode();
-  const {i18n} = useDocusaurusContext();
-  const currentLanguage = i18n.currentLocale;
-  const [galleryUrl, setGalleryUrl] = useState("");
-
-  useEffect(() => {
-    setGalleryUrl(`https://editor.casbin.org/gallery?theme=${colorMode}&lang=${currentLanguage}`);
-  }, [colorMode, currentLanguage]);
-
-  return (
-    <>
-      <div className="editor-container">
-        <iframe
-          src={galleryUrl}
-          className="editor-iframe"
-          title="Apache Casbin Gallery"
-        />
-      </div>
-      <div className="comments-container">
-        <Giscus
-          id="comments"
-          repo="casbin/casbin"
-          repoId="MDEwOlJlcG9zaXRvcnk4NzYxNzUwOA=="
-          category="Docs comments"
-          categoryId="DIC_kwDOBTjv5M4CRIiA"
-          mapping="pathname"
-          strict="0"
-          reactionsEnabled="1"
-          emitMetadata="0"
-          inputPosition="top"
-          theme={colorMode}
-          lang={currentLanguage}
-          loading="lazy"
-        />
-      </div>
-    </>
-  );
-}
+const GALLERY_URL = "https://editor.casbin.org/gallery";
 
 function Gallery() {
+  useEffect(() => {
+    window.location.replace(GALLERY_URL);
+  }, []);
+
   return (
-    <Layout
-      title="Gallery"
-      description="Apache Casbin Online Gallery"
-    >
-      <GalleryContent />
+    <Layout title="Redirecting to Gallery" description="Redirecting to the Apache Casbin authorization model gallery">
+      <Head>
+        <meta httpEquiv="refresh" content={`0;url=${GALLERY_URL}`} />
+        <link rel="canonical" href={GALLERY_URL} />
+      </Head>
+      <main className="container margin-vert--xl">
+        <p>
+          Redirecting to the authorization model gallery...
+          {" "}
+          <Link href={GALLERY_URL}>Continue manually</Link>
+        </p>
+      </main>
     </Layout>
   );
 }

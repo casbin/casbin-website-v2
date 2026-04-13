@@ -1,18 +1,9 @@
 import React from "react";
-import {useColorMode} from "@docusaurus/theme-common";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
 import styles from "./styles.module.css";
 
 function EditorPreview() {
-  const {colorMode} = useColorMode();
-  const {i18n} = useDocusaurusContext();
-  const currentLanguage = i18n.currentLocale;
-
-  // Compute editor URL reactively to avoid unnecessary reloads
-  const editorUrl = `https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`;
-
   return (
     <div className={styles.editorSection}>
       <div className="container">
@@ -29,16 +20,18 @@ function EditorPreview() {
         </div>
         <div className={styles.editorContainer}>
           <div className={styles.editorWrapper}>
-            <iframe
-              src={editorUrl}
-              className={styles.editorIframe}
-              title="Apache Casbin Online Editor"
+            <img
+              src="/img/online_editor_homepage_preview.png"
+              className={styles.editorPreviewImage}
+              alt="Preview of the Apache Casbin online editor interface"
+              width="1552"
+              height="973"
             />
           </div>
           <div className={styles.editorFooter}>
             <Link
               className="button button--primary button--lg"
-              to="/editor"
+              href="https://editor.casbin.org/"
             >
               <Translate>Open Full Editor</Translate>
             </Link>

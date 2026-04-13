@@ -1,56 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
+import Head from "@docusaurus/Head";
 import Layout from "@theme/Layout";
-import Giscus from "@giscus/react";
-import {useColorMode} from "@docusaurus/theme-common";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Link from "@docusaurus/Link";
 
-function EditorContent() {
-  const {colorMode} = useColorMode();
-  const {i18n} = useDocusaurusContext();
-  const currentLanguage = i18n.currentLocale;
-  const [editorUrl, setEditorUrl] = useState("");
-
-  useEffect(() => {
-    setEditorUrl(`https://editor.casbin.org/?theme=${colorMode}&lang=${currentLanguage}`);
-  }, [colorMode, currentLanguage]);
-
-  return (
-    <>
-      <div className="editor-container">
-        <iframe
-          src={editorUrl}
-          className="editor-iframe"
-          title="Apache Casbin Editor"
-        />
-      </div>
-      <div className="comments-container">
-        <Giscus
-          id="comments"
-          repo="casbin/casbin"
-          repoId="MDEwOlJlcG9zaXRvcnk4NzYxNzUwOA=="
-          category="Docs comments"
-          categoryId="DIC_kwDOBTjv5M4CRIiA"
-          mapping="pathname"
-          strict="0"
-          reactionsEnabled="1"
-          emitMetadata="0"
-          inputPosition="top"
-          theme={colorMode}
-          lang="en"
-          loading="lazy"
-        />
-      </div>
-    </>
-  );
-}
+const EDITOR_URL = "https://editor.casbin.org/";
 
 function Editor() {
+  useEffect(() => {
+    window.location.replace(EDITOR_URL);
+  }, []);
+
   return (
-    <Layout
-      title="Editor"
-      description="Apache Casbin Online Editor"
-    >
-      <EditorContent />
+    <Layout title="Redirecting to Editor" description="Redirecting to the Apache Casbin Online Editor">
+      <Head>
+        <meta httpEquiv="refresh" content={`0;url=${EDITOR_URL}`} />
+        <link rel="canonical" href={EDITOR_URL} />
+      </Head>
+      <main className="container margin-vert--xl">
+        <p>
+          Redirecting to the online editor...
+          {" "}
+          <Link href={EDITOR_URL}>Continue manually</Link>
+        </p>
+      </main>
     </Layout>
   );
 }
