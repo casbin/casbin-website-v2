@@ -1,0 +1,47 @@
+.badgesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 0.5rem 1rem;
+  justify-content: start;
+}
+
+.badgeLink {
+  display: inline-flex;
+  line-height: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badgeSvg {
+  display: block;
+  transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: filter;
+}
+
+.badgeLink:hover {
+  transform: translateY(-3px) scale(1.08) rotate(2deg);
+}
+
+.badgeLink:hover .badgeSvg {
+  filter: drop-shadow(0 6px 12px rgb(59 130 246 / 35%)) brightness(1.15);
+}
+
+.badgeLink:active {
+  transform: translateY(-1px) scale(1.02);
+  transition-duration: 0.1s;
+}
+
+.badgeLink:active .badgeSvg {
+  filter: drop-shadow(0 2px 4px rgb(59 130 246 / 25%)) brightness(1.1);
+}
+
+.badgeLink:focus-visible {
+  outline: 2px solid var(--ifm-color-primary-lightest);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media only screen and (max-width: 996px) {
+  .badgesGrid {
+    grid-template-columns: max-content;
+  }
+}

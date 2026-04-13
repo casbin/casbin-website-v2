@@ -234,58 +234,8 @@ module.exports = {
         },
         {
           title: "More",
+          className: "footer-more-column",
           items: [
-            {
-              html: `
-                <a href="https://github.com/casbin/casbin" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin?label=Casbin&style=social">
-                </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://github.com/casbin/jcasbin" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/jcasbin?label=jCasbin&style=social">
-                </a>
-              `,
-            },
-            {
-              html: `
-                <a href="https://github.com/casbin/node-casbin" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/node-casbin?label=Node-Casbin&style=social">
-                </a>
-                &nbsp;&nbsp;
-                <a href="https://github.com/php-casbin/php-casbin" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/php-casbin/php-casbin?label=PHP-Casbin&style=social">
-                </a>
-              `,
-            },
-            {
-              html: `
-                <a href="https://github.com/casbin/pycasbin" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/pycasbin?label=PyCasbin&style=social">
-                </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://github.com/casbin/Casbin.NET" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/Casbin.NET?label=Casbin.NET&style=social">
-                </a>
-              `,
-            },
-            {
-              html: `
-                <a href="https://github.com/casbin/casbin-cpp" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin-cpp?label=Casbin-CPP&style=social">
-                </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://github.com/casbin/casbin-rs" target="_blank">
-                  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/casbin/casbin-rs?label=Casbin-RS&style=social">
-                </a>
-              `,
-            },
-            {
-              html: `
-                <a href="https://twitter.com/casbinHQ" target="_blank">
-                  <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/casbinHQ?style=social">
-                </a>
-              `,
-            },
             {
               html: `
 <script>

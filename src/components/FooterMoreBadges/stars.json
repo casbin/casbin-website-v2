@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-13T13:15:04.436Z",
+  "stars": {
+    "casbin/casbin": 19992,
+    "casbin/jcasbin": 2631,
+    "casbin/node-casbin": 2882,
+    "php-casbin/php-casbin": 1326,
+    "casbin/pycasbin": 1724,
+    "casbin/Casbin.NET": 1309,
+    "casbin/casbin-cpp": 250,
+    "casbin/casbin-rs": 1090
+  }
+}
