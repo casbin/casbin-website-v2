@@ -3,56 +3,48 @@
     "label": "Casbin",
     "owner": "casbin",
     "repo": "casbin",
-    "href": "https://github.com/casbin/casbin",
-    "labelWidth": 64
+    "href": "https://github.com/casbin/casbin"
   },
   {
     "label": "jCasbin",
     "owner": "casbin",
     "repo": "jcasbin",
-    "href": "https://github.com/casbin/jcasbin",
-    "labelWidth": 70
+    "href": "https://github.com/casbin/jcasbin"
   },
   {
     "label": "Node-Casbin",
     "owner": "casbin",
     "repo": "node-casbin",
-    "href": "https://github.com/casbin/node-casbin",
-    "labelWidth": 96
+    "href": "https://github.com/casbin/node-casbin"
   },
   {
     "label": "PHP-Casbin",
     "owner": "php-casbin",
     "repo": "php-casbin",
-    "href": "https://github.com/php-casbin/php-casbin",
-    "labelWidth": 90
+    "href": "https://github.com/php-casbin/php-casbin"
   },
   {
     "label": "PyCasbin",
     "owner": "casbin",
     "repo": "pycasbin",
-    "href": "https://github.com/casbin/pycasbin",
-    "labelWidth": 76
+    "href": "https://github.com/casbin/pycasbin"
   },
   {
     "label": "Casbin.NET",
     "owner": "casbin",
     "repo": "Casbin.NET",
-    "href": "https://github.com/casbin/Casbin.NET",
-    "labelWidth": 88
+    "href": "https://github.com/casbin/Casbin.NET"
   },
   {
     "label": "Casbin-CPP",
     "owner": "casbin",
     "repo": "casbin-cpp",
-    "href": "https://github.com/casbin/casbin-cpp",
-    "labelWidth": 90
+    "href": "https://github.com/casbin/casbin-cpp"
   },
   {
     "label": "Casbin-RS",
     "owner": "casbin",
     "repo": "casbin-rs",
-    "href": "https://github.com/casbin/casbin-rs",
-    "labelWidth": 84
+    "href": "https://github.com/casbin/casbin-rs"
   }
 ]
