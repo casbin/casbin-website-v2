@@ -4,14 +4,37 @@ import {ThemeClassNames} from "@docusaurus/theme-common";
 import LinkItem from "@theme/Footer/LinkItem";
 import FooterMoreBadges from "@site/src/components/FooterMoreBadges";
 
+function getShortHash(value) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+
+  return hash.toString(36);
+}
+
 function getItemKey(item) {
-  return [
+  if (item.id) {
+    return item.id;
+  }
+
+  const stableKey = [
     item.href,
     item.to,
     item.label,
     item.className,
-    item.html,
   ].filter(Boolean).join("::");
+
+  if (stableKey) {
+    return stableKey;
+  }
+
+  if (item.html) {
+    return `html:${getShortHash(item.html)}`;
+  }
+
+  return "item";
 }
 
 function getColumnKey(column) {
