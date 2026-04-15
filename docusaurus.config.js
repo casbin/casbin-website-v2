@@ -328,27 +328,10 @@ var _hmt = _hmt || [];
       },
     },
   },
-  scripts: [
-    {
-      src: "/js/hotjar.js",
-      async: true,
-    },
-    {
-      src: "/js/probe.js",
-      async: true,
-    },
-    {
-      src: "/js/clarity.js",
-      async: true,
-    },
-  ],
   presets: [
     [
       "@docusaurus/preset-classic",
       {
-        gtag: {
-          trackingID: "G-8S2TKCJ27X",
-        },
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           sidebarCollapsed: false,
