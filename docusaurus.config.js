@@ -235,21 +235,7 @@ module.exports = {
         {
           title: "More",
           className: "footer-more-column",
-          items: [
-            {
-              html: `
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?2c0ffc6f8d49e98d964d59d7aa4cbf34";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-`,
-            },
-          ],
+          items: [],
         },
       ],
       logo: {
