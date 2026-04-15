@@ -4,6 +4,24 @@ import {ThemeClassNames} from "@docusaurus/theme-common";
 import LinkItem from "@theme/Footer/LinkItem";
 import FooterMoreBadges from "@site/src/components/FooterMoreBadges";
 
+function getItemKey(item) {
+  return [
+    item.href,
+    item.to,
+    item.label,
+    item.className,
+    item.html,
+  ].filter(Boolean).join("::");
+}
+
+function getColumnKey(column) {
+  return [
+    column.title,
+    column.className,
+    ...column.items.map(getItemKey),
+  ].filter(Boolean).join("::");
+}
+
 function ColumnLinkItem({item}) {
   return item.html ? (
     <li
@@ -49,14 +67,14 @@ function Column({column}) {
       {isFooterMoreColumn ? (
         <>
           <FooterMoreBadges />
-          {column.items.map((item, index) => (
-            <CustomColumnItem key={index} item={item} />
+          {column.items.map((item) => (
+            <CustomColumnItem key={getItemKey(item)} item={item} />
           ))}
         </>
       ) : (
         <ul className="footer__items clean-list">
-          {column.items.map((item, index) => (
-            <ColumnLinkItem key={index} item={item} />
+          {column.items.map((item) => (
+            <ColumnLinkItem key={getItemKey(item)} item={item} />
           ))}
         </ul>
       )}
@@ -67,8 +85,8 @@ function Column({column}) {
 export default function FooterLinksMultiColumn({columns}) {
   return (
     <div className="row footer__links">
-      {columns.map((column, index) => (
-        <Column key={index} column={column} />
+      {columns.map((column) => (
+        <Column key={getColumnKey(column)} column={column} />
       ))}
     </div>
   );
