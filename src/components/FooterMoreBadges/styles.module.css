@@ -1,0 +1,115 @@
+.badgesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 0.5rem 1rem;
+  justify-content: start;
+}
+
+.badgeLink {
+  display: inline-flex;
+  line-height: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badgeSurface {
+  display: inline-flex;
+  align-items: stretch;
+  width: 135px;
+  height: 20px;
+  overflow: hidden;
+  border: 1px solid #d5d5d5;
+  border-radius: 2px;
+  background: #fcfcfc;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  transition: filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: filter;
+}
+
+.badgeLabelSection {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 96px;
+  padding: 0 6px;
+  box-sizing: border-box;
+}
+
+.badgeDivider {
+  position: relative;
+  width: 7px;
+  background: #fafafa;
+  border-left: 1px solid #d5d5d5;
+}
+
+.badgeDivider::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 6px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 4px solid #fafafa;
+}
+
+.badgeCountSection {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  background: #fafafa;
+}
+
+.badgeIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.badgeText {
+  display: inline-block;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.followBadge {
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.badgeLink:hover {
+  transform: translateY(-3px) scale(1.08) rotate(2deg);
+}
+
+.badgeLink:hover .badgeSurface {
+  filter: drop-shadow(0 6px 12px rgb(59 130 246 / 35%)) brightness(1.15);
+}
+
+.badgeLink:active {
+  transform: translateY(-1px) scale(1.02);
+  transition-duration: 0.1s;
+}
+
+.badgeLink:active .badgeSurface {
+  filter: drop-shadow(0 2px 4px rgb(59 130 246 / 25%)) brightness(1.1);
+}
+
+.badgeLink:focus-visible {
+  outline: 2px solid var(--ifm-color-primary-lightest);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media only screen and (max-width: 996px) {
+  .badgesGrid {
+    grid-template-columns: max-content;
+  }
+}

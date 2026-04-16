@@ -22,5 +22,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Generate footer stars
+        run: yarn generate:footer-stars
+
       - name: Build website
         run: yarn build --locale en

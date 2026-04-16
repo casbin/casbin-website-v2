@@ -48,6 +48,9 @@ jobs:
         if: github.event_name != 'pull_request'
         run: yarn crowdin:sync
 
+      - name: Generate footer stars
+        run: yarn generate:footer-stars
+
       - name: Build
         run: yarn build
 
