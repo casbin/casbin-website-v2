@@ -1,5 +1,9 @@
-const fs = require("fs");
 const path = require("path");
+const {
+  fetchGitHubJson,
+  readExistingJson,
+  writeJson,
+} = require("./github-data-utils");
 
 const badges = require("../src/components/FooterMoreBadges/badges.json");
 
@@ -16,40 +20,14 @@ function getRepoKey(owner, repo) {
   return `${owner}/${repo}`;
 }
 
-function readExistingStars() {
-  if (!fs.existsSync(outputPath)) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(fs.readFileSync(outputPath, "utf8"));
-  } catch {
-    return null;
-  }
-}
-
 async function fetchStars() {
-  const headers = {
-    Accept: "application/vnd.github+json",
-    "User-Agent": "casbin-website-footer-stars",
-  };
-
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
-  }
-
   const results = await Promise.all(
     badges.map(async({owner, repo}) => {
-      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-        headers,
-      });
-
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(`Failed to fetch stars for ${owner}/${repo}: ${response.status} ${body}`);
-      }
-
-      const data = await response.json();
+      const data = await fetchGitHubJson(
+        `https://api.github.com/repos/${owner}/${repo}`,
+        "casbin-website-footer-stars",
+        `stars for ${owner}/${repo}`
+      );
 
       if (typeof data.stargazers_count !== "number") {
         throw new Error(`Missing stargazers_count for ${owner}/${repo}`);
@@ -63,7 +41,7 @@ async function fetchStars() {
 }
 
 async function main() {
-  const existingStars = readExistingStars();
+  const existingStars = readExistingJson(outputPath);
 
   try {
     const stars = await fetchStars();
@@ -72,7 +50,7 @@ async function main() {
       stars,
     };
 
-    fs.writeFileSync(outputPath, `${JSON.stringify(payload, null, 2)}\n`);
+    writeJson(outputPath, payload);
     process.stdout.write(`Updated footer stars at ${outputPath}\n`);
   } catch (error) {
     if (existingStars?.stars) {

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -12,26 +12,22 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import AnimatedText from "../components/AnimatedText";
 import {Code, Zap} from "lucide-react";
 import LogoCarousel from "@site/src/components/LogoCarousel";
+import latestReleaseData from "@site/src/data/latest-release.json";
 
 function HomepageHeader() {
-  const [latestVersion, setLatestVersion] = useState("v3.4.1");
   const headerRef = useRef(null);
   const haloRef = useRef(null);
   const {siteConfig} = useDocusaurusContext();
   const {customFields} = siteConfig;
+  const latestVersion = latestReleaseData.tagName || "v3.4.1";
+  const latestReleaseLink =
+    latestReleaseData.url || `https://github.com/apache/casbin/releases/tag/${latestVersion}`;
 
   // Activate halo behavior for this header
   useHeroCursorHalo(headerRef, haloRef);
 
-  useEffect(() => {
-    fetch("https://api.github.com/repos/casbin/casbin/releases/latest")
-      .then(res => res.json())
-      .then(data => setLatestVersion(data.tag_name || "v3.4.1"))
-      .catch(() => setLatestVersion("v3.4.1"));
-  }, []);
-
   const pillText = customFields?.customMessage || `${latestVersion} Released`;
-  const link = customFields?.customLink || `https://github.com/casbin/casbin/releases/tag/${latestVersion}`;
+  const link = customFields?.customLink || latestReleaseLink;
 
   return (
     <header ref={headerRef} className={clsx("hero hero--primary", styles.heroBanner)}>
