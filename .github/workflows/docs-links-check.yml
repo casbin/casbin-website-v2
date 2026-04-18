@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Check Links 🔎
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: tcort/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
           # use-verbose-mode: 'yes' # show detailed HTTP status for checked links.

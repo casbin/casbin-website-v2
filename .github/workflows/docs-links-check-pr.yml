@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Check links for mdx files 🔎
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: tcort/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
           # use-verbose-mode: 'yes' # show detailed HTTP status for checked links.
@@ -24,7 +24,7 @@ jobs:
           file-extension: '.mdx'
 
       - name: Check links for markdown files 🔎
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: tcort/github-action-markdown-link-check@v1
         with:
           use-quiet-mode: 'yes' # only show errors in output.
           # use-verbose-mode: 'yes' # show detailed HTTP status for checked links.
