@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkcasbin_website_v2=globalThis.webpackChunkcasbin_website_v2||[]).push([[4713],{4128(e){e.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"Basics","slug":"/category/basics","permalink":"/th/docs/category/basics","sidebar":"docs","navigation":{"next":{"title":"Overview","permalink":"/th/docs/overview"}}}}')}}]);
