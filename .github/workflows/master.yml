@@ -51,6 +51,9 @@ jobs:
       - name: Generate footer stars
         run: yarn generate:footer-stars
 
+      - name: Generate homepage release
+        run: yarn generate:homepage-release
+
       - name: Build
         run: yarn build
 
