@@ -1,0 +1,25 @@
+---
+id: superadmin
+title: 超级管理员
+description: 超级管理员是整个系统的管理员，可用于 RBAC、ABAC 和带域的 RBAC 等模型。
+keywords: [Super Admin]
+authors: [ErikQQY]
+---
+
+**超级管理员（Super Admin）**（例如 `root`）是一个绕过正常策略并始终获得允许的主体。你可以通过在**匹配器（Matcher）**中添加类似 `r.sub == "root"` 的条件来实现。示例：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act || r.sub == "root"
+```
+
+匹配器在以下任一情况下允许请求：(1) 匹配策略规则，或 (2) `r.sub == "root"`。因此 `root` 永远不会被拒绝。相同的模式适用于 RBAC、ABAC 或带域的 RBAC：在匹配器中添加 `|| r.sub == "root"`（或你的超级用户名）。

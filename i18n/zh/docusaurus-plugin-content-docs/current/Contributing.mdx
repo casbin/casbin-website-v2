@@ -1,0 +1,70 @@
+---
+id: contributing
+title: 贡献指南
+description: 为 Casbin 贡献
+keywords: [Contributing]
+authors: [Selflocking, EmperorYP7]
+---
+
+Casbin 是一个开源授权（Authorization）库，支持多种语言实现。我们欢迎使用任何支持语言进行贡献的开发者。
+
+项目分为两个主要领域：
+
+* **核心及语言移植** — 在 Go、Java、Node.js、PHP、Python、.NET、C++、Rust 等语言中实现 Casbin 的核心功能和生态系统。
+
+| [![golang](/img/langs/golang.png)](https://github.com/casbin/casbin) | [![java](/img/langs/java.png)](https://github.com/casbin/jcasbin) | [![nodejs](/img/langs/nodejs.png)](https://github.com/casbin/node-casbin) | [![php](/img/langs/php.png)](https://github.com/php-casbin/php-casbin) |
+|----------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [Casbin](https://github.com/casbin/casbin)                           | [jCasbin](https://github.com/casbin/jcasbin)                      | [node-Casbin](https://github.com/casbin/node-casbin)                      | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                 |
+| 生产就绪 | 生产就绪 | 生产就绪 | 生产就绪 |
+
+| [![python](/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](/img/langs/dotnet.png)](https://github.com/casbin/Casbin.NET) | [![c++](/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+|------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------|
+| [PyCasbin](https://github.com/casbin/pycasbin)                         | [Casbin.NET](https://github.com/casbin/Casbin.NET)                       | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                 | [Casbin-RS](https://github.com/casbin/casbin-rs)                    |
+| 生产就绪 | 生产就绪 | 生产就绪 | 生产就绪 |
+
+* **应用和工具** — 基于 Casbin 构建的项目（例如编辑器、仪表板）。
+
+| 项目 | 演示 | 详情 | 技术栈 |
+|------|------|------|--------|
+| [Casbin 编辑器](https://github.com/casbin/casbin-editor) | [Casbin 编辑器](https://editor.casbin.org) | 基于浏览器的编辑器，用于创建和测试 Casbin 模型（Model）和策略（Policy）。 | TypeScript + React |
+
+## 贡献方式
+
+* **使用 Casbin 并提供反馈** — 在 [GitHub](https://github.com/casbin/casbin) 上报告错误或建议新功能。对于较大的想法，请先在 [Discord](https://discord.gg/S5UjpzGZjN) 或 [GitHub Discussions](https://github.com/casbin/casbin/discussions) 上讨论。问题和讨论请使用英文。
+
+* **改进文档** — 文档是入门的好方法；欢迎提交修正和澄清说明。
+
+* **解决 Issue** — 查看[项目面板](https://github.com/orgs/casbin/projects/2)上的开放问题；许多问题已按难度标注标签。
+
+## 提交拉取请求
+
+我们使用 GitHub 和标准的 Pull Request 工作流程。
+
+提交前请注意：
+
+* 清晰描述变更的目的和影响。
+
+* 保持每个 PR 聚焦（一个功能或一个修复）。将不相关的变更拆分到单独的 PR 中。
+
+* 添加新文件时，请在文件顶部包含 Casbin 许可头：
+
+  ```text
+  // 版权所有 2021 The casbin Authors。保留所有权利。
+  //
+  // 根据 Apache 许可证 2.0 版（"许可证"）获得许可；
+  // 除非遵守许可证，否则您不得使用此文件。
+  // 您可以在以下位置获取许可证副本：
+  //
+  //      http://www.apache.org/licenses/LICENSE-2.0
+  //
+  // 除非适用法律要求或书面同意，否则软件
+  // 按"原样"分发，不提供任何明示或暗示的保证或条件。
+  // 请参阅许可证以了解 governing permissions 和
+  // 限制的具体条款。
+  ```
+
+* 使用语义化提交信息，格式为：```<type>(<scope>): <subject>```。`<scope>` 是可选的。详细指南请参阅[约定式提交](https://www.conventionalcommits.org/en/v1.0.0/)。
+
+## 许可
+
+所有对 Casbin 的贡献均依据 Apache 许可证授权。

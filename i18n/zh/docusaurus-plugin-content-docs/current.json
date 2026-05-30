@@ -1,0 +1,58 @@
+{
+  "version.label": {
+    "message": "下一个版本",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Basics": {
+    "message": "基础知识",
+    "description": "The label for category 'Basics' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Access Control Models": {
+    "message": "访问控制模型",
+    "description": "The label for category 'Access Control Models' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.RBAC": {
+    "message": "RBAC",
+    "description": "The label for category 'RBAC' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.MAC": {
+    "message": "MAC",
+    "description": "The label for category 'MAC' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Storage": {
+    "message": "存储",
+    "description": "The label for category 'Storage' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Use Cases": {
+    "message": "使用场景",
+    "description": "The label for category 'Use Cases' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Plugins": {
+    "message": "插件",
+    "description": "The label for category 'Plugins' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Middleware": {
+    "message": "中间件",
+    "description": "The label for category 'Middleware' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.API": {
+    "message": "API",
+    "description": "The label for category 'API' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Advanced Usage": {
+    "message": "高级用法",
+    "description": "The label for category 'Advanced Usage' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Management": {
+    "message": "管理",
+    "description": "The label for category 'Management' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Editors & Tools": {
+    "message": "编辑器和工具",
+    "description": "The label for category 'Editors & Tools' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.About & More": {
+    "message": "关于和其他",
+    "description": "The label for category 'About & More' in sidebar 'docs'"
+  }
+}

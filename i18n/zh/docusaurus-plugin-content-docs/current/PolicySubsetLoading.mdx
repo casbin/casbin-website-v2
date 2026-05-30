@@ -1,0 +1,35 @@
+---
+id: policy-subset-loading
+title: 加载策略子集
+description: 加载过滤后的策略
+keywords: [filtered policies, policy subset, performance optimization]
+authors: [hsluoyz]
+---
+
+某些[适配器（Adapter）](/docs/adapters)支持**过滤加载策略（Filtered Policy Loading）**：根据过滤条件仅从存储中加载策略（Policy）的子集。这在大型或多租户环境中可以减少内存使用并提高速度，因为加载完整策略集是不切实际的。
+
+在支持的适配器上调用 `LoadFilteredPolicy(filter)`。过滤器的具体形式因适配器而异。使用过滤加载时，`SavePolicy()` 会被禁用，以防止误覆盖完整策略。
+
+示例：使用带域RBAC模型的过滤文件适配器。过滤器仅加载 `domain1` 的策略：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    fileadapter "github.com/casbin/casbin/v3/persist/file-adapter"
+)
+
+enforcer, _ := casbin.NewEnforcer()
+
+adapter := fileadapter.NewFilteredAdapter("examples/rbac_with_domains_policy.csv")
+enforcer.InitWithAdapter("examples/rbac_with_domains_model.conf", adapter)
+
+filter := &fileadapter.Filter{
+    P: []string{"", "domain1"},
+    G: []string{"", "", "domain1"},
+}
+enforcer.LoadFilteredPolicy(filter)
+
+// 仅加载 "domain1" 的策略。
+```
+
+`LoadIncrementalFilteredPolicy(filter)` 的工作方式类似于 `LoadFilteredPolicy`，但它是将过滤后的策略**添加**到当前内存中的策略中，而不是替换它。你可以将多个过滤加载（例如按租户）合并到一个执行器（Enforcer）中。

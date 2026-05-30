@@ -1,0 +1,103 @@
+---
+id: watchers
+title: 监视器
+description: 在多个 Casbin 执行器实例之间维护一致性
+keywords: [watcher, multiple Casbin enforcer, WatcherEx]
+authors: [hsluoyz]
+---
+
+**监视器（Watcher）** 在多个执行器实例之间保持策略同步。当一个执行器更新策略时，它通知其他执行器（通过消息总线，例如 [etcd](https://github.com/coreos/etcd)、Redis 或 Kafka），其他执行器重新加载或更新其内存中的策略。这使你可以负载均衡器后面运行多个执行器，而不会出现过时的权限。
+
+监视器在单独的包中实现，类似于适配器（Adapter）。下面的列表涵盖了受支持的后端。要添加新的后端，请提交 issue 或 PR。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+
+import {WatcherDotNETData} from "@site/src/tableData/WatcherData/WatcherDotNETData"; import {
+  WatcherGoData
+} from "@site/src/tableData/WatcherData/WatcherGoData";
+import {WatcherJavaData} from "@site/src/tableData/WatcherData/WatcherJavaData";
+import WatcherMDTable from "@site/src/tableData/WatcherData/WatcherMDTable";
+import {WatcherNodejsData} from "@site/src/tableData/WatcherData/WatcherNodejsData";
+import {WatcherPhpData} from "@site/src/tableData/WatcherData/WatcherPhpData";
+import {WatcherPythonData} from "@site/src/tableData/WatcherData/WatcherPythonData";
+import {WatcherRubyData} from "@site/src/tableData/WatcherData/WatcherRubyData";
+import {WatcherRustData} from "@site/src/tableData/WatcherData/WatcherRustData";
+
+<WatcherMDTable data={WatcherGoData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+
+<WatcherMDTable data={WatcherJavaData}></WatcherMDTable>
+  ```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+
+<WatcherMDTable data={WatcherNodejsData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+
+<WatcherMDTable data={WatcherPythonData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+
+<WatcherMDTable data={WatcherDotNETData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+
+<WatcherMDTable data={WatcherRubyData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+
+<WatcherMDTable data={WatcherPhpData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+
+<WatcherMDTable data={WatcherRustData}></WatcherMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## WatcherEx
+
+为了支持多个实例之间的增量同步，我们提供了 `WatcherEx` 接口。该接口可以在策略更改时通知其他实例，但目前还没有 `WatcherEx` 的实现。我们建议使用调度器（Dispatcher）来实现此功能。
+
+与 `Watcher` 接口相比，`WatcherEx` 可以区分接收到的更新操作类型，例如 `AddPolicy` 与 `RemovePolicy`。
+
+WatcherEx API：
+
+| API | 描述 |
+|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SetUpdateCallback(func(string)) error | SetUpdateCallback 配置监视器在数据库中的策略被其他实例更改时调用的回调函数。经典的回调是 Enforcer.LoadPolicy()。 |
+| Update() error | Update 调用其他实例的更新回调以同步其策略。通常在更改数据库中的策略后调用，例如在 Enforcer.SavePolicy()、Enforcer.AddPolicy()、Enforcer.RemovePolicy() 等之后。 |
+| Close() | Close 停止并释放监视器。此后将不再调用回调函数。 |
+| UpdateForAddPolicy(sec, ptype string, params ...string) error | UpdateForAddPolicy 调用其他实例的更新回调以同步其策略。在通过 Enforcer.AddPolicy()、Enforcer.AddNamedPolicy()、Enforcer.AddGroupingPolicy() 和 Enforcer.AddNamedGroupingPolicy() 添加策略后调用。 |
+| UpdateForRemovePolicy(sec, ptype string, params ...string) error | UpdateForRemovePolicy 调用其他实例的更新回调以同步其策略。在通过 Enforcer.RemovePolicy()、Enforcer.RemoveNamedPolicy()、Enforcer.RemoveGroupingPolicy() 和 Enforcer.RemoveNamedGroupingPolicy() 删除策略后调用。 |
+| UpdateForRemoveFilteredPolicy(sec, ptype string, fieldIndex int, fieldValues ...string) error | UpdateForRemoveFilteredPolicy 调用其他实例的更新回调以同步其策略。在 Enforcer.RemoveFilteredPolicy()、Enforcer.RemoveFilteredNamedPolicy()、Enforcer.RemoveFilteredGroupingPolicy() 和 Enforcer.RemoveFilteredNamedGroupingPolicy() 后调用。 |
+| UpdateForSavePolicy(model model.Model) error | UpdateForSavePolicy 调用其他实例的更新回调以同步其策略。在 Enforcer.SavePolicy() 后调用。 |
+| UpdateForAddPolicies(sec string, ptype string, rules ...[]string) error | UpdateForAddPolicies 调用其他实例的更新回调以同步其策略。在 Enforcer.AddPolicies()、Enforcer.AddNamedPolicies()、Enforcer.AddGroupingPolicies() 和 Enforcer.AddNamedGroupingPolicies() 后调用。 |
+| UpdateForRemovePolicies(sec string, ptype string, rules ...[]string) error | UpdateForRemovePolicies 调用其他实例的更新回调以同步其策略。在 Enforcer.RemovePolicies()、Enforcer.RemoveNamedPolicies()、Enforcer.RemoveGroupingPolicies() 和 Enforcer.RemoveNamedGroupingPolicies() 后调用。 |

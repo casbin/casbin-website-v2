@@ -1,0 +1,154 @@
+---
+id: command-line-tools
+title: 命令行工具
+description: 命令行工具（Command-line Tools）
+keywords: [command-line tools, casbin, cli]
+authors: [liulifox233]
+---
+
+**Casbin CLI（命令行工具）** 从命令行提供 Casbin API，让你可以加载模型（Model）和策略（Policy）、执行权限检查以及管理策略。支持 Go、Java、Node.js、Python、.NET 和 Rust 的实现。
+
+## 安装
+
+### Go（casbin-go-cli）
+
+1. 克隆仓库：
+
+    ```bash
+    git clone https://github.com/casbin/casbin-go-cli.git
+    ```
+
+2. 构建 CLI：
+
+    ```bash
+    cd casbin-go-cli
+    go build -o casbin
+    ```
+
+### Rust（casbin-rust-cli）
+
+#### 从 crates.io 安装
+
+```bash
+cargo install casbin-rust-cli
+```
+
+#### 从源码构建
+
+1. 克隆仓库：
+
+    ```bash
+    git clone https://github.com/casbin-rs/casbin-rust-cli.git
+    ```
+
+2. 使用发布优化构建：
+
+    ```bash
+    cd casbin-rust-cli
+    cargo build --release
+    ```
+
+### Java（casbin-java-cli）
+
+1. 克隆仓库：
+
+    ```bash
+    git clone https://github.com/jcasbin/casbin-java-cli.git
+    ```
+
+2. 使用 Maven 构建（JAR 文件将创建在 `target` 目录中）：
+
+    ```bash
+    cd casbin-java-cli
+    mvn clean install
+    ```
+
+### Python（casbin-python-cli）
+
+1. 克隆仓库：
+
+    ```bash
+    git clone https://github.com/casbin/casbin-python-cli.git
+    ```
+
+2. 安装所需依赖：
+
+    ```bash
+    cd casbin-python-cli
+    pip install -r requirements.txt
+    ```
+
+3. 运行 CLI：
+
+    ```bash
+    python -m casbin_cli.client [command] [options] [args]
+    ```
+
+### .NET（casbin-dotnet-cli）
+
+1. 克隆仓库：
+
+    ```bash
+    git clone https://github.com/casbin-net/casbin-dotnet-cli.git
+    ```
+
+2. 构建项目：
+
+    ```bash
+    cd casbin-dotnet-cli
+    dotnet build
+    ```
+
+## 使用方式
+
+## 选项
+
+| 选项 | 描述 | 必填 | 备注 |
+|------|------|------|------|
+| `-m, --model` | 模型文件路径或模型定义文本 | 是 | 用引号包裹，使用 `\|` 作为行分隔符 |
+| `-p, --policy` | 策略文件路径或策略定义文本 | 是 | 用引号包裹，使用 `\|` 作为行分隔符 |
+| `-e, --enforce` | 评估访问权限 | 否 | 用引号包裹参数 |
+| `-ex, --enforceEx` | 评估权限并显示匹配的策略 | 否 | 用引号包裹参数 |
+| `-AF, --addFuntion` | 注册自定义函数（仅 casbin-java-cli） | 否 | 用引号包裹，使用 `\|` 作为行分隔符 |
+| `-ap, --addPolicy` | 向策略文件追加策略规则（仅 casbin-java-cli） | 否 | 用引号包裹参数 |
+| `-rp, --removePolicy` | 从策略文件删除策略规则（仅 casbin-java-cli） | 否 | 用引号包裹参数 |
+
+## 快速开始
+
+- 验证 Alice 是否可以读取 data1：
+
+    ```shell
+    ./casbin enforce -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data1" "read"
+    ```
+
+    > `{"allow":true,"explain":null}`
+
+    ```shell
+    ./casbin enforce -m "[request_definition]\nr = sub, obj, act\n[policy_definition]\np = sub, obj, act\n[role_definition]\ng = _, _\n[policy_effect]\ne = some(where (p.eft == allow))\n[matchers]\nm = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act" -p "p, alice, data1, read\np, bob, data2, write\np, data2_admin, data2, read\np, data2_admin, data2, write\ng, alice, data2_admin" "alice" "data1" "read"
+    ```
+
+    > `{"allow":true,"explain":null}`
+
+- 验证 Alice 是否可以写入 data2 并显示授予权限的策略：
+
+    ```shell
+    ./casbin enforceEx -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    ```
+
+    > `{"allow":true,"explain":["data2_admin","data2","write"]}`
+
+- 向策略文件添加新策略规则（仅 casbin-java-cli）：
+
+    ```shell
+    ./casbin addPolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    ```
+
+    > `{"allow":true,"explain":null}`
+
+- 从策略文件删除策略规则（仅 casbin-java-cli）：
+
+    ```shell
+    ./casbin removePolicy -m "examples/rbac_model.conf" -p "examples/rbac_policy.csv" "alice" "data2" "write"
+    ```
+
+    > `{"allow":true,"explain":null}`

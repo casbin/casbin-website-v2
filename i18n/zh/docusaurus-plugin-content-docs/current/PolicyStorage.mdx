@@ -1,0 +1,77 @@
+---
+id: policy-storage
+title: 策略存储
+description: 策略存储
+keywords: [policy storage]
+authors: [hsluoyz]
+---
+
+Casbin中的策略（Policy）存储由[适配器（Adapter）](/docs/adapters)处理。执行器（Enforcer）通过适配器API加载和（可选）保存策略。
+
+## 从CSV文件加载策略
+
+使用CSV文件是最简单的选择，适用于开发和示例。
+
+示例：[examples/rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+:::note
+如果字段包含逗号，请用双引号括起来：
+
+```csv
+p, alice, "data1,data2", read    --正确
+p, alice, data1,data2, read        --不正确（整个"data1,data2"应该用双引号括起来）
+```
+
+如果字段同时包含逗号和双引号，请用双引号括起来，并通过重复双引号来转义内部引号：
+
+```csv
+p, alice, data, "r.act in (""get"", ""post"")"        --正确
+p, alice, data, "r.act in ("get", "post")"            --不正确（应使用""来转义""）
+```
+
+参见 [casbin#886](https://github.com/casbin/casbin/issues/886)。
+:::
+
+## 适配器API
+
+| 方法                    | 类型     | 描述                              |
+|------------------------|----------|-----------------------------------|
+| LoadPolicy()           | basic    | 从存储中加载所有策略规则           |
+| SavePolicy()           | basic    | 将所有策略规则保存到存储中         |
+| AddPolicy()            | optional | 向存储中添加一条策略规则           |
+| RemovePolicy()         | optional | 从存储中移除一条策略规则           |
+| RemoveFilteredPolicy() | optional | 从存储中移除匹配过滤条件的策略规则 |
+
+## 数据库存储格式
+
+**示例策略（CSV）**
+
+```csv
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, admin
+```
+
+**典型数据库布局（例如MySQL）**
+
+| id   | ptype | v0          | v1    | v2    | v3   | v4   | v5   |
+| ---- | ----- | ----------- | ----- | ----- | ---- | ---- | ---- |
+| 1    | p     | data2_admin | data2 | read  |      |      |      |
+| 2    | p     | data2_admin | data2 | write |      |      |      |
+| 3    | g     | alice       | admin |       |      |      |      |
+
+**列**
+
+- **id** — 主键（适配器特定；不属于Casbin策略）。
+- **ptype** — 策略类型：`p`、`g`、`g2` 等。
+- **v0–v5** — 策略字段按顺序（CSV中从左到右）。大多数适配器使用6列；有些支持更多。如果需要额外字段，请查看适配器文档。
+
+有关完整的适配器API和设计细节，请参见[适配器（Adapter）](/docs/adapters)。

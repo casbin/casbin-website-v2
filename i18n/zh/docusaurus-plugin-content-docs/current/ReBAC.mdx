@@ -1,0 +1,58 @@
+---
+id: rebac
+title: ReBAC（基于关系的访问控制）
+description: 基于Casbin的ReBAC（基于关系的访问控制）
+keywords: [ReBAC, ReBAC model]
+authors: [D0000M]
+---
+## 什么是ReBAC？
+
+**ReBAC（Relationship-Based Access Control，基于关系的访问控制）** 基于实体之间的**关系**进行授权（例如用户-资源、资源-类型等），而非仅依赖角色或属性。它适用于具有丰富关系图的系统：社交网络、协作工具、多租户应用。
+
+ReBAC 回答的典型问题：
+
+- 用户是否是资源的**拥有者**？
+- 用户是否是拥有资源的项目的**成员**？
+- 资源是否**属于**用户有权限访问的**类型**？
+
+关系通常建模为图或路径。
+
+## Casbin 中的 ReBAC
+
+Casbin 通过以下方式建模 ReBAC：
+
+- **用户–资源–角色关系**："用户U对资源O拥有角色R"（例如 `alice` 是 `doc1` 的 `collaborator`）。
+- **资源–类型关系**："资源O属于类型T"（例如 `doc1` 属于类型 `doc`）。
+
+权限（Permission）定义为"角色R可以对类型T执行操作A"；当用户在属于类型T的资源上拥有角色R时，该用户获得权限。示例模型：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = role, obj_type, act
+
+[role_definition]
+g = _, _, _
+g2 = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, r.obj, p.role) && g2(r.obj, p.obj_type) && r.act == p.act
+```
+
+```csv
+# 权限定义："collaborator"角色可以读取类型为"doc"的文件
+p, collaborator, doc, read
+
+# 用户-资源-角色关系：alice 是 doc1 的 collaborator
+g, alice, doc1, collaborator
+
+# 资源-类型关系：doc1 属于类型 "doc"
+g2, doc1, doc
+```
+
+因此：用户必须对资源拥有正确的**角色**，且资源必须匹配权限规则中的**类型**。Casbin 结合 `g`（用户–资源–角色）、`g2`（资源–类型）和 `p`（角色–类型–操作）来决定访问权限。

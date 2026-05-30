@@ -1,0 +1,53 @@
+---
+id: supported-models
+title: 支持的模型
+description: Casbin 支持的模型
+keywords: [supported models]
+authors: [nodece]
+---
+
+Casbin 支持以下访问控制模型和模式：
+
+1. [**ACL（访问控制列表）**](https://en.wikipedia.org/wiki/Access_control_list)
+2. **带有[超级用户](https://en.wikipedia.org/wiki/Superuser)的 ACL**
+3. **无用户的 ACL** — 适用于没有身份验证或用户身份的系统（例如仅 API 或设备访问）。
+4. **无资源的 ACL** — 当权限应用于资源类型而非特定实例时（例如 "write-article"、"read-log"）。
+5. [**RBAC（基于角色的访问控制）**](https://en.wikipedia.org/wiki/Role-based_access_control)
+6. **带资源角色的 RBAC** — 用户和资源都可以拥有角色（或组成员关系）。
+7. **带域/租户的 RBAC** — 用户可以在不同的域或租户中拥有不同的角色。
+8. [**ABAC（基于属性的访问控制）**](https://en.wikipedia.org/wiki/Attribute-Based_Access_Control) — 在规则中使用属性（例如 `resource.Owner`）。
+9. [**PBAC（基于策略的访问控制）**](https://heimdalsecurity.com/blog/rbac-vs-abac-vs-pbac/#:~:text=ABAC%20has%20many%20benefits%20over,no%20predefined%20roles%20or%20permissions) — 授权由基于规则的策略驱动，用于动态、上下文感知的决策。
+10. [**BLP（Bell–LaPadula）**](https://en.wikipedia.org/wiki/Bell%E2%80%93LaPadula_model) — 具有安全标签和许可的形式化模型。
+11. [**Biba**](https://en.wikipedia.org/wiki/Biba_Model) — 限制信息流以防止未授权更改的完整性模型。
+12. [**LBAC（基于格的访问控制）**](/docs/lbac) — 在基于格的框架中结合机密性和完整性。
+13. [**OrBAC（基于组织的访问控制）**](/docs/orbac) — RBAC 扩展了抽象层，用于多组织策略。
+14. [**UCON（使用控制）**](/docs/ucon) — 涵盖持续授权、可变属性、义务和条件。
+15. **RESTful** — 路径模式（例如 `/res/*`、`/res/:id`）和 HTTP 方法（GET、POST、PUT、DELETE）。
+16. **IP 匹配** — 通过 IP 地址或 CIDR 进行匹配，实现网络级控制。
+17. **拒绝覆盖** — 同时允许和拒绝策略；拒绝优先于允许。
+18. **优先级** — 策略规则按顺序排列（例如像防火墙规则）；第一个匹配的生效。
+
+## 示例
+
+| 模型                     | 模型文件                                                                                                                           | 策略文件                                                                                                                          |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| ACL                      | [basic_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_model.conf)                                        | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                        |
+| 带超级用户的 ACL         | [basic_with_root_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_with_root_model.conf)                    | [basic_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_policy.csv)                                        |
+| 无用户的 ACL             | [basic_without_users_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_model.conf)            | [basic_without_users_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_users_policy.csv)            |
+| 无资源的 ACL             | [basic_without_resources_model.conf](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_model.conf)    | [basic_without_resources_policy.csv](https://github.com/casbin/casbin/blob/master/examples/basic_without_resources_policy.csv)    |
+| RBAC                     | [rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)                                          | [rbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_policy.csv)                                          |
+| 带资源角色的 RBAC        | [rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf)  | [rbac_with_resource_roles_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_policy.csv)  |
+| 带域/租户的 RBAC         | [rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)                | [rbac_with_domains_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_policy.csv)                |
+| ReBAC                    | [rebac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rebac_model.conf)                                        | [rebac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rebac_policy.csv)                                        |
+| ABAC                     | [abac_model.conf](https://github.com/casbin/casbin/blob/master/examples/abac_model.conf)                                          | N/A                                                                                                                               |
+| BLP                      | [blp_model.conf](https://github.com/casbin/casbin/blob/master/examples/blp_model.conf)                                            | N/A                                                                                                                               |
+| Biba                     | [biba_model.conf](https://github.com/casbin/casbin/blob/master/examples/biba_model.conf)                                          | N/A                                                                                                                               |
+| LBAC                     | [lbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/lbac_model.conf)                                          | N/A                                                                                                                               |
+| OrBAC                    | [orbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/orbac_model.conf)                                        | [orbac_policy.csv](https://github.com/casbin/casbin/blob/master/examples/orbac_policy.csv)                                        |
+| IP 匹配                  | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)                                    | [ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)                                    |
+| RESTful                  | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)                                  | [keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)                                  |
+| 拒绝覆盖                 | [rbac_with_not_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_not_deny_model.conf)              | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                      |
+| 允许与拒绝               | [rbac_with_deny_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_model.conf)                      | [rbac_with_deny_policy.csv](https://github.com/casbin/casbin/blob/master/examples/rbac_with_deny_policy.csv)                      |
+| 优先级                   | [priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/priority_model.conf)                                  | [priority_policy.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy.csv)                                  |
+| 显式优先级               | [priority_model_explicit](https://github.com/casbin/casbin/blob/master/examples/priority_model_explicit.conf)                     | [priority_policy_explicit.csv](https://github.com/casbin/casbin/blob/master/examples/priority_policy_explicit.csv)                |
+| 主体优先级               | [subject_priority_model.conf](https://github.com/casbin/casbin/blob/master/examples/subject_priority_model.conf)                  | [subject_priority_policyl.csv](https://github.com/casbin/casbin/blob/master/examples/subject_priority_policy.csv)                 |

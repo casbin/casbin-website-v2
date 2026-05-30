@@ -1,0 +1,26 @@
+---
+id: performance
+title: 性能优化
+description: Casbin性能优化
+keywords: [optimization]
+authors: [hsluoyz]
+---
+
+在规模化场景下（大量用户或大量规则），两个常见的瓶颈是**吞吐量（Throughput）**和**策略（Policy）规模**。以下是一些实用的缓解措施。
+
+### 高请求量
+
+如果一个执行器（Enforcer）无法跟上（例如超过10,000 req/s）：
+
+1. **多线程（Multi-threading）** — 使用 [SyncedEnforcer](/docs/multi-threading) 并运行多个工作线程/实例以利用所有核心。
+2. **集群（Cluster）** — 在多台机器上运行Casbin，并使用[监视器（Watcher）](/docs/watchers)同步策略。你可以将两者结合使用：例如10个节点，每个节点5个线程。
+
+### 大规模策略（大量规则）
+
+当有数百万条规则时，执行和加载时间可能会受到影响：
+
+1. **模型（Model）和策略设计** — 优先使用RBAC和共享默认值，以便大多数租户使用较小的规则集（例如 &lt; 100条规则）；仅在需要时覆盖。相关讨论请参见 [GitHub #681](https://github.com/casbin/casbin/issues/681#issuecomment-763801583)。
+2. **策略分片（Policy Sharding）** — 通过[策略子集加载](/docs/policy-subset-loading)仅加载每个执行器所需的规则（例如按租户或按域）。
+3. **使用RBAC而非直接用户权限（Permission）** — 将权限分配给角色（Role）；Casbin会缓存角色树以实现O(1)的角色查找和更少的策略规则。
+
+在可能的情况下组合使用这些方法以获得最佳效果。

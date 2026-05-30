@@ -1,0 +1,107 @@
+---
+id: pbac
+title: PBAC（基于策略的访问控制）
+description: Casbin中的PBAC（基于策略的访问控制）模型
+keywords:
+  [
+    pbac,
+    policy-based access control,
+    dynamic policies,
+    rule-based authorization,
+  ]
+authors: [casbin]
+---
+
+## 什么是PBAC？
+
+**PBAC（Policy-Based Access Control，基于策略的访问控制）** 通过存储在**策略**中的**规则**来决定授权，这些规则在运行时使用 `eval()` 进行评估。与固定的角色或属性检查不同，PBAC 能够表达复杂的、上下文相关的条件。
+
+策略（Policy）可以包含：
+
+- **动态表达式** — 每次请求时评估（例如 `r.sub.Age >= 18`）
+- **复杂逻辑** — 布尔运算和比较运算符、属性访问
+- **上下文** — 用户、资源和环境属性
+- **业务规则** — 策略中的领域特定逻辑
+
+## 模型
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj_rule, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && eval(p.obj_rule) && r.act == p.act
+```
+
+- `p.sub_rule` / `p.obj_rule` — 对请求的表达式（例如 `r.sub.Age >= 18`、`r.obj.Level >= 1`）
+- `eval()` — 在执行时评估这些表达式
+
+## 示例
+
+### 基本策略
+
+**策略：**
+
+```csv
+p, r.sub.Age >= 18, r.obj.Level >= 1, play
+```
+
+**请求示例：**
+
+```text
+{"Age":25}, {"Level":2}, play    # 允许（Age >= 18 且 Level >= 1）
+{"Age":16}, {"Level":2}, play    # 拒绝（Age < 18）
+{"Age":20}, {"Level":0}, play    # 拒绝（Level < 1）
+{"Age":25}, {"Level":2}, read    # 拒绝（操作不匹配策略）
+```
+
+### 复杂策略
+
+**策略：**
+
+```csv
+p, r.sub.Department == "IT" && r.sub.Level >= 3, r.obj.Confidential == false, read
+```
+
+**请求示例：**
+
+```text
+{"Department":"IT","Level":3}, {"Confidential":false}, read    # 允许
+{"Department":"IT","Level":2}, {"Confidential":false}, read    # 拒绝（Level < 3）
+{"Department":"HR","Level":3}, {"Confidential":false}, read    # 拒绝（Department != "IT"）
+{"Department":"IT","Level":3}, {"Confidential":true}, read     # 拒绝（Confidential == true）
+```
+
+**代码示例：**
+
+```go
+e, _ := NewEnforcer("examples/pbac_model.conf", "examples/pbac_policy.csv")
+
+// 启用 JSON 请求支持
+e.EnableAcceptJsonRequest(true)
+
+// 定义带属性的主体和对象
+subject := `{"Department": "IT", "Level": 3}`
+object := `{"Confidential": false}`
+action := "read"
+
+// 检查权限
+ok, err := e.Enforce(subject, object, action)
+if err != nil {
+    fmt.Printf("Enforcement error: %v\n", err)
+    return
+}
+if ok {
+    fmt.Println("权限授予")
+} else {
+    fmt.Println("权限拒绝")
+}
+```
+
+启用 `EnableAcceptJsonRequest(true)` 后，看起来像 JSON（以 `{` 或 `[` 开头）的参数会被自动解析；无效的 JSON 会返回清晰的错误信息。

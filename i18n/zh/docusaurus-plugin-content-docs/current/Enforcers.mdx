@@ -1,0 +1,45 @@
+---
+id: enforcers
+title: 执行器
+description: 执行器是 Casbin 中的主要结构，充当用户对策略规则和模型执行操作的接口。
+keywords: [enforcer, supported enforcers]
+authors: [Abingcbc]
+---
+
+**执行器（Enforcer）** 是 Casbin 的主要接口：你使用它来实施策略以及读取或更新策略和模型。
+
+## 可用的执行器
+
+以下执行器按语言列出。如果你维护第三方执行器，我们可以将其添加到本列表中。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 执行器 | 作者 | 描述 |
+|---------------------------------------------------------------------------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Enforcer](https://github.com/casbin/casbin/blob/master/enforcer.go) | Casbin | 基础 `Enforcer` 提供策略和模型操作的主要接口。详细 API 信息请参阅[管理 API 文档](/docs/management-api)。 |
+| [CachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached.go) | Casbin | 通过内存缓存扩展 `Enforcer` 的执行结果。支持可配置的缓存过期时间，并通过读写锁提供线程安全访问。使用 `EnableCache` 切换缓存（默认启用）。其余 API 方法与基础 `Enforcer` 相同。 |
+| [DistributedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_distributed.go) | Casbin | 专为分布式部署设计，此执行器包装了 `SyncedEnforcer` 以与调度器（Dispatcher）配合使用。更多信息请参阅[调度器文档](/docs/dispatchers#distributedenforcer)。 |
+| [SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go) | Casbin | 通过同步访问扩展 `Enforcer`，实现线程安全操作。 |
+| [SyncedCachedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_cached_synced.go)| Casbin | 结合了 `CachedEnforcer` 的缓存功能和 `SyncedEnforcer` 的同步功能。 |
+| [ContextEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_context.go) | Casbin | 实现了 `IEnforcerContext` 接口以提供上下文感知操作。当前支持适配器（Adapter）操作的上下文，如 `LoadPolicyCtx()`、`SavePolicyCtx()`、`AddPolicyCtx()` 和 `RemovePolicyCtx()`。此接口设计用于未来在更多 Casbin 操作中扩展上下文支持。 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 执行器 | 作者 | 描述 |
+|---------------------------------------------------------------------------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Enforcer](https://github.com/casbin/pycasbin/blob/master/casbin/enforcer.py) | Casbin | 基础 `Enforcer` 提供策略和模型操作的主要接口。详细 API 信息请参阅[管理 API 文档](/docs/management-api)。 |
+| [DistributedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/distributed_enforcer.py) | Casbin | 专为分布式部署设计，此执行器包装了 `SyncedEnforcer` 以与调度器配合使用。更多信息请参阅[调度器文档](/docs/dispatchers#distributedenforcer)。 |
+| [SyncedEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/synced_enforcer.py) | Casbin | 通过同步访问扩展 `Enforcer`，实现线程安全操作。 |
+| [AsyncEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/async_enforcer.py)| Casbin | 提供异步 API 方法以支持非阻塞执行操作。 |
+| [FastEnforcer](https://github.com/casbin/pycasbin/blob/master/casbin/fast_enforcer.py)| Casbin | 使用优化的模型架构，相比标准执行器提供高达 50 倍的性能提升。更多详情请参阅 [fastbin 的仓库](https://github.com/wakemaster39/fastbin)。 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

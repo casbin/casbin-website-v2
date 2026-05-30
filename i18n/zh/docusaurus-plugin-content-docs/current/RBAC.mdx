@@ -1,0 +1,98 @@
+---
+id: rbac
+title: RBAC
+description: Casbin RBAC 使用
+keywords: [RBAC, role definition, role hierarchy]
+authors: [hsluoyz]
+---
+
+## 角色定义
+
+`[role_definition]` 部分定义了 RBAC 角色（继承）关系。Casbin 可以同时运行多个 RBAC 系统：一个用于用户（带角色继承），另一个可选用于资源。每个系统相互独立。
+
+此部分是可选的；如果不使用 RBAC，请省略。
+
+```ini
+[role_definition]
+g = _, _
+g2 = _, _
+```
+
+这里的 `g` 和 `g2` 是两个角色系统；`_, _` 表示每个系统有两个部分（例如用户和角色）。仅使用 `g` 表示用户角色；当资源也有角色时添加 `g2`。示例：[rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)、[rbac_with_resource_roles_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_resource_roles_model.conf)。
+
+用户-角色（和资源-角色）映射存储在策略中，例如：
+
+```csv
+p, data2_admin, data2, read
+g, alice, data2_admin
+```
+
+因此 `alice` 拥有角色 `data2_admin`。Casbin 将所有名称视为字符串（用户、资源或角色）。
+
+在匹配器中使用角色：
+
+```ini
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+因此，仅当请求的主体具有策略中指定的角色时，请求才被允许。
+
+:::note
+
+1. Casbin 仅存储和评估用户-角色（和资源-角色）映射；它不验证用户或角色是否存在。这是身份验证的工作。
+2. 不要对用户和角色使用相同的名称（例如用户 `alice` 和角色 `alice`），因为 Casbin 无法区分它们。如果需要，请使用前缀（例如 `role_alice`）。
+3. 角色继承是传递的且无限制：如果 A 拥有角色 B，B 拥有角色 C，那么 A 实际上也拥有角色 C。
+
+:::
+
+:::info 令牌命名约定
+策略中的主体通常命名为 `sub` 并排在第一位。在 Go Casbin 中，您可以使用其他名称和顺序；然后必须在创建执行器后调用 `e.SetFieldIndex("p", constant.SubjectIndex, index)`，以便像 `DeleteUser` 这样的 API 使用正确的列。
+
+```ini
+# 此处的 `subject` 对应 sub
+[policy_definition]
+p =  obj, act, subject
+```
+
+```go
+e.SetFieldIndex("p", constant.SubjectIndex, 2) // 索引从 0 开始
+ok, err := e.DeleteUser("alice") // 没有 SetFieldIndex，将会引发错误
+```
+
+:::
+
+## 角色层次结构
+
+Casbin 实现了 RBAC1 风格的角色层次结构：如果 `alice` 拥有 `role1`，而 `role1` 拥有 `role2`，那么 `alice` 实际上拥有 `role2` 及其权限。
+
+**层次深度**是您允许的继承级别数。默认角色管理器使用最大深度 10（可配置），因此用户最多可以继承 10 个级别的角色。
+
+```go
+// NewRoleManager 是用于创建默认 RoleManager 实例的构造函数。
+// 默认 RoleManager 实现。
+func NewRoleManager(maxHierarchyLevel int) rbac.RoleManager {
+    rm := RoleManager{}
+    rm.allRoles = &sync.Map{}
+    rm.maxHierarchyLevel = maxHierarchyLevel
+    rm.hasPattern = false
+
+    return &rm
+}
+```
+
+## 区分用户和角色
+
+在 Casbin 中，用户和角色都是字符串。在扁平 RBAC（无角色层次结构）中，`GetAllSubjects()` 和 `GetAllRoles()` 返回 `g` 规则的左侧和右侧（通常为用户和角色）。在有层次结构的情况下，同一个名称既可以作为用户也可以作为角色出现；如果您的应用不追踪哪个是哪个，请使用命名约定（例如前缀 `role::`）并在解释结果时进行检查。
+
+## 隐式角色和权限
+
+通过层次结构继承（而不仅仅是直接分配）的角色和权限称为**隐式**角色和权限。使用 `GetImplicitRolesForUser()` 和 `GetImplicitPermissionsForUser()` 来包含它们；`GetRolesForUser()` 和 `GetPermissionsForUser()` 仅返回直接分配。参见 [GitHub #137](https://github.com/casbin/casbin/issues/137)。
+
+## RBAC 中的模式匹配
+
+参见[带模式的 RBAC](/docs/rbac-with-pattern)。
+
+## 角色管理器
+
+有关自定义角色管理，请参见[角色管理器](/docs/role-managers)。

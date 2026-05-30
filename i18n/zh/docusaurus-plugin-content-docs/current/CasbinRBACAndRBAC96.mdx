@@ -1,0 +1,40 @@
+---
+id: rbac-96
+title: RBAC与RBAC96对比
+description: Casbin RBAC（基于角色的访问控制）与RBAC96的区别
+keywords: [RBAC96, Casbin RBAC]
+authors: [kininaru]
+---
+
+## Casbin RBAC 与 RBAC96
+
+本页对比了 Casbin 的 RBAC（基于角色的访问控制）与 [RBAC96](https://profsandhu.com/cs6393_s12/lecture-rbac96.pdf) 模型。Casbin 支持 RBAC96 的主要思想，并在此基础上增加了域和灵活的权限（Permission）支持。
+
+| RBAC96 | Casbin 支持 | 说明 |
+|--------|----------------|--------|
+| **RBAC0** | ✅ 完全支持 | 用户（User）、角色（Role）、权限及其关系。 |
+| **RBAC1** | ✅ 完全支持 | 角色层级（例如 alice→role1→role2）。 |
+| **RBAC2** | ⚠️ 部分支持 | 约束风格处理（例如拒绝覆盖）通过[策略效应](/docs/syntax-for-models#policy-effect)实现，不支持数量限制。 |
+| **RBAC3** | ⚠️ 部分支持 | RBAC1 + RBAC2；约束同上，不支持数量限制。 |
+
+## 与RBAC96的差异
+
+### 1. 用户与角色
+
+Casbin 不区分"用户"和"角色"的类型系统——两者都是字符串。因此：
+
+   ```csv
+   p, admin, book, read
+   p, alice, book, read
+   g, amber, admin
+   ```
+
+   `GetAllSubjects()` 返回所有在策略中作为主体出现的用户和角色（`[admin alice]`）。`GetAllRoles()` 仅返回 `g` 规则的右侧部分（`[admin]`）。因此，Casbin 通过使用方式来推断区别；如需严格区分，请使用命名约定（例如 `user::alice`、`role::admin`）。
+
+### 2. 权限
+
+RBAC96 定义了七种固定权限类型。在 Casbin 中，权限是任意字符串（例如 `read`、`write`、`approve`），因此可以与你的应用匹配。
+
+### 3. 域
+
+Casbin 支持[带域的RBAC](/docs/rbac-with-domains)，因此角色和权限可以按租户（Tenant）或域进行范围限定——这超出了标准 RBAC96 模型的范围。

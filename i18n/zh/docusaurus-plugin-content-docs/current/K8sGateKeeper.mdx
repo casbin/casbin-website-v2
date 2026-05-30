@@ -1,0 +1,411 @@
+---
+id: k8s-gatekeeper
+title: Kubernetes准入Webhook
+description: 基于Casbin的Kubernetes（K8s）RBAC和ABAC授权中间件
+keywords: [k8s-gatekeeper, Kubernetes, K8s]
+authors: [ComradeProgrammer]
+---
+
+## 概述
+
+**Casbin K8s-Gatekeeper** 是一个使用Casbin进行授权（Authorization）的Kubernetes准入Webhook（Admission Webhook）。你可以声明式地定义模型（Model）和策略（Policy），以允许或拒绝任何Kubernetes资源上的操作——无需在Webhook中编写自定义代码。由Casbin社区维护：[github.com/casbin/k8s-gatekeeper](https://github.com/casbin/k8s-gatekeeper)。
+
+### 基本示例
+
+示例：仅使用配置拒绝使用特定标签镜像的部署（Deployment）：
+
+模型：
+
+```ini
+[request_definition]
+r =  obj
+
+[policy_definition]
+p =  obj,eft
+
+[policy_effect]
+e = !some(where (p.eft == deny))
+
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+contain(split(accessWithWildcard(${OBJECT}.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)
+```
+
+策略：
+
+```csv
+p, "1.14.1",deny
+```
+
+这使用了标准的Casbin ACL语言，如果你已经阅读了入门章节，应该很容易理解。
+
+Casbin K8s-Gatekeeper 具有以下几个优点：
+
+- 使用简单——编写ACL配置，无需大量代码
+- 支持实时配置更新，无需重启插件
+- 灵活——使用 `kubectl gatekeeper` 将任意规则应用于任何Kubernetes资源
+- 简化了Kubernetes准入Webhook的实现——无需了解Webhook内部原理或编写Webhook代码。只需定义约束并编写Casbin ACL
+- 社区维护——如有问题或疑问，请联系我们
+
+### 1.1 Casbin K8s-Gatekeeper的工作原理
+
+K8s-Gatekeeper 是一个Kubernetes的准入Webhook，使用[Casbin](/docs/overview)来执行自定义的访问控制（Access Control）规则，阻止对Kubernetes资源的非预期操作。
+
+Casbin 是一个高效的开源访问控制库，支持多种授权（Authorization）模型。详情请参见[概述](/docs/overview)。
+
+Kubernetes中的准入Webhook是接收和处理准入请求的HTTP回调。K8s-Gatekeeper 是一个 ValidatingAdmissionWebhook，接受或拒绝准入请求。准入请求是描述对Kubernetes资源操作（例如创建或删除部署）的HTTP请求。更多信息请参见 [Kubernetes文档](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#what-are-admission-webhooks)。
+
+### 1.2 示例工作流程
+
+当有人创建包含nginx Pod的部署（通过kubectl或Kubernetes客户端）时，Kubernetes会生成类似如下的准入请求（YAML格式）：
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.1
+        ports:
+        - containerPort: 80
+```
+
+该请求会经过中间件层，包括K8s-Gatekeeper。K8s-Gatekeeper会检测存储在Kubernetes etcd中的所有Casbin执行器（Enforcer）（由用户通过 `kubectl` 或提供的Go客户端创建和维护）。每个执行器包含一个Casbin模型（Model）和策略（Policy）。准入请求会依次被每个执行器评估，并且必须通过所有执行器才能被接受。
+
+（如果你不熟悉Casbin执行器、模型或策略，请参见[新手入门](/docs/get-started)）。
+
+例如，如果管理员想要阻止 'nginx:1.14.1' 镜像同时允许 'nginx:1.3.1'，他们可以创建一个包含以下模型和策略的执行器（创建和配置的详细信息将在后续章节中介绍）：
+
+模型：
+
+```ini
+[request_definition]
+r =  obj
+
+[policy_definition]
+p =  obj,eft
+
+[policy_effect]
+e = !some(where (p.eft == deny))
+
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image") == p.obj
+
+```
+
+策略：
+
+```csv
+p, "nginx:1.13.1",allow
+p, "nginx:1.14.1",deny
+```
+
+使用此模型和策略创建执行器将拒绝该准入请求，阻止Kubernetes创建该部署。
+
+## 2. 安装K8s-gatekeeper
+
+提供三种安装方式：外部Webhook（External Webhook）、内部Webhook（Internal Webhook）和Helm。
+
+:::note
+这些安装方法仅用于评估目的。对于生产部署，请查阅[第5章 高级设置](#5-advanced-settings)并在安装前应用必要的安全修改。
+:::
+
+### 2.1 内部Webhook
+
+#### 2.1.1 步骤1：构建镜像
+
+对于内部Webhook部署，K8s-gatekeeper作为Kubernetes服务运行。构建镜像：
+
+```shell
+docker build --target webhook -t k8s-gatekeeper .
+```
+
+这将创建一个名为 'k8s-gatekeeper:latest' 的本地镜像。
+
+:::note
+对于minikube用户，请在 'docker build' 之前运行 `eval $(minikube -p minikube docker-env)`。
+:::
+
+#### 2.1.2 步骤2：部署服务和资源
+
+运行以下命令：
+
+```shell
+kubectl apply -f config/rbac.yaml
+kubectl apply -f config/webhook_deployment.yaml 
+kubectl apply -f config/webhook_internal.yaml 
+```
+
+使用 `kubectl get pods` 验证部署。
+
+#### 2.1.3 步骤3：安装CRD资源
+
+安装自定义资源定义（Custom Resource Definition）：
+
+```shell
+kubectl apply -f config/auth.casbin.org_casbinmodels.yaml 
+kubectl apply -f config/auth.casbin.org_casbinpolicies.yaml
+```
+
+### 2.2 外部Webhook
+
+对于外部Webhook部署，K8s-gatekeeper运行在Kubernetes外部。Kubernetes要求准入Webhook使用HTTPS。我们提供了测试证书和私钥（不适用于生产环境）。有关自定义证书，请参见[第5章 高级设置](#5-advanced-settings)。
+
+提供的证书是为 'webhook.domain.local' 签发的。更新你的hosts文件（例如 /etc/hosts），将 'webhook.domain.local' 指向K8s-gatekeeper运行的IP地址。
+
+执行：
+
+```shell
+go mod tidy
+go mod vendor
+go run cmd/webhook/main.go
+kubectl apply -f config/auth.casbin.org_casbinmodels.yaml 
+kubectl apply -f config/auth.casbin.org_casbinpolicies.yaml
+kubectl apply -f config/webhook_external.yaml 
+```
+
+### 2.3 通过Helm安装
+
+#### 2.3.1 步骤1：构建镜像
+
+请参见[第2.1.1节](#211-step-1-build-the-image)。
+
+#### 2.3.2 Helm安装
+
+运行：`helm install k8sgatekeeper ./k8sgatekeeper`
+
+## 3. 使用K8s-gatekeeper
+
+### 3.1 创建Casbin模型和策略
+
+使用kubectl或提供的Go客户端创建模型和策略。
+
+#### 3.1.1 通过kubectl创建/更新
+
+在K8s-gatekeeper中，Casbin模型存储为 'CasbinModel' CRD资源。定义位于 `config/auth.casbin.org_casbinmodels.yaml`。
+
+参见 `example/allowed_repo/model.yaml` 中的示例。重要字段：
+
+- metadata.name：模型名称。必须与关联的CasbinPolicy对象名称匹配，以便K8s-gatekeeper正确配对它们。
+- spec.enable：设置为 "false" 以禁用此模型及其关联的策略。
+- spec.modelText：包含Casbin模型定义的字符串。
+
+Casbin策略存储为 'CasbinPolicy' CRD资源，定义在 `config/auth.casbin.org_casbinpolicies.yaml` 中。
+
+参见 `example/allowed_repo/policy.yaml` 中的示例。重要字段：
+
+- metadata.name：策略名称。必须与关联的CasbinModel对象名称匹配。
+- spec.policyItem：包含Casbin策略定义的字符串。
+
+应用你的 CasbinModel 和 CasbinPolicy 文件：
+
+```shell
+kubectl apply -f <filename>
+```
+
+K8s-gatekeeper将在5秒内检测到新的 CasbinModel/CasbinPolicy 对。
+
+#### 3.1.2 通过Go客户端创建/更新
+
+对于无法直接通过shell访问集群节点的场景（例如在构建自动化云平台时），我们提供了一个用于管理 CasbinModel 和 CasbinPolicy 资源的Go客户端。
+
+Go客户端库位于 `pkg/client`。
+
+在 `client.go` 中，使用以下函数创建客户端：
+
+```go
+func NewK8sGateKeeperClient(externalClient bool) (*K8sGateKeeperClient, error) 
+```
+
+`externalClient` 参数指示K8s-gatekeeper是运行在Kubernetes集群内部还是外部。
+
+在 `model.go` 中，提供了创建、删除和修改 CasbinModel 的函数。使用示例请参见 `model_test.go`。
+
+在 `policy.go` 中，提供了创建、删除和修改 CasbinPolicy 的函数。使用示例请参见 `policy_test.go`。
+
+### 3.1.2 测试K8s-gatekeeper
+
+从 `example/allowed_repo` 创建模型和策略后，使用以下命令测试：
+
+```shell
+kubectl apply -f example/allowed_repo/testcase/reject_1.yaml
+```
+
+Kubernetes应该会拒绝此请求，并将webhook列为拒绝原因。然而，应用 `example/allowed_repo/testcase/approve_2.yaml` 应该会成功。
+
+## 4. 为K8s-gatekeeper编写模型和策略
+
+在继续之前，请确保你了解Casbin模型和策略语法。如果不了解，请先阅读[新手入门](/docs/get-started)部分。本章假设你已熟悉Casbin模型和策略。
+
+### 4.1 请求定义
+
+当K8s-gatekeeper评估请求时，输入始终是一个 AdmissionReview Go对象。执行器的使用方式如下：
+
+```go
+ok, err := enforcer.Enforce(admission)
+```
+
+其中 `admission` 是来自Kubernetes官方Go API `"k8s.io/api/admission/v1"` 的 `AdmissionReview` 对象。结构体定义请访问：[https://github.com/kubernetes/api/blob/master/admission/v1/types.go](https://github.com/kubernetes/api/blob/master/admission/v1/types.go)。更多文档：[https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#webhook-request-and-response)。
+
+对于K8s-gatekeeper模型，`request_definition` 应始终遵循以下格式：
+
+```ini
+    [request_definition]
+    r =  obj
+```
+
+名称 'obj' 可以更改，只要在 `[matchers]` 部分中保持一致使用即可。
+
+### 4.2 模型匹配器
+
+使用Casbin的ABAC（基于属性的访问控制）功能编写规则。然而，Casbin的表达式评估器本身不支持映射/数组索引或数组展开。K8s-gatekeeper提供了扩展函数来解决这个问题。如果你需要额外的功能，请提交Issue或Pull Request。
+
+有关Casbin函数的背景信息，请参见[函数](/docs/function)。
+
+扩展函数：
+
+### 4.2.1 扩展函数
+
+#### 4.2.1.1 access
+
+`access` 函数支持映射和数组索引。参见 `example/allowed_repo/model.yaml`：
+
+```ini
+[matchers]
+m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image") == p.obj
+```
+
+这里，`access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Image")` 等价于 `r.obj.Request.Object.Object.Spec.Template.Spec.Containers[0].Image`，其中 `r.obj.Request.Object.Object.Spec.Template.Spec.Containers` 是一个切片（slice）。
+
+`access` 还可以调用返回单个值的无参数函数。参见 `example/container_resource_limit/model.yaml`：
+
+```ini
+[matchers]
+  m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+  parseFloat(access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","cpu","Value")) >= parseFloat(p.cpu) && \
+  parseFloat(access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","memory","Value")) >= parseFloat(p.memory)
+```
+
+这里，`access(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , 0, "Resources","Limits","cpu","Value")` 等于 `r.obj.Request.Object.Object.Spec.Template.Spec.Containers[0].Resources.Limits["cpu"].Value()`，其中 `r.obj.Request.Object.Object.Spec.Template.Spec.Containers[0].Resources.Limits` 是一个映射（map），而 `Value()` 是一个返回单个值的无参数函数。
+
+#### 4.2.1.2 accessWithWildcard
+
+要检查所有数组元素的条件（例如"所有元素必须以'aaa'开头"）而无需使用 `for` 循环，可以使用带映射/切片展开的 `accessWithWildcard`。
+
+如果 `a.b.c` 是数组 `[aaa,bbb,ccc,ddd,eee]`，那么 `accessWithWildcard(a,"b","c","*")` 返回切片 `[aaa,bbb,ccc,ddd,eee]`。通配符 `*` 展开切片。
+
+支持多个通配符。例如，`accessWithWildcard(a,"b","c","*","*")` 返回 `[a.b.c[0][0], a.b.c[0][1], ..., a.b.c[1][0], a.b.c[1][1], ...]`。
+
+### 4.2.1.3 可变参数函数
+
+Casbin的表达式评估器会自动将数组展开为可变参数。利用这一点进行数组/切片/映射展开，以下函数接受数组/切片：
+
+- contain()：接受多个参数，返回是否有任何参数（最后一个除外）等于最后一个参数。
+- split(a,b,c...,sep,index)：返回 `[splits(a,sep)[index], splits(b,sep)[index], splits(c,sep)[index], ...]`。
+- len()：返回可变参数的数量。
+- matchRegex(a,b,c...,regex)：返回所有参数（`a`、`b`、`c`……）是否都匹配该正则表达式。
+
+来自 `example/disallowed_tag/model.yaml` 的示例：
+
+```ini
+    [matchers]
+    m = r.obj.Request.Namespace == "default" && r.obj.Request.Resource.Resource =="deployments" && \
+    contain(split(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)
+```
+
+如果 `accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image")` 返回 `["a:b", "c:d", "e:f", "g:h"]`，则split操作会利用可变参数支持处理每个元素，从每个元素中选择索引1。因此，`split(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1)` 返回 `["b","d","f","h"]`。最后，`contain(split(accessWithWildcard(r.obj.Request.Object.Object.Spec.Template.Spec.Containers , "*", "Image"),":",1) , p.obj)` 检查 `p.obj` 是否存在于 `["b","d","f","h"]` 中。
+
+#### 4.2.1.2 类型转换函数
+
+- ParseFloat()：将整数转换为浮点数（需要此函数因为比较要求浮点类型）。
+- ToString()：将对象转换为字符串。该对象必须具有底层字符串类型（例如 `type XXX string`）。
+- IsNil()：返回参数是否为nil。
+
+## 5. 高级设置
+
+### 5.1 证书配置
+
+Kubernetes要求Webhook使用HTTPS。有两种选择：
+
+- 自签名证书（Self-signed Certificate）（在此仓库的示例中使用）
+- 公开信任的证书（Publicly Trusted Certificate）
+
+#### 5.1.1 自签名证书
+
+自签名证书使用一个不被公开识别的证书颁发机构（CA）。你必须配置Kubernetes信任此CA。
+
+仓库示例使用自定义CA，其私钥和证书存储在 `config/certificate/ca.key` 和 `config/certificate/ca.crt` 中。Webhook证书 `config/certificate/server.crt` 由此CA为域名 "webhook.domain.local"（外部Webhook）和 "casbin-webhook-svc.default.svc"（内部Webhook）签发。
+
+CA信息通过Webhook配置文件传递给Kubernetes。`config/webhook_external.yaml` 和 `config/webhook_internal.yaml` 都包含一个 "CABundle" 字段，其中包含base64编码的CA证书。
+
+要更改证书/域名（例如将Webhook移动到另一个命名空间或更改域名）：
+
+1. 生成新的CA：
+
+   - 生成CA私钥：
+
+     ```shell
+     openssl genrsa -des3 -out ca.key 2048
+     ```
+
+   - 移除密码保护：
+
+     ```shell
+     openssl rsa -in ca.key -out ca.key
+     ```
+
+2. 生成Webhook服务器私钥：
+
+   ```shell
+   openssl genrsa -des3 -out server.key 2048
+   openssl rsa -in server.key -out server.key
+   ```
+
+3. 使用CA签署Webhook证书：
+
+   - 复制系统的OpenSSL配置文件（使用 `openssl version -a` 查找，通常为 `openssl.cnf`）。
+
+   - 修改配置文件：
+     - 在 `[req]` 部分添加：`req_extensions = v3_req`
+     - 在 `[v3_req]` 部分添加：`subjectAltName = @alt_names`
+     - 追加：
+
+       ```ini
+       [alt_names]
+       DNS.2=<Your desired domain>
+       ```
+
+       注意：如果修改了，请将 'casbin-webhook-svc.default.svc' 替换为实际的服务名称。
+
+   - 生成证书请求：
+
+     ```shell
+     openssl req -new -nodes -keyout server.key -out server.csr -config openssl.cnf
+     ```
+
+   - 使用CA签署证书：
+
+     ```shell
+     openssl x509 -req -days 3650 -in server.csr -out server.crt -CA ca.crt -CAkey ca.key -CAcreateserial -extensions v3_req -extensions SAN -extfile openssl.cnf
+     ```
+
+4. 使用base64编码的新CA证书更新 `config/webhook_external.yaml` 和 `config/webhook_internal.yaml` 中的 'CABundle' 字段。
+
+5. 对于Helm部署，在Helm charts中应用相应的更改。
+
+#### 5.1.2 公开信任的证书
+
+使用公开信任的证书时，可以跳过上述步骤。从 `config/webhook_external.yaml` 和 `config/webhook_internal.yaml` 中移除 "CABundle" 字段，并将域名设置为你注册的域名。

@@ -1,0 +1,219 @@
+---
+id: log-error
+title: 日志记录与错误处理
+description: Casbin 中的日志记录与错误处理
+keywords: [log, error, error handling]
+authors: [hsluoyz]
+---
+
+## 日志记录
+
+Casbin 可以记录请求、模型加载和策略变更。**日志默认关闭。** 使用 `Enforcer.EnableLog()` 或通过 `NewEnforcer()` 的日志参数启用。示例输出：
+
+```log
+2017/07/15 19:43:56 [Request: alice, data1, read ---> true]
+```
+
+:::note
+**Go：** 你可以接入自定义日志记录器；Casbin 通过它记录模型、请求、角色和策略。
+:::
+
+:::note
+**Python：** PyCasbin 使用标准的 `logging` 模块。像往常一样配置你的应用日志；PyCasbin 使用 `logging.getLogger()`。可选的 `logging_config` 记录在 [pycasbin/util/log.py](https://github.com/casbin/pycasbin/blob/master/casbin/util/log.py) 中。有关设置，请参阅 [Python logging](https://docs.python.org/3/library/logging.config.html) 和 [Django logging](https://docs.djangoproject.com/en/4.2/topics/logging/)。
+:::
+
+### 为不同的执行器配置独立的日志记录器
+
+每个执行器（Enforcer）都可以拥有自己的日志记录器，并且日志记录器可以在运行时更改。
+
+你可以使用 `NewEnforcer()` 的最后一个参数指定日志记录器。使用此方法时，日志记录器的启用字段优先级高于执行器的启用参数。
+
+```go
+// 设置默认日志记录器作为执行器 e1 的日志记录器。
+// 此操作也可视为在运行时更改 e1 的日志记录器。
+e1.SetLogger(&Log.DefaultLogger{})
+
+// 设置另一个日志记录器作为执行器 e2 的日志记录器。
+e2.SetLogger(&YouOwnLogger)
+
+// 在初始化执行器 e3 时设置你的日志记录器。
+e3, _ := casbin.NewEnforcer("examples/rbac_model.conf", a, logger)
+```
+
+#### 支持的日志记录器
+
+Casbin 提供多种日志记录器实现：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 日志记录器 | 作者 | 描述 |
+|------------|------|------|
+| [默认日志记录器（内置）](https://github.com/casbin/casbin/blob/master/log/default_logger.go) | Casbin | 使用 Go 标准日志包的默认日志记录器。 |
+| [Zap 日志记录器](https://github.com/casbin/zap-logger) | Casbin | 使用 [zap](https://github.com/uber-go/zap) 进行 JSON 编码的日志记录，通过 zap-logger 提供额外的自定义选项。 |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+| 日志记录器 | 作者 | 描述 |
+|------------|------|------|
+| [psr3-bridge 日志记录器](https://github.com/php-casbin/psr3-bridge) | Casbin | 提供符合 [PSR-3](https://www.php-fig.org/psr/psr-3/) 标准的桥接器。 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### 实现自定义日志记录器
+
+自定义日志记录器必须实现 [Logger](https://github.com/casbin/casbin/blob/master/log/logger.go#L20) 接口。
+
+| 方法 | 类型 | 描述 |
+|------|------|------|
+| `EnableLog()` | 必需 | 控制是否打印消息。 |
+| `IsEnabled()` | 必需 | 返回当前日志记录器的启用状态。 |
+| `LogModel()` | 必需 | 记录模型相关信息。 |
+| `LogEnforce()` | 必需 | 记录执行相关信息。 |
+| `LogRole()` | 必需 | 记录角色相关信息。 |
+| `LogPolicy()` | 必需 | 记录策略相关信息。 |
+
+将自定义日志记录器传递给 `Enforcer.SetLogger()`。
+
+以下是一个实现自定义日志记录器的 Go 示例：
+
+```go
+import (
+    "fmt"
+    "log"
+    "strings"
+)
+
+// DefaultLogger 是使用 golang log 的 Logger 实现。
+type DefaultLogger struct {
+    enabled bool
+}
+
+func (l *DefaultLogger) EnableLog(enable bool) {
+    l.enabled = enable
+}
+
+func (l *DefaultLogger) IsEnabled() bool {
+    return l.enabled
+}
+
+func (l *DefaultLogger) LogModel(model [][]string) {
+    if !l.enabled {
+        return
+    }
+    var str strings.Builder
+    str.WriteString("Model: ")
+    for _, v := range model {
+        str.WriteString(fmt.Sprintf("%v\n", v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogEnforce(matcher string, request []interface{}, result bool, explains [][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var reqStr strings.Builder
+    reqStr.WriteString("Request: ")
+    for i, rval := range request {
+        if i != len(request)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", rval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v", rval))
+        }
+    }
+    reqStr.WriteString(fmt.Sprintf(" ---> %t\n", result))
+
+    reqStr.WriteString("Hit Policy: ")
+    for i, pval := range explains {
+        if i != len(explains)-1 {
+            reqStr.WriteString(fmt.Sprintf("%v, ", pval))
+        } else {
+            reqStr.WriteString(fmt.Sprintf("%v \n", pval))
+        }
+    }
+
+    log.Println(reqStr.String())
+}
+
+func (l *DefaultLogger) LogPolicy(policy map[string][][]string) {
+    if !l.enabled {
+        return
+    }
+
+    var str strings.Builder
+    str.WriteString("Policy: ")
+    for k, v := range policy {
+        str.WriteString(fmt.Sprintf("%s : %v\n", k, v))
+    }
+
+    log.Println(str.String())
+}
+
+func (l *DefaultLogger) LogRole(roles []string) {
+    if !l.enabled {
+        return
+    }
+
+    log.Println("Roles: ", roles)
+}
+```
+
+## 错误处理
+
+Casbin 可能因多种原因出现错误或恐慌（panic）：
+
+1. 模型文件（.conf）语法无效
+2. 策略文件（.csv）语法无效
+3. 存储适配器（Adapter）的自定义错误（例如 MySQL 连接失败）
+4. Casbin 错误
+
+五个主要函数可能产生错误或恐慌：
+
+| 函数 | 出错时的行为 |
+|------|-------------|
+| [NewEnforcer()](https://godoc.org/github.com/casbin/casbin#NewEnforcer) | 返回错误 |
+| [LoadModel()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadModel) | 返回错误 |
+| [LoadPolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.LoadPolicy) | 返回错误 |
+| [SavePolicy()](https://godoc.org/github.com/casbin/casbin#Enforcer.SavePolicy) | 返回错误 |
+| [Enforce()](https://godoc.org/github.com/casbin/casbin#Enforcer.Enforce) | 返回错误 |
+
+:::note
+
+`NewEnforcer()` 内部会调用 `LoadModel()` 和 `LoadPolicy()`，因此使用 `NewEnforcer()` 时无需单独调用它们。
+
+:::
+
+## 启用和禁用执行
+
+你可以使用 `Enforcer.EnableEnforce()` 禁用执行器（Enforcer）。禁用后，`Enforcer.Enforce()` 始终返回 `true`。其他操作（如策略管理）不受影响。示例：
+
+```go
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+
+// 将返回 false。
+// 默认情况下，执行器已启用。
+e.Enforce("non-authorized-user", "data1", "read")
+
+// 在运行时禁用执行器。
+e.EnableEnforce(false)
+
+// 对任何请求都将返回 true。
+e.Enforce("non-authorized-user", "data1", "read")
+
+// 重新启用执行器。
+e.EnableEnforce(true)
+
+// 将返回 false。
+e.Enforce("non-authorized-user", "data1", "read")
+```

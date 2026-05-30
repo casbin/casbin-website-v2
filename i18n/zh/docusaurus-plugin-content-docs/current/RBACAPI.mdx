@@ -1,0 +1,1967 @@
+---
+id: rbac-api
+title: RBAC API
+description: 更友好的RBAC API。该API是管理API的子集。RBAC用户可以使用此API简化代码
+keywords: [RBAC, API]
+authors: [nodece]
+---
+
+**RBAC API** 是一个用于基于角色操作的便捷层（用户的角色、角色的用户、权限等）。它是[管理API](/docs/management-api)的子集，专为RBAC使用场景而设计。
+
+## 参考
+
+全局变量 `e` 表示一个执行器（Enforcer）实例。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_model.conf', 'examples/rbac_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("path/to/model.conf", "path/to/policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforcer::new("examples/rbac_model.conf", "examples/rbac_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_model.conf", "examples/rbac_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetRolesForUser()`
+
+获取分配给用户的所有角色（Role）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.getRolesForUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.GetRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let roles = e.get_roles_for_user("alice", None); // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetUsersForRole()`
+
+获取分配给角色的所有用户（User）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetUsersForRole("data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.getUsersForRole('data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->getUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+users = e.get_users_for_role("data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.GetUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let users = e.get_users_for_role("data1_admin", None); // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getUsersForRole("data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasRoleForUser()`
+
+检查用户是否拥有特定角色。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.HasRoleForUser("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = await e.hasRoleForUser('alice', 'data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$res = $e->hasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_role_for_user("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var res = e.HasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_role_for_user("alice", "data1_admin", None); // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean res = e.hasRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddRoleForUser()`
+
+为用户分配一个角色。
+如果用户已有该角色，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddRoleForUser("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addRoleForUser('alice', 'data2_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```PHP
+$e->addRoleForUser("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.add_role_for_user("alice", "data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddRoleForUser("alice", "data2_admin");
+or
+var added = await e.AddRoleForUserAsync("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_role_for_user("alice", "data2_admin", None).await?; // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addRoleForUser("alice", "data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddRolesForUser()`
+
+为用户分配多个角色。
+如果用户已拥有其中一个角色，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var roles = []string{"data2_admin", "data1_admin"}
+e.AddRolesForUser("alice", roles)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const roles = ["data1_admin", "data2_admin"];
+roles.map((role) => e.addRoleForUser("alice", role));
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = new List<string> { "data1_admin", "data2_admin" };
+var allAdded = e.AddRolesForUser("alice", roles);
+// or async
+var allAdded = await e.AddRolesForUserAsync("alice", roles);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let roles = vec!["data1_admin".to_owned(), "data2_admin".to_owned()];
+let all_added = e.add_roles_for_user("alice", roles, None).await?; // No domain
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRoleForUser()`
+
+从用户移除一个角色。
+如果用户没有该角色，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRoleForUser("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRoleForUser('alice', 'data1_admin')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_role_for_user("alice", "data1_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteRoleForUser("alice", "data1_admin");
+or
+var deleted = await e.DeleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_role_for_user("alice", "data1_admin", None).await?; // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deleteRoleForUser("alice", "data1_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRolesForUser()`
+
+从用户移除所有角色。
+如果用户没有任何角色，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRolesForUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deletedAtLeastOne = e.DeleteRolesForUser("alice");
+or
+var deletedAtLeastOne = await e.DeleteRolesForUserAsync("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted_at_least_one = e.delete_roles_for_user("alice", None).await?; // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deletedAtLeastOne = e.deleteRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteUser()`
+
+从系统中移除一个用户。
+如果用户不存在，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteUser('alice')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteUser("alice");
+or
+var deleted = await e.DeleteUserAsync("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_user("alice").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deleteUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeleteRole()`
+
+从系统中移除一个角色。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeleteRole("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deleteRole("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deleteRole("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_role("data2_admin")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeleteRole("data2_admin");
+or
+var deleted = await e.DeleteRoleAsync("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_role("data2_admin").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+e.deleteRole("data2_admin");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeletePermission()`
+
+从系统中移除一个权限（Permission）。
+如果权限不存在，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermission("read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermission('read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermission("read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permission("read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeletePermission("read");
+or
+var deleted = await e.DeletePermissionAsync("read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_permission(vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deletePermission("read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPermissionForUser()`
+
+授予用户或角色一个权限。
+如果用户或角色已有该权限，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddPermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addPermissionForUser('bob', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->addPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.add_permission_for_user("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var added = e.AddPermissionForUser("bob", "read");
+or
+var added = await e.AddPermissionForUserAsync("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let added = e.add_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean added = e.addPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `AddPermissionsForUser()`
+
+授予用户或角色多个权限。
+如果用户或角色已拥有其中一个权限，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var permissions = [][]string{{"data1", "read"},{"data2","write"}}
+for i := 0; i < len(permissions); i++ {
+    e.AddPermissionsForUser("alice", permissions[i])
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const permissions = [
+    ["data1", "read"],
+    ["data2", "write"],
+];
+
+permissions.map((permission) => e.addPermissionForUser("bob", ...permission));
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = new List<List<string>>
+{
+    new List<string> { "data1", "read" },
+    new List<string> { "data2", "write" }
+};
+
+foreach (var permission in permissions)
+{
+    var added = e.AddPermissionForUser("bob", permission.ToArray());
+    // or async
+    var added = await e.AddPermissionForUserAsync("bob", permission.ToArray());
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let permissions = vec![
+    vec!["data1".to_owned(), "read".to_owned()],
+    vec!["data2".to_owned(), "write".to_owned()],
+];
+
+let all_added = e.add_permissions_for_user("bob", permissions).await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeletePermissionForUser()`
+
+撤销用户或角色的一个权限。
+如果用户或角色没有该权限，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermissionForUser("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permission_for_user("bob", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deleted = e.DeletePermissionForUser("bob", "read");
+or
+var deleted = await e.DeletePermissionForUserAsync("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted = e.delete_permission_for_user("bob", vec!["read".to_owned()]).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deleted = e.deletePermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `DeletePermissionsForUser()`
+
+撤销用户或角色的所有权限。
+如果用户或角色没有任何权限，返回 false（即未受影响）。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.DeletePermissionsForUser("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.deletePermissionsForUser('bob')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->deletePermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.delete_permissions_for_user("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var deletedAtLeastOne = e.DeletePermissionsForUser("bob");
+or
+var deletedAtLeastOne = await e.DeletePermissionsForUserAsync("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let deleted_at_least_one = e.delete_permissions_for_user("bob").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean deletedAtLeastOne = e.deletePermissionForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetPermissionsForUser()`
+
+获取用户或角色的所有权限。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetPermissionsForUser("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.getPermissionsForUser('bob')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_permissions_for_user("bob")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> permissions = e.getPermissionsForUser("bob");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedPermissionsForUser()`
+
+GetNamedPermissionsForUser 通过命名策略获取用户或角色的权限。
+
+For example:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p2, admin, create
+g, alice, admin
+```
+
+GetNamedPermissionsForUser("p", "alice") 将返回 `[["alice", "data1", "read"]]`。
+GetNamedPermissionsForUser("p2", "alice") 将返回 `[["admin", "create"]]`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+permissions, err := e.GetNamedPermissionsForUser("p", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetNamedPermissionsForUser("p", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+permissions = e.get_named_permissions_for_user("p", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `HasPermissionForUser()`
+
+HasPermissionForUser 判断用户是否拥有某个权限。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.HasPermissionForUser("alice", []string{"read"})
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.hasPermissionForUser('alice', 'read')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->hasPermissionForUser("alice", []string{"read"});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+has = e.has_permission_for_user("alice", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var has = e.HasPermissionForUser("bob", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let has = e.has_permission_for_user("alice", vec!["data1".to_owned(), "read".to_owned()]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean has = e.hasPermissionForUser("alice", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitRolesForUser()`
+
+GetImplicitRolesForUser 获取用户拥有的隐式角色。
+与 GetRolesForUser() 相比，此函数除了直接角色外还能获取间接角色。
+
+For example:
+
+```csv
+g, alice, role:admin  
+g, role:admin, role:user  
+```
+
+GetRolesForUser("alice") 只能获取：["role:admin"]。  
+但 GetImplicitRolesForUser("alice") 将获取：["role:admin", "role:user"]。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetImplicitRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.getImplicitRolesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_implicit_roles_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitRoles = e.GetImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+e.get_implicit_roles_for_user("alice", None); // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> implicitRoles = e.getImplicitRolesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedImplicitRolesForUser()`
+
+GetNamedImplicitRolesForUser 通过命名策略获取用户拥有的隐式角色。
+
+For example:
+
+```csv
+g, alice, admin
+g, admin, super_admin
+g2, alice, user
+g2, user, guest
+```
+
+GetNamedImplicitRolesForUser("g", "alice") 将返回 `["admin", "super_admin"]`。
+GetNamedImplicitRolesForUser("g2", "alice") 将返回 `["user", "guest"]`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+roles, err := e.GetNamedImplicitRolesForUser("g", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var roles = e.GetNamedImplicitRolesForUser("g", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+roles = e.get_named_implicit_roles_for_user("g", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitUsersForRole()`
+
+GetImplicitUsersForRole 获取继承该角色的所有用户。
+与 GetUsersForRole() 相比，此函数能获取间接用户。
+
+For example:  
+
+```csv
+g, alice, role:admin  
+g, role:admin, role:user  
+```
+
+GetUsersForRole("role:user") 只能获取：["role:admin"]。  
+但 GetImplicitUsersForRole("role:user") 将获取：["role:admin", "alice"]。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+users := e.GetImplicitUsersForRole("role:user")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const users = e.getImplicitUsersForRole("role:user");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> users = e.getImplicitUsersForRole("role:user");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitPermissionsForUser()`
+
+GetImplicitPermissionsForUser 获取用户或角色的隐式权限。  
+与 GetPermissionsForUser() 相比，此函数能获取通过角色继承的权限。  
+
+For example:  
+
+```csv
+p, admin, data1, read  
+p, alice, data2, read  
+g, alice, admin 
+```
+
+GetPermissionsForUser("alice") 只能获取：[["alice", "data2", "read"]]。  
+但 GetImplicitPermissionsForUser("alice") 将获取：[["admin", "data1", "read"], ["alice", "data2", "read"]]。
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetImplicitPermissionsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```text
+await e.getImplicitPermissionsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e->getImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_implicit_permissions_for_user("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitPermissions = e.GetImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+e.get_implicit_permissions_for_user("alice", None); // No domain
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> implicitPermissions = e.getImplicitPermissionsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetNamedImplicitPermissionsForUser()`
+
+GetNamedImplicitPermissionsForUser 通过命名策略获取用户或角色的隐式权限
+与 GetImplicitPermissionsForUser() 相比，此函数允许你指定策略名称。
+
+For example:
+
+```csv
+p, admin, data1, read
+p2, admin, create
+g, alice, admin
+```
+
+GetImplicitPermissionsForUser("alice") 只能获取：[["admin", "data1", "read"]]，其策略为默认的 "p"
+
+但你可以通过 GetNamedImplicitPermissionsForUser("p2","alice") 将策略指定为 "p2" 来获取：[["admin", "create"]]
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.GetNamedImplicitPermissionsForUser("p2","alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var permissions = e.GetNamedImplicitPermissionsForUser("p2", "alice");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e.get_named_implicit_permissions_for_user("p2", "alice")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetDomainsForUser()`
+
+GetDomainsForUser 获取用户拥有的所有域（Domain）。
+
+For example:
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+g, alice, admin, domain1
+g, alice, admin, domain2
+```
+
+GetDomainsForUser("alice") 可以获取 ["domain1", "domain2"]
+
+For example:
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+result, err := e.GetDomainsForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var result = e.GetDomainsForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitResourcesForUser()`
+
+返回适用于用户的所有策略，包括通过角色继承的策略。
+
+For example:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+
+g, alice, data2_admin
+```
+
+GetImplicitResourcesForUser("alice") 将返回
+`[[alice data1 read] [alice data2 read] [alice data2 write]]`
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+resources, err := e.GetImplicitResourcesForUser("alice")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var resources = e.GetImplicitResourcesForUser("alice");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitUsersForPermission()`
+
+获取拥有特定权限的所有用户，包括通过角色获得隐式权限的用户。
+
+For example:
+
+```csv
+p, admin, data1, read
+p, bob, data1, read
+g, alice, admin
+```
+
+GetImplicitUsersForPermission("data1", "read") 将返回：`["alice", "bob"]`。
+
+注意：只返回用户，角色（"g" 中的第二个参数）将被排除。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+users, err := e.GetImplicitUsersForPermission("data1", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var users = e.GetImplicitUsersForPermission("data1", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitObjectPatternsForUser()`
+
+返回用户在给定域和操作下可以访问的所有对象模式（包括通配符）。
+
+For example:
+
+```csv
+p, admin, chronicle/123, location/*, read
+p, user, chronicle/456, location/789, read
+g, alice, admin
+g, bob, user
+```
+
+GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read") 将返回 `["location/*"]`。
+GetImplicitObjectPatternsForUser("bob", "chronicle/456", "read") 将返回 `["location/789"]`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+patterns, err := e.GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const patterns = await e.getImplicitObjectPatternsForUser("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$patterns = $e->getImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+patterns = e.get_implicit_object_patterns_for_user("alice", "chronicle/123", "read")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var patterns = e.GetImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let patterns = e.get_implicit_object_patterns_for_user("alice", "chronicle/123", "read").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> patterns = e.getImplicitObjectPatternsForUser("alice", "chronicle/123", "read");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetAllowedObjectConditions()`
+
+返回用户可以访问的对象条件。
+
+For example:
+
+```csv
+p, alice, r.obj.price < 25, read
+p, admin, r.obj.category_id = 2, read
+p, bob, r.obj.author = bob, write
+
+g, alice, admin
+```
+
+e.GetAllowedObjectConditions("alice", "read", "r.obj.") 将返回 `["price < 25", "category_id = 2"], nil`
+
+注意：
+
+0. 前缀：你可以自定义对象条件的前缀，"r.obj." 是常用的前缀。
+移除前缀后，剩余部分即为对象条件。
+如果存在不满足前缀要求的 obj 策略，将返回 `errors.ERR_OBJ_CONDITION`。
+
+1. 如果 'objectConditions' 数组为空，返回 `errors.ERR_EMPTY_CONDITION`
+返回此错误是因为某些数据适配器（Adapter）的 ORM 在收到空条件时默认返回全表数据，
+这往往与预期行为相反（例如 GORM）。
+如果你使用的适配器没有这种表现，可以选择忽略此错误。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+conditions, err := e.GetAllowedObjectConditions("alice", "read", "r.obj.")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var conditions = e.GetAllowedObjectConditions("alice", "read", "r.obj.");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### `GetImplicitUsersForResource()`
+
+返回有权访问资源的所有用户，包括通过角色获得隐式权限的用户。
+
+For example:
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+p, data2_admin, data2, read
+p, data2_admin, data2, write
+g, alice, data2_admin
+```
+
+GetImplicitUsersForResource("data2") 将返回 `[["bob", "data2", "write"], ["alice", "data2", "read"] ["alice", "data2", "write"]], nil`。
+
+GetImplicitUsersForResource("data1") 将返回 `[["alice", "data1", "read"]], nil`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResource("data2")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitUsers = e.GetImplicitUsersForResource("data2");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+只返回用户，角色（"g" 中的第二个参数）将被排除。
+
+:::
+
+### `GetNamedImplicitUsersForResource()`
+
+返回通过命名策略有权访问资源的所有用户，包括通过角色获得隐式权限的用户。
+此函数通过命名策略（例如 g2、g3 等）处理资源角色关系。
+
+For example:
+
+```csv
+p, admin_group, admin_data, *
+g, admin, admin_group
+g2, app, admin_data
+```
+
+GetNamedImplicitUsersForResource("g2", "app") 将返回通过 g2 关系有权访问 admin_data 的用户。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetNamedImplicitUsersForResource("g2", "app")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var implicitUsers = e.GetNamedImplicitUsersForResource("g2", "app");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

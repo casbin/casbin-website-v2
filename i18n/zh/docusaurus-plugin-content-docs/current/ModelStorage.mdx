@@ -1,0 +1,105 @@
+---
+id: model-storage
+title: 模型存储
+description: 模型存储
+keywords: [model storage]
+authors: [hsluoyz]
+---
+
+Casbin中的模型（Model）是**只加载**的：它们定义了你的访问控制（Access Control）逻辑，并在运行时被视为静态的。没有API可以保存或更新存储中的模型。
+
+你可以通过三种方式加载模型：
+
+## 从CONF文件加载
+
+从`.conf`文件加载是常用的方法，便于共享和讨论模型。
+
+示例：[examples/rbac_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_model.conf)
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+在创建执行器（Enforcer）时使用：
+
+```go
+e := casbin.NewEnforcer("examples/rbac_model.conf", "examples/rbac_policy.csv")
+```
+
+## 从代码加载
+
+你可以通过代码构建模型，而不是使用文件：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin/v3/model"
+    "github.com/casbin/casbin/v3/persist/file-adapter"
+)
+
+// 在Go中构建模型。
+m := model.NewModel()
+m.AddDef("r", "r", "sub, obj, act")
+m.AddDef("p", "p", "sub, obj, act")
+m.AddDef("g", "g", "_, _")
+m.AddDef("e", "e", "some(where (p.eft == allow))")
+m.AddDef("m", "m", "g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act")
+
+// 从.CSV文件适配器加载策略规则。
+// 替换为你自己的适配器以避免使用文件。
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 创建执行器。
+e := casbin.NewEnforcer(m, a)
+```
+
+## 从字符串加载
+
+你也可以从字符串加载模型（例如从配置或数据库）：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin/v3/model"
+)
+
+// 模型文本（例如来自配置）。
+text :=
+`
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+m, _ := model.NewModelFromString(text)
+
+// 从.CSV文件适配器加载策略规则。
+// 替换为你自己的适配器以避免使用文件。
+a := fileadapter.NewAdapter("examples/rbac_policy.csv")
+
+// 创建执行器。
+e := casbin.NewEnforcer(m, a)
+```

@@ -1,0 +1,64 @@
+---
+id: graphql-middlewares
+title: GraphQL 中间件
+description: GraphQL 端点的授权
+keywords: [GraphQL, authorization]
+authors: [hsluoyz]
+---
+
+根据 [GraphQL 的授权指南](https://graphql.org/learn/authorization/)，授权应集中在一个地方——即 GraphQL 层和解析器之间。在解析器（或一个轻量包装器）中使用 Casbin 来对类型、字段或操作（Operation）实施访问控制。
+
+```javascript
+// Casbin 授权逻辑位于 postRepository 内部
+var postRepository = require(‘postRepository’);
+
+var postType = new GraphQLObjectType({
+  name: ‘Post’,
+  fields: {
+    body: {
+      type: GraphQLString,
+      resolve: (post, args, context, { rootValue }) => {
+        return postRepository.getBody(context.user, post);
+      }
+    }
+  }
+});
+```
+
+## 可用的 GraphQL 中间件
+
+可用的 Casbin GraphQL 集成：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+| 中间件（Middleware）                                                               | GraphQL 实现                                     | 作者（Author）                                       | 描述（Description）                                      |
+|------------------------------------------------------------------------------------|--------------------------------------------------|------------------------------------------------|--------------------------------------------------------|
+| [graphql-authz](https://github.com/casbin/graphql-authz)                           | [graphql](https://github.com/graphql-go/graphql) | Casbin                                         | graphql-go 的授权中间件                |
+| [graphql-casbin](https://github.com/esmaeilpour/graphql-casbin)                    | [graphql](https://github.com/graphql-go/graphql) | [@esmaeilpour](https://github.com/esmaeilpour) | GraphQL 与 Casbin 集成示例                 |
+| [gqlgen_casbin_RBAC_example](https://github.com/WenyXu/gqlgen_casbin_RBAC_example) | [gqlgen](https://github.com/99designs/gqlgen)    | [@WenyXu](https://github.com/WenyXu)           | (empty)                                                |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+| 中间件（Middleware）                                          | GraphQL 实现                                         | 作者（Author） | 描述（Description）                                                                          |
+|---------------------------------------------------------------|-----------------------------------------------------|--------|--------------------------------------------------------------------------------------------|
+| [graphql-authz](https://github.com/node-casbin/graphql-authz) | [GraphQL.js](https://github.com/graphql/graphql-js) | Casbin | [GraphQL.js](https://github.com/graphql/graphql-js) 的 Casbin 授权中间件    |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+| 中间件（Middleware）                                         | GraphQL 实现                                                     | 作者（Author）                                   | 描述（Description）                                                                                    |
+|--------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------|------------------------------------------------------------------------------------------------------|
+| [graphql-authz](https://github.com/Checho3388/graphql-authz) | [GraphQL-core 3](https://github.com/graphql-python/graphql-core) | [@Checho3388](https://github.com/Checho3388) | [GraphQL-core 3](https://github.com/graphql-python/graphql-core) 的 Casbin 授权中间件 |
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

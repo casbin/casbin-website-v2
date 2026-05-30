@@ -1,0 +1,11 @@
+---
+id: multi-threading
+title: 多线程
+description: 在多线程环境中使用Casbin
+keywords: [multi-threading]
+authors: [hsluoyz]
+---
+
+在**多线程（Multi-threading）**代码中，使用Casbin的**同步执行器（Synchronized Enforcer）**，以便一个执行器（Enforcer）可以安全地在多个线程间共享：[SyncedEnforcer](https://github.com/casbin/casbin/blob/master/enforcer_synced.go)（Go语言）、[enforcer_synced.cpp](https://github.com/casbin/casbin-cpp/blob/master/casbin/enforcer_synced.cpp)（C++语言）。
+
+同步执行器还可以**自动重新加载**策略（Policy）：调用 `StartAutoLoadPolicy()` 来轮询策略源并在其发生变化时重新加载；调用 `StopAutoLoadPolicy()` 停止。

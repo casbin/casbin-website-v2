@@ -1,0 +1,36 @@
+---
+id: cloud-native
+title: 云原生
+description: 云原生（Cloud Native）授权中间件
+keywords: [cloud native, authorization middleware, middlewares]
+authors: [ErikQQY]
+---
+
+Casbin 可以作为云原生（Cloud Native）技术栈（Envoy、Istio、Traefik、KubeSphere 等）中的授权层运行。以下项目提供了适配器（Adapter）或边车（Sidecar）来调用 Casbin 进行允许/拒绝决策。
+
+## 按语言分类的项目
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+项目（Project） | 作者（Author） | 描述（Description）
+---- | ---- | ----
+[envoy-authz](https://github.com/casbin/envoy-authz) | Casbin | [Istio](https://istio.io/) 和 [Envoy](https://envoyproxy.io/) 的授权中间件
+[kubesphere-authz](https://github.com/casbin/kubesphere-authz) | Casbin | [kubeSphere](https://kubesphere.io/) 的授权中间件
+[casbin-forward-auth](https://github.com/grepplabs/casbin-forward-auth) | grepplabs | [Traefik](https://traefik.io/)、[NGINX](https://nginx.org/)、[HAProxy](https://www.haproxy.com/)、[Envoy Gateway](https://gateway.envoyproxy.io/)、[Istio](https://istio.io/) 和 [Envoy](https://www.envoyproxy.io/) 的授权中间件
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+项目（Project） | 作者（Author） | 描述（Description）
+---- | ---- | ----
+[ODPF Shield](https://github.com/odpf/shield) | [Open Data Platform](https://github.com/odpf) | ODPF Shield 是一个云原生基于角色的授权感知反向代理服务。
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

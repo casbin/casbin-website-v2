@@ -1,0 +1,174 @@
+---
+id: kong-authz
+title: Kong 授权
+description: 使用 Casbin 为 Kong API 网关提供授权
+keywords: [Kong, Kong API Gateway, kong-authz, Lua]
+authors: [hsluoyz]
+---
+
+**[kong-authz](https://github.com/casbin-lua/kong-authz)** 是一个 Kong 插件（Plugin），使用 [lua-casbin](https://github.com/casbin/lua-casbin) 进行请求授权。您可以像往常一样定义模型（Model）和策略（Policy）；该插件会在 Kong 路由上执行授权。
+
+## 前提条件
+
+- [Kong](https://konghq.com/)
+- [4daysorm-adapter](https://github.com/casbin-lua/4daysorm-adapter)（可选，用于基于数据库的策略存储）
+- [luasql-adapter](https://github.com/casbin-lua/luasql-adapter)（可选，用于基于数据库的策略存储）
+
+:::info
+默认情况下，策略从文件加载。要使用基于数据库的策略，请安装 4daysorm-adapter 或 luasql-adapter。
+:::
+
+## 安装
+
+安装 Casbin 的系统依赖：
+
+- 对于使用 `apt` 的系统：
+
+```bash
+sudo apt install gcc libpcre3 libpcre3-dev
+```
+
+- 对于基于 Alpine 的系统：
+
+```bash
+sudo apk add gcc pcre pcre-dev libc-dev
+```
+
+从 LuaRocks 安装 Casbin 的最新版本：
+
+```bash
+sudo luarocks install casbin
+```
+
+安装 kong-authz 插件：
+
+```bash
+sudo luarocks install https://raw.githubusercontent.com/casbin-lua/kong-authz/master/kong-authz-0.0.1-1.rockspec
+```
+
+通过将 `kong-authz`（逗号分隔）追加到 `plugins` 变量，将该插件添加到您的 `kong.conf`：
+
+```conf
+# kong.conf
+plugins = bundled, kong-authz
+```
+
+启动或重启 Kong：
+
+```bash
+kong start [-c /path/to/kong.conf]
+```
+
+## 配置
+
+通过 Kong Admin API 在服务、API 或全局级别配置此插件。
+
+### 基于文件的策略存储
+
+使用基于文件的策略进行全局配置：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/plugins/ \
+  --data 'name=kong-authz' \
+  --data 'config.model_path=/path/to/model_path.conf' \
+  --data 'config.policy_path=/path/to/policy_path.csv' \
+  --data 'config.username=user'
+```
+
+### 使用 LuaSQL 的数据库策略存储
+
+使用 LuaSQL 适配器为特定服务进行配置：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/services/example-service/plugins/ \
+  --data 'name=kong-authz' \
+  --data 'config.model_path=/mnt/kong/examples/authz_model.conf' \
+  --data 'config.username=user' \
+  --data 'config.adapter=luasql' \
+  --data 'config.db_info.db_type=mysql' \
+  --data 'config.db_info.database=casbin' \
+  --data 'config.db_info.username=root' \
+  --data 'config.db_info.password=********' \
+  --data 'config.db_info.host=127.0.0.1' \
+  --data 'config.db_info.port=3306'
+```
+
+### 使用 4DaysORM 的数据库策略存储
+
+使用 4DaysORM 适配器为特定服务进行配置：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/services/example-service/plugins/ \
+  --data 'name=kong-authz' \
+  --data 'config.model_path=/mnt/kong/examples/authz_model.conf' \
+  --data 'config.username=user' \
+  --data 'config.adapter=4daysorm' \
+  --data 'config.db_info.db_type=mysql' \
+  --data 'config.db_info.database=casbin' \
+  --data 'config.db_info.username=root' \
+  --data 'config.db_info.password=********' \
+  --data 'config.db_info.host=127.0.0.1' \
+  --data 'config.db_info.port=3306'
+```
+
+## 授权流程
+
+授权使用 `{subject, object, action}` 评估请求，确定哪个主体（Subject）可以对哪个对象（Object）执行哪个操作（Action）。在此插件中：
+
+1. **主体（subject）**：在请求头中传递的已登录用户名
+2. **对象（object）**：资源的 URL 路径（例如 "dataset1/item1"）
+3. **操作（action）**：HTTP 方法（GET、POST、PUT、DELETE）或自定义操作，如 "read-file" 或 "write-blog"
+
+有关策略编写的详细信息，请查阅 [Casbin 文档](/docs/how-it-works)。
+
+## 配置示例
+
+为服务配置 kong-authz 的完整示例：
+
+1. 创建一个示例服务：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/services/ \
+  --data 'name=example-service' \
+  --data 'url=http://mockbin.org'
+```
+
+1. 为服务创建路由：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/services/example-service/routes \
+  --data 'hosts[]=example.com'
+```
+
+1. 应用 kong-authz 插件：
+
+```bash
+curl -i -X POST \
+  --url http://localhost:8001/services/example-service/plugins/ \
+  --data 'name=kong-authz' \
+  --data 'config.model_path=/path/to/authz_model.conf' \
+  --data 'config.policy_path=/path/to/authz_policy.csv' \
+  --data 'config.username=user'
+```
+
+1. 使用请求测试授权：
+
+```bash
+curl -i -X GET \
+  --url http://localhost:8000/ \
+  --header 'Host: example.com' \
+  --header 'user: anonymous'
+```
+
+首次执行时，这会使用指定的模型和策略路径创建 Casbin 执行器。任何非 500 错误表示配置成功。对于 500 错误，请检查 Kong 安装目录中的 error.log 文件。
+
+## 资源
+
+- [kong-authz GitHub 仓库](https://github.com/casbin-lua/kong-authz)
+- [Lua Casbin](https://github.com/casbin/lua-casbin/)
+- [Kong 文档](https://docs.konghq.com/)
