@@ -1,0 +1,123 @@
+---
+id: rbac-with-pattern
+title: 基于模式的RBAC
+description: 基于模式的RBAC（基于角色的访问控制）
+keywords: [RBAC with pattern, pattern matching]
+authors: [hsluoyz]
+---
+
+## 快速入门
+
+- **无域模式** — 为 `g` 注册匹配函数：
+
+  ```go
+  e, _ := NewEnforcer("./example.conf", "./example.csv")
+  e.AddNamedMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+  ```
+
+- **带域模式** — 使用域感知的API：
+
+  ```go
+  e.AddNamedDomainMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+  ```
+
+- **两者兼用** — 如果模型（Model）同时在用户（User）–角色（Role）匹配和域（Domain）匹配中使用模式（Pattern），则同时调用两个API。
+
+你必须在创建执行器（Enforcer）之后调用这些方法；它们定义了模式匹配的评估方式。
+
+:::note
+
+如果使用在线编辑器，请点击左下角的"添加角色匹配"按钮来添加模式匹配函数。
+![editor-tips](/img/editor-tips.png)
+
+:::
+
+## 模式匹配的工作原理
+
+模式匹配允许**一条**策略（Policy）规则匹配多个主体（Subject）、对象（Object）或域（例如 `/book/:id` 匹配 `/book/1`、`/book/2`）。这些函数使用与[匹配器函数](/docs/function)相同的签名；你为 `g` 的参数注册它们。
+
+示例：不使用模式匹配时，你可能需要这样写：
+
+```csv
+p, alice, book_group, read
+g, /book/1, book_group
+g, /book/2, book_group
+```
+
+这样 `alice` 可以读取每本书，但每本书都需要一条 `g` 规则。对于大量书籍，可以使用**模式**来代替：
+
+```csv
+g, /book/:id, book_group
+```
+
+然后 Casbin 会将 `/book/1`、`/book/2` 等匹配到 `/book/:id`。注册匹配函数：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+对于**域**模式匹配（例如 `g(r.sub, p.sub, r.dom)`），使用：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e.AddNamedDomainMatchingFunc("g", "KeyMatch2", util.KeyMatch2)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+await e.addNamedDomainMatchingFunc('g', Util.keyMatch2Func);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+关于 `g(r.sub, p.sub, r.dom)` 的含义，请参见[带域的RBAC（基于角色的访问控制）](/docs/rbac-with-domains)。完整示例：[model_test.go](https://github.com/casbin/casbin/blob/dbdb6cbe2e7a80863e4951f9ff36da07fef01b75/model_test.go#L278-L307)。
+
+:::note
+
+带域的模式匹配支持自定义域标识符名称。除了 `dom`，你还可以使用任何标识符，如 `tenant` 或 `workspace`。当使用 `keyMatch` 等模式匹配函数时，Casbin 会自动从模型定义中检测域标识符名称。
+
+:::
+
+**域通配符：** 你可以在 `g` 的域位置使用通配符，以在**所有域**中授予角色。示例：
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+
+g, alice, admin, *
+g, bob, admin, domain2
+```
+
+这样 `alice` 在每个域中都具有 `admin` 角色，而 `bob` 仅在 `domain2` 中为 `admin`。当你拥有许多域或资源时，模式匹配和域通配符可以保持策略简洁。

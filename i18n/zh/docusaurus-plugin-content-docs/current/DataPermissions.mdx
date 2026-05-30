@@ -1,0 +1,51 @@
+---
+id: data-permissions
+title: 数据权限
+description: 数据权限（Data Permission）解决方案
+keywords: [Data Permissions, implicit]
+authors: [ErikQQY]
+---
+
+本页面介绍在 Casbin 中处理数据级权限（Permission）的两种方式：使用**隐式**角色/权限查询和使用**批量执行**。
+
+### 1. 隐式角色与权限
+
+当用户通过 RBAC 层级获得角色（Role）或权限（而非仅通过直接策略规则）时，这些是**隐式**的。使用 `GetImplicitRolesForUser()` 和 `GetImplicitPermissionsForUser()` 来包含它们；而 `GetRolesForUser()` 和 `GetPermissionsForUser()` 仅返回直接分配的结果。请参阅 [GitHub #137](https://github.com/casbin/casbin/issues/137)。
+
+### 2. 批量执行
+
+`BatchEnforce()` 在一次调用中运行多次访问检查，并返回一个布尔值切片。使用它可以高效地过滤或验证数据集。
+
+示例：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+boolArray, err := e.BatchEnforce(requests)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const boolArray = await e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<Boolean> boolArray = e.batchEnforce(requests);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

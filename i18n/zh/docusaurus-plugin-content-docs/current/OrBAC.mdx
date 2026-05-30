@@ -1,0 +1,125 @@
+---
+id: orbac
+title: OrBAC
+description: Casbin 中的 OrBAC（基于组织的访问控制）模型
+keywords:
+  [
+    orbac,
+    organisation-based access control,
+    organizational access control,
+    role abstraction,
+  ]
+authors: [casbin]
+---
+
+## 什么是 OrBAC？
+
+**OrBAC（基于组织的访问控制）** 通过**抽象**和**组织**维度扩展了 RBAC。策略引用**角色（Role）**、**活动（Activity）**和**视图（View）**；具体的用户、操作和对象按组织映射到这些抽象概念。这使得当实体发生变化时，策略保持稳定。
+
+三种映射关系（均在组织范围内）：
+
+- **Empower（授权）** — 用户 → 角色
+- **Use（使用）** — 操作 → 活动
+- **Consider（视为）** — 对象 → 视图
+
+当请求的（主体、操作、对象）映射到该组织中有权限的（角色、活动、视图）时，权限被授予。
+
+## 模型
+
+```ini
+[request_definition]
+r = sub, org, obj, act
+
+[policy_definition]
+p = role, activity, view, org
+
+[role_definition]
+g = _, _, _
+g2 = _, _, _
+g3 = _, _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.role, r.org) && g2(r.act, p.activity, r.org) && g3(r.obj, p.view, r.org) && r.org == p.org
+```
+
+- `g` — 主体在组织中拥有角色（Empower）
+- `g2` — 操作在组织中属于活动（Use）
+- `g3` — 对象在组织中属于视图（Consider）
+- `r.org == p.org` — 同一组织
+
+## 策略示例
+
+**权限规则**指定在每个组织中哪些角色可以对哪些视图执行哪些活动：
+
+```csv
+# 权限：角色、活动、视图、组织
+p, manager, modify, document, org1
+p, manager, consult, document, org1
+p, employee, consult, document, org1
+p, manager, modify, report, org2
+p, manager, consult, report, org2
+p, employee, consult, report, org2
+```
+
+**Empower 规则**在组织内将角色分配给主体：
+
+```csv
+# 授权：主体、角色、组织
+g, alice, manager, org1
+g, bob, employee, org1
+g, charlie, manager, org2
+g, david, employee, org2
+```
+
+**Use 规则**将具体操作映射到抽象活动：
+
+```csv
+# 使用：操作、活动、组织
+g2, write, modify, org1
+g2, read, consult, org1
+g2, write, modify, org2
+g2, read, consult, org2
+```
+
+**Consider 规则**将具体对象映射到抽象视图：
+
+```csv
+# 视为：对象、视图、组织
+g3, data1, document, org1
+g3, data2, document, org1
+g3, report1, report, org2
+g3, report2, report, org2
+```
+
+## 代码示例
+
+```go
+import "github.com/casbin/casbin/v3"
+
+e, _ := casbin.NewEnforcer("examples/orbac_model.conf", "examples/orbac_policy.csv")
+
+// alice 是 org1 的管理员，可以读写文档
+ok, _ := e.Enforce("alice", "org1", "data1", "read")   // true
+ok, _ = e.Enforce("alice", "org1", "data1", "write")   // true
+
+// bob 是 org1 的员工，只能读取文档
+ok, _ = e.Enforce("bob", "org1", "data1", "read")      // true
+ok, _ = e.Enforce("bob", "org1", "data1", "write")     // false
+
+// charlie 是 org2 的管理员，可以读写报告
+ok, _ = e.Enforce("charlie", "org2", "report1", "read")   // true
+ok, _ = e.Enforce("charlie", "org2", "report1", "write")  // true
+
+// 跨组织访问被拒绝
+ok, _ = e.Enforce("alice", "org2", "report1", "read")  // false
+ok, _ = e.Enforce("charlie", "org1", "data1", "read")  // false
+```
+
+## 优势
+
+- **抽象** — 策略使用角色、活动和视图；可以在不重写策略的情况下更改具体映射
+- **按组织** — 每个组织有自己的映射和权限；一个模型覆盖所有
+- **可扩展性** — 在多组织设置中规则更少、更清晰

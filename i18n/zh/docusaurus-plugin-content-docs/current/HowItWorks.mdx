@@ -1,0 +1,109 @@
+---
+id: how-it-works
+title: 工作原理
+description: Casbin 的工作原理
+keywords: [PERM, request, policy, matcher, effect]
+authors: [nodece]
+---
+
+在 Casbin 中，访问控制（Access Control）通过基于 **PERM 元模型（Policy, Effect, Request, Matchers）** 的 CONF 文件来表达。改变项目中的授权（Authorization）工作方式只需编辑一个配置文件。你可以通过组合不同的组件来构建自定义模型（Model）——例如，在同一个模型和策略（Policy）集中结合 RBAC 角色与 ABAC 属性。
+
+PERM 模型有四个部分：**请求（Request）**、**策略（Policy）**、**效果（Effect）**和**匹配器（Matchers）**。它们共同定义了用户和资源之间的交互方式。
+
+### 请求
+
+请求（Request）定义指定了访问请求的参数。一个基本的请求由三个元素组成：**主体（Subject）**（谁在请求）、**对象（Object）**（资源）和**操作（Action）**（要执行的操作）。
+
+例如：
+
+`r = sub, obj, act`
+
+这设置了匹配逻辑的参数名称及其顺序。
+
+### 策略
+
+策略（Policy）定义描述了你的访问规则的形状：字段名称及其顺序。
+
+例如：
+
+`p = sub, obj, act` 或 `p = sub, obj, act, eft`
+
+当定义中省略了 `eft`（策略效果）时，策略文件中的效果字段将被忽略，匹配的策略将被视为"允许"。
+
+### 匹配器
+
+匹配器（Matcher）定义了如何将请求与策略进行匹配。
+
+例如：`m = r.sub == p.sub && r.act == p.act && r.obj == p.obj`
+
+当请求的主体、对象和操作与策略的字段匹配时，将使用该策略的效果（`p.eft`）。效果存储在 `p.eft` 中。
+
+### 效果
+
+效果（Effect）部分使用逻辑表达式组合所有匹配策略的效果。
+
+例如：`e = some(where (p.eft == allow))`
+
+如果任何匹配的策略的效果为"允许"，则结果为允许。
+
+另一个示例：
+
+`e = some(where (p.eft == allow)) && !some(where (p.eft == deny))`
+
+这意味着：仅当至少一个策略允许且没有策略拒绝时，结果才为允许。如果同时匹配到允许和拒绝，则拒绝优先。
+
+**ACL** 是 Casbin 中最简单的模型。以下是一个最小的 ACL 模型：
+
+```ini
+# 请求定义
+[request_definition]
+r = sub, obj, act
+
+# 策略定义
+[policy_definition]
+p = sub, obj, act
+
+# 策略效果
+[policy_effect]
+e = some(where (p.eft == allow))
+
+# 匹配器
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+
+```
+
+此模型的示例策略：
+
+```csv
+p, alice, data1, read
+p, bob, data2, write
+```
+
+因此：
+
+- **alice** 可以读取 **data1**
+- **bob** 可以写入 **data2**
+
+你可以通过在每行末尾添加 `\` 来将匹配器拆分为多行：
+
+```ini
+# 匹配器
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj \
+  && r.act == p.act
+```
+
+`in` 运算符在 **Go** 实现中可用（在 jCasbin 或 Node-Casbin 中尚不可用）：
+
+```ini
+# 匹配器
+[matchers]
+m = r.obj == p.obj && r.act == p.act || r.obj in ('data2', 'data3')
+```
+
+:::caution
+数组必须包含多个元素，否则 Go 实现可能会引发 panic。
+:::
+
+更多运算符请参见 [govaluate](https://github.com/casbin/govaluate)。

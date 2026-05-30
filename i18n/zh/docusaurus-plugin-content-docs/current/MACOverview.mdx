@@ -1,0 +1,33 @@
+---
+id: mac-overview
+title: MAC（强制访问控制）概述
+description: MAC（强制访问控制）概述
+keywords: [MAC, mandatory access control, overview, security model]
+authors: [hsluoyz]
+---
+
+## 概述
+
+**MAC（Mandatory Access Control，强制访问控制）** 意味着系统强制执行用户无法绕过的访问规则。策略（Policy）是集中且统一的；访问权限由**标签**（例如许可级别、分类级别）决定，而非由用户选择。
+
+## Casbin 中的 MAC 模型
+
+Casbin 提供了以下模型：
+
+- **[BLP（Bell-LaPadula模型）](/docs/blp)** — 机密性："不上读，不下写"
+- **[Biba（Biba完整性模型）](/docs/biba)** — 完整性："不下读，不上写"
+- **[LBAC](/docs/lbac)** — 基于格：在一个模型中同时处理机密性和完整性
+
+## 共同特性
+
+- **集中策略** — 规则是系统范围的，而非针对单个用户。
+- **标签** — 主体（Subject）和对象（Object）具有安全/完整性级别。
+- **形式化规则** — 每个模型都编码了特定的保证（例如 BLP 中信息不向上流动）。
+
+## 何时使用 MAC
+
+- 政府、军事或受监管环境中存在分类级别
+- 数据完整性与机密性同等重要的系统
+- 多级安全（MLS）部署
+
+请参阅链接页面以了解每个模型的语法和示例。

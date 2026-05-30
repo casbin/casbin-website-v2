@@ -1,0 +1,399 @@
+---
+id: rbac-with-domains-api
+title: 带域的RBAC API
+description: 更友好的带域RBAC API。该API是管理API的子集。RBAC用户可以使用此API简化代码。
+keywords: [RBAC with domains, API]
+authors: [hsluoyz]
+---
+
+[带域的RBAC](/docs/rbac-with-domains)的便捷API：按域范围划分的用户-角色和权限操作。它是[管理API](/docs/management-api)的子集。下面，`e` 是一个加载了域感知模型的执行器（Enforcer）实例。
+
+## 参考
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+e, err := NewEnforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const e = await newEnforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv')
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+$e = new Enforcer('examples/rbac_with_domains_model.conf', 'examples/rbac_with_domains_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+e = casbin.Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+```
+
+```csharp
+var e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+let mut e = Enforcer::new("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+Enforcer e = new Enforcer("examples/rbac_with_domains_model.conf", "examples/rbac_with_domains_policy.csv");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### GetUsersForRoleInDomain
+
+返回在给定域中拥有给定角色的所有用户。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getUsersForRoleInDomain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_users_for_role_in_domain("admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### GetRolesForUserInDomain
+
+返回用户在给定域中被分配的所有角色。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```typescript
+const res = e.getRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+res = e.get_roles_for_user_in_domain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<String> res = e.getRolesForUserInDomain("admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### GetPermissionsForUserInDomain
+
+返回用户或角色在给定域中的所有权限（策略规则）。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetPermissionsForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+List<List<String>> res = e.getPermissionsForUserInDomain("alice", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### AddRoleForUserInDomain
+
+在域中为用户分配角色。如果分配已存在，返回 `false`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.AddRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+```
+
+```python
+ok = e.add_role_for_user_in_domain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.addRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DeleteRoleForUserInDomain
+
+在域中从用户移除角色。如果关联不存在，返回 `false`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRoleForUserInDomain("alice", "admin", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+boolean ok = e.deleteRoleForUserInDomain("alice", "admin", "domain1");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DeleteRolesForUserInDomain
+
+在域中从用户移除所有角色。如果用户在该域中没有角色，返回 `false`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteRolesForUserInDomain("alice", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### GetAllUsersByDomain
+
+返回在给定域中至少拥有一个角色的所有用户。如果模型没有域，则返回空。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DeleteAllUsersByDomain
+
+移除给定域中所有用户-角色分配。如果模型没有域，返回 `false`。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteAllUsersByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### DeleteDomains
+
+移除给定域中的所有用户和角色。不带参数时，清除所有域。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ok, err := e.DeleteDomains("domain1", "domain2")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### GetAllDomains
+
+返回策略中出现的所有域。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res, _ := e.GetAllDomains()
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::caution
+不要在域名中使用 `::`；它在 Casbin 的表达式语法中为保留字。
+:::
+
+### GetAllRolesByDomain
+
+返回在给定域中出现的所有角色。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+res := e.GetAllRolesByDomain("domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+不包括通过层级继承的角色（隐式角色）；仅返回域中的直接分配。
+:::
+
+### GetImplicitUsersForResourceByDomain
+
+返回给定资源和域的隐式用户（及其权限），即通过其角色在该域中拥有资源权限的用户。
+
+```csv
+p, admin, domain1, data1, read
+p, admin, domain1, data1, write
+p, admin, domain2, data2, read
+p, admin, domain2, data2, write
+g, alice, admin, domain1
+g, bob, admin, domain2
+```
+
+示例：使用下面的策略，`GetImplicitUsersForResourceByDomain("data1", "domain1")` 返回可以访问 `domain1` 中 `data1` 的用户的权限（例如 alice 通过 admin 角色）。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+ImplicitUsers, err := e.GetImplicitUsersForResourceByDomain("data1", "domain1")
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+仅返回用户级别结果；角色名称（`g` 规则中的第二个元素）不会被列出。
+:::

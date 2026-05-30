@@ -1,0 +1,62 @@
+---
+id: envoy
+title: Envoy（服务网格授权）
+description: 通过Envoy实现服务网格授权
+keywords: [Envoy, Envoy-authz, Istio]
+authors: [ashish493]
+---
+
+**[envoy-authz](https://github.com/casbin/envoy-authz)** 是一个使用Casbin进行RBAC/ABAC的Envoy外部授权（Authorization）服务。它实现了[Envoy的外部认证gRPC API](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter.html)，并与Istio或任何基于Envoy的服务网格（Service Mesh）配合使用。
+
+## 前提条件
+
+- Envoy 1.17 或更高版本
+- Istio 或其他基于Envoy的服务网格
+- gRPC 依赖项
+
+依赖项通过 `go.mod` 管理。
+
+## 工作原理
+
+- 客户端发起HTTP请求
+- Envoy 拦截请求并将其转发到gRPC授权服务器
+- 服务器根据Casbin策略（Policy）评估请求
+- 授权的请求继续执行，未授权的请求被阻止
+
+gRPC服务器实现了来自Envoy的 [external_auth.proto](https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/auth/v2alpha/external_auth.proto) 的协议缓冲区（Protocol Buffer）定义：
+
+```protobuf
+// 用于对传入网络服务的请求执行授权检查的通用接口。
+service Authorization {
+  // 根据与传入请求关联的属性执行授权检查，
+  // 并返回 `OK` 或非 `OK` 状态。
+  rpc Check(v2.CheckRequest) returns (v2.CheckResponse);
+}
+```
+
+授权服务器必须实现上述定义的 `Check()` 方法。
+
+## 使用方法
+
+- 按照[Casbin文档](/docs/how-it-works)在配置文件中配置你的Casbin策略。
+
+你可以使用在线[Casbin编辑器](/editor)测试你的策略。
+
+- 启动授权服务器：
+
+```bash
+go build .
+./authz
+```
+
+- 应用Envoy配置：
+
+```bash
+envoy -c authz.yaml -l info
+```
+
+Envoy启动后，它将通过授权中间件路由传入的请求。
+
+## 与Istio集成
+
+要启用此中间件，请配置你的系统以通过JWT令牌或请求头中的自定义头部传递用户身份信息。有关修改请求头的说明，请查阅官方[Istio文档](https://istio.io/v1.4/docs/tasks/policy-enforcement/control-headers/)。

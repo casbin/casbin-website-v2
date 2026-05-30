@@ -1,0 +1,38 @@
+{
+  "link.title.Docs": {
+    "message": "文档",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Community": {
+    "message": "社区",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.More": {
+    "message": "更多",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.Getting Started": {
+    "message": "快速入门",
+    "description": "The label of footer link with label=Getting Started linking to /docs/get-started"
+  },
+  "link.item.label.Management API": {
+    "message": "管理 API",
+    "description": "The label of footer link with label=Management API linking to /docs/management-api"
+  },
+  "link.item.label.RBAC API": {
+    "message": "RBAC API",
+    "description": "The label of footer link with label=RBAC API linking to /docs/rbac-api"
+  },
+  "link.item.label.Middlewares": {
+    "message": "中间件",
+    "description": "The label of footer link with label=Middlewares linking to /docs/middlewares"
+  },
+  "copyright": {
+    "message": "<p>Apache Casbin（孵化中）正在 Apache 软件基金会 (ASF) 进行孵化，由 Apache 孵化器赞助。所有新接受的项目都需要经过孵化，直到进一步审查表明基础设施、沟通和决策过程已稳定，与 ASF 其他成功项目一致。孵化状态不一定反映代码的完整性或稳定性，但它表明项目尚未得到 ASF 的完全认可。</p><p>版权所有 © 2026 The Apache Software Foundation，基于 <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">Apache License, Version 2.0</a>。</p><p>Apache、Apache 项目名称以及羽毛标志是 Apache 软件基金会在美国和/或其他国家的注册商标或商标。所有其他提及的标记可能是其各自所有者的商标或注册商标。</p>",
+    "description": "The footer copyright"
+  },
+  "logo.alt": {
+    "message": "Apache 孵化器",
+    "description": "The alt text of footer logo"
+  }
+}

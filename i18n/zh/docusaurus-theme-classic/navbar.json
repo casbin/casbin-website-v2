@@ -1,0 +1,98 @@
+{
+  "title": {
+    "message": "Apache Casbin",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Casbin Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Docs": {
+    "message": "文档",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.Plugins": {
+    "message": "插件",
+    "description": "Navbar item with label Plugins"
+  },
+  "item.label.Authorization Models": {
+    "message": "授权模型",
+    "description": "Navbar item with label Authorization Models"
+  },
+  "item.label.GUI Policy Editor": {
+    "message": "图形化策略编辑器",
+    "description": "Navbar item with label GUI Policy Editor"
+  },
+  "item.label.Blog": {
+    "message": "博客",
+    "description": "Navbar item with label Blog"
+  },
+  "item.label.ASF": {
+    "message": "ASF",
+    "description": "Navbar item with label ASF"
+  },
+  "item.label.Help": {
+    "message": "帮助",
+    "description": "Navbar item with label Help"
+  },
+  "item.label.Get Started": {
+    "message": "快速入门",
+    "description": "Navbar item with label Get Started"
+  },
+  "item.label.Model": {
+    "message": "模型",
+    "description": "Navbar item with label Model"
+  },
+  "item.label.Storage": {
+    "message": "存储",
+    "description": "Navbar item with label Storage"
+  },
+  "item.label.Adapters": {
+    "message": "适配器",
+    "description": "Navbar item with label Adapters"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.IDE plugins": {
+    "message": "IDE 插件",
+    "description": "Navbar item with label IDE plugins"
+  },
+  "item.label.Start Contributing": {
+    "message": "开始贡献",
+    "description": "Navbar item with label Start Contributing"
+  },
+  "item.label.Foundation": {
+    "message": "基金会",
+    "description": "Navbar item with label Foundation"
+  },
+  "item.label.License": {
+    "message": "许可证",
+    "description": "Navbar item with label License"
+  },
+  "item.label.Events": {
+    "message": "活动",
+    "description": "Navbar item with label Events"
+  },
+  "item.label.Privacy": {
+    "message": "隐私",
+    "description": "Navbar item with label Privacy"
+  },
+  "item.label.Security": {
+    "message": "安全",
+    "description": "Navbar item with label Security"
+  },
+  "item.label.Sponsorship": {
+    "message": "赞助",
+    "description": "Navbar item with label Sponsorship"
+  },
+  "item.label.Thanks": {
+    "message": "致谢",
+    "description": "Navbar item with label Thanks"
+  },
+  "item.label.Code of Conduct": {
+    "message": "行为准则",
+    "description": "Navbar item with label Code of Conduct"
+  }
+}

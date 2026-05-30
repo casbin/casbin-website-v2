@@ -1,0 +1,80 @@
+---
+id: rbac-with-domains
+title: 带域的 RBAC
+description: 带域的 RBAC 使用
+keywords: [RBAC with domains]
+authors: [hsluoyz]
+---
+
+## 带域的角色定义
+
+在 Casbin 中，角色可以是**域范围的**：同一用户可以在不同的域（租户）中拥有不同的角色。这适用于一个用户在多个租户中工作的多租户和云系统。
+
+使用具有**三个**元素的角色定义；第三个是域：
+
+```ini
+[role_definition]
+g = _, _, _
+```
+
+第三个字段是域。示例策略：
+
+```csv
+p, admin, tenant1, data1, read
+p, admin, tenant2, data2, read
+
+g, alice, admin, tenant1
+g, alice, user, tenant2
+```
+
+因此：`tenant1` 中的 `admin` 可以读取 `data1`。Alice 在 `tenant1` 中是 `admin`，在 `tenant2` 中是 `user`；她可以读取 `data1`，但不能读取 `data2`（只有 `tenant2` 中的 `admin` 可以读取 `data2`）。
+
+匹配器：在 `g` 中包含域并要求匹配：
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+### 自定义域令牌名称
+
+按照惯例，域命名为 `dom`，但您可以在请求和策略定义中使用任何名称（`tenant`、`workspace` 等）：
+
+```ini
+[request_definition]
+r = sub, tenant, obj, act
+
+[policy_definition]
+p = sub, tenant, obj, act
+
+[role_definition]
+g = _, _, _
+
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && r.tenant == p.tenant && r.obj == p.obj && r.act == p.act
+```
+
+对于域的匹配模式（例如 `keyMatch`），只要域在请求和策略中的索引都是 1，Casbin 就会从模型中推断出域令牌：
+
+```ini
+[matchers]
+m = g(r.sub, p.sub, r.tenant) && keyMatch(r.tenant, p.tenant) && r.obj == p.obj && r.act == p.act
+```
+
+对于具有**自定义**域令牌名称或位置的域 API（例如 `GetAllUsersByDomain()`），请在创建执行器后设置索引。完整示例：[rbac_with_domains_model.conf](https://github.com/casbin/casbin/blob/master/examples/rbac_with_domains_model.conf)。
+
+:::info 令牌名称和位置
+域通常命名为 `dom` 并放在第二位（`sub, dom, obj, act`）。在 Go Casbin 中，您可以使用其他名称或位置；然后在初始化后调用 `e.SetFieldIndex("p", constant.DomainIndex, index)`，以便像 `GetAllUsersByDomain()` 这样的 API 能正确工作。
+
+```ini
+# 使用 `domain` 代替 `dom`
+[policy_definition]
+p = sub, obj, act, domain
+```
+
+```go
+e.SetFieldIndex("p", constant.DomainIndex, 3) // 索引从 0 开始
+users := e.GetAllUsersByDomain("domain1") // 没有 SetFieldIndex，将会引发错误
+```
+
+:::

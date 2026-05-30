@@ -1,0 +1,427 @@
+---
+id: syntax-for-models
+title: 模型语法
+description: 模型语法
+keywords: [syntax]
+authors: [nodece]
+---
+
+每个模型 CONF 文件必须定义以下四个部分：`[request_definition]`、`[policy_definition]`、`[policy_effect]` 和 `[matchers]`。
+
+- 对于 **RBAC**，添加 `[role_definition]` 部分。
+- 对于**带约束的 RBAC**（例如职责分离），可以添加 `[constraint_definition]` 部分。
+- 以 `#` 开头的行为注释；该行其余部分将被忽略。
+
+## 请求定义
+
+`[request_definition]` 部分定义了传递给 `e.Enforce(...)` 的参数。
+
+```ini
+[request_definition]
+r = sub, obj, act
+```
+
+这里的 `sub`、`obj` 和 `act` 是标准三元组：主体（subject）、对象（object）和操作（action）。您可以更改格式——例如，在没有资源时使用 `sub, act`，或在涉及两个主体时使用 `sub, sub2, obj, act`。
+
+## 策略定义
+
+`[policy_definition]` 部分描述了策略规则的结构。例如：
+
+```ini
+[policy_definition]
+p = sub, obj, act
+p2 = sub, act
+```
+
+使用如下策略文件：
+
+```csv
+p, alice, data1, read
+p2, bob, write-all-objects
+```
+
+策略文件中的每一行是一条规则。第一个标记是策略类型（`p`、`p2` 等），必须与策略定义匹配。上面的例子为匹配器生成了以下绑定：
+
+```text
+(alice, data1, read) -> (p.sub, p.obj, p.act)
+(bob, write-all-objects) -> (p2.sub, p2.act)
+```
+
+:::tip
+策略规则元素始终被视为字符串。参见 [casbin/casbin#113](https://github.com/casbin/casbin/issues/113) 的讨论。
+:::
+
+## 策略效果
+
+`[policy_effect]` 部分定义了当多条策略匹配时（例如一条允许、另一条拒绝）如何合并结果。
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow))
+```
+
+这实现了**允许覆盖**：如果任何匹配的策略的效果为 `allow`，则结果为允许。`p.eft` 字段是策略效果（`allow` 或 `deny`）。它是可选的，省略时默认为 `allow`。
+
+以下是另一种策略效果：
+
+```ini
+[policy_effect]
+e = !some(where (p.eft == deny))
+```
+
+这实现了**拒绝覆盖**：仅当没有匹配的策略的效果为 `deny` 时，结果才为允许。您可以使用逻辑运算符组合表达式：
+
+```ini
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+```
+
+该表达式要求至少有一个 `allow` 且没有 `deny`。Casbin 同时支持 allow 和 deny；当两者都匹配时，deny 优先。
+
+:::note
+策略效果必须是以下内置效果之一。当前实现不支持自定义效果表达式。
+:::
+
+可用的内置策略效果：
+
+| 策略效果                                                  | 含义               | 示例                                                    |
+|-----------------------------------------------------------|-------------------|---------------------------------------------------------|
+| some(where (p.eft == allow))                              | 允许覆盖          | [ACL、RBAC 等](/docs/supported-models#examples)         |
+| !some(where (p.eft == deny))                              | 拒绝覆盖          | [拒绝覆盖](/docs/supported-models#examples)             |
+| some(where (p.eft == allow)) && !some(where (p.eft == deny)) | 允许与拒绝       | [允许与拒绝](/docs/supported-models#examples)           |
+| priority(p.eft) &#124;&#124; deny                         | 优先级            | [优先级](/docs/supported-models#examples)               |
+| subjectPriority(p.eft)                                    | 基于角色的优先级   | [主体优先级](/docs/supported-models#examples)           |
+
+## 约束定义
+
+可选的 `[constraint_definition]` 部分定义了 RBAC 的不变约束（例如职责分离）。当角色分配发生变化时，会检查约束。使用约束必须具有 `[role_definition]`。
+
+```ini
+[constraint_definition]
+c = sod("finance_requester", "finance_approver")
+c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
+c3 = roleMax("superadmin", 2)
+c4 = rolePre("db_admin", "security_trained")
+```
+
+### 约束类型
+
+**职责分离（Separation of Duties，sod）** — 用户不能同时拥有两个角色。如果 Alice 拥有 `finance_requester`，则不能再被分配 `finance_approver`。
+
+```ini
+c = sod("finance_requester", "finance_approver")
+```
+
+**最大职责分离（Separation of Duties Max，sodMax）** — 限制用户可以从一个角色集合中拥有多少个角色。对于薪资相关角色使用 `sodMax(..., 1)`，用户最多只能拥有查看、编辑或审批中的一个。
+
+```ini
+c2 = sodMax(["payroll_view", "payroll_edit", "payroll_approve"], 1)
+```
+
+**角色基数（Role Cardinality，roleMax）** — 限制可以拥有某个角色的用户数量。例如，最多两个用户可以拥有 `superadmin`。
+
+```ini
+c3 = roleMax("superadmin", 2)
+```
+
+**先决角色（Prerequisite Role，rolePre）** — 一个角色是另一个角色的先决条件。例如，用户在被分配 `db_admin` 之前必须拥有 `security_trained`。
+
+```ini
+c4 = rolePre("db_admin", "security_trained")
+```
+
+### 约束的工作原理
+
+当分组策略发生变化时（例如 `AddGroupingPolicy()`、`RemoveGroupingPolicy()`），会强制执行约束。如果某个更改会违反约束，则该操作将失败并返回错误，策略不会被更新。
+
+加载模型时，会对照当前策略检查所有约束。无效的约束（语法错误、缺少 RBAC 设置或当前数据已违反约束）会导致加载失败并显示明确的错误信息。
+
+## 匹配器
+
+`[matchers]` 部分定义了如何根据策略规则评估请求。
+
+```ini
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+该匹配器要求请求的主体、对象和操作与策略字段完全匹配。
+
+匹配器支持算术运算符（`+`、`-`、`*`、`/`）和逻辑运算符（`&&`、`||`、`!`）。
+
+### 匹配器中的表达式顺序
+
+匹配器中表达式的顺序会显著影响性能。示例：
+
+```go
+const rbac_models = `
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+`
+
+func TestManyRoles(t *testing.T) {
+
+    m, _ := model.NewModelFromString(rbac_models)
+    e, _ := NewEnforcer(m, false)
+
+    roles := []string{"admin", "manager", "developer", "tester"}
+
+    // 2500 个项目
+    for nbPrj := 1; nbPrj < 2500; nbPrj++ {
+        // 每个项目有 4 个对象，每个对象对应 1 个角色（共 4 个角色）
+        for _, role := range roles {
+            roleDB := fmt.Sprintf("%s_project:%d", role, nbPrj)
+            objectDB := fmt.Sprintf("/projects/%d", nbPrj)
+            e.AddPolicy(roleDB, objectDB, "GET")
+        }
+        jasmineRole := fmt.Sprintf("%s_project:%d", roles[1], nbPrj)
+        e.AddGroupingPolicy("jasmine", jasmineRole)
+    }
+
+    e.AddGroupingPolicy("abu", "manager_project:1")
+    e.AddGroupingPolicy("abu", "manager_project:2499")
+
+    // 在相同策略数量下
+    // 用户 'abu' 只有两个角色
+    // 用户 'jasmine' 有很多角色（每个策略对应 1 个角色，此处共 2500 个角色）
+
+    request := func(subject, object, action string) {
+        t0 := time.Now()
+        resp, _ := e.Enforce(subject, object, action)
+        tElapse := time.Since(t0)
+        t.Logf("RESPONSE %-10s %s\t %s : %5v IN: %+v", subject, object, action, resp, tElapse)
+        if tElapse > time.Millisecond*100 {
+            t.Errorf("More than 100 milliseconds for %s %s %s : %+v", subject, object, action, tElapse)
+        }
+    }
+
+    request("abu", "/projects/1", "GET")        // 非常快，因为策略中只有 2 个角色且位于 casbin_rule 表开头
+    request("abu", "/projects/2499", "GET")     // 快，因为策略中只有 2 个角色
+    request("jasmine", "/projects/1", "GET")    // 非常快，位于 casbin_rule 表开头
+
+    request("jasmine", "/projects/2499", "GET") // 较慢且仅在第一次失败   <<<< 问题在此
+    request("jasmine", "/projects/2499", "GET") // 快，可能是由于内部缓存机制
+
+    // 相同问题也适用于不存在的角色
+    // request("jasmine", "/projects/999999", "GET") // 较慢且仅在第一次失败   <<<< 问题在此
+    // request("jasmine", "/projects/999999", "GET") // 快，可能是由于内部缓存机制
+}
+```
+
+执行耗时可能达到 6 秒。
+
+```bash
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v3 -v
+
+=== RUN   TestManyRoles
+    rbac_api_test.go:598: RESPONSE abu        /projects/1        GET :  true IN: 438.379µs
+    rbac_api_test.go:598: RESPONSE abu        /projects/2499     GET :  true IN: 39.005173ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/1        GET :  true IN: 1.774319ms
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.164071648s
+    rbac_api_test.go:600: More than 100 milliseconds for jasmine /projects/2499 GET : 6.164071648s
+    rbac_api_test.go:598: RESPONSE jasmine    /projects/2499     GET :  true IN: 12.164122ms
+--- FAIL: TestManyRoles (6.24s)
+FAIL
+FAIL    github.com/casbin/casbin/v3     6.244s
+FAIL
+```
+
+将开销较小的条件放在前面，开销较大的条件（例如角色查找）放在后面。将上面示例中的匹配器重新排序为：
+
+```ini
+[matchers]
+m = r.obj == p.obj && g(r.sub, p.sub) && r.act == p.act
+```
+
+```bash
+go test -run ^TestManyRoles$ github.com/casbin/casbin/v3 -v
+=== RUN   TestManyRoles
+    rbac_api_test.go:599: RESPONSE abu        /projects/1        GET :  true IN: 786.635µs
+    rbac_api_test.go:599: RESPONSE abu        /projects/2499     GET :  true IN: 4.933064ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/1        GET :  true IN: 2.908534ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 7.292963ms
+    rbac_api_test.go:599: RESPONSE jasmine    /projects/2499     GET :  true IN: 6.168307ms
+--- PASS: TestManyRoles (0.05s)
+PASS
+ok      github.com/casbin/casbin/v3     0.053s
+```
+
+## 多个部分类型
+
+您可以使用后缀（如 `r2`、`p2`、`e2`、`m2`）定义多个请求、策略、效果或匹配器部分。它们按后缀配对：`r2` 通过 `m2` 与 `p2` 匹配，并通过 `e2` 合并。
+
+要使用非默认集合，请将 `EnforceContext` 作为第一个参数传递给 `enforce`。结构：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+EnforceContext{"r2","p2","e2","m2"}
+type EnforceContext struct {
+    RType string
+    PType string
+    EType string
+    MType string
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+const enforceContext = new EnforceContext('r2', 'p2', 'e2', 'm2');
+class EnforceContext {
+  constructor(rType, pType, eType, mType) {
+    this.pType = pType;
+    this.eType = eType;
+    this.mType = mType;
+    this.rType = rType;
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+EnforceContext enforceContext = new EnforceContext("2");
+public class EnforceContext {
+    private String pType;
+    private String eType;
+    private String mType;
+    private String rType;
+    public EnforceContext(String suffix) {
+      this.pType = "p" + suffix;
+      this.eType = "e" + suffix;
+      this.mType = "m" + suffix;
+      this.rType = "r" + suffix;
+    }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+使用示例（参见[模型](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_model.conf)和[策略](https://github.com/casbin/casbin/blob/master/examples/multiple_policy_definitions_policy.csv)示例）：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+// 将后缀作为参数传递给 NewEnforceContext，例如 2 或 3，它将创建 r2、p2 等。
+enforceContext := NewEnforceContext("2")
+// 您也可以单独指定某个类型
+enforceContext.EType = "e"
+// 不传递 EnforceContext 时，默认使用 r、p、e、m
+e.Enforce("alice", "data2", "read")        // true
+// 传入 EnforceContext
+e.Enforce(enforceContext, struct{ Age int }{Age: 70}, "/data1", "read")        //false
+e.Enforce(enforceContext, struct{ Age int }{Age: 30}, "/data1", "read")        //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+```
+
+```javascript
+// 将后缀作为参数传递给 NewEnforceContext，例如 2 或 3，它将创建 r2、p2 等。
+const enforceContext = new NewEnforceContext('2');
+
+// 您也可以单独指定某个类型
+enforceContext.eType = "e"
+
+// 不传递 EnforceContext 时，默认使用 r、p、e、m
+e.Enforce("alice", "data2", "read")        // true
+
+// 传入 EnforceContext
+e.Enforce(enforceContext, {Age: 70}, "/data1", "read")        //false
+e.Enforce(enforceContext, {Age: 30}, "/data1", "read")        //true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+```
+
+```java
+// 将后缀作为参数传递给 NewEnforceContext，例如 2 或 3，它将创建 r2、p2 等。
+EnforceContext enforceContext = new EnforceContext("2");
+// 您也可以单独指定某个类型
+enforceContext.seteType("e");
+// 不传递 EnforceContext 时，默认使用 r、p、e、m
+e.enforce("alice", "data2", "read");  // true
+// 传入 EnforceContext
+// TestEvalRule 位于 https://github.com/casbin/jcasbin/blob/master/src/test/java/org/casbin/jcasbin/main/AbacAPIUnitTest.java#L56
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 70), "/data1", "read"); // false
+e.enforce(enforceContext, new AbacAPIUnitTest.TestEvalRule("alice", 30), "/data1", "read"); // true
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## 特殊语法：`in` 运算符
+
+`in` 运算符检查右侧数组是否包含左侧值（使用 `==` 相等比较，无类型转换）。左侧可以是任意值；右侧必须是相同类型的数组。在 Go 中，数组必须是 `[]interface{}`。
+
+参考示例：[rbac_model_matcher_using_in_op](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/rbac_model_matcher_using_in_op.conf)、[keyget2_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget2_model.conf) 和 [keyget_model](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/examples/keyget_model.conf)。
+
+示例：
+
+```ini
+[request_definition]
+r = sub, obj
+...
+[matchers]
+m = r.sub.Name in (r.obj.Admins)
+```
+
+```go
+e.Enforce(Sub{Name: "alice"}, Obj{Name: "a book", Admins: []interface{}{"alice", "bob"}})
+```
+
+## 表达式求值器
+
+匹配器由特定语言的表达式引擎求值。Casbin 使用这些引擎提供统一的 PERM 语法。某些引擎支持超出文档语法的额外功能；这些功能可能在其他语言中不可用。如果需要跨语言兼容性，请仅使用文档中记录的语法。
+
+各实现的表达式求值器：
+
+| 实现            | 语言     | 表达式求值器                                                                                                                                                                                       |
+|-----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Casbin          | Golang   | [https://github.com/casbin/govaluate](https://github.com/casbin/govaluate)                                                                                                                          |
+| jCasbin         | Java     | [https://github.com/killme2008/aviatorscript](https://github.com/killme2008/aviatorscript)                                                                                                          |
+| Node-Casbin     | Node.js  | [https://github.com/donmccurdy/expression-eval](https://github.com/donmccurdy/expression-eval)                                                                                                      |
+| PHP-Casbin      | PHP      | [https://github.com/symfony/expression-language](https://github.com/symfony/expression-language)                                                                                                    |
+| PyCasbin        | Python   | [https://github.com/danthedeckie/simpleeval](https://github.com/danthedeckie/simpleeval)                                                                                                            |
+| Casbin.NET      | C#       | [https://github.com/davideicardi/DynamicExpresso](https://github.com/davideicardi/DynamicExpresso)                                                                                                  |
+| Casbin4D        | Delphi   | [https://github.com/casbin4d/Casbin4D/tree/master/SourceCode/Common/Third%20Party/TExpressionParser](https://github.com/casbin4d/Casbin4D/tree/master/SourceCode/Common/Third%20Party/TExpressionParser) |
+| casbin-rs       | Rust     | [https://github.com/jonathandturner/rhai](https://github.com/jonathandturner/rhai)                                                                                                                  |
+| casbin-cpp      | C++      | [https://github.com/ArashPartow/exprtk](https://github.com/ArashPartow/exprtk)                                                                                                                      |
+
+:::note
+如果执行速度慢，表达式求值器通常是瓶颈。请参阅[基准测试](/docs/benchmark)页面，并考虑向 Casbin 或求值器项目报告问题。
+:::

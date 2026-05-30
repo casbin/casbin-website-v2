@@ -1,0 +1,15 @@
+---
+id: service
+title: Casbin 服务
+description: 将 Casbin 作为服务（Service）使用
+keywords: [service]
+authors: [hsluoyz]
+---
+
+你可以将 Casbin 作为**远程服务（Service）**运行，通过 gRPC 或 HTTP 进行调用，而无需嵌入库。选项如下：
+
+| 项目 | 描述 |
+|------|------|
+| [Casbin Server](https://github.com/casbin/casbin-server) | 官方 gRPC 服务，提供管理 API 和 RBAC API。 |
+| [middleware-acl](https://github.com/luk4z7/middleware-acl) | 基于 Casbin 构建的 RESTful ACL 中间件（Middleware）。 |
+| [auth-server](https://github.com/ZettaAI/auth-server) | 使用 Casbin 的认证服务器示例。 |

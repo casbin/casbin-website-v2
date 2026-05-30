@@ -1,0 +1,66 @@
+---
+id: effector
+title: 效应器
+description: Casbin 中的效应器接口
+keywords: [effector, Effect, MergeEffects]
+authors: [ErikQQY]
+---
+
+**效果（Effect）** 是策略规则的结果（allow 或 deny）。**效应器（Effector）** 接口定义了执行器如何将多个匹配的效果合并为单个决策。
+
+## MergeEffects()
+
+`MergeEffects()` 获取所有匹配策略的效果，并产生一个最终的 allow/deny 结果。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+参数：
+
+| 参数            | 描述 |
+|----------------|------|
+| `expr`         | 策略效果表达式字符串（例如来自模型）。 |
+| `effects`      | 效果切片：`Allow`、`Deny` 或 `Indeterminate`。 |
+| `matches`      | 哪些策略索引匹配。 |
+| `policyIndex`  | 当前策略索引。 |
+| `policyLength` | 策略总数。 |
+
+返回值：
+
+- **Effect（效果）** — 最终决定（`Allow`、`Deny` 或 `Indeterminate`）。
+- **explainIndex（解释索引）** — 决定结果的策略索引（如果不适用则为 `-1`）。
+- **err（错误）** — 如果效应器不支持该表达式，则为非 nil。
+
+使用自定义 `Effector`：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+var e Effector
+Effect, explainIndex, err = e.MergeEffects(expr, effects, matches, policyIndex, policyLength)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+对于标准的允许覆盖效果，如果任何匹配的策略允许且没有拒绝，则结果为允许。自定义效应器实现其他语义（例如拒绝覆盖、优先级）。
+
+:::note
+除非效果表达式是 `priority(p_eft) || deny`，否则执行器可能会短路：一旦确定了结果，就不会再评估剩余的策略。因此当 `policyIndex < policyLength-1` 时，某些效果可能会被跳过。
+:::

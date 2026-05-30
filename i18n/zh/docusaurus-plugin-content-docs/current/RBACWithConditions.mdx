@@ -1,0 +1,198 @@
+---
+id: rbac-with-conditions
+title: 带条件的RBAC
+description: 带条件的RBAC（基于角色的访问控制）的使用方法
+keywords: [RBAC with conditions]
+authors: [PokIsemaine]
+---
+
+## 条件角色管理器
+
+**条件角色管理器（Conditional RoleManager）** 允许你为角色（Role）分配附加条件函数（例如限时角色）。角色分配仅在其条件（Condition）函数返回 true 时才有效。
+
+示例：基于时间的角色有效性。模型（Model）：
+
+`model.conf`
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _, (_, _)
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
+```
+
+`(_, _)` 在角色定义中是传递给条件函数的额外参数（例如开始时间和结束时间）。策略（Policy）：
+
+```csv
+p, alice, data1, read
+p, data2_admin, data2, write
+p, data3_admin, data3, read
+p, data4_admin, data4, write
+p, data5_admin, data5, read
+p, data6_admin, data6, write
+p, data7_admin, data7, read
+p, data8_admin, data8, write
+
+g, alice, data2_admin, 0000-01-01 00:00:00, 0000-01-02 00:00:00
+g, alice, data3_admin, 0000-01-01 00:00:00, 9999-12-30 00:00:00
+g, alice, data4_admin, _, _
+g, alice, data5_admin, _, 9999-12-30 00:00:00
+g, alice, data6_admin, _, 0000-01-02 00:00:00
+g, alice, data7_admin, 0000-01-01 00:00:00, _
+g, alice, data8_admin, 9999-12-30 00:00:00, _
+```
+
+### 基本用法
+
+调用 `AddNamedLinkConditionFunc` 为每条 `g` 规则（或相关的用户–角色对）绑定一个条件函数。在执行（Enforce）时，策略的额外字段会传递给该函数；仅当函数返回 true 时，该角色分配才有效。
+
+```go
+e.AddNamedLinkConditionFunc("g", "alice", "data2_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data3_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data4_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data5_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data6_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data7_admin", util.TimeMatchFunc)
+e.AddNamedLinkConditionFunc("g", "alice", "data8_admin", util.TimeMatchFunc)
+
+
+e.enforce("alice", "data1", "read")     // 预期: true
+e.enforce("alice", "data2", "write")    // 预期: false
+e.enforce("alice", "data3", "read")     // 预期: true
+e.enforce("alice", "data4", "write")    // 预期: true
+e.enforce("alice", "data5", "read")     // 预期: true
+e.enforce("alice", "data6", "write")    // 预期: false
+e.enforce("alice", "data7", "read")     // 预期: true
+e.enforce("alice", "data8", "write")    // 预期: false
+```
+
+### 自定义条件函数
+
+签名（Signature）：
+
+```go
+type LinkConditionFunc = func(args ...string) (bool, error)
+```
+
+示例实现：
+
+```go
+// TimeMatchFunc 是 TimeMatch 的包装函数。
+func TimeMatchFunc(args ...string) (bool, error) {
+    if err := validateVariadicStringArgs(2, args...); err != nil {
+        return false, fmt.Errorf("%s: %s", "TimeMatch", err)
+    }
+    return TimeMatch(args[0], args[1])
+}
+
+// TimeMatch 判断当前时间是否在 startTime 和 endTime 之间。
+// 你可以使用 "_" 表示该参数被忽略
+func TimeMatch(startTime, endTime string) (bool, error) {
+    now := time.Now()
+    if startTime != "_" {
+        if start, err := time.Parse("2006-01-02 15:04:05", startTime); err != nil {
+            return false, err
+        } else if !now.After(start) {
+            return false, nil
+        }
+    }
+
+    if endTime != "_" {
+        if end, err := time.Parse("2006-01-02 15:04:05", endTime); err != nil {
+            return false, err
+        } else if !now.Before(end) {
+            return false, nil
+        }
+    }
+
+    return true, nil
+}
+```
+
+## 带域的条件角色管理器
+
+使用域（Domain）时，角色定义包含一个额外的域字段和括号中的条件参数。模型：
+
+```ini
+[request_definition]
+r = sub, dom, obj, act
+
+[policy_definition]
+p = sub, dom, obj, act
+
+[role_definition]
+g = _, _, _, (_, _)
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = g(r.sub, p.sub, r.dom) && r.dom == p.dom && r.obj == p.obj && r.act == p.act
+```
+
+`policy.csv`
+
+```csv
+p, alice, domain1, data1, read
+p, data2_admin, domain2, data2, write
+p, data3_admin, domain3, data3, read
+p, data4_admin, domain4, data4, write
+p, data5_admin, domain5, data5, read
+p, data6_admin, domain6, data6, write
+p, data7_admin, domain7, data7, read
+p, data8_admin, domain8, data8, write
+
+g, alice, data2_admin, domain2, 0000-01-01 00:00:00, 0000-01-02 00:00:00
+g, alice, data3_admin, domain3, 0000-01-01 00:00:00, 9999-12-30 00:00:00
+g, alice, data4_admin, domain4, _, _
+g, alice, data5_admin, domain5, _, 9999-12-30 00:00:00
+g, alice, data6_admin, domain6, _, 0000-01-02 00:00:00
+g, alice, data7_admin, domain7, 0000-01-01 00:00:00, _
+g, alice, data8_admin, domain8, 9999-12-30 00:00:00, _
+```
+
+### 基本用法
+
+使用 `AddNamedDomainLinkConditionFunc`，传入域以及用户–角色–条件参数。条件的评估方式相同；它接收来自 `g` 规则的额外参数。
+
+```go
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data2_admin", "domain2", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data3_admin", "domain3", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data4_admin", "domain4", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data5_admin", "domain5", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data6_admin", "domain6", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data7_admin", "domain7", util.TimeMatchFunc)
+e.AddNamedDomainLinkConditionFunc("g", "alice", "data8_admin", "domain8", util.TimeMatchFunc)
+
+
+e.enforce("alice", "domain1", "data1", "read")              // 预期: true
+e.enforce("alice", "domain2", "data2", "write")             // 预期: false
+e.enforce("alice", "domain3", "data3", "read")              // 预期: true
+e.enforce("alice", "domain4", "data4", "write")             // 预期: true
+e.enforce("alice", "domain5", "data5", "read")              // 预期: true
+e.enforce("alice", "domain6", "data6", "write")             // 预期: false
+e.enforce("alice", "domain7", "data7", "read")              // 预期: true
+e.enforce("alice", "domain8", "data8", "write")             // 预期: false
+e.enforce("alice", "domain_not_exist", "data1", "write")    // 预期: false
+e.enforce("alice", "domain_not_exist", "data2", "read")     // 预期: false
+e.enforce("alice", "domain_not_exist", "data3", "write")    // 预期: false
+e.enforce("alice", "domain_not_exist", "data4", "read")     // 预期: false
+e.enforce("alice", "domain_not_exist", "data5", "write")    // 预期: false
+e.enforce("alice", "domain_not_exist", "data6", "read")     // 预期: false
+e.enforce("alice", "domain_not_exist", "data7", "write")    // 预期: false
+e.enforce("alice", "domain_not_exist", "data8", "read")     // 预期: false
+```
+
+自定义条件函数使用相同的签名。注意：**DomainMatchingFunc**（域模式匹配）、**MatchingFunc**（主体/对象模式匹配）和 **LinkConditionFunc**（角色分配条件）是相互独立的，在不同的阶段起作用。
+
+![conditional_rolemanager_with_domains](/img/rbac/conditional_rolemanager_with_domains.png)

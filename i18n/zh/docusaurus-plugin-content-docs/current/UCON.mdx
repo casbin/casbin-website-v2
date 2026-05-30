@@ -1,0 +1,168 @@
+---
+id: ucon
+title: 使用控制（UCON）
+description: Casbin 中的 UCON（使用控制）模型
+keywords:
+  [ucon, usage control, access control, authorization, obligations, conditions]
+authors: [nodece]
+---
+
+## 概述
+
+**UCON（使用控制）** 通过**授权（A）**、**义务（B）**和**条件（C）**扩展了访问控制。它支持在使用过程中（不仅在访问时）进行**持续**实施和**可变**属性。Casbin 核心未实现 UCON；请使用 [casbin-ucon](https://github.com/casbin/casbin-ucon) 扩展来实现基于会话的使用控制。
+
+## 模型与策略
+
+> **注意**：Casbin 核心库不直接支持 UCON。UCON 功能通过扩展库 [casbin-ucon](https://github.com/casbin/casbin-ucon) 提供，该扩展增加了基于会话的访问控制，包括条件（Condition）、义务（Obligation）和持续监控能力。该扩展可以使用与 Casbin 核心相同的模型和策略。
+
+### 模型
+
+```conf
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == p.sub && r.obj == p.obj && r.act == p.act
+```
+
+### 策略
+
+```csv
+p, alice, document1, read
+```
+
+> **注意**：在 UCON 中，条件和义务不写在 policy.csv 中；它们通过 casbin-ucon API 在代码中添加和管理。
+
+## 核心组件
+
+- **授权（A）** — 基于主体/对象属性的访问规则（类似于标准 Casbin）
+- **义务（B）** — 主体在使用前或使用中必须执行的操作（例如，日志记录、确认）
+- **条件（C）** — 必须成立的环境或系统状态（例如，时间、位置）
+
+## 特性
+
+- **持续实施** — 在整个使用会话期间进行检查，而不仅仅在进入时
+- **可变性** — 属性可以随使用而改变
+- **事前/事中/事后** — 在访问时、使用中和使用后做出决策和履行义务
+
+## 使用场景
+
+UCON 模型在以下场景中特别有价值：
+
+- 数字版权管理（DRM）系统
+- 医疗信息系统
+- 云计算环境
+- IoT 设备访问控制
+- 协作环境中的数据共享
+- 具有复杂合规要求的金融系统
+
+## 使用 casbin-ucon 实现
+
+要在基于 Casbin 的应用程序中实现 UCON，请使用 [casbin-ucon](https://github.com/casbin/casbin-ucon) 扩展库：
+
+```bash
+go get github.com/casbin/casbin-ucon
+```
+
+```go
+// 导入所需包
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/casbin-ucon"
+    "fmt"
+    "time"
+)
+
+func main() {
+    // 创建标准 Casbin 执行器
+    e, _ := casbin.NewEnforcer("model.conf", "policy.csv")
+
+    // 使用 UCON 功能包装
+    uconE := ucon.NewUconEnforcer(e)
+
+    // 添加条件
+    condition := &ucon.Condition{
+        ID:   "location_condition",
+        Name: "location",
+        Kind: "always",
+        Expr: "office",
+    }
+    uconE.AddCondition(condition)
+
+    // 添加义务
+    obligation := &ucon.Obligation{
+        ID:   "post_log",
+        Name: "access_logging",
+        Kind: "post",
+        Expr: "log_level:detailed",
+    }
+    uconE.AddObligation(obligation)
+
+    // 创建会话
+    sessionID, _ := uconE.CreateSession("alice", "read", "document1", map[string]interface{}{
+        "location":      "office",
+        "log_level":     "detailed",
+    })
+
+    // UCON 基于会话的强制执行
+    session, err := uconE.EnforceWithSession(sessionID)
+    if session == nil {
+        // 拒绝
+        fmt.Println("session refused because: ", err)
+    }
+
+    // 监控会话状态
+    go func() {
+        for {
+            if !session.IfActive() {
+                if session.GetStopReason() == ucon.NormalStopReason {
+                    break
+                }
+                //TODO
+                //自行决定如何处理会话终止
+                // 例如，清理资源、关闭连接、写入日志、通知前端等。
+                fmt.Printf("%s %s %s is stopped because: %s\n",
+                          session.GetSubject(), session.GetAction(),
+                          session.GetObject(), session.GetStopReason())
+                break
+            }
+            time.Sleep(200 * time.Millisecond)
+        }
+    }()
+
+    // 您可以在会话期间更新属性
+    // session.UpdateAttribute("location", "home")
+
+    // 完成后停止会话
+    _ = uconE.StopMonitoring(sessionID)
+}
+```
+
+## 实现说明
+
+- UCON 包含传统的访问控制模型，如 MAC、DAC 和 RBAC
+- 实现需要一个能够持续监控的引用监控器
+- 属性更新（可变性）应原子性地处理以保持一致性
+- 义务可能需要与外部监控系统集成
+- 条件评估可能依赖于访问控制系统之外的环境因素
+- 使用 casbin-ucon 时，需要正确管理会话生命周期和监控
+
+## 与传统模型的比较
+
+| 方面 | 传统访问控制 | UCON |
+| -------------------- | -------------------------- | ------------------------------------------- |
+| 决策时机 | 仅访问前 | 访问前、访问中和访问后 |
+| 属性可变性 | 静态 | 动态（可在使用过程中更改） |
+| 决策因素 | 仅授权 | 授权、义务和条件 |
+| 实施方式 | 一次性检查 | 持续监控 |
+| 撤销方式 | 显式 | 可根据属性更改自动进行 |
+
+## 参考资料
+
+关于 casbin-ucon 的完整 API 文档、详细使用说明和最新更新，请参阅 [casbin-ucon](https://github.com/casbin/casbin-ucon)。

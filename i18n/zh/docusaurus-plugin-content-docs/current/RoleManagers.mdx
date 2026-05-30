@@ -1,0 +1,70 @@
+---
+id: role-managers
+title: 角色管理器
+description: 角色管理器用于管理Casbin中的RBAC角色层级。
+keywords: [role manager, RBAC, Casbin]
+authors: [hsluoyz]
+---
+
+**角色管理器**实现了RBAC角色层级（谁拥有哪个角色，以及角色继承）。Casbin可以使用默认的内存角色管理器（由策略支持），也可以接入外部源（例如 LDAP、Okta、Auth0、Azure AD）。自定义角色管理器位于单独的包中。按语言分类的可用角色管理器列表：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+
+import {RoleManagerGoData} from "@site/src/tableData/RoleManagerData/RoleManagerGoData";
+import {RoleManagerJavaData} from "@site/src/tableData/RoleManagerData/RoleManagerJavaData"; import RoleManagerMDTable
+  from "@site/src/tableData/RoleManagerData/RoleManagerMDTable";
+import {RoleManagerNodejsData} from "@site/src/tableData/RoleManagerData/RoleManagerNodejsData";
+import {RoleManagerPhpData} from "@site/src/tableData/RoleManagerData/RoleManagerPhpData";
+import {RoleManagerPythonData} from "@site/src/tableData/RoleManagerData/RoleManagerPythonData";
+
+<RoleManagerMDTable data={RoleManagerGoData}></RoleManagerMDTable>
+```
+
+所有角色管理器必须实现 [RoleManager](https://github.com/casbin/casbin/blob/master/rbac/role_manager.go) 接口。可以参考 [Session Role Manager](https://github.com/casbin/session-role-manager) 作为参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+
+<RoleManagerMDTable data={RoleManagerJavaData}></RoleManagerMDTable>
+```
+
+所有角色管理器必须实现 [RoleManager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/RoleManager.java) 接口。可以参考 [Default Role Manager](https://github.com/casbin/jcasbin/blob/master/src/main/java/org/casbin/jcasbin/rbac/DefaultRoleManager.java) 作为参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+
+<RoleManagerMDTable data={RoleManagerNodejsData}></RoleManagerMDTable>
+```
+
+所有角色管理器必须实现 [RoleManager](https://github.com/casbin/node-casbin/blob/master/src/rbac/roleManager.ts) 接口。可以参考 [Default Role Manager](https://github.com/casbin/node-casbin/blob/master/src/rbac/defaultRoleManager.ts) 作为参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+
+<RoleManagerMDTable data={RoleManagerPhpData}></RoleManagerMDTable>
+```
+
+所有角色管理器必须实现 [RoleManager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/RoleManager.php) 接口。可以参考 [Default Role Manager](https://github.com/php-casbin/php-casbin/blob/master/src/Rbac/DefaultRoleManager/RoleManager.php) 作为参考实现。
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+
+<RoleManagerMDTable data={RoleManagerPythonData}></RoleManagerMDTable>
+```
+
+所有角色管理器必须实现 [RoleManager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/role_manager.py) 接口。可以参考 [Default Role Manager](https://github.com/casbin/pycasbin/blob/master/casbin/rbac/default_role_manager/role_manager.py) 作为参考实现。
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## API
+
+详情请参阅 [API](/docs/rolemanager-api) 部分。

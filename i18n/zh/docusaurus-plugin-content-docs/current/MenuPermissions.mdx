@@ -1,0 +1,93 @@
+---
+id: menu-permissions
+title: 菜单权限
+description: 菜单权限（Menu Permission）示例
+keywords: [Menu Permissions, example]
+authors: [amikecoXu]
+---
+
+本页面展示了一个使用 jCasbin 实现基于菜单的访问控制的 **Spring Boot** 示例。相同的模式（策略 + 角色分配 + 菜单层级）可以在 Casbin 支持的其他语言中应用。
+
+### 1. 配置
+
+在 `policy.csv` 中定义角色-菜单权限、用户-角色分配和菜单层级。完整示例：[jCasbin 菜单权限](https://github.com/jcasbin/jcasbin-menu-permission)。
+
+#### 1.1 概述
+
+策略文件定义：(1) 哪些角色（Role）可以访问哪些菜单项，(2) 哪些用户（User）拥有哪些角色，(3) 菜单项之间的父子关系。三者结合实现了基于角色的分层菜单可见性。
+
+#### 1.2 权限规则（p）
+
+以 `p` 开头的行定义角色（`sub`）是否可以对菜单项（`obj`）执行操作（`act`）。效果（`eft`）为 `allow` 或 `deny`。
+
+示例：
+
+- `p, ROLE_ROOT, SystemMenu, read, allow` 授予 `ROLE_ROOT` 对 `SystemMenu` 的读取访问权限。
+- `p, ROLE_ROOT, UserMenu, read, deny` 拒绝 `ROLE_ROOT` 对 `UserMenu` 的读取访问权限。
+
+#### 1.3 用户-角色分配（g）
+
+以 `g` 开头的行将用户分配到角色并定义角色继承。用户获得其所有角色权限的并集。
+
+示例：
+
+- `g, user, ROLE_USER` 将名为 `user` 的用户分配到 `ROLE_USER`。
+- `g, ROLE_ADMIN, ROLE_USER` 使 `ROLE_ADMIN` 继承 `ROLE_USER` 的所有权限。
+
+#### 1.4 菜单层级（g2）
+
+以 `g2` 开头的行定义父子菜单结构。
+
+示例：
+
+- `g2, UserSubMenu_allow, UserMenu` 使 `UserSubMenu_allow` 成为 `UserMenu` 的子菜单。
+- `g2, (NULL), SystemMenu` 将 `SystemMenu` 标记为没有父菜单的顶级菜单。
+
+#### 1.5 菜单权限继承
+
+- 如果**父级**菜单有显式的 `allow`，其**子级**菜单继承 `allow`，除非子级有显式的 `deny`。因此，允许父级就允许了其子级。
+- 如果父级没有显式权限，但至少一个子级有 `allow`，则父级被视为 `allow`，以便用户可以访问该子级。
+
+#### 1.6 拒绝与角色继承
+
+- **显式拒绝**优先：如果一个角色被显式拒绝某个菜单，任何继承自该角色的角色也同样被拒绝。拒绝不会被继承覆盖。
+- **隐式拒绝**（没有 `allow` 规则）是可覆盖的：更高权限的角色可以为该菜单添加显式的 `allow`。
+
+#### 1.7 策略示例
+
+```csv
+p, ROLE_ROOT, SystemMenu, read, allow
+p, ROLE_ROOT, AdminMenu, read, allow
+p, ROLE_ROOT, UserMenu, read, deny
+p, ROLE_ADMIN, UserMenu, read, allow
+p, ROLE_ADMIN, AdminMenu, read, allow
+p, ROLE_ADMIN, AdminSubMenu_deny, read, deny
+p, ROLE_USER, UserSubMenu_allow, read, allow
+
+g, user, ROLE_USER
+g, admin, ROLE_ADMIN
+g, root, ROLE_ROOT
+g, ROLE_ADMIN, ROLE_USER
+
+g2, UserSubMenu_allow, UserMenu
+g2, UserSubMenu_deny, UserMenu
+g2, UserSubSubMenu, UserSubMenu_allow
+g2, AdminSubMenu_allow, AdminMenu
+g2, AdminSubMenu_deny, AdminMenu
+g2, (NULL), SystemMenu
+```
+
+| 菜单名称（MenuName） | ROLE_ROOT | ROLE_ADMIN | ROLE_USER |
+|:-------------------|:---------:|:----------:|:---------:|
+| SystemMenu         |     ✅     |     ❌      |     ❌     |
+| UserMenu           |     ❌     |     ✅      |     ❌     |
+| UserSubMenu_allow  |     ❌     |     ✅      |     ✅     |
+| UserSubSubMenu     |     ❌     |     ✅      |     ✅     |
+| UserSubMenu_deny   |     ❌     |     ✅      |     ❌     |
+| AdminMenu          |     ✅     |     ✅      |     ❌     |
+| AdminSubMenu_allow |     ✅     |     ✅      |     ❌     |
+| AdminSubMenu_deny  |     ✅     |     ❌      |     ❌     |
+
+### 2. 实施菜单权限
+
+在 [jCasbin 菜单权限](https://github.com/jcasbin/jcasbin-menu-permission) 示例中，[MenuService](https://github.com/jcasbin/jcasbin-menu-permission/blob/master/src/main/java/org/casbin/service/MenuService.java) 提供了 `findAccessibleMenus()`（用户可以访问的所有菜单）和 `checkMenuAccess()`（检查单个菜单）。两者底层都使用 jCasbin 执行器。

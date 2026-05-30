@@ -1,0 +1,57 @@
+---
+id: online-editor
+title: 在线编辑器
+description: 在 Web 浏览器中编写 Casbin 模型（Model）和策略（Policy）
+keywords: [online editor, Casbin editor]
+authors: [hsluoyz]
+---
+
+**[在线编辑器（Online Editor）](/editor)** 让你可以在浏览器中编写和测试 Casbin 模型（Model）和策略（Policy），支持语法高亮和自动补全。
+
+## 功能特性
+
+### AI 辅助
+
+在编辑模型和策略时获取建议和帮助。
+
+![editor-ai](/img/editor-ai.png)
+
+### 引擎选择
+
+使用 Go、Java、Node.js、Python、Rust 或 .NET 执行权限检查。
+
+![editor-engine](/img/editor-engine.png)
+
+### 多引擎支持
+
+切换不同实现以检查跨语言的行为。
+
+![editor-multi-engine](/img/editor-multi-engine.png)
+
+### 自定义端点
+
+将编辑器指向你自己的 Casbin 服务，进行实时测试。
+
+![editor-endpoint](/img/editor-endpoint.png)
+
+### 文件上传
+
+导入已有的模型和策略文件，立即开始工作。
+
+![editor-upload](/img/editor-upload.png)
+
+### 使用自定义函数
+
+通过点击左下角的"添加角色匹配"按钮，添加自定义匹配函数（例如"带模式的 RBAC"）。
+
+![editor-tips](/img/editor-tips.png)
+
+要在代码中实现自定义匹配函数，请通过 Casbin API 进行配置。详情请参阅[带模式的 RBAC](/docs/rbac-with-pattern)。
+
+:::note
+
+编辑器支持 [Node-Casbin (Node.js)](https://github.com/casbin/node-casbin)、[JCasbin (Java)](https://github.com/casbin/jcasbin)、[Casbin (Go)](https://github.com/casbin/casbin)、[Casbin-rs (Rust)](https://github.com/casbin/casbin-rs)、[PyCasbin (Python)](https://github.com/casbin/pycasbin) 和 [Casbin.NET (C#)](https://github.com/casbin/Casbin.NET)。在右上角切换实现以测试你的配置。
+
+编辑器通过远程 CLI 验证模型。由于实现差异，结果可能与本地环境略有不同。请将问题报告给相应的 Casbin 实现仓库。
+
+:::

@@ -1,0 +1,99 @@
+---
+id: biba
+title: Biba（Biba完整性模型）
+description: Casbin中的Biba完整性模型
+keywords: [biba, integrity model, security model, data integrity]
+authors: [nodece]
+---
+
+## 概述
+
+**Biba模型**（1975年）强制执行**完整性**：主体（Subject）和对象（Object）具有完整性级别。规则：**不下读**（不读取完整性较低的数据）、**不上写**（不写入完整性较高的数据）。因此，高完整性的数据不会被低完整性的源污染。
+
+## 模型
+
+```conf
+[request_definition]
+r = sub, sub_level, obj, obj_level, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = (r.act == "read" && r.sub_level <= r.obj_level) || (r.act == "write" && r.sub_level >= r.obj_level)
+```
+
+## 策略
+
+通常不需要 `p` 规则；匹配器（Matcher）通过请求级别实现 Biba：
+
+- **不下读（简单完整性属性）**：主体不能读取完整性级别低于自身的对象
+- **不上写（星号完整性属性）**：主体不能写入完整性级别高于自身的对象
+
+## 核心原则
+
+Biba 的"上读下写"方法反转了 Bell-LaPadula 的"下读上写"模型。这确保：
+
+1. **数据完整性保护**：防止高完整性数据被低完整性源污染
+2. **受控信息流**：限制写入操作仅从高完整性流向低完整性级别
+3. **信任保持**：在每个完整性级别维护数据的可信度
+
+## 示例
+
+### 请求示例
+
+```text
+alice, 3, data1, 1, read    # alice（级别3）读取 data1（级别1）- 拒绝（不下读）
+bob, 2, data2, 2, read      # bob（级别2）读取 data2（级别2）- 允许
+charlie, 1, data1, 1, read  # charlie（级别1）读取 data1（级别1）- 允许
+bob, 2, data3, 3, read      # bob（级别2）读取 data3（级别3）- 允许
+charlie, 1, data2, 2, read  # charlie（级别1）读取 data2（级别2）- 允许
+
+alice, 3, data3, 3, write   # alice（级别3）写入 data3（级别3）- 允许
+bob, 2, data3, 3, write     # bob（级别2）写入 data3（级别3）- 拒绝（不上写）
+charlie, 1, data2, 2, write # charlie（级别1）写入 data2（级别2）- 拒绝（不上写）
+alice, 3, data1, 1, write   # alice（级别3）写入 data1（级别1）- 允许
+bob, 2, data1, 1, write     # bob（级别2）写入 data1（级别1）- 允许
+```
+
+## 完整性级别
+
+Biba 使用整数表示完整性级别，数值越高表示完整性越高：
+
+- 级别1：低完整性（公开数据、用户生成内容）
+- 级别2：中完整性（已验证数据、可信来源）
+- 级别3：高完整性（系统数据、管理内容）
+- 级别4：关键完整性（安全策略、系统配置）
+
+## 使用场景
+
+Biba 模型的常见应用：
+
+- 需要数据准确性的金融系统
+- 医疗记录管理
+- 需要数据完整性的数据库系统
+- 防止数据污染比防止泄露更重要的环境
+- 信息准确性和可靠性至关重要的系统
+
+## 实现说明
+
+- 强制执行专注于完整性的强制访问控制（MAC）
+- 系统管理员根据数据可信度分配完整性级别
+- 访问决策取决于完整性级别而非用户身份
+- 通过受控的读/写操作防止数据污染
+- 与 Bell-LaPadula 不同，大多数 Biba 实现使用较少的完整性级别
+
+## 与Bell-LaPadula的对比
+
+| 方面        | Bell-LaPadula         | Biba                  |
+| ------------- | --------------------- | --------------------- |
+| 主要关注点 | 机密性                | 完整性                |
+| 读规则      | 不上读                | 不下读                |
+| 写规则      | 不下写                | 不上写                |
+| 原则        | "下读上写"            | "上读下写"            |

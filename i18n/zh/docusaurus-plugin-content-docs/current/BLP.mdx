@@ -1,0 +1,80 @@
+---
+id: blp
+title: BLP（Bell-LaPadula模型）
+description: Casbin中的BLP（Bell-LaPadula模型）
+keywords: [blp, bell-lapadula, security model]
+authors: [nodece]
+---
+
+## 概述
+
+**Bell–LaPadula（BLP）模型**（1973年）通过安全级别强制执行**机密性**：主体（Subject）拥有许可级别，对象（Object）拥有分类级别。两条规则：**不上读**（不能读取更高级别的数据）、**不下写**（不能写入更低级别的数据）。
+
+## 模型
+
+```conf
+[request_definition]
+r = sub, sub_level, obj, obj_level, act
+
+[policy_definition]
+p = sub, obj, act
+
+[role_definition]
+g = _, _
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = (r.act == "read" && r.sub_level >= r.obj_level) || (r.act == "write" && r.sub_level <= r.obj_level)
+```
+
+## 策略
+
+通常你**不需要** `p` 规则；匹配器（Matcher）通过请求级别实现 BLP：
+
+- **不上读**：主体不能读取安全级别高于自身的对象
+- **不下写**：主体不能写入安全级别低于自身的对象
+
+## 示例
+
+### 请求示例
+
+```text
+alice, 3, data1, 1, read    # alice（级别3）读取 data1（级别1）- 允许
+bob, 2, data2, 2, read      # bob（级别2）读取 data2（级别2）- 允许
+charlie, 1, data1, 1, read  # charlie（级别1）读取 data1（级别1）- 允许
+bob, 2, data3, 3, read      # bob（级别2）读取 data3（级别3）- 拒绝（不上读）
+charlie, 1, data2, 2, read  # charlie（级别1）读取 data2（级别2）- 拒绝（不上读）
+
+alice, 3, data3, 3, write   # alice（级别3）写入 data3（级别3）- 允许
+bob, 2, data3, 3, write     # bob（级别2）写入 data3（级别3）- 允许
+charlie, 1, data2, 2, write # charlie（级别1）写入 data2（级别2）- 允许
+alice, 3, data1, 1, write   # alice（级别3）写入 data1（级别1）- 拒绝（不下写）
+bob, 2, data1, 1, write     # bob（级别2）写入 data1（级别1）- 拒绝（不下写）
+```
+
+## 安全级别
+
+BLP 使用整数表示安全级别，数值越高表示安全性越高：
+
+- 级别1：公开/未分类
+- 级别2：机密
+- 级别3：秘密
+- 级别4：绝密
+
+## 使用场景
+
+BLP 模型的常见应用：
+
+- 军事和政府系统
+- 金融机构
+- 医疗系统
+- 需要严格信息流控制的环境
+
+## 实现说明
+
+- 强制执行强制访问控制（MAC）
+- 系统管理员分配安全级别
+- 访问决策取决于安全级别，而非用户身份
+- 通过读/写操作防止信息泄露

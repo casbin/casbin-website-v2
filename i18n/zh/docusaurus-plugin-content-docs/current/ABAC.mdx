@@ -1,0 +1,125 @@
+---
+id: abac
+title: ABAC（基于属性的访问控制）
+description: 基于Casbin的ABAC（基于属性的访问控制）
+keywords: [ABAC, ABAC model]
+authors: [hsluoyz]
+---
+
+## 什么是ABAC？
+
+**ABAC（Attribute-Based Access Control，基于属性的访问控制）** 通过评估主体（Subject）、对象（Object）和操作（Action）的**属性**来决定访问权限（例如 `resource.Owner`、`user.Role`），而非仅依靠身份字符串。Casbin 保持其简洁性：你将结构体或对象传递给 `Enforce()`，并在匹配器（Matcher）中引用其字段。
+
+最小示例：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = r.sub == r.obj.Owner
+```
+
+因此 `r.obj` 必须是一个包含 `Owner` 字段的对象；Casbin 通过反射读取该字段。在 Go 中你可以这样定义：
+
+```go
+type testResource struct {
+    Name  string
+    Owner string
+}
+```
+
+你也可以传递 **JSON 字符串**；启用 JSON 处理后，Casbin 会解析它们：
+
+```go
+e, _ := NewEnforcer("examples/abac_model.conf")
+e.EnableAcceptJsonRequest(true)
+
+data1Json := `{ "Name": "data1", "Owner": "bob"}`
+
+ok, err := e.Enforce("alice", data1Json, "read")
+if err != nil {
+    // 处理 JSON 解析错误
+    fmt.Printf("Enforcement failed: %v\n", err)
+    return
+}
+```
+
+启用后，任何以 `{` 或 `[` 开头的参数都将被解析为 JSON。无效的 JSON 会返回清晰的错误信息；其他字符串保持原样。
+
+```go
+// 有效 JSON - 自动解析
+validJSON := `{"Name": "alice", "Age": 25}`
+ok, err := e.Enforce(validJSON, "data1", "read")  // 正常工作
+
+// 无效 JSON - 返回描述性错误
+invalidJSON := `{"Name": "alice",}`  // 尾随逗号在 JSON 中无效
+ok, err := e.Enforce(invalidJSON, "data1", "read")
+// 返回: "failed to parse JSON parameter at index 0: ..."
+
+// 纯字符串 - 不进行解析
+plainString := "alice"
+ok, err := e.Enforce(plainString, "data1", "read")  // 作为纯字符串处理
+```
+
+:::note
+
+启用 JSON 参数支持会引入约 1.1 到 1.5 倍的性能开销。
+
+:::
+
+## 使用 ABAC
+
+1. 在匹配器中引用属性（例如 `r.sub.Role`、`r.obj.Owner`）。
+2. 将结构体或类实例（或 JSON）传递给 `Enforce()`。
+
+:::warning
+
+ABAC 属性访问仅适用于请求元素（`r.sub`、`r.obj`、`r.act`）。策略元素如 `p.sub` 不能使用 ABAC，因为策略无法存储结构体或类定义。
+
+:::
+
+:::tip
+
+匹配器可以同时引用多个属性。示例：`m = r.sub.Domain == r.obj.Domain`。
+
+:::
+
+:::tip
+
+当策略中包含会与 CSV 解析冲突的逗号时，请将表达式用引号包裹。示例：`"keyMatch("bob", r.sub.Role)"` 可以防止不必要的拆分。
+
+:::
+
+## 使用 `eval()` 实现复杂规则
+
+对于更复杂的条件，将表达式放入**策略**中并使用 `eval()` 进行评估，这样模型保持精简，策略保持灵活。
+
+使用 `eval()` 的模型配置：
+
+```ini
+[request_definition]
+r = sub, obj, act
+
+[policy_definition]
+p = sub_rule, obj, act
+
+[policy_effect]
+e = some(where (p.eft == allow))
+
+[matchers]
+m = eval(p.sub_rule) && r.obj == p.obj && r.act == p.act
+```
+
+`p.sub_rule` 是对请求属性的表达式，在执行时进行评估。示例策略：
+
+```csv
+p, r.sub.Age > 18, /data1, read
+p, r.sub.Age < 60, /data2, write
+```

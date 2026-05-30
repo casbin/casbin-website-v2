@@ -1,0 +1,580 @@
+---
+id: adapters
+title: 适配器
+description: 支持的适配器（Adapter）及使用方法
+keywords: [adapters, MySQL adapter, storage adapter]
+authors: [hsluoyz]
+---
+
+Casbin 通过**适配器（Adapter）**加载和保存策略（Policy）。执行器（Enforcer）调用 `LoadPolicy()` 加载规则，并在支持的情况下调用 `SavePolicy()` 持久化规则。适配器在独立包中实现，以保持核心库的精简。
+
+## 支持的适配器
+
+按语言列出的适配器如下。要添加第三方适配器，请提交 Issue 或 PR。
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+
+import {AdapterDotNETData} from "@site/src/tableData/AdapterData/AdapterDotNETData";
+import {  AdapterGoData} from "@site/src/tableData/AdapterData/AdapterGoData";
+import {AdapterJavaData} from "@site/src/tableData/AdapterData/AdapterJavaData";
+import {AdapterLuaData} from "@site/src/tableData/AdapterData/AdapterLuaData";
+import AdapterMDTable from "@site/src/tableData/AdapterData/AdapterMDTable";
+import {AdapterNodejsData} from "@site/src/tableData/AdapterData/AdapterNodejsData";
+import {AdapterPhpData} from "@site/src/tableData/AdapterData/AdapterPhpData";
+import {AdapterPythonData} from "@site/src/tableData/AdapterData/AdapterPythonData";
+import {AdapterRubyData} from "@site/src/tableData/AdapterData/AdapterRubyData";
+import {AdapterRustData} from "@site/src/tableData/AdapterData/AdapterRustData";
+import {AdapterSwiftData} from "@site/src/tableData/AdapterData/AdapterSwiftData";
+
+<AdapterMDTable data={AdapterGoData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Java" label="Java">
+
+<AdapterMDTable data={AdapterJavaData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+
+<AdapterMDTable data={AdapterNodejsData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+
+<AdapterMDTable data={AdapterPhpData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Python" label="Python">
+
+<AdapterMDTable data={AdapterPythonData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".NET" label=".NET">
+
+<AdapterMDTable data={AdapterDotNETData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+
+<AdapterMDTable data={AdapterRustData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ruby" label="Ruby">
+
+<AdapterMDTable data={AdapterRubyData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+<AdapterMDTable data={AdapterSwiftData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Lua" label="Lua">
+
+<AdapterMDTable data={AdapterLuaData}></AdapterMDTable>
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+:::note
+
+1. 当您使用适配器（显式或隐式）调用 `casbin.NewEnforcer()` 时，策略会自动加载。
+2. 调用 `e.LoadPolicy()` 从存储中刷新策略。
+3. 没有自动保存（Auto-Save）支持时，适配器无法在您修改策略时自动持久化策略变更。请手动调用 `SavePolicy()` 以持久化所有规则。
+
+:::
+
+## 示例
+
+以下是一些适配器使用示例：
+
+### 文件适配器（内置）
+
+使用内置文件适配器初始化执行器：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import "github.com/casbin/casbin/v3"
+
+e := casbin.NewEnforcer("examples/basic_model.conf", "examples/basic_policy.csv")
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+use Casbin\Enforcer;
+
+$e = new Enforcer('examples/basic_model.conf', 'examples/basic_policy.csv');
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+use casbin::prelude::*;
+
+let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.csv").await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+等效的替代方式：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    fileadapter "github.com/casbin/casbin/v3/persist/file-adapter"
+)
+
+a := fileadapter.NewAdapter("examples/basic_policy.csv")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+use Casbin\Enforcer;
+use Casbin\Persist\Adapters\FileAdapter;
+
+$a = new FileAdapter('examples/basic_policy.csv');
+$e = new Enforcer('examples/basic_model.conf', $a);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+use casbin::prelude::*;
+
+let a = FileAdapter::new("examples/basic_policy.csv");
+let e = Enforcer::new("examples/basic_model.conf", a).await?;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### [MySQL 适配器](https://github.com/casbin/mysql-adapter)
+
+使用 127.0.0.1:3306 的 MySQL 数据库连接（root 用户，无密码）初始化执行器：
+
+```mdx-code-block
+<Tabs groupId="langs">
+<TabItem value="Go" label="Go" default>
+```
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/mysql-adapter"
+)
+
+a := mysqladapter.NewAdapter("mysql", "root:@tcp(127.0.0.1:3306)/")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Rust" label="Rust">
+```
+
+```rust
+// https://github.com/casbin-rs/diesel-adapter
+// 确保你激活了 `mysql` 特性
+
+use casbin::prelude::*;
+use diesel_adapter::{ConnOptions, DieselAdapter};
+
+let mut conn_opts = ConnOptions::default();
+conn_opts
+    .set_hostname("127.0.0.1")
+    .set_port(3306)
+    .set_host("127.0.0.1:3306") // 覆盖主机名、端口配置
+    .set_database("casbin")
+    .set_auth("casbin_rs", "casbin_rs");
+
+let a = DieselAdapter::new(conn_opts)?;
+let mut e = Enforcer::new("examples/basic_model.conf", a).await?;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PHP" label="PHP">
+```
+
+```php
+// https://github.com/php-casbin/dbal-adapter
+
+use Casbin\Enforcer;
+use CasbinAdapter\DBAL\Adapter as DatabaseAdapter;
+
+$config = [
+    // 'driver' 可以是以下值之一：
+    // pdo_mysql,pdo_sqlite,pdo_pgsql,pdo_oci（不稳定）,pdo_sqlsrv,pdo_sqlsrv,
+    // mysqli,sqlanywhere,sqlsrv,ibm_db2（不稳定）,drizzle_pdo_mysql
+    'driver'     => 'pdo_mysql',
+    'host' => '127.0.0.1',
+    'dbname' => 'test',
+    'user' => 'root',
+    'password' => '',
+    'port' => '3306',
+];
+
+$a = DatabaseAdapter::newAdapter($config);
+$e = new Enforcer('examples/basic_model.conf', $a);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## 使用您自己的存储适配器
+
+集成自定义适配器：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/your-username/your-repo"
+)
+
+a := yourpackage.NewAdapter(params)
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+```
+
+## 在不同适配器之间迁移/转换
+
+将策略从适配器 A 迁移到适配器 B：
+
+1.将策略从 A 加载到内存
+
+```go
+e, _ := NewEnforcer(m, A)
+```
+
+或
+
+```go
+e.SetAdapter(A)
+e.LoadPolicy()
+```
+
+2.从适配器 A 切换到 B
+
+```go
+e.SetAdapter(B)
+```
+
+3.将策略从内存保存到 B
+
+```go
+e.SavePolicy()
+```
+
+## 运行时加载/保存
+
+初始化后重新加载模型和策略，或持久化策略变更：
+
+```go
+// 从模型 CONF 文件重新加载模型。
+e.LoadModel()
+
+// 从文件/数据库重新加载策略。
+e.LoadPolicy()
+
+// 将当前策略（通常在通过 Casbin API 修改后）保存回文件/数据库。
+e.SavePolicy()
+```
+
+## 自动保存（AutoSave）
+
+具有自动保存（Auto-Save）能力的适配器可以直接将单个策略变更持久化到存储，无需执行完整的保存操作。这与 `SavePolicy()` 不同，后者会清空存储并重写所有策略，在策略集较大时可能导致性能问题。
+
+当适配器支持自动保存时，可通过 `Enforcer.EnableAutoSave()` 控制此行为。对于兼容的适配器，此选项默认为启用。
+
+:::note
+
+1. 自动保存是一项可选功能。适配器可以实现它，也可以不实现。
+2. 自动保存仅在执行器的适配器支持时生效。
+3. 请检查上方适配器列表中的 AutoSave 列以确定支持情况。
+
+:::
+
+自动保存使用示例：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/xorm-adapter"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+// 使用兼容适配器时，默认启用自动保存。
+a := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
+e := casbin.NewEnforcer("examples/basic_model.conf", a)
+
+// 禁用自动保存。
+e.EnableAutoSave(false)
+
+// 策略变更仅影响内存中的执行器，
+// 不影响存储。
+e.AddPolicy(...)
+e.RemovePolicy(...)
+
+// 启用自动保存。
+e.EnableAutoSave(true)
+
+// 策略变更现在会持久化到存储中，
+// 同时更新内存中的执行器。
+e.AddPolicy(...)
+e.RemovePolicy(...)
+```
+
+更多示例： [https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go](https://github.com/casbin/xorm-adapter/blob/master/adapter_test.go)
+
+### 如何编写适配器
+
+实现 [Adapter](https://github.com/casbin/casbin/blob/master/persist/adapter.go) 接口，至少包含两个必需方法：`LoadPolicy(model model.Model) error` 和 `SavePolicy(model model.Model) error`。
+
+三个可选方法用于启用自动保存支持。
+
+| 方法（Method）        | 类型（Type）      | 描述（Description）                                                |
+|------------------------|-----------|------------------------------------------------------------|
+| LoadPolicy()           | 必需 | 从存储中加载所有策略规则                     |
+| SavePolicy()           | 必需 | 将所有策略规则保存到存储                       |
+| AddPolicy()            | 可选 | 向存储中添加一条策略规则                           |
+| RemovePolicy()         | 可选 | 从存储中移除一条策略规则                      |
+| RemoveFilteredPolicy() | 可选 | 从存储中移除匹配过滤条件的策略规则 |
+
+:::note
+
+当适配器不支持自动保存时，为三个可选方法提供空实现。Golang 示例：
+
+:::
+
+```go
+// AddPolicy 向存储中添加一条策略规则。
+func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
+    return errors.New("not implemented")
+}
+
+// RemovePolicy 从存储中移除一条策略规则。
+func (a *Adapter) RemovePolicy(sec string, ptype string, rule []string) error {
+    return errors.New("not implemented")
+}
+
+// RemoveFilteredPolicy 从存储中移除匹配过滤条件的策略规则。
+func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
+    return errors.New("not implemented")
+}
+```
+
+Casbin 执行器在调用这些可选方法时会忽略 "not implemented" 错误。
+
+适配器实现要求：
+
+* 数据结构。至少支持读取六列。
+* 数据库名称。默认为 `casbin`。
+* 表名。默认为 `casbin_rule`。
+* Ptype 列。名称为 `ptype`（而不是 `p_type` 或 `Ptype`）。
+* 表定义：`(id int primary key, ptype varchar, v0 varchar, v1 varchar, v2 varchar, v3 varchar, v4 varchar, v5 varchar)`。
+* 唯一键索引：建立在 `ptype,v0,v1,v2,v3,v4,v5` 列上。
+* `LoadFilteredPolicy` 接受如下结构的过滤参数：
+
+```json
+{
+    "p": ["", "domain1"],
+    "g": ["", "", "domain1"]
+}
+```
+
+### 谁负责创建数据库？
+
+按照惯例，适配器应自动创建 `casbin` 数据库（如果不存在）并将其用于策略存储。参考实现： [https://github.com/casbin/xorm-adapter](https://github.com/casbin/xorm-adapter)
+
+## 更新适配器（Update Adapter）
+
+`UpdateAdapter` 接口扩展了基本的 `Adapter` 接口，以支持直接更新存储中的策略。在修改现有规则时，此方法比先移除后添加的顺序更高效。
+
+实现 `UpdateAdapter` 的适配器提供以下方法：
+
+| 方法（Method）              | 类型（Type）     | 描述（Description）                                                      |
+|--------------------------|----------|------------------------------------------------------------------|
+| UpdatePolicy()           | 可选 | 更新存储中的单条策略规则                       |
+| UpdatePolicies()         | 可选 | 更新存储中的多条策略规则                      |
+| UpdateFilteredPolicies() | 可选 | 更新存储中匹配过滤条件的策略规则         |
+
+### 示例
+
+更新适配器使用：
+
+```go
+import (
+    "github.com/casbin/casbin/v3"
+    "github.com/casbin/gorm-adapter/v3"
+)
+
+a, _ := gormadapter.NewAdapter("mysql", "root:@tcp(127.0.0.1:3306)/")
+e, _ := casbin.NewEnforcer("examples/rbac_model.conf", a)
+
+// 更新单条策略
+// 变更：p, alice, data1, read -> p, alice, data1, write
+e.UpdatePolicy(
+    []string{"alice", "data1", "read"},
+    []string{"alice", "data1", "write"},
+)
+
+// 一次更新多条策略
+e.UpdatePolicies(
+    [][]string{{"alice", "data1", "write"}, {"bob", "data2", "read"}},
+    [][]string{{"alice", "data1", "read"}, {"bob", "data2", "write"}},
+)
+
+// 更新匹配过滤条件的所有策略
+e.UpdateFilteredPolicies(
+    [][]string{{"alice", "data1", "write"}},
+    0,
+    "alice", "data1", "read",
+)
+```
+
+### 如何编写更新适配器
+
+要实现 `UpdateAdapter`，请在基本的 `Adapter` 实现中添加更新方法：
+
+```go
+// UpdatePolicy 从存储中更新一条策略规则。
+// 这是 UpdateAdapter 接口的一部分。
+func (a *Adapter) UpdatePolicy(sec string, ptype string, oldRule, newRule []string) error {
+    // 更新存储中的策略
+    // SQL 示例：UPDATE casbin_rule SET v0=?, v1=?, v2=? WHERE ptype=? AND v0=? AND v1=? AND v2=?
+    return nil
+}
+
+// UpdatePolicies 更新存储中的多条策略规则。
+// 这是 UpdateAdapter 接口的一部分。
+func (a *Adapter) UpdatePolicies(sec string, ptype string, oldRules, newRules [][]string) error {
+    // 批量更新存储中的策略
+    // 使用事务保证一致性
+    return nil
+}
+
+// UpdateFilteredPolicies 从存储中更新匹配过滤条件的策略规则。
+// 这是 UpdateAdapter 接口的一部分。
+func (a *Adapter) UpdateFilteredPolicies(sec string, ptype string, newRules [][]string, fieldIndex int, fieldValues ...string) error {
+    // 查找匹配过滤条件的策略，然后更新它们
+    return nil
+}
+```
+
+:::note
+
+如果不支持 `UpdateAdapter`，Casbin 会自动回退为组合使用 `RemovePolicy()` 和 `AddPolicy()` 操作。
+
+:::
+
+## 上下文适配器（Context Adapter）
+
+[ContextAdapter](https://github.com/casbin/casbin/blob/master/persist/adapter_context.go) 为 Casbin 适配器提供上下文感知操作。
+
+上下文支持适配器 API 调用的超时控制等功能。
+
+### 示例
+
+[gormadapter](https://github.com/casbin/gorm-adapter) 支持上下文。以下是使用上下文进行超时控制：
+
+```go
+ca, _ := NewContextAdapter("mysql", "root:@tcp(127.0.0.1:3306)/", "casbin")
+// 设置 300 秒超时
+ctx, cancel := context.WithTimeout(context.Background(), 300*time.Microsecond)
+defer cancel()
+
+err := ca.AddPolicyCtx(ctx, "p", "p", []string{"alice", "data1", "read"})
+if err != nil {
+    panic(err)
+}
+```
+
+### 如何编写上下文适配器
+
+`ContextAdapter` API 在标准 `Adapter` API 之上增加了一个上下文处理层。在实现了标准 Adapter API 之后，用上下文处理逻辑包装您的代码。
+
+参考实现： [adapter.go](https://github.com/casbin/gorm-adapter/blob/master/adapter.go)
+
+## 事务（Transaction）
+
+Casbin 支持事务。`gormadapter` 中的事务使用：
+
+```go
+db, _ := gorm.Open(...)
+adapter, _ := gormadapter.NewTransactionalAdapterByDB(db)
+e, _ := casbin.NewTransactionalEnforcer("examples/rbac_model.conf", adapter)
+
+ctx := context.Background()
+
+// WithTransaction 在事务内执行一个函数。
+// 发生错误时触发回滚；否则自动提交。
+err := e.WithTransaction(ctx, func(tx *casbin.Transaction) error {
+    tx.AddPolicy("alice", "data1", "read")
+    tx.AddPolicy("alice", "data1", "write")
+    return nil
+})
+
+// 手动事务处理
+tx, _ := e.BeginTransaction(ctx)
+tx.AddPolicy("alice", "data1", "write")
+if err := tx.Commit(); err != nil {
+    // 处理事务失败
+}
+```
+
+实现来自 [persist/transaction.go](https://github.com/casbin/casbin/blob/master/persist/transaction.go) 的 `TransactionalAdapter` 和 `TransactionContext` 以添加事务支持。
+
+参考： [adapter.go](https://github.com/casbin/gorm-adapter/blob/master/adapter.go)

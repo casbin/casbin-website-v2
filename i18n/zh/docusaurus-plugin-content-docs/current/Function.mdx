@@ -1,0 +1,94 @@
+---
+id: function
+title: 函数
+description: 使用内置函数或指定自定义函数
+keywords: [function, customize]
+authors: [hsluoyz]
+---
+
+## 匹配器中的函数
+
+您可以在匹配器中使用内置函数或注册自定义函数。内置的键匹配函数具有以下形式：
+
+```c
+bool function_name(string url, string pattern)
+```
+
+它们返回 `url` 是否匹配 `pattern`。
+
+可用的内置函数：
+
+| 函数        | url                                           | pattern                                                          | 示例                                                                                                                                                                                               |
+|-------------|-----------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| keyMatch    | URL 路径，例如 `/alice_data/resource1`        | URL 路径或 `*` 模式，例如 `/alice_data/*`                         | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
+| keyMatch2   | URL 路径，例如 `/alice_data/resource1`        | URL 路径或 `:` 模式，例如 `/alice_data/:resource`                 | [keymatch2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
+| keyMatch3   | URL 路径，例如 `/alice_data/resource1`        | URL 路径或 `{}` 模式，例如 `/alice_data/{resource}`               | [https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L171-L196](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L171-L196)                                                                               |
+| keyMatch4   | URL 路径，例如 `/alice_data/123/book/123`     | URL 路径或 `{}` 模式，例如 `/alice_data/{id}/book/{id}`           | [https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L208-L222](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L208-L222)                                                                               |
+| keyMatch5   | URL 路径，例如 `/alice_data/123/?status=1`    | URL 路径、`{}` 或 `*` 模式，例如 `/alice_data/{id}/*`             | [https://github.com/casbin/casbin/blob/1cde2646d10ad1190c0d784c3a1c0e1ace1b5bc9/util/builtin_operators_test.go#L485-L526](https://github.com/casbin/casbin/blob/1cde2646d10ad1190c0d784c3a1c0e1ace1b5bc9/util/builtin_operators_test.go#L485-L526)                                                                               |
+| regexMatch  | 任意字符串                                    | 正则表达式模式                                                   | [keymatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/keymatch_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
+| ipMatch     | IP 地址，例如 `192.168.2.123`                 | IP 地址或 CIDR，例如 `192.168.2.0/24`                             | [ipmatch_model.conf](https://github.com/casbin/casbin/blob/master/examples/ipmatch_model.conf)/[ipmatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/ipmatch_policy.csv)         |
+| globMatch   | 路径字符串，例如 `/alice_data/resource1`      | glob 模式，例如 `/alice_data/*`                                   | [https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466](https://github.com/casbin/casbin/blob/277c1a2b85698272f764d71a94d2595a8d425915/util/builtin_operators_test.go#L426-L466)                                                                               |
+
+键提取函数接受三个参数（`keyGet` 除外，它只接受两个）：
+
+```c
+bool function_name(string url, string pattern, string key_name)
+```
+
+当 URL 匹配模式时返回命名键的值，否则返回 `""`。
+
+示例：
+
+- `KeyGet2("/resource1/action", "/:res/action", "res")` → `"resource1"`
+- `KeyGet3("/resource1_admin/action", "/{res}_admin/*", "res")` → `"resource1"`
+- `KeyGet("/resource1/action", "/*")` → `"resource1/action"`（双参数形式）
+
+| 函数     | url                                 | pattern                                                    | 键名                              | 示例                                                                                                                                                                                           |
+|----------|-------------------------------------|------------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| keyGet   | URL 路径，例如 `/proj/resource1`    | URL 路径或 `*` 模式，例如 `/proj/*`                         | \                                 | [keyget_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget_model.conf)/[keymatch_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch_policy.csv)     |
+| keyGet2  | URL 路径，例如 `/proj/resource1`    | URL 路径或 `:` 模式，例如 `/proj/:resource`                 | 模式中指定的键名                   | [keyget2_model.conf](https://github.com/casbin/casbin/blob/master/examples/keyget2_model.conf)/[keymatch2_policy.csv](https://github.com/casbin/casbin/blob/master/examples/keymatch2_policy.csv) |
+| keyGet3  | URL 路径，例如 `/proj/res3_admin/`  | URL 路径或 `{}` 模式，例如 `/proj/{resource}_admin/*`       | 模式中指定的键名                   | [https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247](https://github.com/casbin/casbin/blob/7bd496f94f5a2739a392d333a9aaaa10ae397673/util/builtin_operators_test.go#L209-L247)                                                                           |
+
+完整函数详情：[https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go](https://github.com/casbin/casbin/blob/master/util/builtin_operators_test.go)
+
+## 添加自定义函数
+
+1. 实现一个接受所需参数并返回 `bool` 的函数：
+
+    ```go
+    func KeyMatch(key1 string, key2 string) bool {
+        i := strings.Index(key2, "*")
+        if i == -1 {
+            return key1 == key2
+        }
+
+        if len(key1) > i {
+            return key1[:i] == key2[:i]
+        }
+        return key1 == key2[:i]
+    }
+    ```
+
+2. 为 Casbin 包装该函数（签名 `func(...interface{}) (interface{}, error)`）：
+
+    ```go
+    func KeyMatchFunc(args ...interface{}) (interface{}, error) {
+        name1 := args[0].(string)
+        name2 := args[1].(string)
+
+        return (bool)(KeyMatch(name1, name2)), nil
+    }
+    ```
+
+3. 在执行器上注册：
+
+    ```go
+    e.AddFunction("my_func", KeyMatchFunc)
+    ```
+
+4. 在模型中使用：
+
+    ```ini
+    [matchers]
+    m = r.sub == p.sub && my_func(r.obj, p.obj) && r.act == p.act
+    ```

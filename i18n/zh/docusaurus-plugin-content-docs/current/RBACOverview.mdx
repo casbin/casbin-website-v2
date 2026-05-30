@@ -1,0 +1,27 @@
+---
+id: rbac-overview
+title: RBAC 概述
+description: 基于角色的访问控制（RBAC）概述
+keywords: [RBAC, role-based access control, overview]
+authors: [hsluoyz]
+---
+
+## 概述
+
+**基于角色的访问控制（RBAC）** 根据用户的角色为其分配权限。Casbin 实现了 RBAC，支持角色层次结构、域和条件。
+
+## Casbin 中的 RBAC
+
+- **基本 RBAC** — 角色层次结构和用户-角色分配
+- **带模式的 RBAC** — 用于灵活角色分配的模式匹配
+- **带域的 RBAC** — 具有按域角色的多租户
+- **带条件的 RBAC** — 基于角色的权限中的条件逻辑
+- **RBAC96** — 与 NIST RBAC96 模型对齐
+
+## 快速开始
+
+1. 在[模型](/docs/syntax-for-models)中定义角色层次结构和请求/策略结构。
+2. 在[策略](/docs/policy-storage)中将用户分配给角色（并可选择将资源分配给角色）。
+3. 使用 [RBAC API](/docs/rbac-api) 管理角色和检查权限。
+
+请参阅以下各节了解每种变体和实现细节。
